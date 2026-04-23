@@ -1,0 +1,4 @@
+**Documents changes made to the pinn damper**
+
+- Added test points by randomly sampling new points
+- Removed sorting

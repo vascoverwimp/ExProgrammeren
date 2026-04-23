@@ -82,7 +82,7 @@ OMEGA_D = OMEGA_0 * np.sqrt(1.0 - ZETA**2)
 
 T_TRAIN  = 6.0    # end of observation window   [s]
 T_EXTRAP = 10.0   # end of extrapolation window [s]
-
+T_TEST   = 10.0   # end of the testing window   [s]
 # Loss weights
 LAMBDA_PHYS = 1e-2
 LAMBDA_IC   = 10.0
@@ -110,14 +110,18 @@ def analytic(t: np.ndarray) -> np.ndarray:
 # 3.  DATA GENERATION
 # =============================================================================
 
-N_OBS = 15      # noisy observations
+N_OBS = 15      # number of noisy observations
+N_TEST = 20     # number of test points
 SIGMA = 0.05    # measurement noise standard deviation
 N_COL = 200     # collocation points for physics residual
 
 # Observation points: random draws from (0.1, T_TRAIN].
 # t=0 deliberately excluded -- initial condition is enforced via L_ic.
-t_obs = np.sort(np.random.uniform(0.1, T_TRAIN, N_OBS))
-y_obs = analytic(t_obs) + np.random.normal(0.0, SIGMA, N_OBS)
+t_obs  = np.random.uniform(0.1, T_TRAIN, N_OBS)
+t_test = np.random.uniform(0.1, T_TEST, N_TEST)
+
+y_obs  = analytic(t_obs) + np.random.normal(0.0, SIGMA, N_OBS)
+y_test = analytic(t_test)
 
 # Collocation points: uniform on [0, T_EXTRAP].
 # Extends into extrapolation region -- no measurement required.
@@ -343,6 +347,9 @@ def physics_residual_np(y, t):
 y_ml_full   = predict(model_ml,   t_plot_full)
 y_pinn_full = predict(model_pinn, t_plot_full)
 
+y_ml_test   = predict(model_ml,   t_test)
+y_pinn_test = predict(model_pinn, t_test)
+
 mask_train  = t_plot_full <= T_TRAIN
 mask_extrap = t_plot_full >  T_TRAIN
 
@@ -350,6 +357,8 @@ rmse_ml_train   = rmse(y_ml_full[mask_train],   y_true_full[mask_train])
 rmse_pinn_train = rmse(y_pinn_full[mask_train],  y_true_full[mask_train])
 rmse_ml_ext     = rmse(y_ml_full[mask_extrap],  y_true_full[mask_extrap])
 rmse_pinn_ext   = rmse(y_pinn_full[mask_extrap], y_true_full[mask_extrap])
+rmse_ml_test    = rmse(y_ml_test, y_test)
+rmse_pinn_test  = rmse(y_pinn_test, y_test)
 
 phys_res_ml   = physics_residual_np(y_ml_full,  t_plot_full)
 phys_res_pinn = physics_residual_np(y_pinn_full, t_plot_full)
@@ -365,6 +374,7 @@ print(f"{'Metric':<35}  {'Std ML':>10}  {'PINN':>10}")
 print("-" * 58)
 print(f"{'RMSE  (training interval)':35}  {rmse_ml_train:>10.4f}  {rmse_pinn_train:>10.4f}")
 print(f"{'RMSE  (extrapolation)':35}  {rmse_ml_ext:>10.4f}  {rmse_pinn_ext:>10.4f}")
+print(f"{'RMSE  (test points)':35}  {rmse_ml_test:>10.4f}  {rmse_pinn_test:>10.4f}")
 print(f"{'Physics residual (full domain)':35}  {phys_res_ml:>10.4f}  {phys_res_pinn:>10.4f}")
 print(f"{'y_hat(0)  [true = {Y0}]':35}  {y0_ml:>10.4f}  {y0_pinn:>10.4f}")
 
