@@ -1,0 +1,5 @@
+Don't preprocess before split
+First split then preprocess
+Otherwise data leakage
+
+Code doesn't need to work exactly, just try to make it work.
