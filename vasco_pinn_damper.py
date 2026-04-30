@@ -235,7 +235,7 @@ def train(model: nn.Module,
           lr:               float = 1e-3,
           print_every:      int   = 1000,
           label:            str   = "Model",
-          snapshot_epochs:  list  = None) -> tuple:
+          snapshot_epochs:  list | None  = None) -> tuple:
     """
     Train the model and return (history_dict, snapshots_dict).
 
