@@ -26,39 +26,37 @@ import torch.nn as nn
 # =============================================================================
 
 @dataclass
-class DamperConfig:
+class BurgerConfig:
     """
     All physical constants, data-generation settings, architecture choices,
     and training hyper-parameters in one place.
 
     Pass an instance of this class through the entire pipeline so that
     train.py, plot.py, and any future scripts always agree on the same
-    values.  CLI arguments in train.py create a DamperConfig and override
+    values.  CLI arguments in train.py create a BurgerConfig and override
     individual fields before anything else runs.
 
     Physical model
     --------------
-      m * y''(t) + c * y'(t) + k * y(t) = 0
-      y(0) = y0,  y'(0) = dy0
-
-    Derived quantities (read-only properties)
-    -----------------------------------------
-      omega_0   undamped natural frequency  sqrt(k/m)
-      zeta      damping ratio               c / (2 * sqrt(m*k))
-      omega_d   damped natural frequency    omega_0 * sqrt(1 - zeta²)
+      udot(x,t) + u * u'(x,t) - v * u''(x,t) = 0
+      u(x,0) = y0,  u'(x,0) = 0
+      For the cases:
+      N-wave: y0 = exp(-(x-1)**2/2) - exp(-(x+1)**2/2)
+      Gaussian: y0 = exp(-x**2/2)
     """
+    # ── Time domain ───────────────────────────────────────────────────────────
+    t_train:        float = 6.0    # end of observation window   [s]
+    t_extrap:       float = 10.0   # end of extrapolation window [s]
+
+    # ── Space domain ───────────────────────────────────────────────────────────
+    x_train_begin:  float = -7.0   # left boundary of observation window   [m]
+    x_train_end:    float = 7.0    # right boundary of observation window  [m]
 
     # ── Physical parameters ───────────────────────────────────────────────────
-    mass:      float = 1.0   # m  [kg]
-    damping:   float = 0.5   # c  [N·s/m]
-    stiffness: float = 4.0   # k  [N/m]
-    y0:        float = 1.0   # initial displacement   y(0)
-    dy0:       float = 0.0   # initial velocity       y'(0)
+    v:      float = 1.0      # viscosity  [m^2/s]
 
-    # ── Time domain ───────────────────────────────────────────────────────────
-    t_train:  float = 6.0    # end of observation window   [s]
-    t_extrap: float = 10.0   # end of extrapolation window [s]
-
+    # ── Initial conditions ───────────────────────────────────────────────────
+    situation: str = "N-wave"  # "N-wave","Gaussian", or 
     # ── Data ─────────────────────────────────────────────────────────────────
     n_obs:       int   = 300    # total noisy observations (before split)
     val_fraction: float = 0.2  # fraction of observations held out for val
@@ -135,7 +133,7 @@ class FCNet(nn.Module):
 
     def __init__(self, hidden: int = 32, n_layers: int = 4) -> None:
         super().__init__()
-        layers: list[nn.Module] = [nn.Linear(1, hidden), nn.Tanh()]
+        layers: list[nn.Module] = [nn.Linear(2, hidden), nn.Tanh()]
         for _ in range(n_layers - 1):
             layers += [nn.Linear(hidden, hidden), nn.Tanh()]
         layers += [nn.Linear(hidden, 1)]

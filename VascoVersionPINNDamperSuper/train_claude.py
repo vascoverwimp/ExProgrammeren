@@ -55,11 +55,23 @@ def get_device() -> torch.device:
 # =============================================================================
 
 def analytic(t: np.ndarray, cfg: DamperConfig) -> np.ndarray:
-    """
-    Analytic solution of the Burger's equation for three different regimes:
-    N-wave: starting with u(x,0) = exp(-(x-1)**2/2) - exp(-(x+1)**2/2) and zero BCs, the solution evolves into a characteristic N-wave shape.   
-    """
-    cfg.situation = "N-wave"
+    zeta, w0, wd, y0, dy0 = cfg.zeta, cfg.omega_0, cfg.omega_d, cfg.y0, cfg.dy0
+    t = np.asarray(t)
+    
+    if zeta < 1:  # Underdamped
+        return np.exp(-zeta * w0 * t) * (
+            y0 * np.cos(wd * t) + (dy0 + zeta * w0 * y0) / wd * np.sin(wd * t)
+        )
+    
+    elif zeta == 1:  # Critically damped
+        return (y0 + (dy0 + w0 * y0) * t) * np.exp(-w0 * t)
+    
+    else:  # Overdamped
+        r1 = -w0 * (zeta - np.sqrt(zeta**2 - 1))
+        r2 = -w0 * (zeta + np.sqrt(zeta**2 - 1))
+        C1 = (dy0 - r2 * y0) / (r1 - r2)
+        C2 = y0 - C1
+        return C1 * np.exp(r1 * t) + C2 * np.exp(r2 * t)
 
 
 # =============================================================================

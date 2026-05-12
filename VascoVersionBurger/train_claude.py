@@ -4,7 +4,7 @@ train.py
 Training script for the PINN damped-spring-mass system.
 
 Every tunable value is exposed as a CLI argument and collected into a
-DamperConfig before anything else runs.  The script:
+BurgerConfig before anything else runs.  The script:
 
   1. Resolves the compute device (CUDA > MPS > CPU).
   2. Generates synthetic observations with a train / validation split.
@@ -34,7 +34,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from model_claude import DamperConfig, FCNet, Predictor
+from model_claude import BurgerConfig, FCNet, Predictor
 
 
 # =============================================================================
@@ -54,25 +54,19 @@ def get_device() -> torch.device:
 # 1.  ANALYTIC GROUND TRUTH
 # =============================================================================
 
-def analytic(t: np.ndarray, cfg: DamperConfig) -> np.ndarray:
+def analytic(t: np.ndarray, cfg: BurgerConfig) -> np.ndarray:
     """
-    Closed-form underdamped solution for  y(0)=y0, y'(0)=dy0:
-
-        y(t) = e^{-ζ ω₀ t} · [ cos(ωd t)  +  (ζ ω₀ / ωd) sin(ωd t) ]
-
-    Valid only for ζ < 1.  Parameters are read from DamperConfig.
+    Analytic solution of the Burger's equation for three different regimes:
+    N-wave: starting with u(x,0) = exp(-(x-1)**2/2) - exp(-(x+1)**2/2) and zero BCs, the solution evolves into a characteristic N-wave shape.   
     """
-    zeta, w0, wd = cfg.zeta, cfg.omega_0, cfg.omega_d
-    return np.exp(-zeta * w0 * t) * (
-        np.cos(wd * t) + (zeta * w0 / wd) * np.sin(wd * t)
-    )
+    cfg.situation = "N-wave"
 
 
 # =============================================================================
 # 2.  DATA GENERATION  (consistent with real-world analysis)
 # =============================================================================
 
-def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
+def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
     """
     Build all data arrays and tensors needed for training and plotting.
 
@@ -166,7 +160,7 @@ def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
 def loss_physics(
     model: nn.Module,
     t: torch.Tensor,
-    cfg: DamperConfig,
+    cfg: BurgerConfig,
 ) -> torch.Tensor:
     """
     L_physics = mean( r(tᵢ)² )  over all collocation points.
@@ -198,7 +192,7 @@ def loss_physics(
 def loss_ic(
     model: nn.Module,
     t: torch.Tensor,
-    cfg: DamperConfig,
+    cfg: BurgerConfig,
 ) -> torch.Tensor:
     """
     L_ic = ( ŷ(0) - y0 )² + ( ŷ'(0) - dy0 )²
@@ -222,7 +216,7 @@ def loss_ic(
 def train_model(
     model:       nn.Module,
     data:        dict,
-    cfg:         DamperConfig,
+    cfg:         BurgerConfig,
     device:      torch.device,
     use_physics: bool,
     label:       str,
@@ -380,7 +374,7 @@ def train_model(
 
 
 # =============================================================================
-# 5.  ARGUMENT PARSING  — every DamperConfig field is a CLI flag
+# 5.  ARGUMENT PARSING  — every BurgerConfig field is a CLI flag
 # =============================================================================
 
 def parse_args() -> argparse.Namespace:
@@ -391,56 +385,56 @@ def parse_args() -> argparse.Namespace:
 
     # Physical parameters
     g = p.add_argument_group("Physical parameters")
-    g.add_argument("--mass",      type=float, default=DamperConfig.mass,  help="Mass m [kg]")
-    g.add_argument("--damping",   type=float, default=DamperConfig.damping,  help="Damping coefficient c")
-    g.add_argument("--stiffness", type=float, default=DamperConfig.stiffness,  help="Spring stiffness k [N/m]")
-    g.add_argument("--y0",        type=float, default=DamperConfig.y0,  help="Initial displacement y(0)")
-    g.add_argument("--dy0",       type=float, default=DamperConfig.dy0,  help="Initial velocity y'(0)")
+    g.add_argument("--mass",      type=float, default=BurgerConfig.mass,  help="Mass m [kg]")
+    g.add_argument("--damping",   type=float, default=BurgerConfig.damping,  help="Damping coefficient c")
+    g.add_argument("--stiffness", type=float, default=BurgerConfig.stiffness,  help="Spring stiffness k [N/m]")
+    g.add_argument("--y0",        type=float, default=BurgerConfig.y0,  help="Initial displacement y(0)")
+    g.add_argument("--dy0",       type=float, default=BurgerConfig.dy0,  help="Initial velocity y'(0)")
 
     # Time domain
     g = p.add_argument_group("Time domain")
-    g.add_argument("--t_train",  type=float, default=DamperConfig.t_train,  help="End of training window [s]")
-    g.add_argument("--t_extrap", type=float, default=DamperConfig.t_extrap, help="End of extrapolation window [s]")
+    g.add_argument("--t_train",  type=float, default=BurgerConfig.t_train,  help="End of training window [s]")
+    g.add_argument("--t_extrap", type=float, default=BurgerConfig.t_extrap, help="End of extrapolation window [s]")
 
     # Data
     g = p.add_argument_group("Data")
-    g.add_argument("--n_obs",        type=int,   default=DamperConfig.n_obs,   help="Total noisy observations")
-    g.add_argument("--val_fraction", type=float, default=DamperConfig.val_fraction,  help="Fraction of obs for validation")
-    g.add_argument("--sigma",        type=float, default=DamperConfig.sigma, help="Measurement noise std dev")
-    g.add_argument("--n_col",        type=int,   default=DamperConfig.n_col,  help="Collocation points")
-    g.add_argument("--seed",         type=int,   default=DamperConfig.seed,   help="RNG seed")
+    g.add_argument("--n_obs",        type=int,   default=BurgerConfig.n_obs,   help="Total noisy observations")
+    g.add_argument("--val_fraction", type=float, default=BurgerConfig.val_fraction,  help="Fraction of obs for validation")
+    g.add_argument("--sigma",        type=float, default=BurgerConfig.sigma, help="Measurement noise std dev")
+    g.add_argument("--n_col",        type=int,   default=BurgerConfig.n_col,  help="Collocation points")
+    g.add_argument("--seed",         type=int,   default=BurgerConfig.seed,   help="RNG seed")
 
     # Loss weights
     g = p.add_argument_group("PINN loss weights")
-    g.add_argument("--lambda_phys", type=float, default=DamperConfig.lambda_phys, help="Physics residual weight")
-    g.add_argument("--lambda_ic",   type=float, default=DamperConfig.lambda_ic, help="Initial-condition weight")
+    g.add_argument("--lambda_phys", type=float, default=BurgerConfig.lambda_phys, help="Physics residual weight")
+    g.add_argument("--lambda_ic",   type=float, default=BurgerConfig.lambda_ic, help="Initial-condition weight")
 
     # Architecture
     g = p.add_argument_group("Architecture")
-    g.add_argument("--hidden",   type=int, default=DamperConfig.hidden, help="Neurons per hidden layer")
-    g.add_argument("--n_layers", type=int, default=DamperConfig.n_layers,  help="Number of hidden layers")
+    g.add_argument("--hidden",   type=int, default=BurgerConfig.hidden, help="Neurons per hidden layer")
+    g.add_argument("--n_layers", type=int, default=BurgerConfig.n_layers,  help="Number of hidden layers")
 
     # Optimiser
     g = p.add_argument_group("Optimiser")
-    g.add_argument("--lr",       type=float, default=DamperConfig.lr, help="Initial Adam learning rate")
-    g.add_argument("--lr_param", type=float, default=DamperConfig.lr_param, help="Learning rate for physical parameters (zeta_hat, w0_hat)")
-    g.add_argument("--lr_step",  type=int,   default=DamperConfig.lr_step, help="StepLR decay interval [epochs]")
-    g.add_argument("--lr_gamma", type=float, default=DamperConfig.lr_gamma,  help="StepLR decay factor")
+    g.add_argument("--lr",       type=float, default=BurgerConfig.lr, help="Initial Adam learning rate")
+    g.add_argument("--lr_param", type=float, default=BurgerConfig.lr_param, help="Learning rate for physical parameters (zeta_hat, w0_hat)")
+    g.add_argument("--lr_step",  type=int,   default=BurgerConfig.lr_step, help="StepLR decay interval [epochs]")
+    g.add_argument("--lr_gamma", type=float, default=BurgerConfig.lr_gamma,  help="StepLR decay factor")
 
     # Training loop
     g = p.add_argument_group("Training loop")
-    g.add_argument("--n_epochs",    type=int, default=DamperConfig.n_epochs, help="Maximum training epochs")
-    g.add_argument("--print_every", type=int, default=DamperConfig.print_every, help="Console log interval [epochs]")
-    g.add_argument("--log_every",   type=int, default=DamperConfig.log_every,   help="History log interval [epochs]")
+    g.add_argument("--n_epochs",    type=int, default=BurgerConfig.n_epochs, help="Maximum training epochs")
+    g.add_argument("--print_every", type=int, default=BurgerConfig.print_every, help="Console log interval [epochs]")
+    g.add_argument("--log_every",   type=int, default=BurgerConfig.log_every,   help="History log interval [epochs]")
 
     # Early stopping
     g = p.add_argument_group("Early stopping")
-    g.add_argument("--patience",  type=int,   default=DamperConfig.patience,   help="Patience in log_every units")
-    g.add_argument("--min_delta", type=float, default=DamperConfig.min_delta, help="Min improvement to reset counter")
+    g.add_argument("--patience",  type=int,   default=BurgerConfig.patience,   help="Patience in log_every units")
+    g.add_argument("--min_delta", type=float, default=BurgerConfig.min_delta, help="Min improvement to reset counter")
 
     # Output
     g = p.add_argument_group("Output")
-    g.add_argument("--out_dir", type=str, default=DamperConfig.out_dir, help="Output directory for all saved files")
+    g.add_argument("--out_dir", type=str, default=BurgerConfig.out_dir, help="Output directory for all saved files")
 
     return p.parse_args()
 
@@ -453,7 +447,7 @@ def main() -> None:
     args = parse_args()
 
     # ── Build config from CLI arguments ───────────────────────────────────────
-    cfg = DamperConfig(
+    cfg = BurgerConfig(
         mass         = args.mass,
         damping      = args.damping,
         stiffness    = args.stiffness,
