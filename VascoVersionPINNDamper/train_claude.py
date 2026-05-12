@@ -56,18 +56,25 @@ def get_device() -> torch.device:
 # 1.  ANALYTIC GROUND TRUTH
 # =============================================================================
 
+
 def analytic(t: np.ndarray, cfg: DamperConfig) -> np.ndarray:
-    """
-    Closed-form underdamped solution for  y(0)=y0, y'(0)=dy0:
-
-        y(t) = e^{-ζ ω₀ t} · [ cos(ωd t)  +  (ζ ω₀ / ωd) sin(ωd t) ]
-
-    Valid only for ζ < 1.  Parameters are read from DamperConfig.
-    """
-    zeta, w0, wd = cfg.zeta, cfg.omega_0, cfg.omega_d
-    return np.exp(-zeta * w0 * t) * (
-        np.cos(wd * t) + (zeta * w0 / wd) * np.sin(wd * t)
-    )
+    zeta, w0, wd, y0, dy0 = cfg.zeta, cfg.omega_0, cfg.omega_d, cfg.y0, cfg.dy0
+    t = np.asarray(t)
+    
+    if zeta < 1:  # Underdamped
+        return np.exp(-zeta * w0 * t) * (
+            y0 * np.cos(wd * t) + (dy0 + zeta * w0 * y0) / wd * np.sin(wd * t)
+        )
+    
+    elif zeta == 1:  # Critically damped
+        return (y0 + (dy0 + w0 * y0) * t) * np.exp(-w0 * t)
+    
+    else:  # Overdamped
+        r1 = -w0 * (zeta - np.sqrt(zeta**2 - 1))
+        r2 = -w0 * (zeta + np.sqrt(zeta**2 - 1))
+        C1 = (dy0 - r2 * y0) / (r1 - r2)
+        C2 = y0 - C1
+        return C1 * np.exp(r1 * t) + C2 * np.exp(r2 * t)
 
 
 # =============================================================================
