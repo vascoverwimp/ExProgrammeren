@@ -84,7 +84,7 @@ def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
 
     Real-world workflow followed here
     ----------------------------------
-    * Observations are randomly drawn from (0.1, t_train] so t=0 is never
+    * Observations are randomly drawn from (0, t_train] so t=0 is never
       in the observation set — its initial condition is enforced via L_ic.
     * Observations are split into a TRAINING set and a VALIDATION set
       (val_fraction controls the size).  Training loss sees only the
@@ -107,7 +107,7 @@ def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
         return t
 
     # ── All M observations ────────────────────────────────────────────────────
-    t_all = np.random.uniform(0.1, cfg.t_train, cfg.n_obs)
+    t_all = np.random.uniform(0, cfg.t_train, cfg.n_obs)
     y_all = analytic(t_all, cfg) + np.random.normal(0.0, cfg.sigma, cfg.n_obs)
 
     # ── Train / validation split  (stratified: sorted time, interleaved) ──────

@@ -45,7 +45,7 @@ class BurgerConfig:
       Gaussian: y0 = exp(-x**2/2)
     """
     # ── Time domain ───────────────────────────────────────────────────────────
-    t0 :            float = 1.0    # start of observation window [s]
+    t0 :            float = 0    # start of observation window [s]
     t_train:        float = 6.0    # end of observation window   [s]
     t_extrap:       float = 10.0   # end of extrapolation window [s]
 
@@ -54,22 +54,22 @@ class BurgerConfig:
     x_end:    float = 7.0    # right boundary of observation window  [m]
 
     # ── Physical parameters ───────────────────────────────────────────────────
-    v:      float = 1.0      # viscosity  [m^2/s]
-    Re0:    float = 100.0    # Reynolds number (initial Reynolds number)
+    v:      float = 0.1      # viscosity  [m^2/s]
 
     # ── Initial conditions ───────────────────────────────────────────────────
     situation: str = "Step"  # "N-wave","Gaussian", or "Step"
     # ── Data ─────────────────────────────────────────────────────────────────
-    n_obs:       int    = 30   # total noisy observations (before split)
+    n_obs:       int    = 100   # total noisy observations (before split)
     val_fraction: float = 0.2  # fraction of observations held out for val
     sigma:       float  = 0.05  # measurement noise std dev
-    n_col_x:       int  = 10   # collocation points (physics residual) in x dimension
-    n_col_t:       int  = 10   # collocation points (physics residual) in t dimension
+    n_ic_samples_x: int = 200  # initial condition samples in x dimension (for IC loss)
+    n_col_x:       int  = 20   # collocation points (physics residual) in x dimension
+    n_col_t:       int  = 20   # collocation points (physics residual) in t dimension
     seed:        int    = 42    # global RNG seed
 
     # ── PINN loss weights ─────────────────────────────────────────────────────
-    lambda_phys: float = 1e-1  # physics-residual weight
-    lambda_ic:   float = 10.0  # initial-condition weight (>> lambda_phys)
+    lambda_phys: float = 1  # physics-residual weight
+    lambda_ic:   float = 50.0  # initial-condition weight (>> lambda_phys)
 
     # ── Network architecture ──────────────────────────────────────────────────
     hidden:   int = 32   # neurons per hidden layer
@@ -81,7 +81,7 @@ class BurgerConfig:
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
 
     # ── Training loop ─────────────────────────────────────────────────────────
-    n_epochs:    int = 8_000   # maximum training epochs
+    n_epochs:    int = 80_000   # maximum training epochs
     print_every: int = 1_000   # console log frequency (epochs)
     log_every:   int = 100     # history-dict write frequency (epochs)
 
@@ -91,7 +91,7 @@ class BurgerConfig:
 
     # ── Snapshot epochs for trajectory plots ─────────────────────────────────
     snapshot_epochs: list = field(
-        default_factory=lambda: [1, 50, 200, 500, 1_000, 2_000, 4_000, 8_000]
+        default_factory=lambda: [1, 50, 200, 500, 1_000, 2_000, 4_000, 8_000, 20_000, 40_000, 80_000]
     )
 
     # ── Output paths ──────────────────────────────────────────────────────────
@@ -116,7 +116,7 @@ class BurgerConfig:
 
         elif self.situation == "Step":
             return lambda x: torch.where(
-                torch.abs(x) < 1.0,
+                x > 0,  
                 torch.ones_like(x),
                 torch.zeros_like(x)
             )
@@ -253,8 +253,18 @@ class Predictor:
         Approximate ODE residual via numpy central finite differences.
         Trims 5 boundary points on each side where finite-diff is inaccurate.
         """
-        du  = np.gradient(u, x)
-        d2u = np.gradient(du, x)
-        dotu = np.gradient(u, t)
-        r   = dotu + u * du - cfg.v * d2u
+
+        t_vec = np.unique(t)
+
+        x_vec = np.unique(x)
+
+        n_t = len(t_vec)
+        n_x = len(x_vec)
+
+        u_grid = u.reshape(n_t, n_x)
+
+        du  = np.gradient(u_grid, x_vec,axis=1)
+        d2u = np.gradient(du, x_vec,axis=1)
+        dotu = np.gradient(u_grid, t_vec,axis=0)
+        r   = dotu + u_grid * du - cfg.v * d2u
         return float(np.sqrt(np.mean(r[5:-5] ** 2)))

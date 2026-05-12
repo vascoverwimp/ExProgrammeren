@@ -35,7 +35,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import torch.nn as nn
-
+from scipy.special import erfc
 from model_claude import BurgerConfig, FCNet, Predictor
 
 
@@ -61,9 +61,43 @@ def analytic(x: np.ndarray, t: np.ndarray, cfg: BurgerConfig) -> np.ndarray:
     Analytic solution of the Burger's equation for three different regimes:
     N-wave: starting with u(x,t0) = exp(-(x-1)**2/2) - exp(-(x+1)**2/2) the solution evolves into a characteristic N-wave shape.   
     """
+    shifted_t = t - cfg.t0
+    if cfg.situation == "Step":
+        
+        mask = shifted_t > 1e-10 
     
-    # if cfg.situation == "N-wave":
-    #     return 
+        # Initialize output array with the initial condition (t <= t0)
+        # Defaulting to the step function logic
+        u = np.where(x > 0, 1.0, 0.0)
+        
+        # Only calculate the complex viscous formula where time has actually progressed
+        if np.any(mask):
+            # Extract only the points that need the viscous calculation
+            tm = shifted_t[mask]
+            xm = x[mask]
+            
+            sqrt_4nut = np.sqrt(4 * cfg.v * tm)
+            
+            # Term A: erfc(-x / sqrt)
+            term_a = erfc(-xm / sqrt_4nut)
+            
+            # Term B: exp(exponent) * erfc((t-x)/sqrt)
+            exponent = (xm - 0.5 * tm) / (2 * cfg.v)
+            # Standard float64 max exponent is ~709. 
+            # Clipping at 500 is safe and effectively "infinite" for a ratio.
+            exponent = np.clip(exponent, -1e7, 1e7)
+            
+            term_b = np.exp(exponent) * erfc((tm - xm) / sqrt_4nut)
+            
+            # Calculate ratio safely
+            # Adding a tiny epsilon to the denominator prevents 0/0
+            u_viscous = term_b / (term_a + term_b + 1e-14)
+            
+            # Place the calculated values back into the main array
+            u[mask] = u_viscous
+
+        return u
+    
     return x*t
 
 
@@ -79,7 +113,7 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
 
     Real-world workflow followed here
     ----------------------------------
-    * Observations are randomly drawn from (0.1, t_train] so t=0 is never
+    * Observations are randomly drawn from (t0, t_train] so t0 is never
       in the observation set — its initial condition is enforced via L_ic.
     * Observations are split into a TRAINING set and a VALIDATION set
       (val_fraction controls the size).  Training loss sees only the
@@ -115,20 +149,29 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
 
     t_obs_train, u_obs_train, x_obs_train = t_all[train_idx], u_all[train_idx], x_full[train_idx]
     t_obs_val,   u_obs_val,   x_obs_val   = t_all[val_idx],   u_all[val_idx],   x_full[val_idx]
-    # ── Collocation points ────────────────────────────────────────────────────
-    t_col      = np.linspace(cfg.t0, cfg.t_extrap, cfg.n_col_t)
-    x_col      = np.linspace(cfg.x_begin, cfg.x_end, cfg.n_col_x)
+    # ── Collocation points (randomly chosen) ───────────────────────────────────
+    t_col      = np.random.uniform(cfg.t0, cfg.t_extrap, cfg.n_col_t)
+    x_col      = np.random.uniform(cfg.x_begin, cfg.x_end, cfg.n_col_x)
     u_col_true = analytic(x_col, t_col, cfg)       # used only in plots
 
     # ── Initial condition point ───────────────────────────────────────────────
-    t_ic = np.array([cfg.t0])
+    x_samples_ic = np.linspace(cfg.x_begin, cfg.x_end, cfg.n_ic_samples_x)
+    t_ic = np.full_like(x_samples_ic, cfg.t0)
 
     # ── Dense grids for post-hoc evaluation and plotting (CPU numpy only) ────
     t_plot_train = np.linspace(cfg.t0, cfg.t_train,  300)
     t_plot_full  = np.linspace(cfg.t0, cfg.t_extrap, 500)
     x_plot_full = np.linspace(cfg.x_begin, cfg.x_end, 500)
-    u_true_train = analytic(x_plot_full, t_plot_train, cfg)
-    u_true_full  = analytic(x_plot_full, t_plot_full,  cfg)
+
+    t_plotmat_train, x_plotmat_train = np.meshgrid(t_plot_train, x_plot_full, indexing="ij")
+    t_plotmat_full,  x_plotmat_full  = np.meshgrid(t_plot_full,  x_plot_full,  indexing="ij")
+    t_flattened_train = t_plotmat_train.reshape(-1)
+    x_flattened_train = x_plotmat_train.reshape(-1)
+    t_flattened_full  = t_plotmat_full.reshape(-1)
+    x_flattened_full  = x_plotmat_full.reshape(-1)
+
+    u_true_train = analytic(x_flattened_train, t_flattened_train, cfg)
+    u_true_full  = analytic(x_flattened_full, t_flattened_full,  cfg)
 
     return {
         # numpy — full observation set (used only in plots)
@@ -145,9 +188,10 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
         "x_col":       x_col,
         "u_col_true":  u_col_true,
         # numpy — dense evaluation grids
-        "t_plot_train": t_plot_train,
-        "t_plot_full":  t_plot_full,
-        "x_plot_full":  x_plot_full,
+        "t_flattened_train": t_flattened_train,
+        "x_flattened_train": x_flattened_train,
+        "t_flattened_full":  t_flattened_full,
+        "x_flattened_full":  x_flattened_full,
         "u_true_train": u_true_train,
         "u_true_full":  u_true_full,
         # tensors on DEVICE — training observations
@@ -163,6 +207,7 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
         "x_col_t": to_tensor(x_col, requires_grad=True),
         # tensor on DEVICE — IC point (requires_grad for y'(0))
         "t_ic_t":  to_tensor(t_ic,  requires_grad=True),
+        "x_samples_ic_t": to_tensor(x_samples_ic, requires_grad=False),
     }
 
 
@@ -210,6 +255,7 @@ def loss_physics(
 def loss_ic(
     model: nn.Module,
     x: torch.Tensor,
+    t: torch.Tensor,
     cfg: BurgerConfig,
 ) -> torch.Tensor:
     """
@@ -218,7 +264,6 @@ def loss_ic(
     λ_ic >> λ_phys because an error at t=0 propagates and distorts the
     entire downstream trajectory.
     """
-    t = torch.full_like(x, cfg.t0, requires_grad=True)
     u_hat_0 = model(x, t)
     du_0 = torch.autograd.grad(
         u_hat_0, t,
@@ -284,6 +329,7 @@ def train_model(
     t_col_t       = data["t_col_t"]
     x_col_t       = data["x_col_t"]
     t_ic_t        = data["t_ic_t"]
+    x_samples_ic_t = data["x_samples_ic_t"]
 
     history: dict[str, list] = {
         "epoch":         [],
@@ -313,7 +359,7 @@ def train_model(
 
         if use_physics:
             l_phys = loss_physics(model, x_col_t, t_col_t, cfg)
-            l_ic   = loss_ic(model, x_col_t, cfg)
+            l_ic   = loss_ic(model, x_samples_ic_t, t_ic_t, cfg)
             l_total = l_data + cfg.lambda_phys * l_phys + cfg.lambda_ic * l_ic
         else:
             l_phys  = torch.zeros(1, device=device)
@@ -410,7 +456,6 @@ def parse_args() -> argparse.Namespace:
     # Physical parameters
     g = p.add_argument_group("Physical parameters")
     g.add_argument("--viscosity", type=float, default=BurgerConfig.v, help="Viscosity coefficient")
-    g.add_argument("--Re0",       type=float, default=BurgerConfig.Re0, help="Initial Reynolds number")
 
     # Initial conditions
     g = p.add_argument_group("Initial conditions")
@@ -474,13 +519,12 @@ def parse_args() -> argparse.Namespace:
 # 6.  MAIN
 # =============================================================================
 
-def main() -> None:
+def main_training() -> None:
     args = parse_args()
 
     # ── Build config from CLI arguments ───────────────────────────────────────
     cfg = BurgerConfig(
         v            = args.viscosity,
-        Re0          = args.Re0,
         situation    = args.situation,
         x_begin      = args.x_begin,
         x_end        = args.x_end,
@@ -520,7 +564,7 @@ def main() -> None:
         print(f"  GPU    : {torch.cuda.get_device_name(0)}")
         vram_gb = torch.cuda.get_device_properties(0).total_memory / 1e9
         print(f"  VRAM   : {vram_gb:.1f} GB")
-    print(f"  ν    : {cfg.v:.4f}   Re0 = {cfg.Re0:.4f}   Situation = {cfg.situation}")
+    print(f"  ν    : {cfg.v:.4f}    Situation : {cfg.situation}")
     print("=" * 70)
 
     # ── Output directory ──────────────────────────────────────────────────────
@@ -565,31 +609,27 @@ def main() -> None:
         label       = "PINN ",
         ckpt_path   = ckpt_pinn,
     )
-
-    # ── Load best checkpoints for final evaluation ────────────────────────────
-    # Using best-val checkpoints rather than last-epoch weights ensures
-    # the saved result reflects the model at its generalisation peak.
     pred_ml   = Predictor(cfg, checkpoint_path=str(ckpt_ml))
     pred_pinn = Predictor(cfg, checkpoint_path=str(ckpt_pinn))
 
-    t_plot_full  = data["t_plot_full"]
-    x_plot_full  = data["x_plot_full"]
+    t_flattened_full  = data["t_flattened_full"]
+    x_flattened_full  = data["x_flattened_full"]
     u_true_full  = data["u_true_full"]
-    print(u_true_full.shape)
-    u_ml_full   = pred_ml.predict(x_plot_full,t_plot_full)
-    print(u_ml_full.shape)
-    u_pinn_full = pred_pinn.predict(x_plot_full,t_plot_full)
-    print(u_pinn_full.shape)
-    mask_train  = t_plot_full <= cfg.t_train
-    mask_extrap = t_plot_full >  cfg.t_train
+
+    u_ml_full   = pred_ml.predict(x_flattened_full, t_flattened_full)
+    u_pinn_full = pred_pinn.predict(x_flattened_full, t_flattened_full)
+
+    mask_train  = t_flattened_full <= cfg.t_train
+    print(mask_train.shape)
+    print(mask_train)
+    mask_extrap = t_flattened_full >  cfg.t_train
 
     rmse_ml_train   = Predictor.rmse(u_ml_full[mask_train],   u_true_full[mask_train])
     rmse_pinn_train = Predictor.rmse(u_pinn_full[mask_train],  u_true_full[mask_train])
     rmse_ml_ext     = Predictor.rmse(u_ml_full[mask_extrap],  u_true_full[mask_extrap])
     rmse_pinn_ext   = Predictor.rmse(u_pinn_full[mask_extrap], u_true_full[mask_extrap])
-    phys_ml         = Predictor.physics_residual(u_ml_full,   x_plot_full, t_plot_full, cfg)
-    phys_pinn       = Predictor.physics_residual(u_pinn_full, x_plot_full, t_plot_full, cfg)
-
+    phys_ml         = Predictor.physics_residual(u_ml_full, x_flattened_full, t_flattened_full, cfg)
+    phys_pinn       = Predictor.physics_residual(u_pinn_full, x_flattened_full, t_flattened_full, cfg)
     # ── Console summary ───────────────────────────────────────────────────────
     print()
     print("=" * 70)
@@ -600,7 +640,7 @@ def main() -> None:
     print("  " + "-" * 62)
     print(f"  {'RMSE  (training interval)':38}  {rmse_ml_train:>10.4f}  {rmse_pinn_train:>10.4f}")
     print(f"  {'RMSE  (extrapolation)':38}  {rmse_ml_ext:>10.4f}  {rmse_pinn_ext:>10.4f}")
-    print(f"  {'Physics residual  (full domain)':38}  {phys_ml:>10.4f}  {phys_pinn:>10.4f}")
+    print(f"  {'Physics Residual':38}  {phys_ml:>10.4f}  {phys_pinn:>10.4f}")
 
     # ── Save results bundle for plot.py ───────────────────────────────────────
     metrics = {
@@ -622,8 +662,8 @@ def main() -> None:
             "hist_pinn":    hist_pinn,
             "snaps_ml":     snaps_ml,
             "snaps_pinn":   snaps_pinn,
-            "y_ml_full":    u_ml_full,
-            "y_pinn_full":  u_pinn_full,
+            "u_ml_full":    u_ml_full,
+            "u_pinn_full":  u_pinn_full,
             "metrics":      metrics,
         },
         results_path,
@@ -633,6 +673,53 @@ def main() -> None:
     print(f"  Best PINN checkpoint : {ckpt_pinn}")
     print("\n  Run  python plot.py  to generate figures.\n")
 
+def evaluate_model() -> None:
+    
+    # ── Load best checkpoints for final evaluation ────────────────────────────
+    # Using best-val checkpoints rather than last-epoch weights ensures
+    # the saved result reflects the model at its generalisation peak.
+    
+    out_dir = Path(BurgerConfig.out_dir)
+    results_path = out_dir / BurgerConfig.results_pt
+    raw = torch.load(results_path, map_location="cpu", weights_only=False)
+    config = raw["config"]
+    data = generate_data(config, torch.device("cpu"))  # CPU-only for evaluation and plotting
+    ckpt_pinn = out_dir / config.ckpt_pinn
+    ckpt_ml   = out_dir / config.ckpt_ml
+    pred_ml   = Predictor(config, checkpoint_path=str(ckpt_ml))
+    pred_pinn = Predictor(config, checkpoint_path=str(ckpt_pinn))
+
+    t_flattened_full  = data["t_flattened_full"]
+    x_flattened_full  = data["x_flattened_full"]
+    u_true_full  = analytic(x_flattened_full, t_flattened_full, config)
+
+    u_ml_full   = pred_ml.predict(x_flattened_full, t_flattened_full)
+    u_pinn_full = pred_pinn.predict(x_flattened_full, t_flattened_full)
+
+    mask_train  = t_flattened_full <= config.t_train
+    print(mask_train.shape)
+    print(np.sum(np.isnan(u_true_full[mask_train])))
+    mask_extrap = t_flattened_full >  config.t_train
+
+    rmse_ml_train   = Predictor.rmse(u_ml_full[mask_train],   u_true_full[mask_train])
+    rmse_pinn_train = Predictor.rmse(u_pinn_full[mask_train],  u_true_full[mask_train])
+    rmse_ml_ext     = Predictor.rmse(u_ml_full[mask_extrap],  u_true_full[mask_extrap])
+    rmse_pinn_ext   = Predictor.rmse(u_pinn_full[mask_extrap], u_true_full[mask_extrap])
+    phys_ml         = Predictor.physics_residual(u_ml_full, x_flattened_full, t_flattened_full, config)
+    phys_pinn       = Predictor.physics_residual(u_pinn_full, x_flattened_full, t_flattened_full, config)
+    # ── Console summary ───────────────────────────────────────────────────────
+    print()
+    print("=" * 70)
+    print("RESULTS SUMMARY  (best-val checkpoint)")
+    print("=" * 70)
+    print(f"  {'Metric':<38}  {'Std ML':>10}  {'PINN':>10}")
+    print("  " + "-" * 62)
+    print(f"  {'RMSE  (training interval)':38}  {rmse_ml_train:>10.4f}  {rmse_pinn_train:>10.4f}")
+    print(f"  {'RMSE  (extrapolation)':38}  {rmse_ml_ext:>10.4f}  {rmse_pinn_ext:>10.4f}")
+    print(f"  {'Physics Residual':38}  {phys_ml:>10.4f}  {phys_pinn:>10.4f}")
+
+
 
 if __name__ == "__main__":
-    main()
+    main_training()
+    # evaluate_model()
