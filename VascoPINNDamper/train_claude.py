@@ -393,61 +393,61 @@ def train_model(
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(
-        description="Train PINN and Standard-ML models for a damped spring-mass system.",
+        description="Train PINN model for a damped spring-mass system with the constants as unknowns.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
     # Physical parameters
     g = p.add_argument_group("Physical parameters")
-    g.add_argument("--mass",      type=float, default=1.0,  help="Mass m [kg]")
-    g.add_argument("--damping",   type=float, default=0.5,  help="Damping coefficient c")
-    g.add_argument("--stiffness", type=float, default=4.0,  help="Spring stiffness k [N/m]")
-    g.add_argument("--y0",        type=float, default=1.0,  help="Initial displacement y(0)")
-    g.add_argument("--dy0",       type=float, default=0.0,  help="Initial velocity y'(0)")
+    g.add_argument("--mass",      type=float, default=DamperConfig.mass,  help="Mass m [kg]")
+    g.add_argument("--damping",   type=float, default=DamperConfig.damping,  help="Damping coefficient c")
+    g.add_argument("--stiffness", type=float, default=DamperConfig.stiffness,  help="Spring stiffness k [N/m]")
+    g.add_argument("--y0",        type=float, default=DamperConfig.y0,  help="Initial displacement y(0)")
+    g.add_argument("--dy0",       type=float, default=DamperConfig.dy0,  help="Initial velocity y'(0)")
 
     # Time domain
     g = p.add_argument_group("Time domain")
-    g.add_argument("--t_train",  type=float, default=6.0,  help="End of training window [s]")
-    g.add_argument("--t_extrap", type=float, default=10.0, help="End of extrapolation window [s]")
+    g.add_argument("--t_train",  type=float, default=DamperConfig.t_train,  help="End of training window [s]")
+    g.add_argument("--t_extrap", type=float, default=DamperConfig.t_extrap, help="End of extrapolation window [s]")
 
     # Data
     g = p.add_argument_group("Data")
-    g.add_argument("--n_obs",        type=int,   default=15,   help="Total noisy observations")
-    g.add_argument("--val_fraction", type=float, default=0.2,  help="Fraction of obs for validation")
-    g.add_argument("--sigma",        type=float, default=0.05, help="Measurement noise std dev")
-    g.add_argument("--n_col",        type=int,   default=200,  help="Collocation points")
-    g.add_argument("--seed",         type=int,   default=42,   help="RNG seed")
+    g.add_argument("--n_obs",        type=int,   default=DamperConfig.n_obs,   help="Total noisy observations")
+    g.add_argument("--val_fraction", type=float, default=DamperConfig.val_fraction,  help="Fraction of obs for validation")
+    g.add_argument("--sigma",        type=float, default=DamperConfig.sigma, help="Measurement noise std dev")
+    g.add_argument("--n_col",        type=int,   default=DamperConfig.n_col,  help="Collocation points")
+    g.add_argument("--seed",         type=int,   default=DamperConfig.seed,   help="RNG seed")
 
     # Loss weights
     g = p.add_argument_group("PINN loss weights")
-    g.add_argument("--lambda_phys", type=float, default=1e-2, help="Physics residual weight")
-    g.add_argument("--lambda_ic",   type=float, default=10.0, help="Initial-condition weight")
+    g.add_argument("--lambda_phys", type=float, default=DamperConfig.lambda_phys, help="Physics residual weight")
+    g.add_argument("--lambda_ic",   type=float, default=DamperConfig.lambda_ic, help="Initial-condition weight")
 
     # Architecture
     g = p.add_argument_group("Architecture")
-    g.add_argument("--hidden",   type=int, default=32, help="Neurons per hidden layer")
-    g.add_argument("--n_layers", type=int, default=4,  help="Number of hidden layers")
+    g.add_argument("--hidden",   type=int, default=DamperConfig.hidden, help="Neurons per hidden layer")
+    g.add_argument("--n_layers", type=int, default=DamperConfig.n_layers,  help="Number of hidden layers")
 
     # Optimiser
     g = p.add_argument_group("Optimiser")
-    g.add_argument("--lr",       type=float, default=1e-3, help="Initial Adam learning rate")
-    g.add_argument("--lr_step",  type=int,   default=3000, help="StepLR decay interval [epochs]")
-    g.add_argument("--lr_gamma", type=float, default=0.5,  help="StepLR decay factor")
+    g.add_argument("--lr",       type=float, default=DamperConfig.lr, help="Initial Adam learning rate")
+    g.add_argument("--lr_step",  type=int,   default=DamperConfig.lr_step, help="StepLR decay interval [epochs]")
+    g.add_argument("--lr_gamma", type=float, default=DamperConfig.lr_gamma,  help="StepLR decay factor")
 
     # Training loop
     g = p.add_argument_group("Training loop")
-    g.add_argument("--n_epochs",    type=int, default=8_000, help="Maximum training epochs")
-    g.add_argument("--print_every", type=int, default=1_000, help="Console log interval [epochs]")
-    g.add_argument("--log_every",   type=int, default=100,   help="History log interval [epochs]")
+    g.add_argument("--n_epochs",    type=int, default=DamperConfig.n_epochs, help="Maximum training epochs")
+    g.add_argument("--print_every", type=int, default=DamperConfig.print_every, help="Console log interval [epochs]")
+    g.add_argument("--log_every",   type=int, default=DamperConfig.log_every,   help="History log interval [epochs]")
 
     # Early stopping
     g = p.add_argument_group("Early stopping")
-    g.add_argument("--patience",  type=int,   default=30,   help="Patience in log_every units")
-    g.add_argument("--min_delta", type=float, default=1e-6, help="Min improvement to reset counter")
+    g.add_argument("--patience",  type=int,   default=DamperConfig.patience,   help="Patience in log_every units")
+    g.add_argument("--min_delta", type=float, default=DamperConfig.min_delta, help="Min improvement to reset counter")
 
     # Output
     g = p.add_argument_group("Output")
-    g.add_argument("--out_dir", type=str, default="./Output", help="Output directory for all saved files")
+    g.add_argument("--out_dir", type=str, default=DamperConfig.out_dir, help="Output directory for all saved files")
 
     return p.parse_args()
 

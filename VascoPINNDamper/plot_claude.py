@@ -426,11 +426,11 @@ def parse_args() -> argparse.Namespace:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     p.add_argument(
-        "--results", type=str, default="training_results.pt",
+        "--results", type=str, default=DamperConfig.out_dir + "/training_results.pt",
         help="Path to the training_results.pt file written by train.py",
     )
     p.add_argument(
-        "--out_dir", type=str, default=None,
+        "--out_dir", type=str, default=DamperConfig.out_dir,
         help=(
             "Directory for saved figures.  Defaults to the same directory "
             "as the results file."
