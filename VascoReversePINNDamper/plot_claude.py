@@ -614,7 +614,7 @@ def main() -> None:
         "data":       raw["data"],
         "hist_pinn":  raw["hist_pinn"],
         "snaps_pinn": snaps,
-        "y_pinn_full":raw["y_pinn_full"],
+        "u_pinn_full":raw["u_pinn_full"],
         "metrics":    raw["metrics"],
         "pred":       pred,
     }

@@ -8,10 +8,12 @@ BurgerConfig before anything else runs.  The script:
 
   1. Resolves the compute device (CUDA > MPS > CPU).
   2. Generates synthetic observations with a train / validation split.
-  3. Trains a PINN model       (data + physics + IC loss).
-  4. Saves the best checkpoint after every improvement (best_pinn.pt) so a crash never loses more than one log_every interval.
-  5. Applies early stopping based on validation MSE.
-  6. Serialises everything needed by plot.py into training_results.pt.
+  3. Trains a Standard-ML model (data loss only).
+  4. Trains a PINN model       (data + physics + IC loss).
+  5. Saves the best checkpoint after every improvement (best_ml.pt /
+     best_pinn.pt) so a crash never loses more than one log_every interval.
+  6. Applies early stopping based on validation MSE.
+  7. Serialises everything needed by plot.py into training_results.pt.
 
 Usage examples
 --------------
@@ -54,12 +56,17 @@ def get_device() -> torch.device:
 # 1.  ANALYTIC GROUND TRUTH
 # =============================================================================
 
-def analytic(t: np.ndarray, cfg: BurgerConfig) -> np.ndarray:
+def analytic(x: np.ndarray, t: np.ndarray, cfg: BurgerConfig) -> np.ndarray:
     """
     Analytic solution of the Burger's equation for three different regimes:
-    N-wave: starting with u(x,0) = exp(-(x-1)**2/2) - exp(-(x+1)**2/2) and zero BCs, the solution evolves into a characteristic N-wave shape.   
+    N-wave: starting with u(x,t0) = exp(-(x-1)**2/2) - exp(-(x+1)**2/2) the solution evolves into a characteristic N-wave shape.   
     """
-    cfg.situation = "N-wave"
+    
+    # if cfg.situation == "N-wave":
+    #     return 
+    return x*t
+
+
 
 
 # =============================================================================
@@ -95,59 +102,65 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
         return t
 
     # ── All M observations ────────────────────────────────────────────────────
-    t_all = np.sort(np.random.uniform(0.1, cfg.t_train, cfg.n_obs))
-    y_all = analytic(t_all, cfg) + np.random.normal(0.0, cfg.sigma, cfg.n_obs)
+    x_full, t_all = np.random.uniform(cfg.x_begin, cfg.x_end, cfg.n_obs), np.random.uniform(cfg.t0, cfg.t_train, cfg.n_obs)  # spatial and temporal locations for observations
+    u_all = analytic(x_full, t_all, cfg) + np.random.normal(0.0, cfg.sigma, cfg.n_obs)
 
     # ── Train / validation split  (stratified: sorted time, interleaved) ──────
     n_val   = max(1, int(np.round(cfg.n_obs * cfg.val_fraction)))
-    n_train = cfg.n_obs - n_val
+    
     # Every k-th index goes to validation to spread validation points evenly
     # across the time axis rather than bunching them at one end.
     val_idx   = np.round(np.linspace(0, cfg.n_obs - 1, n_val)).astype(int)
     train_idx = np.array([i for i in range(cfg.n_obs) if i not in val_idx])
 
-    t_obs_train, y_obs_train = t_all[train_idx], y_all[train_idx]
-    t_obs_val,   y_obs_val   = t_all[val_idx],   y_all[val_idx]
-
+    t_obs_train, u_obs_train, x_obs_train = t_all[train_idx], u_all[train_idx], x_full[train_idx]
+    t_obs_val,   u_obs_val,   x_obs_val   = t_all[val_idx],   u_all[val_idx],   x_full[val_idx]
     # ── Collocation points ────────────────────────────────────────────────────
-    t_col      = np.linspace(0.0, cfg.t_extrap, cfg.n_col)
-    y_col_true = analytic(t_col, cfg)       # used only in plots
+    t_col      = np.linspace(cfg.t0, cfg.t_extrap, cfg.n_col_t)
+    x_col      = np.linspace(cfg.x_begin, cfg.x_end, cfg.n_col_x)
+    u_col_true = analytic(x_col, t_col, cfg)       # used only in plots
 
     # ── Initial condition point ───────────────────────────────────────────────
-    t_ic = np.array([0.0])
+    t_ic = np.array([cfg.t0])
 
     # ── Dense grids for post-hoc evaluation and plotting (CPU numpy only) ────
-    t_plot_train = np.linspace(0.0, cfg.t_train,  300)
-    t_plot_full  = np.linspace(0.0, cfg.t_extrap, 500)
-    y_true_train = analytic(t_plot_train, cfg)
-    y_true_full  = analytic(t_plot_full,  cfg)
+    t_plot_train = np.linspace(cfg.t0, cfg.t_train,  300)
+    t_plot_full  = np.linspace(cfg.t0, cfg.t_extrap, 500)
+    x_plot_full = np.linspace(cfg.x_begin, cfg.x_end, 500)
+    u_true_train = analytic(x_plot_full, t_plot_train, cfg)
+    u_true_full  = analytic(x_plot_full, t_plot_full,  cfg)
 
     return {
         # numpy — full observation set (used only in plots)
         "t_obs":       t_all,
-        "y_obs":       y_all,
+        "u_obs":       u_all,
         # numpy — train split
         "t_obs_train": t_obs_train,
-        "y_obs_train": y_obs_train,
+        "u_obs_train": u_obs_train,
         # numpy — validation split
         "t_obs_val":   t_obs_val,
-        "y_obs_val":   y_obs_val,
+        "u_obs_val":   u_obs_val,
         # numpy — collocation & IC (also converted to tensors below)
         "t_col":       t_col,
-        "y_col_true":  y_col_true,
+        "x_col":       x_col,
+        "u_col_true":  u_col_true,
         # numpy — dense evaluation grids
         "t_plot_train": t_plot_train,
         "t_plot_full":  t_plot_full,
-        "y_true_train": y_true_train,
-        "y_true_full":  y_true_full,
+        "x_plot_full":  x_plot_full,
+        "u_true_train": u_true_train,
+        "u_true_full":  u_true_full,
         # tensors on DEVICE — training observations
         "t_obs_train_t": to_tensor(t_obs_train),
-        "y_obs_train_t": to_tensor(y_obs_train),
+        "x_obs_train_t": to_tensor(x_obs_train),
+        "u_obs_train_t": to_tensor(u_obs_train),
         # tensors on DEVICE — validation observations
         "t_obs_val_t":   to_tensor(t_obs_val),
-        "y_obs_val_t":   to_tensor(y_obs_val),
+        "x_obs_val_t":   to_tensor(x_obs_val),
+        "u_obs_val_t":   to_tensor(u_obs_val),
         # tensors on DEVICE — collocation (requires_grad for ODE residual)
         "t_col_t": to_tensor(t_col, requires_grad=True),
+        "x_col_t": to_tensor(x_col, requires_grad=True),
         # tensor on DEVICE — IC point (requires_grad for y'(0))
         "t_ic_t":  to_tensor(t_ic,  requires_grad=True),
     }
@@ -159,39 +172,44 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
 
 def loss_physics(
     model: nn.Module,
+    x: torch.Tensor,
     t: torch.Tensor,
     cfg: BurgerConfig,
 ) -> torch.Tensor:
     """
     L_physics = mean( r(tᵢ)² )  over all collocation points.
 
-    r(t) = m·ŷ''(t) + c·ŷ'(t) + k·ŷ(t)
-
     Both derivatives are computed via automatic differentiation.
     create_graph=True on the first grad call keeps the computation graph
     alive so the backward pass through the second derivative works.
     """
-    y_hat = model(t)
+    u_hat = model(x,t)
 
-    dy = torch.autograd.grad(
-        y_hat, t,
-        grad_outputs=torch.ones_like(y_hat),
+    du = torch.autograd.grad(
+        u_hat, x,
+        grad_outputs=torch.ones_like(u_hat),
         create_graph=True,
     )[0]
 
-    d2y = torch.autograd.grad(
-        dy, t,
-        grad_outputs=torch.ones_like(dy),
+    d2u = torch.autograd.grad(
+        du, x,
+        grad_outputs=torch.ones_like(du),
         create_graph=True,
     )[0]
 
-    residual = d2y + 2*model.zeta_hat * model.w0_hat * dy + model.w0_hat**2 * y_hat
+    dotu = torch.autograd.grad(
+        u_hat, t,
+        grad_outputs=torch.ones_like(u_hat),
+        create_graph=True,
+    )[0]
+
+    residual = dotu + u_hat * du - cfg.v * d2u
     return torch.mean(residual ** 2)
 
 
 def loss_ic(
     model: nn.Module,
-    t: torch.Tensor,
+    x: torch.Tensor,
     cfg: BurgerConfig,
 ) -> torch.Tensor:
     """
@@ -200,13 +218,16 @@ def loss_ic(
     λ_ic >> λ_phys because an error at t=0 propagates and distorts the
     entire downstream trajectory.
     """
-    y_hat_0 = model(t)
-    dy_0 = torch.autograd.grad(
-        y_hat_0, t,
-        grad_outputs=torch.ones_like(y_hat_0),
+    t = torch.full_like(x, cfg.t0, requires_grad=True)
+    u_hat_0 = model(x, t)
+    du_0 = torch.autograd.grad(
+        u_hat_0, t,
+        grad_outputs=torch.ones_like(u_hat_0),
         create_graph=True,
     )[0]
-    return torch.mean((y_hat_0 - cfg.y0) ** 2 + (dy_0 - cfg.dy0) ** 2)
+    ic_conditions_func = cfg.ic_func
+    ic_der_conditions_func = cfg.ic_der_func
+    return torch.mean((u_hat_0 - ic_conditions_func(x)) ** 2 + (du_0 - ic_der_conditions_func(x)) ** 2)
 
 
 # =============================================================================
@@ -249,16 +270,19 @@ def train_model(
     snapshots : dict { epoch: CPU state_dict }
     """
     model.to(device)
-    optimiser = torch.optim.Adam([{'params': model.net.parameters(), 'lr': cfg.lr}, {'params': [model.zeta_hat, model.w0_hat], 'lr': cfg.lr_param}])
+    optimiser = torch.optim.Adam(model.parameters(), lr=cfg.lr)
     scheduler = torch.optim.lr_scheduler.StepLR(
         optimiser, step_size=cfg.lr_step, gamma=cfg.lr_gamma
     )
 
     t_obs_train_t = data["t_obs_train_t"]
-    y_obs_train_t = data["y_obs_train_t"]
+    x_obs_train_t = data["x_obs_train_t"]
+    u_obs_train_t = data["u_obs_train_t"]
+    x_obs_val_t   = data["x_obs_val_t"]
     t_obs_val_t   = data["t_obs_val_t"]
-    y_obs_val_t   = data["y_obs_val_t"]
+    u_obs_val_t   = data["u_obs_val_t"]
     t_col_t       = data["t_col_t"]
+    x_col_t       = data["x_col_t"]
     t_ic_t        = data["t_ic_t"]
 
     history: dict[str, list] = {
@@ -284,12 +308,12 @@ def train_model(
         optimiser.zero_grad()
 
         # Data loss — MSE on training observations only (not validation)
-        y_pred   = model(t_obs_train_t)
-        l_data   = torch.mean((y_pred - y_obs_train_t) ** 2)
+        u_pred   = model(x_obs_train_t, t_obs_train_t)
+        l_data   = torch.mean((u_pred - u_obs_train_t) ** 2)
 
         if use_physics:
-            l_phys = loss_physics(model, t_col_t, cfg)
-            l_ic   = loss_ic(model, t_ic_t, cfg)
+            l_phys = loss_physics(model, x_col_t, t_col_t, cfg)
+            l_ic   = loss_ic(model, x_col_t, cfg)
             l_total = l_data + cfg.lambda_phys * l_phys + cfg.lambda_ic * l_ic
         else:
             l_phys  = torch.zeros(1, device=device)
@@ -311,8 +335,8 @@ def train_model(
         if epoch % cfg.log_every == 0 or epoch == 1:
             model.eval()
             with torch.no_grad():
-                y_val_pred = model(t_obs_val_t)
-                l_val = torch.mean((y_val_pred - y_obs_val_t) ** 2).item()
+                u_val_pred = model(x_obs_val_t, t_obs_val_t)
+                l_val = torch.mean((u_val_pred - u_obs_val_t) ** 2).item()
 
             history["epoch"].append(epoch)
             history["loss_data"].append(l_data.item())
@@ -385,23 +409,31 @@ def parse_args() -> argparse.Namespace:
 
     # Physical parameters
     g = p.add_argument_group("Physical parameters")
-    g.add_argument("--mass",      type=float, default=BurgerConfig.mass,  help="Mass m [kg]")
-    g.add_argument("--damping",   type=float, default=BurgerConfig.damping,  help="Damping coefficient c")
-    g.add_argument("--stiffness", type=float, default=BurgerConfig.stiffness,  help="Spring stiffness k [N/m]")
-    g.add_argument("--y0",        type=float, default=BurgerConfig.y0,  help="Initial displacement y(0)")
-    g.add_argument("--dy0",       type=float, default=BurgerConfig.dy0,  help="Initial velocity y'(0)")
+    g.add_argument("--viscosity", type=float, default=BurgerConfig.v, help="Viscosity coefficient")
+    g.add_argument("--Re0",       type=float, default=BurgerConfig.Re0, help="Initial Reynolds number")
+
+    # Initial conditions
+    g = p.add_argument_group("Initial conditions")
+    g.add_argument("--situation", type=str, default=BurgerConfig.situation, help="Initial condition scenario: 'N-wave', 'Gaussian', or 'Step'")
 
     # Time domain
     g = p.add_argument_group("Time domain")
+    g.add_argument("--t0",      type=float, default=BurgerConfig.t0, help="Initial time [s]")
     g.add_argument("--t_train",  type=float, default=BurgerConfig.t_train,  help="End of training window [s]")
     g.add_argument("--t_extrap", type=float, default=BurgerConfig.t_extrap, help="End of extrapolation window [s]")
+
+    # Space domain
+    g=p.add_argument_group("Space domain")
+    g.add_argument("--x_begin",  type=float, default=BurgerConfig.x_begin,  help="End of training window [m]")
+    g.add_argument("--x_end", type=float, default=BurgerConfig.x_end, help="End of extrapolation window [m]")
 
     # Data
     g = p.add_argument_group("Data")
     g.add_argument("--n_obs",        type=int,   default=BurgerConfig.n_obs,   help="Total noisy observations")
     g.add_argument("--val_fraction", type=float, default=BurgerConfig.val_fraction,  help="Fraction of obs for validation")
     g.add_argument("--sigma",        type=float, default=BurgerConfig.sigma, help="Measurement noise std dev")
-    g.add_argument("--n_col",        type=int,   default=BurgerConfig.n_col,  help="Collocation points")
+    g.add_argument("--n_col_x",      type=int,   default=BurgerConfig.n_col_x,  help="Collocation points in x")
+    g.add_argument("--n_col_t",      type=int,   default=BurgerConfig.n_col_t,  help="Collocation points in t")
     g.add_argument("--seed",         type=int,   default=BurgerConfig.seed,   help="RNG seed")
 
     # Loss weights
@@ -417,7 +449,6 @@ def parse_args() -> argparse.Namespace:
     # Optimiser
     g = p.add_argument_group("Optimiser")
     g.add_argument("--lr",       type=float, default=BurgerConfig.lr, help="Initial Adam learning rate")
-    g.add_argument("--lr_param", type=float, default=BurgerConfig.lr_param, help="Learning rate for physical parameters (zeta_hat, w0_hat)")
     g.add_argument("--lr_step",  type=int,   default=BurgerConfig.lr_step, help="StepLR decay interval [epochs]")
     g.add_argument("--lr_gamma", type=float, default=BurgerConfig.lr_gamma,  help="StepLR decay factor")
 
@@ -448,24 +479,25 @@ def main() -> None:
 
     # ── Build config from CLI arguments ───────────────────────────────────────
     cfg = BurgerConfig(
-        mass         = args.mass,
-        damping      = args.damping,
-        stiffness    = args.stiffness,
-        y0           = args.y0,
-        dy0          = args.dy0,
+        v            = args.viscosity,
+        Re0          = args.Re0,
+        situation    = args.situation,
+        x_begin      = args.x_begin,
+        x_end        = args.x_end,
+        t0           = args.t0,
         t_train      = args.t_train,
         t_extrap     = args.t_extrap,
         n_obs        = args.n_obs,
         val_fraction = args.val_fraction,
         sigma        = args.sigma,
-        n_col        = args.n_col,
+        n_col_t      = args.n_col_t,
+        n_col_x      = args.n_col_x,
         seed         = args.seed,
         lambda_phys  = args.lambda_phys,
         lambda_ic    = args.lambda_ic,
         hidden       = args.hidden,
         n_layers     = args.n_layers,
         lr           = args.lr,
-        lr_param     = args.lr_param,
         lr_step      = args.lr_step,
         lr_gamma     = args.lr_gamma,
         n_epochs     = args.n_epochs,
@@ -488,7 +520,7 @@ def main() -> None:
         print(f"  GPU    : {torch.cuda.get_device_name(0)}")
         vram_gb = torch.cuda.get_device_properties(0).total_memory / 1e9
         print(f"  VRAM   : {vram_gb:.1f} GB")
-    print(f"  ζ      : {cfg.zeta:.4f}   ω₀ = {cfg.omega_0:.4f}   ωd = {cfg.omega_d:.4f}")
+    print(f"  ν    : {cfg.v:.4f}   Re0 = {cfg.Re0:.4f}   Situation = {cfg.situation}")
     print("=" * 70)
 
     # ── Output directory ──────────────────────────────────────────────────────
@@ -496,6 +528,7 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     ckpt_pinn = out_dir / cfg.ckpt_pinn
+    ckpt_ml   = out_dir / cfg.ckpt_ml
     results_path = out_dir / cfg.results_pt
 
     # ── Data ──────────────────────────────────────────────────────────────────
@@ -503,8 +536,21 @@ def main() -> None:
     n_train = len(data["t_obs_train"])
     n_val   = len(data["t_obs_val"])
     print(f"\n  Observations: {cfg.n_obs} total  →  {n_train} train / {n_val} val")
-    print(f"  Collocation : {cfg.n_col} pts over [0, {cfg.t_extrap}]")
-    print(f"  IC enforced at t=0 via L_ic (not in observations)\n")
+    print(f"  Collocation : {cfg.n_col_t * cfg.n_col_x} pts over [{cfg.x_begin}, {cfg.x_end}] × [{cfg.t0}, {cfg.t_extrap}]")
+    print(f"  IC enforced at t={cfg.t0} via L_ic (not in observations)\n")
+
+    # ── Standard ML model ─────────────────────────────────────────────────────
+    print("=" * 70)
+    print("Training STANDARD ML  (data loss only)")
+    print("=" * 70)
+    model_ml = FCNet.from_config(cfg)
+    print(f"  Parameters: {model_ml.param_count()}")
+    hist_ml, snaps_ml = train_model(
+        model_ml, data, cfg, device,
+        use_physics = False,
+        label       = "StdML",
+        ckpt_path   = ckpt_ml,
+    )
 
     # ── PINN model ────────────────────────────────────────────────────────────
     print()
@@ -523,48 +569,47 @@ def main() -> None:
     # ── Load best checkpoints for final evaluation ────────────────────────────
     # Using best-val checkpoints rather than last-epoch weights ensures
     # the saved result reflects the model at its generalisation peak.
+    pred_ml   = Predictor(cfg, checkpoint_path=str(ckpt_ml))
     pred_pinn = Predictor(cfg, checkpoint_path=str(ckpt_pinn))
 
     t_plot_full  = data["t_plot_full"]
-    y_true_full  = data["y_true_full"]
-
-    y_pinn_full = pred_pinn.predict(t_plot_full)
-
+    x_plot_full  = data["x_plot_full"]
+    u_true_full  = data["u_true_full"]
+    print(u_true_full.shape)
+    u_ml_full   = pred_ml.predict(x_plot_full,t_plot_full)
+    print(u_ml_full.shape)
+    u_pinn_full = pred_pinn.predict(x_plot_full,t_plot_full)
+    print(u_pinn_full.shape)
     mask_train  = t_plot_full <= cfg.t_train
     mask_extrap = t_plot_full >  cfg.t_train
 
-    rmse_pinn_train = Predictor.rmse(y_pinn_full[mask_train],  y_true_full[mask_train])
-    rmse_pinn_ext   = Predictor.rmse(y_pinn_full[mask_extrap], y_true_full[mask_extrap])
-    phys_pinn       = Predictor.physics_residual(y_pinn_full, t_plot_full, cfg)
-    y0_pinn         = float(pred_pinn.predict(np.array([0.0])))
-    w0_hat          = pred_pinn.predict_params()["w0_hat"]
-    zeta_hat        = pred_pinn.predict_params()["zeta_hat"]
+    rmse_ml_train   = Predictor.rmse(u_ml_full[mask_train],   u_true_full[mask_train])
+    rmse_pinn_train = Predictor.rmse(u_pinn_full[mask_train],  u_true_full[mask_train])
+    rmse_ml_ext     = Predictor.rmse(u_ml_full[mask_extrap],  u_true_full[mask_extrap])
+    rmse_pinn_ext   = Predictor.rmse(u_pinn_full[mask_extrap], u_true_full[mask_extrap])
+    phys_ml         = Predictor.physics_residual(u_ml_full,   x_plot_full, t_plot_full, cfg)
+    phys_pinn       = Predictor.physics_residual(u_pinn_full, x_plot_full, t_plot_full, cfg)
+
     # ── Console summary ───────────────────────────────────────────────────────
     print()
     print("=" * 70)
     print("RESULTS SUMMARY  (best-val checkpoint)")
     print("=" * 70)
     print(f"  Device : {device}")
-    print(f"  {'Metric':<38}  {'PINN':>10}")
+    print(f"  {'Metric':<38}  {'Std ML':>10}  {'PINN':>10}")
     print("  " + "-" * 62)
-    print(f"  {'RMSE  (training interval)':38}  {rmse_pinn_train:>10.4f}")
-    print(f"  {'RMSE  (extrapolation)':38}  {rmse_pinn_ext:>10.4f}")
-    print(f"  {'Physics residual  (full domain)':38}  {phys_pinn:>10.4f}")
-    print(f"  {'True y(0)':38}  {cfg.y0:>10.4f}")
-    print(f"  {'ŷ(0)':38}  {y0_pinn:>10.4f}")
-    print(f"  {'True w0':38}  {cfg.omega_0:>10.4f}")
-    print(f"  {'w0_hat':38}  {w0_hat:>10.4f}")
-    print(f"  {'True zeta':38}  {cfg.zeta:>10.4f}")
-    print(f"  {'zeta_hat':38}  {zeta_hat:>10.4f}")
-
-
+    print(f"  {'RMSE  (training interval)':38}  {rmse_ml_train:>10.4f}  {rmse_pinn_train:>10.4f}")
+    print(f"  {'RMSE  (extrapolation)':38}  {rmse_ml_ext:>10.4f}  {rmse_pinn_ext:>10.4f}")
+    print(f"  {'Physics residual  (full domain)':38}  {phys_ml:>10.4f}  {phys_pinn:>10.4f}")
 
     # ── Save results bundle for plot.py ───────────────────────────────────────
     metrics = {
+        "rmse_ml_train":   rmse_ml_train,
         "rmse_pinn_train": rmse_pinn_train,
+        "rmse_ml_ext":     rmse_ml_ext,
         "rmse_pinn_ext":   rmse_pinn_ext,
+        "phys_ml":         phys_ml,
         "phys_pinn":       phys_pinn,
-        "y0_pinn":         y0_pinn,
     }
 
     torch.save(
@@ -573,14 +618,18 @@ def main() -> None:
             "device_str":   str(device),
             "data":         {k: v for k, v in data.items()
                              if isinstance(v, np.ndarray)},   # numpy only
+            "hist_ml":      hist_ml,
             "hist_pinn":    hist_pinn,
+            "snaps_ml":     snaps_ml,
             "snaps_pinn":   snaps_pinn,
-            "y_pinn_full":  y_pinn_full,
+            "y_ml_full":    u_ml_full,
+            "y_pinn_full":  u_pinn_full,
             "metrics":      metrics,
         },
         results_path,
     )
     print(f"\n  Results saved to  {results_path}")
+    print(f"  Best ML   checkpoint : {ckpt_ml}")
     print(f"  Best PINN checkpoint : {ckpt_pinn}")
     print("\n  Run  python plot.py  to generate figures.\n")
 

@@ -39,30 +39,33 @@ class BurgerConfig:
     Physical model
     --------------
       udot(x,t) + u * u'(x,t) - v * u''(x,t) = 0
-      u(x,0) = y0,  u'(x,0) = 0
+      u(x,t0) = y0,  u'(x,t0) = 0
       For the cases:
       N-wave: y0 = exp(-(x-1)**2/2) - exp(-(x+1)**2/2)
       Gaussian: y0 = exp(-x**2/2)
     """
     # ── Time domain ───────────────────────────────────────────────────────────
+    t0 :            float = 1.0    # start of observation window [s]
     t_train:        float = 6.0    # end of observation window   [s]
     t_extrap:       float = 10.0   # end of extrapolation window [s]
 
     # ── Space domain ───────────────────────────────────────────────────────────
-    x_train_begin:  float = -7.0   # left boundary of observation window   [m]
-    x_train_end:    float = 7.0    # right boundary of observation window  [m]
+    x_begin:  float = -7.0   # left boundary of observation window   [m]
+    x_end:    float = 7.0    # right boundary of observation window  [m]
 
     # ── Physical parameters ───────────────────────────────────────────────────
     v:      float = 1.0      # viscosity  [m^2/s]
+    Re0:    float = 100.0    # Reynolds number (initial Reynolds number)
 
     # ── Initial conditions ───────────────────────────────────────────────────
-    situation: str = "N-wave"  # "N-wave","Gaussian", or 
+    situation: str = "Step"  # "N-wave","Gaussian", or "Step"
     # ── Data ─────────────────────────────────────────────────────────────────
-    n_obs:       int   = 300    # total noisy observations (before split)
+    n_obs:       int    = 30   # total noisy observations (before split)
     val_fraction: float = 0.2  # fraction of observations held out for val
-    sigma:       float = 0.05  # measurement noise std dev
-    n_col:       int   = 400   # collocation points (physics residual)
-    seed:        int   = 42    # global RNG seed
+    sigma:       float  = 0.05  # measurement noise std dev
+    n_col_x:       int  = 10   # collocation points (physics residual) in x dimension
+    n_col_t:       int  = 10   # collocation points (physics residual) in t dimension
+    seed:        int    = 42    # global RNG seed
 
     # ── PINN loss weights ─────────────────────────────────────────────────────
     lambda_phys: float = 1e-1  # physics-residual weight
@@ -74,7 +77,6 @@ class BurgerConfig:
 
     # ── Optimiser ────────────────────────────────────────────────────────────
     lr:       float = 1e-3   # initial Adam learning rate
-    lr_param: float = 1e-2   # learning rate for physical parameters (zeta_hat, w0_hat)
     lr_step:  int   = 3000   # StepLR: decay every this many epochs
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
 
@@ -93,22 +95,38 @@ class BurgerConfig:
     )
 
     # ── Output paths ──────────────────────────────────────────────────────────
-    out_dir:    str = "./VascoVersionPINNDamperSuper/Output"                  # directory for all saved files
+    out_dir:    str = "./VascoVersionBurger/Output"                  # directory for all saved files
     results_pt: str = "training_results.pt"  # torch.save bundle (relative)
     ckpt_pinn:  str = "best_pinn.pt"         # best-so-far PINN checkpoint
+    ckpt_ml:    str = "best_ml.pt"           # best-so-far standard ML checkpoint
 
     # ── Derived quantities (read-only) ────────────────────────────────────────
     @property
-    def omega_0(self) -> float:
-        return float(np.sqrt(self.stiffness / self.mass))
+    def ic_func(self):
+        """Initial condition function u(x,t0) based on the chosen situation."""
+        if self.situation == "N-wave":
+            return lambda x: torch.where(
+                torch.abs(x) < 1.0,
+                -x,
+                torch.zeros_like(x)
+            )
+
+        elif self.situation == "Gaussian":
+            return lambda x: torch.exp(-x**2 / 2)
+
+        elif self.situation == "Step":
+            return lambda x: torch.where(
+                torch.abs(x) < 1.0,
+                torch.ones_like(x),
+                torch.zeros_like(x)
+            )
+        else:
+            raise ValueError(f"Unknown situation: {self.situation}")
 
     @property
-    def zeta(self) -> float:
-        return float(self.damping / (2.0 * np.sqrt(self.mass * self.stiffness)))
-
-    @property
-    def omega_d(self) -> float:
-        return float(self.omega_0 * np.sqrt(max(0.0, 1.0 - self.zeta ** 2)))
+    def ic_der_func(self):
+        """Initial condition function du/dt(x,t0) based on the chosen situation."""
+        return lambda x: torch.zeros_like(x)
 
     def abs_path(self, filename: str) -> Path:
         """Return an absolute Path for a file stored in out_dir."""
@@ -138,17 +156,16 @@ class FCNet(nn.Module):
             layers += [nn.Linear(hidden, hidden), nn.Tanh()]
         layers += [nn.Linear(hidden, 1)]
         self.net = nn.Sequential(*layers)
-        self.zeta_hat = nn.Parameter(torch.tensor([0.01], requires_grad=True))
-        self.w0_hat = nn.Parameter(torch.tensor([1.0], requires_grad=True))
 
-    def forward(self, t: torch.Tensor) -> torch.Tensor:
-        return self.net(t)
+    def forward(self, x, t):
+        xt = torch.cat([x, t], dim=1)
+        return self.net(xt)
 
     def param_count(self) -> int:
         return sum(p.numel() for p in self.parameters())
 
     @classmethod
-    def from_config(cls, cfg: DamperConfig) -> "FCNet":
+    def from_config(cls, cfg: BurgerConfig) -> "FCNet":
         """Convenience constructor that reads architecture from a config."""
         return cls(hidden=cfg.hidden, n_layers=cfg.n_layers)
 
@@ -173,7 +190,7 @@ class Predictor:
 
     def __init__(
         self,
-        cfg: DamperConfig,
+        cfg: BurgerConfig,
         checkpoint_path: Optional[str] = None,
     ) -> None:
         self.cfg = cfg
@@ -196,25 +213,18 @@ class Predictor:
         self.model.load_state_dict(state_dict)
         self.model.eval()
 
-    # ── Inference ─────────────────────────────────────────────────────────────
-    def predict_params(self) -> dict:
-        """Return the current estimates of the physical parameters."""
-        return {
-            "w0_hat": self.model.w0_hat.item(),
-            "zeta_hat": self.model.zeta_hat.item(),
-        }
-
-    def predict(self, t: np.ndarray) -> np.ndarray:
+    def predict(self, x: np.ndarray, t: np.ndarray) -> np.ndarray:
         """
-        Run forward pass on a numpy time array.  Returns a numpy array of
+        Run forward pass on a numpy space and time array (have to have the same length).  Returns a numpy array of
         the same length.  No gradient computation.
         """
         t_t = torch.tensor(t, dtype=torch.float32).unsqueeze(1)
+        x_t = torch.tensor(x, dtype=torch.float32).unsqueeze(1)
         with torch.no_grad():
-            return self.model(t_t).squeeze().numpy()
+            return self.model(x_t, t_t).squeeze().numpy()
 
     def predict_from_state(
-        self, state_dict: dict, t: np.ndarray
+        self, state_dict: dict, x:np.ndarray, t: np.ndarray
     ) -> np.ndarray:
         """
         Temporarily load a snapshot state_dict and predict, then restore
@@ -224,7 +234,7 @@ class Predictor:
         original = copy.deepcopy(self.model.state_dict())
         try:
             self.load_state_dict(state_dict)
-            return self.predict(t)
+            return self.predict(x,t)
         finally:
             self.model.load_state_dict(original)
             self.model.eval()
@@ -237,13 +247,14 @@ class Predictor:
 
     @staticmethod
     def physics_residual(
-        y: np.ndarray, t: np.ndarray, cfg: DamperConfig
+        u: np.ndarray, x:np.ndarray, t: np.ndarray, cfg: BurgerConfig
     ) -> float:
         """
         Approximate ODE residual via numpy central finite differences.
         Trims 5 boundary points on each side where finite-diff is inaccurate.
         """
-        dy  = np.gradient(y, t)
-        d2y = np.gradient(dy, t)
-        r   = cfg.mass * d2y + cfg.damping * dy + cfg.stiffness * y
+        du  = np.gradient(u, x)
+        d2u = np.gradient(du, x)
+        dotu = np.gradient(u, t)
+        r   = dotu + u * du - cfg.v * d2u
         return float(np.sqrt(np.mean(r[5:-5] ** 2)))

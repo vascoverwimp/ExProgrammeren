@@ -109,12 +109,12 @@ def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
         return t
 
     # ── All M observations ────────────────────────────────────────────────────
-    t_all = np.sort(np.random.uniform(0.1, cfg.t_train, cfg.n_obs))
+    t_all = np.random.uniform(0.1, cfg.t_train, cfg.n_obs)
     y_all = analytic(t_all, cfg) + np.random.normal(0.0, cfg.sigma, cfg.n_obs)
 
     # ── Train / validation split  (stratified: sorted time, interleaved) ──────
     n_val   = max(1, int(np.round(cfg.n_obs * cfg.val_fraction)))
-    n_train = cfg.n_obs - n_val
+    
     # Every k-th index goes to validation to spread validation points evenly
     # across the time axis rather than bunching them at one end.
     val_idx   = np.round(np.linspace(0, cfg.n_obs - 1, n_val)).astype(int)

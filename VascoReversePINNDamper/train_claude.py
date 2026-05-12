@@ -107,7 +107,7 @@ def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
         return t
 
     # ── All M observations ────────────────────────────────────────────────────
-    t_all = np.sort(np.random.uniform(0.1, cfg.t_train, cfg.n_obs))
+    t_all = np.random.uniform(0.1, cfg.t_train, cfg.n_obs)
     y_all = analytic(t_all, cfg) + np.random.normal(0.0, cfg.sigma, cfg.n_obs)
 
     # ── Train / validation split  (stratified: sorted time, interleaved) ──────
