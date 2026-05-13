@@ -416,6 +416,11 @@ def parse_args() -> argparse.Namespace:
     g.add_argument("--n_col",        type=int,   default=DamperConfig.n_col,  help="Collocation points")
     g.add_argument("--seed",         type=int,   default=DamperConfig.seed,   help="RNG seed")
 
+    # Initial guess for physical parameters
+    g = p.add_argument_group("Initial guesses")
+    g.add_argument("--w0_init",   type=float, default=DamperConfig.ini_guess_w0, help="Initial guess for omega_0")
+    g.add_argument("--zeta_init",  type=float, default=DamperConfig.ini_guess_zeta, help="Initial guess for zeta")
+
     # Loss weights
     g = p.add_argument_group("PINN loss weights")
     g.add_argument("--lambda_phys", type=float, default=DamperConfig.lambda_phys, help="Physics residual weight")
@@ -501,6 +506,7 @@ def main() -> None:
         vram_gb = torch.cuda.get_device_properties(0).total_memory / 1e9
         print(f"  VRAM   : {vram_gb:.1f} GB")
     print(f"  ζ      : {cfg.zeta:.4f}   ω₀ = {cfg.omega_0:.4f}   ωd = {cfg.omega_d:.4f}")
+    print(f"Initial guess: ζ₀ = {cfg.ini_guess_zeta:.4f}   ω₀₀ = {cfg.ini_guess_w0:.4f}")
     print("=" * 70)
 
     # ── Output directory ──────────────────────────────────────────────────────

@@ -354,7 +354,7 @@ def train_model(
     snapshots : dict { epoch: CPU state_dict }
     """
     model.to(device)
-    optimiser = torch.optim.Adam(model.parameters(), lr=cfg.lr)
+    optimiser = torch.optim.Adam([{'params': model.net.parameters(), 'lr': cfg.lr}, {'params': [model.v_hat], 'lr': cfg.lr_param}])
     scheduler = torch.optim.lr_scheduler.StepLR(
         optimiser, step_size=cfg.lr_step, gamma=cfg.lr_gamma
     )
@@ -520,6 +520,9 @@ def parse_args() -> argparse.Namespace:
     g.add_argument("--n_col_t",      type=int,   default=BurgerConfig.n_col_t,  help="Collocation points in t")
     g.add_argument("--seed",         type=int,   default=BurgerConfig.seed,   help="RNG seed")
 
+    # Initial guess viscosity
+    g.add_argument("--v_init", type=float, default=BurgerConfig.ini_guess_v, help="Initial guess for viscosity (for PINN training only, not data generation)")
+
     # Loss weights
     g = p.add_argument_group("PINN loss weights")
     g.add_argument("--lambda_phys", type=float, default=BurgerConfig.lambda_phys, help="Physics residual weight")
@@ -535,6 +538,7 @@ def parse_args() -> argparse.Namespace:
     g.add_argument("--lr",       type=float, default=BurgerConfig.lr, help="Initial Adam learning rate")
     g.add_argument("--lr_step",  type=int,   default=BurgerConfig.lr_step, help="StepLR decay interval [epochs]")
     g.add_argument("--lr_gamma", type=float, default=BurgerConfig.lr_gamma,  help="StepLR decay factor")
+    g.add_argument("--lr_param", type=float, default=BurgerConfig.lr_param, help="Adam learning rate for learned physical parameters")
 
     # Training loop
     g = p.add_argument_group("Training loop")
@@ -583,12 +587,14 @@ def main_training() -> None:
         lr           = args.lr,
         lr_step      = args.lr_step,
         lr_gamma     = args.lr_gamma,
+        lr_param     = args.lr_param,
         n_epochs     = args.n_epochs,
         print_every  = args.print_every,
         log_every    = args.log_every,
         patience     = args.patience,
         min_delta    = args.min_delta,
         out_dir      = args.out_dir,
+        ini_guess_v  = args.v_init,
     )
 
     # ── Reproducibility ───────────────────────────────────────────────────────
@@ -604,6 +610,7 @@ def main_training() -> None:
         vram_gb = torch.cuda.get_device_properties(0).total_memory / 1e9
         print(f"  VRAM   : {vram_gb:.1f} GB")
     print(f"  ν    : {cfg.v:.4f}    Situation : {cfg.situation}")
+    print(f"  ν_init : {cfg.ini_guess_v:.4f}")
     print("=" * 70)
 
     # ── Output directory ──────────────────────────────────────────────────────
@@ -611,7 +618,6 @@ def main_training() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     ckpt_pinn = out_dir / cfg.ckpt_pinn
-    ckpt_ml   = out_dir / cfg.ckpt_ml
     results_path = out_dir / cfg.results_pt
 
     # ── Data ──────────────────────────────────────────────────────────────────
@@ -621,19 +627,6 @@ def main_training() -> None:
     print(f"\n  Observations: {cfg.n_obs} total  →  {n_train} train / {n_val} val")
     print(f"  Collocation : {cfg.n_col_t * cfg.n_col_x} pts over [{cfg.x_begin}, {cfg.x_end}] × [{cfg.t0}, {cfg.t_extrap}]")
     print(f"  IC enforced at t={cfg.t0} via L_ic (not in observations)\n")
-
-    # ── Standard ML model ─────────────────────────────────────────────────────
-    print("=" * 70)
-    print("Training STANDARD ML  (data loss only)")
-    print("=" * 70)
-    model_ml = FCNet.from_config(cfg)
-    print(f"  Parameters: {model_ml.param_count()}")
-    hist_ml, snaps_ml = train_model(
-        model_ml, data, cfg, device,
-        use_physics = False,
-        label       = "StdML",
-        ckpt_path   = ckpt_ml,
-    )
 
     # ── PINN model ────────────────────────────────────────────────────────────
     print()
@@ -648,25 +641,20 @@ def main_training() -> None:
         label       = "PINN ",
         ckpt_path   = ckpt_pinn,
     )
-    pred_ml   = Predictor(cfg, checkpoint_path=str(ckpt_ml))
     pred_pinn = Predictor(cfg, checkpoint_path=str(ckpt_pinn))
 
     t_flattened_full  = data["t_flattened_full"]
     x_flattened_full  = data["x_flattened_full"]
     u_true_full  = data["u_true_full"]
 
-    u_ml_full   = pred_ml.predict(x_flattened_full, t_flattened_full)
     u_pinn_full = pred_pinn.predict(x_flattened_full, t_flattened_full)
 
     mask_train  = t_flattened_full <= cfg.t_train
 
     mask_extrap = t_flattened_full >  cfg.t_train
 
-    rmse_ml_train   = Predictor.rmse(u_ml_full[mask_train],   u_true_full[mask_train])
     rmse_pinn_train = Predictor.rmse(u_pinn_full[mask_train],  u_true_full[mask_train])
-    rmse_ml_ext     = Predictor.rmse(u_ml_full[mask_extrap],  u_true_full[mask_extrap])
     rmse_pinn_ext   = Predictor.rmse(u_pinn_full[mask_extrap], u_true_full[mask_extrap])
-    phys_ml         = Predictor.physics_residual(u_ml_full, x_flattened_full, t_flattened_full, cfg)
     phys_pinn       = Predictor.physics_residual(u_pinn_full, x_flattened_full, t_flattened_full, cfg)
     # ── Console summary ───────────────────────────────────────────────────────
     print()
@@ -674,19 +662,19 @@ def main_training() -> None:
     print("RESULTS SUMMARY  (best-val checkpoint)")
     print("=" * 70)
     print(f"  Device : {device}")
-    print(f"  {'Metric':<38}  {'Std ML':>10}  {'PINN':>10}")
+    print(f"  {'Metric':<38} {'PINN':>10}")
+    print(f"  {'RMSE  (training interval)':38}   {rmse_pinn_train:>10.4f}")
+    print(f"  {'RMSE  (extrapolation)':38}   {rmse_pinn_ext:>10.4f}")
+    print(f"  {'Physics Residual':38}   {phys_pinn:>10.4f}")
+    print(f"  {'True nu':38}  {cfg.v:>10.4f}")
+    print(f"  {'nu_hat':38}  {cfg.ini_guess_v:>10.4f}")
     print("  " + "-" * 62)
-    print(f"  {'RMSE  (training interval)':38}  {rmse_ml_train:>10.4f}  {rmse_pinn_train:>10.4f}")
-    print(f"  {'RMSE  (extrapolation)':38}  {rmse_ml_ext:>10.4f}  {rmse_pinn_ext:>10.4f}")
-    print(f"  {'Physics Residual':38}  {phys_ml:>10.4f}  {phys_pinn:>10.4f}")
+
 
     # ── Save results bundle for plot.py ───────────────────────────────────────
     metrics = {
-        "rmse_ml_train":   rmse_ml_train,
         "rmse_pinn_train": rmse_pinn_train,
-        "rmse_ml_ext":     rmse_ml_ext,
         "rmse_pinn_ext":   rmse_pinn_ext,
-        "phys_ml":         phys_ml,
         "phys_pinn":       phys_pinn,
     }
 
@@ -696,18 +684,14 @@ def main_training() -> None:
             "device_str":   str(device),
             "data":         {k: v for k, v in data.items()
                              if isinstance(v, np.ndarray)},   # numpy only
-            "hist_ml":      hist_ml,
             "hist_pinn":    hist_pinn,
-            "snaps_ml":     snaps_ml,
             "snaps_pinn":   snaps_pinn,
-            "u_ml_full":    u_ml_full,
             "u_pinn_full":  u_pinn_full,
             "metrics":      metrics,
         },
         results_path,
     )
     print(f"\n  Results saved to  {results_path}")
-    print(f"  Best ML   checkpoint : {ckpt_ml}")
     print(f"  Best PINN checkpoint : {ckpt_pinn}")
     print("\n  Run  python plot.py  to generate figures.\n")
 
@@ -723,37 +707,34 @@ def evaluate_model() -> None:
     config = raw["config"]
     data = generate_data(config, torch.device("cpu"))  # CPU-only for evaluation and plotting
     ckpt_pinn = out_dir / config.ckpt_pinn
-    ckpt_ml   = out_dir / config.ckpt_ml
-    pred_ml   = Predictor(config, checkpoint_path=str(ckpt_ml))
+
     pred_pinn = Predictor(config, checkpoint_path=str(ckpt_pinn))
 
     t_flattened_full  = data["t_flattened_full"]
     x_flattened_full  = data["x_flattened_full"]
     u_true_full  = analytic(x_flattened_full, t_flattened_full, config)
 
-    u_ml_full   = pred_ml.predict(x_flattened_full, t_flattened_full)
     u_pinn_full = pred_pinn.predict(x_flattened_full, t_flattened_full)
 
     mask_train  = t_flattened_full <= config.t_train
 
     mask_extrap = t_flattened_full >  config.t_train
 
-    rmse_ml_train   = Predictor.rmse(u_ml_full[mask_train],   u_true_full[mask_train])
     rmse_pinn_train = Predictor.rmse(u_pinn_full[mask_train],  u_true_full[mask_train])
-    rmse_ml_ext     = Predictor.rmse(u_ml_full[mask_extrap],  u_true_full[mask_extrap])
     rmse_pinn_ext   = Predictor.rmse(u_pinn_full[mask_extrap], u_true_full[mask_extrap])
-    phys_ml         = Predictor.physics_residual(u_ml_full, x_flattened_full, t_flattened_full, config)
     phys_pinn       = Predictor.physics_residual(u_pinn_full, x_flattened_full, t_flattened_full, config)
     # ── Console summary ───────────────────────────────────────────────────────
     print()
     print("=" * 70)
     print("RESULTS SUMMARY  (best-val checkpoint)")
     print("=" * 70)
-    print(f"  {'Metric':<38}  {'Std ML':>10}  {'PINN':>10}")
+    print(f"  {'Metric':<38} {'PINN':>10}")
     print("  " + "-" * 62)
-    print(f"  {'RMSE  (training interval)':38}  {rmse_ml_train:>10.4f}  {rmse_pinn_train:>10.4f}")
-    print(f"  {'RMSE  (extrapolation)':38}  {rmse_ml_ext:>10.4f}  {rmse_pinn_ext:>10.4f}")
-    print(f"  {'Physics Residual':38}  {phys_ml:>10.4f}  {phys_pinn:>10.4f}")
+    print(f"  {'RMSE  (training interval)':38}   {rmse_pinn_train:>10.4f}")
+    print(f"  {'RMSE  (extrapolation)':38}   {rmse_pinn_ext:>10.4f}")
+    print(f"  {'Physics Residual':38}   {phys_pinn:>10.4f}")
+    print(f"  {'True nu':38}  {config.v:>10.4f}")
+    print(f"  {'nu_hat':38}  {config.ini_guess_v:>10.4f}")
 
 
 

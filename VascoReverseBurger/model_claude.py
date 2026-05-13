@@ -26,53 +26,54 @@ import torch.nn as nn
 # =============================================================================
 
 @dataclass
-class DamperConfig:
+class BurgerConfig:
     """
     All physical constants, data-generation settings, architecture choices,
     and training hyper-parameters in one place.
 
     Pass an instance of this class through the entire pipeline so that
     train.py, plot.py, and any future scripts always agree on the same
-    values.  CLI arguments in train.py create a DamperConfig and override
+    values.  CLI arguments in train.py create a BurgerConfig and override
     individual fields before anything else runs.
 
     Physical model
     --------------
-      m * y''(t) + c * y'(t) + k * y(t) = 0
-      y(0) = y0,  y'(0) = dy0
-
-    Derived quantities (read-only properties)
-    -----------------------------------------
-      omega_0   undamped natural frequency  sqrt(k/m)
-      zeta      damping ratio               c / (2 * sqrt(m*k))
-      omega_d   damped natural frequency    omega_0 * sqrt(1 - zeta²)
+      udot(x,t) + u * u'(x,t) - v * u''(x,t) = 0
+      u(x,t0) = y0,  u'(x,t0) = 0
+      For the cases:
+      N-wave: y0 = exp(-(x-1)**2/2) - exp(-(x+1)**2/2)
+      Gaussian: y0 = exp(-x**2/2)
     """
+    # ── Time domain ───────────────────────────────────────────────────────────
+    t0 :            float = 0.1    # start of observation window [s]
+    t_train:        float = 6.0    # end of observation window   [s]
+    t_extrap:       float = 10.0   # end of extrapolation window [s]
+
+    # ── Space domain ───────────────────────────────────────────────────────────
+    x_begin:  float = -7.0   # left boundary of observation window   [m]
+    x_end:    float = 7.0    # right boundary of observation window  [m]
 
     # ── Physical parameters ───────────────────────────────────────────────────
-    mass:      float = 1.0   # m  [kg]
-    damping:   float = 0.5   # c  [N·s/m]
-    stiffness: float = 4.0   # k  [N/m]
-    y0:        float = 1.0   # initial displacement   y(0)
-    dy0:       float = 0.0   # initial velocity       y'(0)
+    v:      float = 0.1      # viscosity  [m^2/s]
 
-    # ── Time domain ───────────────────────────────────────────────────────────
-    t_train:  float = 6.0    # end of observation window   [s]
-    t_extrap: float = 10.0   # end of extrapolation window [s]
+    # Initial guess for viscosity (for PINN training only, not data generation)
+    ini_guess_v: float = 0.33
+
+    # ── Initial conditions ───────────────────────────────────────────────────
+    situation: str = "Step"  # "N-wave","Gaussian", or "Step"
 
     # ── Data ─────────────────────────────────────────────────────────────────
-    n_obs:       int   = 300    # total noisy observations (before split)
+    n_obs:       int    = 100   # total noisy observations (before split)
     val_fraction: float = 0.2  # fraction of observations held out for val
-    sigma:       float = 0.05  # measurement noise std dev
-    n_col:       int   = 400   # collocation points (physics residual)
-    seed:        int   = 42    # global RNG seed
-
-    # ── Initial parameter guesses ─────────────────────────────────────────────
-    ini_guess_zeta: float = 0.01  # initial guess for damping ratio
-    ini_guess_w0:   float = 1.0   # initial guess for natural frequency
+    sigma:       float  = 0.05  # measurement noise std dev
+    n_ic_samples_x: int = 200  # initial condition samples in x dimension (for IC loss)
+    n_col_x:       int  = 20   # collocation points (physics residual) in x dimension
+    n_col_t:       int  = 20   # collocation points (physics residual) in t dimension
+    seed:        int    = 42    # global RNG seed
 
     # ── PINN loss weights ─────────────────────────────────────────────────────
-    lambda_phys: float = 1e-1  # physics-residual weight
-    lambda_ic:   float = 10.0  # initial-condition weight (>> lambda_phys)
+    lambda_phys: float = 1  # physics-residual weight
+    lambda_ic:   float = 50.0  # initial-condition weight (>> lambda_phys)
 
     # ── Network architecture ──────────────────────────────────────────────────
     hidden:   int = 32   # neurons per hidden layer
@@ -80,41 +81,56 @@ class DamperConfig:
 
     # ── Optimiser ────────────────────────────────────────────────────────────
     lr:       float = 1e-3   # initial Adam learning rate
-    lr_param: float = 1e-2   # learning rate for physical parameters (zeta_hat, w0_hat)
     lr_step:  int   = 3000   # StepLR: decay every this many epochs
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
+    lr_param: float = 1e-2    # learning rate for physical parameters (relative to lr)
 
     # ── Training loop ─────────────────────────────────────────────────────────
-    n_epochs:    int = 8_000   # maximum training epochs
+    n_epochs:    int = 80_000   # maximum training epochs
     print_every: int = 1_000   # console log frequency (epochs)
     log_every:   int = 100     # history-dict write frequency (epochs)
 
     # ── Early stopping ────────────────────────────────────────────────────────
-    patience:  int   = 300     # patience in units of log_every
+    patience:  int   = 50     # patience in units of log_every
     min_delta: float = 1e-6   # minimum improvement to reset the counter
 
     # ── Snapshot epochs for trajectory plots ─────────────────────────────────
     snapshot_epochs: list = field(
-        default_factory=lambda: [1, 50, 200, 500, 1_000, 2_000, 4_000, 8_000]
+        default_factory=lambda: [1, 50, 200, 500, 1_000, 2_000, 4_000, 8_000, 20_000, 40_000, 80_000]
     )
 
     # ── Output paths ──────────────────────────────────────────────────────────
-    out_dir:    str = "./VascoReversePINNDamper/Output"                  # directory for all saved files
+    out_dir:    str = "./VascoReverseBurger/Output"                  # directory for all saved files
     results_pt: str = "training_results.pt"  # torch.save bundle (relative)
     ckpt_pinn:  str = "best_pinn.pt"         # best-so-far PINN checkpoint
 
     # ── Derived quantities (read-only) ────────────────────────────────────────
     @property
-    def omega_0(self) -> float:
-        return float(np.sqrt(self.stiffness / self.mass))
+    def ic_func(self):
+        """Initial condition function u(x,t0) based on the chosen situation."""
+        if self.situation == "N-wave":
+            return lambda x: torch.where(
+                torch.abs(x) < 1.0,
+                -x,
+                torch.zeros_like(x)
+            )
+
+        elif self.situation == "Gaussian":
+            return lambda x: torch.exp(-x**2 / 2)
+
+        elif self.situation == "Step":
+            return lambda x: torch.where(
+                x > 0,  
+                torch.ones_like(x),
+                torch.zeros_like(x)
+            )
+        else:
+            raise ValueError(f"Unknown situation: {self.situation}")
 
     @property
-    def zeta(self) -> float:
-        return float(self.damping / (2.0 * np.sqrt(self.mass * self.stiffness)))
-
-    @property
-    def omega_d(self) -> float:
-        return float(self.omega_0 * np.sqrt(max(0.0, 1.0 - self.zeta ** 2)))
+    def ic_der_func(self):
+        """Initial condition function du/dt(x,t0) based on the chosen situation."""
+        return lambda x: torch.zeros_like(x)
 
     def abs_path(self, filename: str) -> Path:
         """Return an absolute Path for a file stored in out_dir."""
@@ -137,26 +153,26 @@ class FCNet(nn.Module):
     with .to(device) in the training script.
     """
 
-    def __init__(self, hidden: int = 32, n_layers: int = 4, ini_guess_zeta: float = 0.01, ini_guess_w0: float = 1.0) -> None:
+    def __init__(self, hidden: int = 32, n_layers: int = 4, ini_guess_v: float = 1.0) -> None:
         super().__init__()
-        layers: list[nn.Module] = [nn.Linear(1, hidden), nn.Tanh()]
+        layers: list[nn.Module] = [nn.Linear(2, hidden), nn.Tanh()]
         for _ in range(n_layers - 1):
             layers += [nn.Linear(hidden, hidden), nn.Tanh()]
         layers += [nn.Linear(hidden, 1)]
         self.net = nn.Sequential(*layers)
-        self.zeta_hat = nn.Parameter(torch.tensor([ini_guess_zeta], requires_grad=True))
-        self.w0_hat = nn.Parameter(torch.tensor([ini_guess_w0], requires_grad=True))
+        self.v_hat = nn.Parameter(torch.tensor([ini_guess_v], requires_grad=True))
 
-    def forward(self, t: torch.Tensor) -> torch.Tensor:
-        return self.net(t)
+    def forward(self, x, t):
+        xt = torch.cat([x, t], dim=1)
+        return self.net(xt)
 
     def param_count(self) -> int:
         return sum(p.numel() for p in self.parameters())
 
     @classmethod
-    def from_config(cls, cfg: DamperConfig) -> "FCNet":
+    def from_config(cls, cfg: BurgerConfig) -> "FCNet":
         """Convenience constructor that reads architecture from a config."""
-        return cls(hidden=cfg.hidden, n_layers=cfg.n_layers, ini_guess_zeta=cfg.ini_guess_zeta, ini_guess_w0=cfg.ini_guess_w0)
+        return cls(hidden=cfg.hidden, n_layers=cfg.n_layers, ini_guess_v=cfg.ini_guess_v)
 
 
 # =============================================================================
@@ -179,7 +195,7 @@ class Predictor:
 
     def __init__(
         self,
-        cfg: DamperConfig,
+        cfg: BurgerConfig,
         checkpoint_path: Optional[str] = None,
     ) -> None:
         self.cfg = cfg
@@ -201,26 +217,24 @@ class Predictor:
         """Load directly from an in-memory state_dict (e.g. a snapshot)."""
         self.model.load_state_dict(state_dict)
         self.model.eval()
-
     # ── Inference ─────────────────────────────────────────────────────────────
     def predict_params(self) -> dict:
         """Return the current estimates of the physical parameters."""
         return {
-            "w0_hat": self.model.w0_hat.item(),
-            "zeta_hat": self.model.zeta_hat.item(),
+            "v_hat": self.model.v_hat.item(),
         }
-
-    def predict(self, t: np.ndarray) -> np.ndarray:
+    def predict(self, x: np.ndarray, t: np.ndarray) -> np.ndarray:
         """
-        Run forward pass on a numpy time array.  Returns a numpy array of
+        Run forward pass on a numpy space and time array (have to have the same length).  Returns a numpy array of
         the same length.  No gradient computation.
         """
         t_t = torch.tensor(t, dtype=torch.float32).unsqueeze(1)
+        x_t = torch.tensor(x, dtype=torch.float32).unsqueeze(1)
         with torch.no_grad():
-            return self.model(t_t).squeeze().numpy()
+            return self.model(x_t, t_t).squeeze().numpy()
 
     def predict_from_state(
-        self, state_dict: dict, t: np.ndarray
+        self, state_dict: dict, x:np.ndarray, t: np.ndarray
     ) -> np.ndarray:
         """
         Temporarily load a snapshot state_dict and predict, then restore
@@ -230,7 +244,7 @@ class Predictor:
         original = copy.deepcopy(self.model.state_dict())
         try:
             self.load_state_dict(state_dict)
-            return self.predict(t)
+            return self.predict(x,t)
         finally:
             self.model.load_state_dict(original)
             self.model.eval()
@@ -243,13 +257,24 @@ class Predictor:
 
     @staticmethod
     def physics_residual(
-        y: np.ndarray, t: np.ndarray, cfg: DamperConfig
+        u: np.ndarray, x:np.ndarray, t: np.ndarray, cfg: BurgerConfig
     ) -> float:
         """
         Approximate ODE residual via numpy central finite differences.
         Trims 5 boundary points on each side where finite-diff is inaccurate.
         """
-        dy  = np.gradient(y, t)
-        d2y = np.gradient(dy, t)
-        r   = cfg.mass * d2y + cfg.damping * dy + cfg.stiffness * y
+
+        t_vec = np.unique(t)
+
+        x_vec = np.unique(x)
+
+        n_t = len(t_vec)
+        n_x = len(x_vec)
+
+        u_grid = u.reshape(n_t, n_x)
+
+        du  = np.gradient(u_grid, x_vec,axis=1)
+        d2u = np.gradient(du, x_vec,axis=1)
+        dotu = np.gradient(u_grid, t_vec,axis=0)
+        r   = dotu + u_grid * du - cfg.v * d2u
         return float(np.sqrt(np.mean(r[5:-5] ** 2)))

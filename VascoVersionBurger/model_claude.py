@@ -45,7 +45,7 @@ class BurgerConfig:
       Gaussian: y0 = exp(-x**2/2)
     """
     # ── Time domain ───────────────────────────────────────────────────────────
-    t0 :            float = 0    # start of observation window [s]
+    t0 :            float = 0.1    # start of observation window [s]
     t_train:        float = 6.0    # end of observation window   [s]
     t_extrap:       float = 10.0   # end of extrapolation window [s]
 
@@ -54,7 +54,7 @@ class BurgerConfig:
     x_end:    float = 7.0    # right boundary of observation window  [m]
 
     # ── Physical parameters ───────────────────────────────────────────────────
-    v:      float = 0.1      # viscosity  [m^2/s]
+    v:      float = 1      # viscosity  [m^2/s]
 
     # ── Initial conditions ───────────────────────────────────────────────────
     situation: str = "Step"  # "N-wave","Gaussian", or "Step"
@@ -86,7 +86,7 @@ class BurgerConfig:
     log_every:   int = 100     # history-dict write frequency (epochs)
 
     # ── Early stopping ────────────────────────────────────────────────────────
-    patience:  int   = 300     # patience in units of log_every
+    patience:  int   = 50     # patience in units of log_every
     min_delta: float = 1e-6   # minimum improvement to reset the counter
 
     # ── Snapshot epochs for trajectory plots ─────────────────────────────────
