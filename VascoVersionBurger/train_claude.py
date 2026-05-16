@@ -37,7 +37,7 @@ import torch
 import torch.nn as nn
 from scipy.special import erfc
 from model_claude import BurgerConfig, FCNet, Predictor
-
+from Burger_PDE import BurgersSolver
 
 # =============================================================================
 # 0.  DEVICE SELECTION
@@ -56,90 +56,119 @@ def get_device() -> torch.device:
 # 1.  ANALYTIC GROUND TRUTH
 # =============================================================================
 
-def analytic(x: np.ndarray, t: np.ndarray, cfg: BurgerConfig) -> np.ndarray:
+def analytic(x: np.ndarray, t: np.ndarray, cfg: BurgerConfig, solver: BurgersSolver) -> np.ndarray:
     """
     Analytic solution of the Burger's equation for three different regimes:
     N-wave: starting with u(x,t0) = exp(-(x-1)**2/2) - exp(-(x+1)**2/2) the solution evolves into a characteristic N-wave shape.   
     """
-    shifted_t = t - cfg.t0
-    mask = shifted_t > 1e-10  # Only apply the viscous formula where time has actually progressed beyond t0
-    if cfg.situation == "Step":
+
+    return np.array([solver.solution_at(x_query=x_i, t_query=t_i) for x_i, t_i in zip(x, t)])
+    # shifted_t = t - cfg.t0
+    # mask = shifted_t > 1e-10  # Only apply the viscous formula where time has actually progressed beyond t0
+    # if cfg.situation == "Step":
         
-        # Initialize output array with the initial condition (t <= t0)
-        # Defaulting to the step function logic
-        u = np.where(x > 0, 1.0, 0.0)
+    #     # Initialize output array with the initial condition (t <= t0)
+    #     # Defaulting to the step function logic
+    #     u = np.where(x > 0, 1.0, 0.0)
         
-        # Only calculate the complex viscous formula where time has actually progressed
-        if np.any(mask):
-            # Extract only the points that need the viscous calculation
-            tm = shifted_t[mask]
-            xm = x[mask]
-            
-            sqrt_4nut = np.sqrt(4 * cfg.v * tm)
-            
-            # Term A: erfc(-x / sqrt)
-            term_a = erfc(-xm / sqrt_4nut)
-            
-            # Term B: exp(exponent) * erfc((t-x)/sqrt)
-            exponent = (xm - 0.5 * tm) / (2 * cfg.v)
-            # Standard float64 max exponent is ~709. 
-            # Clipping at 500 is safe and effectively "infinite" for a ratio.
-            exponent = np.clip(exponent, -1e7, 1e7)
-            
-            term_b = np.exp(exponent) * erfc((tm - xm) / sqrt_4nut)
-            
-            # Calculate ratio safely
-            # Adding a tiny epsilon to the denominator prevents 0/0
-            u_viscous = term_b / (term_a + term_b + 1e-14)
-            
-            # Place the calculated values back into the main array
-            u[mask] = u_viscous
+    #     # Only calculate the complex viscous formula where time has actually progressed
+    #     if np.any(mask):
+    #         # Extract only the points that need the viscous calculation
+    #         tm = shifted_t[mask]
+    #         xm = x[mask]
 
-        return u
+    #         sqrt_4nut = np.sqrt(4 * cfg.v * tm)
+            
+    #         # Term A: erfc(-x / sqrt)
+    #         term_a = erfc(-xm / sqrt_4nut)
+            
+    #         # Term B: exp(exponent) * erfc((t-x)/sqrt)
+    #         exponent = (xm - 0.5 * tm) / (2 * cfg.v)
+    #         # Standard float64 max exponent is ~709. 
+    #         # Clipping at 500 is safe and effectively "infinite" for a ratio.
+    #         exponent = np.clip(exponent, -1e7, 1e7)
+            
+    #         term_b = np.exp(exponent) * erfc((tm - xm) / sqrt_4nut)
+            
+    #         u_viscous = term_b / (term_a + term_b)
+            
+    #         # Place the calculated values back into the main array
+    #         u_viscous_nan = np.isnan(u_viscous)
+    #         u_viscous[u_viscous_nan] = 0.0  # Assign a default value (e.g., 0) to NaNs resulting from 0/0
+    #         u[mask] = u_viscous
+
+    #     return u
     
-    elif cfg.situation == "N-wave":
-        u = np.where(np.abs(x) < 1.0, -x, 0.0) # Defaulting to the N-wave logic (negative Gaussian) for the Gaussian situation
-        # Only calculate the complex viscous formula where time has actually progressed
-        if np.any(mask):
-            # Extract only the points that need the viscous calculation
-            tm = shifted_t[mask]
-            xm = x[mask]
+    # elif cfg.situation == "N-wave":
+    #     u = np.where(np.abs(x) < 1.0, -x, 0.0) # Defaulting to the N-wave logic (negative Gaussian) for the Gaussian situation
+    #     # Only calculate the complex viscous formula where time has actually progressed
+    #     if np.any(mask):
+    #         # Extract only the points that need the viscous calculation
+    #         tm = shifted_t[mask]
+    #         xm = x[mask]
             
-            x_integrating = np.linspace(0, np.max(np.abs([cfg.x_end,cfg.x_begin])), 1000)
-            ic_func = lambda x: np.where(np.abs(x) < 1.0, -x, 0.0)
-            area_pos = np.trapz(ic_func(x_integrating), x_integrating)
-            Re0 = area_pos / (2*cfg.v)
-            denominator = 1 + np.exp(xm**2/(4*cfg.v*tm) - Re0)
-            u_viscous = xm/(tm+1e-14) * 1/(denominator+1e-14)
+    #         x_integrating = np.linspace(0, np.max(np.abs([cfg.x_end,cfg.x_begin])), 1000)
+    #         ic_func = lambda x: np.where(np.abs(x) < 1.0, -x, 0.0)
+    #         area_pos = np.trapz(ic_func(x_integrating), x_integrating)
+    #         Re0 = area_pos / (2*cfg.v)
+    #         denominator = 1 + np.exp(xm**2/(4*cfg.v*tm) - Re0)
+    #         u_viscous = xm/(tm+1e-14) * 1/(denominator+1e-14)
             
-            # Place the calculated values back into the main array
-            u[mask] = u_viscous
-        return u
+    #         # Place the calculated values back into the main array
+    #         u[mask] = u_viscous
+    #     return u
     
-    elif cfg.situation == "N-wave2":
-        u = np.where(np.abs(x) < 1.0, -x, 0.0) # Defaulting to the N-wave logic (negative Gaussian) for the Gaussian situation
-        # Only calculate the complex viscous formula where time has actually progressed
-        if np.any(mask):
-            # Extract only the points that need the viscous calculation
-            tm = shifted_t[mask]
-            xm = x[mask]
+    # elif cfg.situation == "N-wave2":
+    #     u = np.where(np.abs(x) < 1.0, -x, 0.0) # Defaulting to the N-wave logic (negative Gaussian) for the Gaussian situation
+    #     # Only calculate the complex viscous formula where time has actually progressed
+    #     if np.any(mask):
+    #         # Extract only the points that need the viscous calculation
+    #         tm = shifted_t[mask]
+    #         xm = x[mask]
             
-            x_integrating = np.linspace(0, np.max(np.abs([cfg.x_end,cfg.x_begin])), 1000)
-            ic_func = lambda x: np.where(np.abs(x) < 1.0, -x, 0.0)
-            area_pos = np.trapz(ic_func(x_integrating), x_integrating)
-            Re0 = area_pos / (2*cfg.v)
-            tau = cfg.t0*(np.exp(Re0) - 1)**2
-            Re = np.log(1 + np.sqrt(tau/tm))
-            denominator = (1+1/(np.exp(Re0-1))*np.sqrt(tm/tau)*np.exp(-Re*xm**2/(4*cfg.v*tm*Re0)))
-            u_viscous = xm/(tm+1e-14) * 1/(denominator+1e-14)
+    #         x_integrating = np.linspace(0, np.max(np.abs([cfg.x_end,cfg.x_begin])), 1000)
+    #         ic_func = lambda x: np.where(np.abs(x) < 1.0, -x, 0.0)
+    #         area_pos = np.trapz(ic_func(x_integrating), x_integrating)
+    #         Re0 = area_pos / (2*cfg.v)
+    #         tau = cfg.t0*(np.exp(Re0) - 1)**2
+    #         Re = np.log(1 + np.sqrt(tau/tm))
+    #         denominator = (1+1/(np.exp(Re0-1))*np.sqrt(tm/tau)*np.exp(-Re*xm**2/(4*cfg.v*tm*Re0)))
+    #         u_viscous = xm/(tm+1e-14) * 1/(denominator+1e-14)
             
-            # Place the calculated values back into the main array
-            u[mask] = u_viscous
-        return u
+    #         # Place the calculated values back into the main array
+    #         u[mask] = u_viscous
+    #     return u
     
-    return x*t
+    # return x*t
 
 
+# Stratified time split to ensure validation points are spread across the time axis rather than clustered at one end.
+
+def stratified_time_split(t,t_begin,t_end, p_val, n_bins, seed):
+    rng = np.random.default_rng(seed)
+    # 1. Sort by time
+    idx = np.argsort(t)
+    t_sorted = t[idx]
+
+    # 2. Create bins
+    bins = np.linspace(t_begin, t_end, n_bins + 1)
+    bin_ids = np.digitize(t_sorted, bins)
+
+    train_idx, val_idx = [], []
+
+    # 3. Sample inside each bin
+    for b in range(1, n_bins + 1):
+        in_bin = np.where(bin_ids == b)[0]
+        rng.shuffle(in_bin)
+
+        n = len(in_bin)
+        n_val   = int(p_val   * n)
+
+        val_idx.extend(in_bin[:n_val])
+        train_idx.extend(in_bin[n_val:])
+
+    # 4. Map back to original indices
+    return idx[train_idx], idx[val_idx]
 
 
 # =============================================================================
@@ -173,34 +202,48 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
         if requires_grad:
             t.requires_grad_(True)
         return t
-
-    # ── All M observations ────────────────────────────────────────────────────
-    x_full, t_all = np.random.uniform(cfg.x_begin, cfg.x_end, cfg.n_obs), np.random.uniform(cfg.t0, cfg.t_train, cfg.n_obs)  # spatial and temporal locations for observations
-    u_all = analytic(x_full, t_all, cfg) + np.random.normal(0.0, cfg.sigma, cfg.n_obs)
-
-    # ── Train / validation split  (stratified: sorted time, interleaved) ──────
-    n_val   = max(1, int(np.round(cfg.n_obs * cfg.val_fraction)))
-    
-    # Every k-th index goes to validation to spread validation points evenly
-    # across the time axis rather than bunching them at one end.
-    val_idx   = np.round(np.linspace(0, cfg.n_obs - 1, n_val)).astype(int)
-    train_idx = np.array([i for i in range(cfg.n_obs) if i not in val_idx])
-
-    t_obs_train, u_obs_train, x_obs_train = t_all[train_idx], u_all[train_idx], x_full[train_idx]
-    t_obs_val,   u_obs_val,   x_obs_val   = t_all[val_idx],   u_all[val_idx],   x_full[val_idx]
-    # ── Collocation points (randomly chosen) ───────────────────────────────────
-    t_col      = np.random.uniform(cfg.t0, cfg.t_extrap, cfg.n_col_t)
-    x_col      = np.random.uniform(cfg.x_begin, cfg.x_end, cfg.n_col_x)
-    u_col_true = analytic(x_col, t_col, cfg)       # used only in plots
+    print(f"\nSolving the Burgers equation with the {cfg.situation} initial condition to generate the analytic solution snapshots for interpolation...")
+    x_solver = np.linspace(2*cfg.x_begin, 2*cfg.x_end, 4*cfg.n_plot_x)  # Spatial grid for the solver (double as the dense grid for plotting)
+    u_ic_true = cfg.ic_func(to_tensor(x_solver)).cpu().numpy().reshape(-1)  # Initial condition values at t0 (for IC loss)
+    dt = (cfg.t_extrap - cfg.t0) / (cfg.n_plot_t * 2)  # Time step for the solver, half as big as the plotting time step for accuracy
+    solver = BurgersSolver(
+        u0=u_ic_true,
+        t_start=cfg.t0,
+        t_end=cfg.t_extrap,
+        dt = dt,
+        x_bounds=(2*cfg.x_begin, 2*cfg.x_end),
+        viscosity=cfg.v
+    )
+    solver.solve()  # Precompute the solution snapshots for interpolation in the analytic function
 
     # ── Initial condition point ───────────────────────────────────────────────
     x_samples_ic = np.linspace(cfg.x_begin, cfg.x_end, cfg.n_ic_samples_x)
     t_ic = np.full_like(x_samples_ic, cfg.t0)
+    u_ic_true = analytic(x_samples_ic, t_ic, cfg, solver)
+
+    print(f"\nGenerating observation data for the {cfg.situation} initial condition...")
+    # ── All M observations ────────────────────────────────────────────────────
+    x_full, t_all = np.random.uniform(cfg.x_begin, cfg.x_end, cfg.n_obs_total), np.random.uniform(cfg.t0, cfg.t_train, cfg.n_obs_total)  # spatial and temporal locations for observations
+    u_all = analytic(x_full, t_all, cfg, solver) + np.random.normal(0.0, cfg.sigma, cfg.n_obs_total)
+
+    # ── Train / validation split  (stratified) ──────
+    train_idx, val_idx = stratified_time_split(t_all, cfg.t0, cfg.t_train, cfg.val_fraction, cfg.n_bins, seed=cfg.seed)
+
+    t_obs_train, u_obs_train, x_obs_train = t_all[train_idx], u_all[train_idx], x_full[train_idx]
+    t_obs_val,   u_obs_val,   x_obs_val   = t_all[val_idx],   u_all[val_idx],   x_full[val_idx]
+
+    # ── Collocation points (randomly chosen) ───────────────────────────────────
+    t_col_vec      = np.random.uniform(cfg.t0, cfg.t_extrap, cfg.n_col_t)
+    x_col_vec      = np.random.uniform(cfg.x_begin, cfg.x_end, cfg.n_col_x)
+    t_matcol,  x_matcol  = np.meshgrid(t_col_vec,  x_col_vec,  indexing="ij")
+    t_col = t_matcol.reshape(-1)
+    x_col = x_matcol.reshape(-1)
+    u_col_true = analytic(x_col, t_col, cfg, solver)       # used only in plots
 
     # ── Dense grids for post-hoc evaluation and plotting (CPU numpy only) ────
-    t_plot_train = np.linspace(cfg.t0, cfg.t_train,  300)
-    t_plot_full  = np.linspace(cfg.t0, cfg.t_extrap, 500)
-    x_plot_full = np.linspace(cfg.x_begin, cfg.x_end, 500)
+    t_plot_train = np.linspace(cfg.t0, cfg.t_train,  np.round(cfg.n_plot_t * (cfg.t_train - cfg.t0) / (cfg.t_extrap - cfg.t0)).astype(int))
+    t_plot_full  = np.linspace(cfg.t0, cfg.t_extrap, cfg.n_plot_t)
+    x_plot_full = np.linspace(cfg.x_begin, cfg.x_end, cfg.n_plot_x)
 
     t_plotmat_train, x_plotmat_train = np.meshgrid(t_plot_train, x_plot_full, indexing="ij")
     t_plotmat_full,  x_plotmat_full  = np.meshgrid(t_plot_full,  x_plot_full,  indexing="ij")
@@ -209,8 +252,8 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
     t_flattened_full  = t_plotmat_full.reshape(-1)
     x_flattened_full  = x_plotmat_full.reshape(-1)
 
-    u_true_train = analytic(x_flattened_train, t_flattened_train, cfg)
-    u_true_full  = analytic(x_flattened_full, t_flattened_full,  cfg)
+    u_true_train = analytic(x_flattened_train, t_flattened_train, cfg, solver)
+    u_true_full  = analytic(x_flattened_full, t_flattened_full,  cfg, solver)
 
     return {
         # numpy — full observation set (used only in plots)
@@ -247,6 +290,7 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
         # tensor on DEVICE — IC point (requires_grad for y'(0))
         "t_ic_t":  to_tensor(t_ic,  requires_grad=True),
         "x_samples_ic_t": to_tensor(x_samples_ic, requires_grad=False),
+        "solver": solver,  # Pass the solver to the data dict for use in the analytic function
     }
 
 
@@ -393,8 +437,13 @@ def train_model(
         optimiser.zero_grad()
 
         # Data loss — MSE on training observations only (not validation)
-        u_pred   = model(x_obs_train_t, t_obs_train_t)
-        l_data   = torch.mean((u_pred - u_obs_train_t) ** 2)
+        # Randomly select a subset of the training observations for this epoch to speed up training and add noise robustness.  This is a form of stochastic mini-batching.
+        epoch_random_selection = torch.randperm(t_obs_train_t.shape[0])[:cfg.n_obs_per_epoch]
+        x_selected_epoch = x_obs_train_t[epoch_random_selection]
+        t_selected_epoch = t_obs_train_t[epoch_random_selection]
+        u_selected_epoch = u_obs_train_t[epoch_random_selection]
+        u_pred   = model(x_selected_epoch, t_selected_epoch)
+        l_data   = torch.mean((u_pred - u_selected_epoch) ** 2)
 
         if use_physics:
             l_phys = loss_physics(model, x_col_t, t_col_t, cfg)
@@ -513,7 +562,7 @@ def parse_args() -> argparse.Namespace:
 
     # Data
     g = p.add_argument_group("Data")
-    g.add_argument("--n_obs",        type=int,   default=BurgerConfig.n_obs,   help="Total noisy observations")
+    g.add_argument("--n_obs",        type=int,   default=BurgerConfig.n_obs_total,   help="Total noisy observations")
     g.add_argument("--val_fraction", type=float, default=BurgerConfig.val_fraction,  help="Fraction of obs for validation")
     g.add_argument("--sigma",        type=float, default=BurgerConfig.sigma, help="Measurement noise std dev")
     g.add_argument("--n_col_x",      type=int,   default=BurgerConfig.n_col_x,  help="Collocation points in x")
@@ -570,7 +619,7 @@ def main_training() -> None:
         t0           = args.t0,
         t_train      = args.t_train,
         t_extrap     = args.t_extrap,
-        n_obs        = args.n_obs,
+        n_obs_total  = args.n_obs,
         val_fraction = args.val_fraction,
         sigma        = args.sigma,
         n_col_t      = args.n_col_t,
@@ -610,15 +659,15 @@ def main_training() -> None:
     out_dir = Path(cfg.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    ckpt_pinn = out_dir / cfg.ckpt_pinn
-    ckpt_ml   = out_dir / cfg.ckpt_ml
-    results_path = out_dir / cfg.results_pt
+    ckpt_pinn = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.ckpt_pinn}"
+    ckpt_ml   = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.ckpt_ml}"
+    results_path = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.results_pt}"
 
     # ── Data ──────────────────────────────────────────────────────────────────
     data = generate_data(cfg, device)
     n_train = len(data["t_obs_train"])
     n_val   = len(data["t_obs_val"])
-    print(f"\n  Observations: {cfg.n_obs} total  →  {n_train} train / {n_val} val")
+    print(f"\n  Observations: {cfg.n_obs_total} total  →  {n_train} train / {n_val} val")
     print(f"  Collocation : {cfg.n_col_t * cfg.n_col_x} pts over [{cfg.x_begin}, {cfg.x_end}] × [{cfg.t0}, {cfg.t_extrap}]")
     print(f"  IC enforced at t={cfg.t0} via L_ic (not in observations)\n")
 
@@ -716,20 +765,49 @@ def evaluate_model() -> None:
     # ── Load best checkpoints for final evaluation ────────────────────────────
     # Using best-val checkpoints rather than last-epoch weights ensures
     # the saved result reflects the model at its generalisation peak.
-    
-    out_dir = Path(BurgerConfig.out_dir)
-    results_path = out_dir / BurgerConfig.results_pt
+    args = parse_args()
+    # ── Build config from CLI arguments ───────────────────────────────────────
+    cfg = BurgerConfig(
+        v            = args.viscosity,
+        situation    = args.situation,
+        x_begin      = args.x_begin,
+        x_end        = args.x_end,
+        t0           = args.t0,
+        t_train      = args.t_train,
+        t_extrap     = args.t_extrap,
+        n_obs_total  = args.n_obs,
+        val_fraction = args.val_fraction,
+        sigma        = args.sigma,
+        n_col_t      = args.n_col_t,
+        n_col_x      = args.n_col_x,
+        seed         = args.seed,
+        lambda_phys  = args.lambda_phys,
+        lambda_ic    = args.lambda_ic,
+        hidden       = args.hidden,
+        n_layers     = args.n_layers,
+        lr           = args.lr,
+        lr_step      = args.lr_step,
+        lr_gamma     = args.lr_gamma,
+        n_epochs     = args.n_epochs,
+        print_every  = args.print_every,
+        log_every    = args.log_every,
+        patience     = args.patience,
+        min_delta    = args.min_delta,
+        out_dir      = args.out_dir,
+    )
+    out_dir = Path(cfg.out_dir)
+    results_path = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.results_pt}"
     raw = torch.load(results_path, map_location="cpu", weights_only=False)
     config = raw["config"]
-    data = generate_data(config, torch.device("cpu"))  # CPU-only for evaluation and plotting
-    ckpt_pinn = out_dir / config.ckpt_pinn
-    ckpt_ml   = out_dir / config.ckpt_ml
+    data = raw["data"]
+    ckpt_pinn = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.ckpt_pinn}"
+    ckpt_ml   = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.ckpt_ml}"
     pred_ml   = Predictor(config, checkpoint_path=str(ckpt_ml))
     pred_pinn = Predictor(config, checkpoint_path=str(ckpt_pinn))
 
     t_flattened_full  = data["t_flattened_full"]
     x_flattened_full  = data["x_flattened_full"]
-    u_true_full  = analytic(x_flattened_full, t_flattened_full, config)
+    u_true_full  = data["u_true_full"]
 
     u_ml_full   = pred_ml.predict(x_flattened_full, t_flattened_full)
     u_pinn_full = pred_pinn.predict(x_flattened_full, t_flattened_full)
@@ -743,7 +821,7 @@ def evaluate_model() -> None:
     rmse_ml_ext     = Predictor.rmse(u_ml_full[mask_extrap],  u_true_full[mask_extrap])
     rmse_pinn_ext   = Predictor.rmse(u_pinn_full[mask_extrap], u_true_full[mask_extrap])
     phys_ml         = Predictor.physics_residual(u_ml_full, x_flattened_full, t_flattened_full, config)
-    phys_pinn       = Predictor.physics_residual(u_pinn_full, x_flattened_full, t_flattened_full, config)
+    phys_pinn       = Predictor.physics_residual(u_true_full, x_flattened_full, t_flattened_full, config)
     # ── Console summary ───────────────────────────────────────────────────────
     print()
     print("=" * 70)
@@ -759,4 +837,4 @@ def evaluate_model() -> None:
 
 if __name__ == "__main__":
     main_training()
-    # evaluate_model()
+    evaluate_model()

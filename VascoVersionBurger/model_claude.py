@@ -45,7 +45,7 @@ class BurgerConfig:
       Gaussian: y0 = exp(-x**2/2)
     """
     # ── Time domain ───────────────────────────────────────────────────────────
-    t0 :            float = 0.1    # start of observation window [s]
+    t0 :            float = 0    # start of observation window [s]
     t_train:        float = 6.0    # end of observation window   [s]
     t_extrap:       float = 10.0   # end of extrapolation window [s]
 
@@ -54,21 +54,27 @@ class BurgerConfig:
     x_end:    float = 7.0    # right boundary of observation window  [m]
 
     # ── Physical parameters ───────────────────────────────────────────────────
-    v:      float = 1      # viscosity  [m^2/s]
+    v:      float = 0.00001      # viscosity  [m^2/s]
 
     # ── Initial conditions ───────────────────────────────────────────────────
-    situation: str = "Step"  # "N-wave","Gaussian", or "Step"
+    situation: str = "Gaussian"  # "N-wave","Gaussian", or "Step"
     # ── Data ─────────────────────────────────────────────────────────────────
-    n_obs:       int    = 100   # total noisy observations (before split)
+    n_obs_total:       int    = 1000   # total noisy observations (before split)
+    n_bins:            int    = 20    # bins for stratisfying validation split along time axis
     val_fraction: float = 0.2  # fraction of observations held out for val
+    n_obs_per_epoch: int = 250  # number of training observations to use per epoch (for stochasticity)
     sigma:       float  = 0.05  # measurement noise std dev
     n_ic_samples_x: int = 200  # initial condition samples in x dimension (for IC loss)
-    n_col_x:       int  = 20   # collocation points (physics residual) in x dimension
-    n_col_t:       int  = 20   # collocation points (physics residual) in t dimension
+    n_col_x:       int  = 50   # collocation points (physics residual) in x dimension
+    n_col_t:       int  = 40   # collocation points (physics residual) in t dimension
     seed:        int    = 42    # global RNG seed
 
+    # ── Plotting sampling ───────────────────────────────────────────────────────────────
+    n_plot_x: int = 500  # spatial resolution for all plots (including snapshots)
+    n_plot_t: int = 200  # temporal resolution for all plots (including snapshots)
+
     # ── PINN loss weights ─────────────────────────────────────────────────────
-    lambda_phys: float = 1  # physics-residual weight
+    lambda_phys: float = 0.1  # physics-residual weight
     lambda_ic:   float = 50.0  # initial-condition weight (>> lambda_phys)
 
     # ── Network architecture ──────────────────────────────────────────────────
@@ -259,12 +265,12 @@ class Predictor:
         x_vec = np.unique(x)
 
         n_t = len(t_vec)
+        
         n_x = len(x_vec)
-
         u_grid = u.reshape(n_t, n_x)
-
         du  = np.gradient(u_grid, x_vec,axis=1)
         d2u = np.gradient(du, x_vec,axis=1)
         dotu = np.gradient(u_grid, t_vec,axis=0)
+        
         r   = dotu + u_grid * du - cfg.v * d2u
-        return float(np.sqrt(np.mean(r[5:-5] ** 2)))
+        return float(np.sqrt(np.mean(r[5:-5,5:-5] ** 2)))

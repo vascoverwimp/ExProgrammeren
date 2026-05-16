@@ -244,7 +244,7 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
         f"Burgers' PINN vs Std ML  |  device={device_str}  |  ν={cfg.v}  "
         f"situation={cfg.situation}  |  "
         f"x∈[{cfg.x_begin}, {cfg.x_end}]  t∈[{cfg.t0}, {cfg.t_extrap}]\n"
-        f"{cfg.n_obs} obs  σ={cfg.sigma}  |  "
+        f"{cfg.n_obs_total} obs  σ={cfg.sigma}  |  "
         f"{cfg.n_col_t}×{cfg.n_col_x} collocation pts  |  "
         f"λ_phys={cfg.lambda_phys}  λ_ic={cfg.lambda_ic}  |  "
         f"training window: t ≤ {cfg.t_train}",
@@ -450,9 +450,10 @@ def parse_args() -> argparse.Namespace:
         description="Plot Burgers PINN results from training_results.pt.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
+    p.add_argument_group("Input / output")
     p.add_argument(
-        "--results", type=str, default= BurgerConfig.out_dir + "/training_results.pt",
-        help="Path to training_results.pt written by train.py",
+        "--results", type=str, default= f"{BurgerConfig.out_dir} / {BurgerConfig.situation}_{BurgerConfig.v:.1e}_{BurgerConfig.results_pt}",
+        help="Path to the results file written by train.py",
     )
     p.add_argument(
         "--out_dir", type=str, default=BurgerConfig.out_dir,
@@ -466,6 +467,15 @@ def parse_args() -> argparse.Namespace:
         "--no_show", action="store_true",
         help="Save only; do not call plt.show()",
     )
+    p.add_argument_group("Selection of situation and viscosity")
+    p.add_argument(
+        "--situation", type=str, choices=["Step", "Gaussian", "N-wave"], default=BurgerConfig.situation,
+        help="Which Burgers' situation to plot (must be in training)",
+    )
+    p.add_argument(
+        "--viscosity", type=float, default=BurgerConfig.v,
+        help="Viscosity parameter (must be in training)",
+    )
     return p.parse_args()
 
 
@@ -475,7 +485,6 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-
     results_path = Path(args.results)
     if not results_path.exists():
         print(
@@ -523,14 +532,14 @@ def main() -> None:
     }
 
     print("Generating Figure 1 — heatmap summary …")
-    make_summary_figure(bundle, out_path=out_dir / "burger_fig1_summary.png")
+    make_summary_figure(bundle, out_path=out_dir / f"burger_{cfg.situation}_{cfg.v:.2e}_fig1_summary.png")
 
     print(f"Generating Figure 2 — time-slice profiles ({args.n_slices} slices) …")
-    make_slice_figure(bundle, out_path=out_dir / "burger_fig2_slices.png",
+    make_slice_figure(bundle, out_path=out_dir / f"burger_{cfg.situation}_{cfg.v:.2e}_fig2_slices.png",
                       n_slices=args.n_slices)
 
     print("Generating Figure 3 — PINN epoch heatmaps …")
-    make_epoch_figure(bundle, out_path=out_dir / "burger_fig3_pinn_epochs.png")
+    make_epoch_figure(bundle, out_path=out_dir / f"burger_{cfg.situation}_{cfg.v:.2e}_fig3_pinn_epochs.png")
 
     print(f"\n  All figures written to  {out_dir}/")
 
