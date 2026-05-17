@@ -133,14 +133,18 @@ def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
         return t
 
     # ── All M observations ────────────────────────────────────────────────────
-    t_all = np.random.uniform(0, cfg.t_train, cfg.n_obs)
-    y_all = analytic(t_all, cfg) + np.random.normal(0.0, cfg.sigma, cfg.n_obs)
+    t_obs_train = np.random.uniform(0, cfg.t_train, cfg.n_obs)
+    y_obs_train = analytic(t_obs_train, cfg) + np.random.normal(0.0, cfg.sigma, cfg.n_obs)
 
-    # ── Train / validation split  (stratified) ──────
-    train_idx, val_idx = stratified_time_split(t_all, 0, cfg.t_train, cfg.val_fraction, cfg.n_bins, cfg.seed)
+    # ── Train / validation split  (stratified) ────── We found were told to use the ground truth,
+    # instead of stratified time split, but this is more realistic, so we will keep it in the code.
+    # train_idx, val_idx = stratified_time_split(t_all, 0, cfg.t_train, cfg.val_fraction, cfg.n_bins, cfg.seed)
 
-    t_obs_train, y_obs_train = t_all[train_idx], y_all[train_idx]
-    t_obs_val,   y_obs_val   = t_all[val_idx],   y_all[val_idx]
+    # t_obs_train, y_obs_train = t_all[train_idx], y_all[train_idx]
+    # t_obs_val,   y_obs_val   = t_all[val_idx],   y_all[val_idx]
+
+    t_obs_val = np.linspace(0, cfg.t_train, cfg.n_val)
+    y_obs_val = analytic(t_obs_val, cfg)
 
     # ── Collocation points ────────────────────────────────────────────────────
     t_col_phys_ext      = np.linspace(0.0, cfg.t_extrap, cfg.n_col)
@@ -156,9 +160,6 @@ def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
     y_true_full  = analytic(t_plot_full,  cfg)
 
     return {
-        # numpy — full observation set (used only in plots)
-        "t_obs":       t_all,
-        "y_obs":       y_all,
         # numpy — train split
         "t_obs_train": t_obs_train,
         "y_obs_train": y_obs_train,
@@ -319,10 +320,13 @@ def train_model(
         model.train()
         optimiser.zero_grad()
         
-        # Randomly select a subset of the training observations for this epoch to speed up training and add noise robustness.  This is a form of stochastic mini-batching.
-        epoch_random_selection = torch.randperm(t_obs_train_t.shape[0])[:cfg.n_obs_per_epoch]
-        t_selected_epoch = t_obs_train_t[epoch_random_selection]
-        y_selected_epoch = y_obs_train_t[epoch_random_selection]
+        # # Randomly select a subset of the training observations for this epoch to speed up training and add noise robustness.  This is a form of stochastic mini-batching.
+        # epoch_random_selection = torch.randperm(t_obs_train_t.shape[0])[:cfg.n_obs_per_epoch]
+        # t_selected_epoch = t_obs_train_t[epoch_random_selection]
+        # y_selected_epoch = y_obs_train_t[epoch_random_selection]
+        # We found that mini batching is worse than full batching
+        t_selected_epoch = t_obs_train_t
+        y_selected_epoch = y_obs_train_t
 
         # Data loss — MSE on training observations only (not validation)
         y_pred   = model(t_selected_epoch)
@@ -443,7 +447,6 @@ def parse_args() -> argparse.Namespace:
     # Data
     g = p.add_argument_group("Data")
     g.add_argument("--n_obs",        type=int,   default=DamperConfig.n_obs,   help="Total noisy observations")
-    g.add_argument("--val_fraction", type=float, default=DamperConfig.val_fraction,  help="Fraction of obs for validation")
     g.add_argument("--sigma",        type=float, default=DamperConfig.sigma, help="Measurement noise std dev")
     g.add_argument("--n_col",        type=int,   default=DamperConfig.n_col,  help="Collocation points")
     g.add_argument("--seed",         type=int,   default=DamperConfig.seed,   help="RNG seed")
@@ -499,7 +502,6 @@ def main() -> None:
         t_train      = args.t_train,
         t_extrap     = args.t_extrap,
         n_obs        = args.n_obs,
-        val_fraction = args.val_fraction,
         sigma        = args.sigma,
         n_col        = args.n_col,
         seed         = args.seed,
@@ -537,16 +539,17 @@ def main() -> None:
     out_dir = Path(cfg.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    ckpt_ml   = out_dir / f"w0{cfg.omega_0}_zeta{cfg.zeta}_{cfg.suffix_ckpt_ml}"
-    ckpt_pinn_ext_phys = out_dir / f"w0{cfg.omega_0}_zeta{cfg.zeta}_{cfg.suffix_ckpt_pinn_ext_phys}"
-    ckpt_pinn_blind = out_dir / f"w0{cfg.omega_0}_zeta{cfg.zeta}_{cfg.suffix_ckpt_pinn_blind}"
-    results_path = out_dir / f"w0{cfg.omega_0}_zeta{cfg.zeta}_{cfg.suffix_results_pt}"
+    ckpt_ml   = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_ml}"
+    ckpt_pinn_ext_phys = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_ext_phys}"
+    ckpt_pinn_blind = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_blind}"
+    results_path = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_results_pt}"
 
     # ── Data ──────────────────────────────────────────────────────────────────
     data = generate_data(cfg, device)
     n_train = len(data["t_obs_train"])
     n_val   = len(data["t_obs_val"])
-    print(f"\n  Observations: {cfg.n_obs} total  →  {n_train} train / {n_val} val")
+    print(f"\n  Noisy observations: {n_train} to train") 
+    print(f" Perfect observations: {n_val} to validate (for early stopping and best checkpoint selection)")
     print(f"  Collocation : {cfg.n_col} pts over [0, {cfg.t_extrap}]")
     print(f"  IC enforced at t=0 via L_ic (not in observations)\n")
 
@@ -677,5 +680,56 @@ def main() -> None:
     print("\n  Run  python plot.py  to generate figures.\n")
 
 
+def evaluate_blind(w0: float, zeta: float, suffix_results_pt=DamperConfig.suffix_results_pt) -> float:
+
+
+
+
+
+    results_path = Path(f"{DamperConfig.out_dir}/w0{w0:.1e}_zeta{zeta:.1e}_{suffix_results_pt}")
+
+    raw = torch.load(results_path, map_location="cpu", weights_only=False)
+
+    cfg: DamperConfig = raw["config"]
+    data = raw["data"]
+
+    out_dir = Path(cfg.out_dir)
+    ckpt_pinn_blind = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_blind}"
+
+    pred_pinn_blind = Predictor(cfg, checkpoint_path=str(ckpt_pinn_blind))
+
+
+
+    t_plot_full  = data["t_plot_full"]
+    y_true_full  = data["y_true_full"]
+
+    y_pinn_blind_full = pred_pinn_blind.predict(t_plot_full)
+
+    mask_train  = t_plot_full <= cfg.t_train
+    mask_extrap = t_plot_full >  cfg.t_train
+
+    rmse_pinn_blind_train = Predictor.rmse(y_pinn_blind_full[mask_train],  y_true_full[mask_train])
+    rmse_pinn_blind_extrap   = Predictor.rmse(y_pinn_blind_full[mask_extrap], y_true_full[mask_extrap])
+    phys_pinn_blind          = Predictor.physics_residual(y_pinn_blind_full, t_plot_full, cfg)
+    y0_pinn_blind            = float(pred_pinn_blind.predict(np.array([0.0])))
+
+    # ── Console summary ───────────────────────────────────────────────────────
+    print()
+    print("=" * 70)
+    print("RESULTS SUMMARY  (best-val checkpoint)")
+    print("=" * 70)
+    print(f"  {'Metric':<38}  {'PINN (blind)':>10}")
+    print("  " + "-" * 62)
+    print(f"  {'RMSE  (training interval)':38}  {rmse_pinn_blind_train:>10.4f}")
+    print(f"  {'RMSE  (extrapolation)':38}  {rmse_pinn_blind_extrap:>10.4f}")
+    print(f"  {'Physics residual  (full domain)':38}  {phys_pinn_blind:>10.4f}")
+    print(f"  {'ŷ(0)':38}  {y0_pinn_blind:>10.4f}")
+
+    return rmse_pinn_blind_train
+
 if __name__ == "__main__":
     main()
+    default_cfg = DamperConfig()
+    default_w0 = default_cfg.omega_0
+    default_zeta = default_cfg.zeta
+    evaluate_blind(default_w0, default_zeta)

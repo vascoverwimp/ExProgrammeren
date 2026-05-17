@@ -65,9 +65,10 @@ class DamperConfig:
 
     # ── Data ─────────────────────────────────────────────────────────────────
     n_obs:       int   = 30    # total noisy observations (before split)
-    n_bins:      int   = 5    # bins for stratisfying validation split along time axis
-    n_obs_per_epoch: int = 10  # number of training observations to use per epoch (for stochasticity)
-    val_fraction: float = 0.2  # fraction of observations held out for val
+    n_bins:      int   = 5    # bins for stratisfying validation split along time axis (unused)
+    n_obs_per_epoch: int = 10  # number of training observations to use per epoch (for stochasticity, unused)
+    n_val:       int   = 200     # number of observations in the validation set, >> n_obs(for early stopping)
+    val_fraction: float = 0.2  # fraction of observations held out for val (unused, we use n_val instead)
     sigma:       float = 0.05  # measurement noise std dev
     n_col:       int   = 100   # collocation points (physics residual)
     seed:        int   = 42    # global RNG seed
@@ -104,13 +105,10 @@ class DamperConfig:
     )
 
     # ── Output paths ──────────────────────────────────────────────────────────
-    out_dir:    str = "./VascoVersionBurger/Output"                  # directory for all saved files
+    out_dir:    str = "./VascoReversePINNDamper/Output"                  # directory for all saved files
     suffix_results_pt: str = "training_results.pt"  # torch.save bundle 
     suffix_ckpt_pinn_ext_phys:  str = "best_pinn_ext_phys.pt"         # best-so-far extended physics PINN checkpoint
     suffix_ckpt_pinn_blind:    str = "best_pinn_blind.pt"           # best-so-far blind PINN checkpoint
-    suffix_ckpt_ml:    str = "best_ml.pt"           # best-so-far standard ML checkpoint
-
-
 
 
     # ── Derived quantities (read-only) ────────────────────────────────────────

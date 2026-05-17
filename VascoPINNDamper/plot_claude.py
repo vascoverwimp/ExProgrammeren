@@ -426,7 +426,7 @@ def parse_args() -> argparse.Namespace:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     p.add_argument(
-        "--results", type=str, default=DamperConfig.out_dir + "/training_results.pt",
+        "--results", type=str, default=None,
         help="Path to the training_results.pt file written by train.py",
     )
     p.add_argument(
@@ -440,6 +440,9 @@ def parse_args() -> argparse.Namespace:
         "--no_show", action="store_true",
         help="Save figures to disk only; do not call plt.show().",
     )
+    p.add_argument("--input_dir", type=str, default=DamperConfig.out_dir, help="Directory where training_results.pt files are located. Used if --results not set.")
+    p.add_argument("--zeta", type=float, default=DamperConfig.zeta, help="Damper's ζ.(only used if results not set)")
+    p.add_argument("--w0", type=float, default=DamperConfig.omega_0, help="Damper's natural frequency ω₀ in rad/s.(only used if results not set)")
     return p.parse_args()
 
 
@@ -449,8 +452,11 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
+    if args.results is None:
+        results_path = Path(args.input_dir / f"w0{args.w0}_zeta{args.zeta}_{DamperConfig.suffix_results_pt}")
+    else:
+        results_path = Path(args.results)
 
-    results_path = Path(args.results)
     if not results_path.exists():
         print(
             f"[plot.py] ERROR: results file not found: {results_path}\n"
