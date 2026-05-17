@@ -77,7 +77,7 @@ class DamperConfig:
     n_plot_t: int = 500  # temporal resolution for all plots (including snapshots)
 
     # ── PINN loss weights ─────────────────────────────────────────────────────
-    lambda_phys: float = 1e-1  # physics-residual weight
+    lambda_phys: float = 0.3162  # physics-residual weight
     lambda_ic:   float = 10.0  # initial-condition weight (>> lambda_phys)
 
     # ── Network architecture ──────────────────────────────────────────────────
@@ -85,8 +85,10 @@ class DamperConfig:
     n_layers: int = 4    # number of hidden layers
 
     # ── Optimiser ────────────────────────────────────────────────────────────
-    lr:       float = 1e-3   # initial Adam learning rate
-    lr_param: float = 1e-2   # learning rate for physical parameters (zeta_hat, w0_hat)
+    beta1:    float = 0.9    # Adam beta1
+    beta2:    float = 0.999  # Adam beta2
+    lr:       float = 0.00316   # initial Adam learning rate
+    lr_param: float = 0.0061054   # learning rate for physical parameters (zeta_hat, w0_hat)
     lr_step:  int   = 3000   # StepLR: decay every this many epochs
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
 

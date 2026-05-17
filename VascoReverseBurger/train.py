@@ -236,14 +236,23 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
 
     print(f"\nGenerating observation data for the {cfg.situation} initial condition...")
     # ── All M observations ────────────────────────────────────────────────────
-    x_full, t_all = np.random.uniform(cfg.x_begin, cfg.x_end, cfg.n_obs_total), np.random.uniform(cfg.t0, cfg.t_train, cfg.n_obs_total)  # spatial and temporal locations for observations
-    u_all = analytic(x_full, t_all, cfg, solver) + np.random.normal(0.0, cfg.sigma, cfg.n_obs_total)
+    x_obs_train, t_obs_train = np.random.uniform(cfg.x_begin, cfg.x_end, cfg.n_obs_total), np.random.uniform(cfg.t0, cfg.t_train, cfg.n_obs_total)  # spatial and temporal locations for observations
+    u_obs_train = analytic(x_obs_train, t_obs_train, cfg, solver) + np.random.normal(0.0, cfg.sigma, cfg.n_obs_total)
 
-    # ── Train / validation split  (stratified) ──────
-    train_idx, val_idx = stratified_time_split(t_all, cfg.t0, cfg.t_train, cfg.val_fraction, cfg.n_bins, seed=cfg.seed)
+    # ── Train / validation split  (stratified) ────── We found were told to use the ground truth,
+    # instead of stratified time split, but this is more realistic, so we will keep it in the code.
+    # train_idx, val_idx = stratified_time_split(t_all, cfg.t0, cfg.t_train, cfg.val_fraction, cfg.n_bins, seed=cfg.seed)
 
-    t_obs_train, u_obs_train, x_obs_train = t_all[train_idx], u_all[train_idx], x_full[train_idx]
-    t_obs_val,   u_obs_val,   x_obs_val   = t_all[val_idx],   u_all[val_idx],   x_full[val_idx]
+    # t_obs_train, u_obs_train, x_obs_train = t_all[train_idx], u_all[train_idx], x_full[train_idx]
+    # t_obs_val,   u_obs_val,   x_obs_val   = t_all[val_idx],   u_all[val_idx],   x_full[val_idx]
+
+    x_obs_vec = np.linspace(cfg.x_begin, cfg.x_end, cfg.n_val_x)
+    t_obs_vec = np.linspace(cfg.t0, cfg.t_train, cfg.n_val_t)
+
+    t_obs_val_mat, x_obs_val_mat = np.meshgrid(t_obs_vec, x_obs_vec, indexing="ij")
+    t_obs_val = t_obs_val_mat.reshape(-1)
+    x_obs_val = x_obs_val_mat.reshape(-1)
+    u_obs_val = analytic(x_obs_val, t_obs_val, cfg, solver)
 
     # ── Collocation points (randomly chosen) ───────────────────────────────────
     t_col_vec_blind      = np.random.uniform(cfg.t0, cfg.t_train, cfg.n_col_t)
@@ -276,9 +285,6 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
     u_true_full  = analytic(x_flattened_full, t_flattened_full,  cfg, solver)
 
     return {
-        # numpy — full observation set (used only in plots)
-        "t_obs":       t_all,
-        "u_obs":       u_all,
         # numpy — train split
         "t_obs_train": t_obs_train,
         "u_obs_train": u_obs_train,
@@ -422,7 +428,7 @@ def train_model(
     """
     model.to(device)
     model.v_hat.data = model.v_hat.data.to(device)
-    optimiser = torch.optim.Adam([{'params': model.net.parameters(), 'lr': cfg.lr}, {'params': [model.v_hat], 'lr': cfg.lr_param}])
+    optimiser = torch.optim.Adam([{'params': model.net.parameters(), 'lr': cfg.lr, 'betas': (cfg.beta1, cfg.beta2)}, {'params': [model.v_hat], 'lr': cfg.lr_param}])
     scheduler = torch.optim.lr_scheduler.StepLR(
         optimiser, step_size=cfg.lr_step, gamma=cfg.lr_gamma
     )
@@ -459,16 +465,22 @@ def train_model(
 
     t0_wall = time.perf_counter()
 
+    x_selected_epoch = x_obs_train_t
+    t_selected_epoch = t_obs_train_t
+    u_selected_epoch = u_obs_train_t
+
     for epoch in range(1, cfg.n_epochs + 1):
         model.train()
         optimiser.zero_grad()
 
         # Data loss — MSE on training observations only (not validation)
         # Randomly select a subset of the training observations for this epoch to speed up training and add noise robustness.  This is a form of stochastic mini-batching.
-        epoch_random_selection = torch.randperm(t_obs_train_t.shape[0])[:cfg.n_obs_per_epoch]
-        x_selected_epoch = x_obs_train_t[epoch_random_selection]
-        t_selected_epoch = t_obs_train_t[epoch_random_selection]
-        u_selected_epoch = u_obs_train_t[epoch_random_selection]
+        # epoch_random_selection = torch.randperm(t_obs_train_t.shape[0])[:cfg.n_obs_per_epoch]
+        # x_selected_epoch = x_obs_train_t[epoch_random_selection]
+        # t_selected_epoch = t_obs_train_t[epoch_random_selection]
+        # u_selected_epoch = u_obs_train_t[epoch_random_selection]
+        # We found that mini batching is worse than full batching
+        
         u_pred   = model(x_selected_epoch, t_selected_epoch)
         l_data   = torch.mean((u_pred - u_selected_epoch) ** 2)
 
@@ -594,7 +606,6 @@ def parse_args() -> argparse.Namespace:
     # Data
     g = p.add_argument_group("Data")
     g.add_argument("--n_obs",        type=int,   default=BurgerConfig.n_obs_total,   help="Total noisy observations")
-    g.add_argument("--val_fraction", type=float, default=BurgerConfig.val_fraction,  help="Fraction of obs for validation")
     g.add_argument("--sigma",        type=float, default=BurgerConfig.sigma, help="Measurement noise std dev")
     g.add_argument("--n_col_x",      type=int,   default=BurgerConfig.n_col_x,  help="Collocation points in x")
     g.add_argument("--n_col_t",      type=int,   default=BurgerConfig.n_col_t,  help="Collocation points in t")

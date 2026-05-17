@@ -65,22 +65,24 @@ class DamperConfig:
     n_val:       int   = 200     # number of observations in the validation set, >> n_obs(for early stopping)
     val_fraction: float = 0.2  # fraction of observations held out for val (unused, we use n_val instead)
     sigma:       float = 0.05  # measurement noise std dev
-    n_col:       int   = 55   # collocation points (physics residual)
+    n_col:       int   = 100   # collocation points (physics residual)
     seed:        int   = 42    # global RNG seed
 
     # ── Plotting sampling ───────────────────────────────────────────────────────────────
     n_plot_t: int = 500  # temporal resolution for all plots (including snapshots)
 
     # ── PINN loss weights ─────────────────────────────────────────────────────
-    lambda_phys: float = 0.01  # physics-residual weight
-    lambda_ic:   float = 100.0  # initial-condition weight (>> lambda_phys)
+    lambda_phys: float = 0.3162  # physics-residual weight
+    lambda_ic:   float = 10.0  # initial-condition weight (>> lambda_phys)
 
     # ── Network architecture ──────────────────────────────────────────────────
     hidden:   int = 32   # neurons per hidden layer
     n_layers: int = 4    # number of hidden layers
 
     # ── Optimiser ────────────────────────────────────────────────────────────
-    lr:       float = 0.02512   # initial Adam learning rate
+    beta1:    float = 0.9    # Adam beta1
+    beta2:    float = 0.999  # Adam beta2
+    lr:       float = 0.00316   # initial Adam learning rate
     lr_step:  int   = 3000   # StepLR: decay every this many epochs
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
 

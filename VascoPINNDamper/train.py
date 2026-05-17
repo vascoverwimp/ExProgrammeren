@@ -285,7 +285,10 @@ def train_model(
     snapshots : dict { epoch: CPU state_dict }
     """
     model.to(device)
-    optimiser = torch.optim.Adam(model.parameters(), lr=cfg.lr)
+
+    torch.manual_seed(cfg.seed)
+
+    optimiser = torch.optim.Adam(model.parameters(), lr=cfg.lr, betas=(cfg.beta1, cfg.beta2))
     scheduler = torch.optim.lr_scheduler.StepLR(
         optimiser, step_size=cfg.lr_step, gamma=cfg.lr_gamma
     )
@@ -316,6 +319,10 @@ def train_model(
 
     t0_wall = time.perf_counter()
 
+
+    t_selected_epoch = t_obs_train_t
+    y_selected_epoch = y_obs_train_t
+    
     for epoch in range(1, cfg.n_epochs + 1):
         model.train()
         optimiser.zero_grad()
@@ -325,8 +332,7 @@ def train_model(
         # t_selected_epoch = t_obs_train_t[epoch_random_selection]
         # y_selected_epoch = y_obs_train_t[epoch_random_selection]
         # We found that mini batching is worse than full batching
-        t_selected_epoch = t_obs_train_t
-        y_selected_epoch = y_obs_train_t
+
 
         # Data loss — MSE on training observations only (not validation)
         y_pred   = model(t_selected_epoch)
@@ -732,4 +738,4 @@ if __name__ == "__main__":
     default_cfg = DamperConfig()
     default_w0 = default_cfg.omega_0
     default_zeta = default_cfg.zeta
-    evaluate_blind(default_w0, default_zeta)
+    # evaluate_blind(default_w0, default_zeta)

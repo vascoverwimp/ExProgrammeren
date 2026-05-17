@@ -60,9 +60,12 @@ class BurgerConfig:
     situation: str = "Gaussian"  # "N-wave","Gaussian", or "Step"
     # ── Data ─────────────────────────────────────────────────────────────────
     n_obs_total:       int    = 1000   # total noisy observations (before split)
-    n_bins:            int    = 20    # bins for stratisfying validation split along time axis
-    val_fraction: float = 0.2  # fraction of observations held out for val
-    n_obs_per_epoch: int = 250  # number of training observations to use per epoch (for stochasticity)
+    n_bins:            int    = 20    # bins for stratisfying validation split along time axis (unused)
+    val_fraction: float = 0.2  # fraction of observations held out for val (unused)
+    n_obs_per_epoch: int = 250  # number of training observations to use per epoch (for stochasticity, unused)
+    n_val: int = 200  # number of validation observations 
+    n_val_t: int = 100  # number of validation observations along time axis
+    n_val_x: int = 200  # number of validation observations along space axis
     sigma:       float  = 0.05  # measurement noise std dev
     n_ic_samples_x: int = 200  # initial condition samples in x dimension (for IC loss)
     n_col_x:       int  = 50   # collocation points (physics residual) in x dimension
@@ -82,7 +85,9 @@ class BurgerConfig:
     n_layers: int = 8    # number of hidden layers
 
     # ── Optimiser ────────────────────────────────────────────────────────────
-    lr:       float = 1e-3   # initial Adam learning rate
+    beta1:    float = 0.9    # Adam beta1
+    beta2:    float = 0.999  # Adam beta2
+    lr:       float = 0.01   # initial Adam learning rate
     lr_step:  int   = 3000   # StepLR: decay every this many epochs
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
 

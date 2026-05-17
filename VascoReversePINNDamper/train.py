@@ -283,7 +283,7 @@ def train_model(
     snapshots : dict { epoch: CPU state_dict }
     """
     model.to(device)
-    optimiser = torch.optim.Adam([{'params': model.net.parameters(), 'lr': cfg.lr}, {'params': [model.zeta_hat, model.w0_hat], 'lr': cfg.lr_param}])
+    optimiser = torch.optim.Adam([{'params': model.net.parameters(), 'lr': cfg.lr, 'betas': (cfg.beta1, cfg.beta2)}, {'params': [model.zeta_hat, model.w0_hat], 'lr': cfg.lr_param}])
     scheduler = torch.optim.lr_scheduler.StepLR(
         optimiser, step_size=cfg.lr_step, gamma=cfg.lr_gamma
     )
@@ -666,6 +666,54 @@ def main() -> None:
     print(f"  Best PINN (blind) checkpoint : {ckpt_pinn_blind}")
     print("\n  Run  python plot.py  to generate figures.\n")
 
+def evaluate_blind(w0: float, zeta: float, suffix_results_pt=DamperConfig.suffix_results_pt) -> tuple[float, float, float]:
+
+    results_path = Path(f"{DamperConfig.out_dir}/w0{w0:.1e}_zeta{zeta:.1e}_{suffix_results_pt}")
+
+    raw = torch.load(results_path, map_location="cpu", weights_only=False)
+
+    cfg: DamperConfig = raw["config"]
+    data = raw["data"]
+
+    out_dir = Path(cfg.out_dir)
+    ckpt_pinn_blind = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_blind}"
+
+    pred_pinn_blind = Predictor(cfg, checkpoint_path=str(ckpt_pinn_blind))
+
+
+
+    t_plot_full  = data["t_plot_full"]
+    y_true_full  = data["y_true_full"]
+
+    y_pinn_blind_full = pred_pinn_blind.predict(t_plot_full)
+    w0_hat_blind             = pred_pinn_blind.predict_params()["w0_hat"]
+    zeta_hat_blind           = pred_pinn_blind.predict_params()["zeta_hat"]
+                                                                
+    mask_train  = t_plot_full <= cfg.t_train
+    mask_extrap = t_plot_full >  cfg.t_train
+
+    rmse_pinn_blind_train = Predictor.rmse(y_pinn_blind_full[mask_train],  y_true_full[mask_train])
+    rmse_pinn_blind_extrap   = Predictor.rmse(y_pinn_blind_full[mask_extrap], y_true_full[mask_extrap])
+    phys_pinn_blind          = Predictor.physics_residual(y_pinn_blind_full, t_plot_full, cfg)
+    y0_pinn_blind            = float(pred_pinn_blind.predict(np.array([0.0])))
+
+    # ── Console summary ───────────────────────────────────────────────────────
+    print()
+    print("=" * 70)
+    print("RESULTS SUMMARY  (best-val checkpoint)")
+    print("=" * 70)
+    print(f"  {'Metric':<38}  {'PINN (blind)':>10}")
+    print("  " + "-" * 62)
+    print(f"  {'RMSE  (training interval)':38}  {rmse_pinn_blind_train:>10.4f}")
+    print(f"  {'RMSE  (extrapolation)':38}  {rmse_pinn_blind_extrap:>10.4f}")
+    print(f"  {'Physics residual  (full domain)':38}  {phys_pinn_blind:>10.4f}")
+    print(f"  {'ŷ(0)':38}  {y0_pinn_blind:>10.4f}")
+    print(f"  {'True w0':38}  {cfg.omega_0:>10.4f}")
+    print(f"  {'w0_hat':38}  {w0_hat_blind:>10.4f}")
+    print(f"  {'True zeta':38}  {cfg.zeta:>10.4f}")
+    print(f"  {'zeta_hat':38}  {zeta_hat_blind:>10.4f}")
+
+    return rmse_pinn_blind_train, w0_hat_blind, zeta_hat_blind
 
 if __name__ == "__main__":
     main()
