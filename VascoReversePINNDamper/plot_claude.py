@@ -31,7 +31,7 @@ import matplotlib.gridspec as gridspec
 from matplotlib.lines import Line2D
 import torch
 
-from model_claude import DamperConfig, Predictor
+from model import DamperConfig, Predictor
 
 
 # =============================================================================
