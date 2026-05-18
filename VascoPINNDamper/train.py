@@ -146,10 +146,6 @@ def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
     t_obs_val = np.linspace(0, cfg.t_train, cfg.n_val)
     y_obs_val = analytic(t_obs_val, cfg)
 
-    # ── Collocation points ────────────────────────────────────────────────────
-    t_col_phys_ext      = np.linspace(0.0, cfg.t_extrap, cfg.n_col)
-    t_col_blind         = np.random.uniform(0.0, cfg.t_train, cfg.n_col)
-
     # ── Initial condition point ───────────────────────────────────────────────
     t_ic = np.array([0.0])
 
@@ -166,9 +162,6 @@ def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
         # numpy — validation split
         "t_obs_val":   t_obs_val,
         "y_obs_val":   y_obs_val,
-        # numpy — collocation & IC (also converted to tensors below)
-        "t_col_phys_ext":       t_col_phys_ext,
-        "t_col_blind":          t_col_blind,
         # numpy — dense evaluation grids
         "t_plot_train": t_plot_train,
         "t_plot_full":  t_plot_full,
@@ -180,9 +173,6 @@ def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
         # tensors on DEVICE — validation observations
         "t_obs_val_t":   to_tensor(t_obs_val),
         "y_obs_val_t":   to_tensor(y_obs_val),
-        # tensors on DEVICE — collocation (requires_grad for ODE residual)
-        "t_col_phys_ext_t": to_tensor(t_col_phys_ext, requires_grad=True),
-        "t_col_blind_t":    to_tensor(t_col_blind, requires_grad=True),
         # tensor on DEVICE — IC point (requires_grad for y'(0))
         "t_ic_t":  to_tensor(t_ic,  requires_grad=True),
     }
@@ -257,6 +247,7 @@ def train_model(
     extrapolated_physics: bool,
     label:       str,
     ckpt_path:   Path,
+    use_ic:     bool = True,
 ) -> tuple[dict, dict]:
     """
     Train *model* in-place on *device* and return (history, snapshots).
@@ -297,8 +288,6 @@ def train_model(
     y_obs_train_t = data["y_obs_train_t"]
     t_obs_val_t   = data["t_obs_val_t"]
     y_obs_val_t   = data["y_obs_val_t"]
-    t_col_phys_ext_t = data["t_col_phys_ext_t"]
-    t_col_blind_t    = data["t_col_blind_t"]
     t_ic_t        = data["t_ic_t"]
 
     history: dict[str, list] = {
@@ -319,6 +308,8 @@ def train_model(
 
     t0_wall = time.perf_counter()
 
+    t_col_pool_extrap = torch.rand(cfg.n_col_pool, device=device, requires_grad=True)*(cfg.t_extrap - 0.0) + 0.0
+    t_col_pool_train  = torch.rand(cfg.n_col_pool, device=device, requires_grad=True)*(cfg.t_train - 0.0) + 0.0
 
     t_selected_epoch = t_obs_train_t
     y_selected_epoch = y_obs_train_t
@@ -337,18 +328,23 @@ def train_model(
         # Data loss — MSE on training observations only (not validation)
         y_pred   = model(t_selected_epoch)
         l_data   = torch.mean((y_pred - y_selected_epoch) ** 2)
-
+        l_total = l_data
+        l_phys  = torch.zeros(1, device=device)
+        l_ic    = torch.zeros(1, device=device)
         if use_physics:
+            idx = torch.randint(0, cfg.n_col_pool, (cfg.n_col,))
             if extrapolated_physics:
-                l_phys = loss_physics(model, t_col_phys_ext_t, cfg)
+                t_col = t_col_pool_extrap[idx]
             else:
-                l_phys = loss_physics(model, t_col_blind_t, cfg)
+                t_col = t_col_pool_train[idx]
+
+            l_phys = loss_physics(model, t_col, cfg)
+
+            l_total += cfg.lambda_phys * l_phys
+        if use_ic:
             l_ic   = loss_ic(model, t_ic_t, cfg)
-            l_total = l_data + cfg.lambda_phys * l_phys + cfg.lambda_ic * l_ic
-        else:
-            l_phys  = torch.zeros(1, device=device)
-            l_ic    = torch.zeros(1, device=device)
-            l_total = l_data
+            l_total += cfg.lambda_ic * l_ic
+
 
         l_total.backward()
         optimiser.step()

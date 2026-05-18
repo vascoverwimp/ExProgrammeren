@@ -66,6 +66,7 @@ class DamperConfig:
     val_fraction: float = 0.2  # fraction of observations held out for val (unused, we use n_val instead)
     sigma:       float = 0.05  # measurement noise std dev
     n_col:       int   = 100   # collocation points (physics residual)
+    n_col_pool:  int   = 10000 # pool of collocation points to sample from each epoch
     seed:        int   = 42    # global RNG seed
 
     # ── Plotting sampling ───────────────────────────────────────────────────────────────
@@ -87,7 +88,7 @@ class DamperConfig:
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
 
     # ── Training loop ─────────────────────────────────────────────────────────
-    n_epochs:    int = 8_000   # maximum training epochs
+    n_epochs:    int = 10_000   # maximum training epochs
     print_every: int = 1_000   # console log frequency (epochs)
     log_every:   int = 100     # history-dict write frequency (epochs)
 

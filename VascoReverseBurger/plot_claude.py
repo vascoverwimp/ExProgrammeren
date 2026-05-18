@@ -251,7 +251,7 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
         f"situation={cfg.situation}  |  "
         f"x∈[{cfg.x_begin}, {cfg.x_end}]  t∈[{cfg.t0}, {cfg.t_extrap}]\n"
         f"{cfg.n_obs_total} obs  σ={cfg.sigma}  |  "
-        f"{cfg.n_col_t}×{cfg.n_col_x} collocation pts  |  "
+        f"{cfg.n_col} random collocation pts every epoch |  "
         f"λ_phys={cfg.lambda_phys}  λ_ic={cfg.lambda_ic}  |  "
         f"training window: t ≤ {cfg.t_train}  |  shockwave (inviscid): t ≈ {cfg.inviscid_shockwave_time:.3f}",
         fontsize=9, y=0.975, color="#2C2C2A",

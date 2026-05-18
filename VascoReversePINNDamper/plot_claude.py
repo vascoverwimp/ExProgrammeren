@@ -112,21 +112,16 @@ def pointwise_residual(
 #  │  P4  Extrapolation       │  P5  ODE residual        │
 #  └──────────────────────────┴──────────────────────────┘
 
-def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
+def make_summary_figure(bundle: dict, out_path: Path, model_type: str = "ext_phys") -> plt.Figure:
     cfg: DamperConfig = bundle["cfg"]
     data              = bundle["data"]
-    hist              = bundle["hist_pinn"]
-    y_pinn            = bundle["y_pinn_full"]
+    hist              = bundle[f"hist_pinn_{model_type}"]
+    y_pinn            = bundle[f"y_pinn_{model_type}_full"]
     m                 = bundle["metrics"]
     device_str        = bundle["device_str"]
 
     t_obs_train  = data["t_obs_train"]
     y_obs_train  = data["y_obs_train"]
-    t_obs_val    = data["t_obs_val"]
-    y_obs_val    = data["y_obs_val"]
-    t_obs        = data["t_obs"]
-    y_obs        = data["y_obs"]
-    t_col        = data["t_col"]
     t_plot_train = data["t_plot_train"]
     t_plot_full  = data["t_plot_full"]
     y_true_train = data["y_true_train"]
@@ -154,24 +149,15 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
     ax_data.set_title(
         "Panel 1 — Training data: sparse noisy observations vs true trajectory\n"
         f"t=0 excluded from observations; y(0) & y'(0) enforced via L_ic  |  "
-        f"train N={len(t_obs_train)}   val N={len(t_obs_val)}",
+        f"train N={len(t_obs_train)}   val N={cfg.n_val}",
         fontsize=9, loc="left", pad=6, color="#444441",
     )
     ax_data.plot(t_plot_train, y_true_train, color=GRAY, lw=1.5,
                  label="True trajectory  y(t)")
     ax_data.scatter(t_obs_train, y_obs_train, color=BLUE, s=55, zorder=5,
                     label=f"Train obs  (N={len(t_obs_train)}, σ={cfg.sigma})")
-    ax_data.scatter(t_obs_val, y_obs_val, color=PURPLE, s=55, marker="D",
-                    zorder=6, alpha=0.85,
-                    label=f"Val obs  (N={len(t_obs_val)})")
     ax_data.scatter([0], [cfg.y0], color=PURPLE, s=180, marker="*", zorder=7,
                     label=f"IC  y(0)={cfg.y0}  [via L_ic]")
-    col_vis = t_col[t_col <= cfg.t_train]
-    # y-position for collocation ticks: just below the axis minimum
-    y_min_data = min(y_obs.min(), y_true_train.min()) - 0.08
-    ax_data.scatter(col_vis, np.full_like(col_vis, y_min_data),
-                    color=ORANGE, s=8, marker="|", zorder=3, alpha=0.7,
-                    label="Collocation pts")
     ax_data.set_xlabel("time  [s]")
     ax_data.set_ylabel("displacement  y(t)")
     ax_data.legend(fontsize=8, framealpha=0.5)
@@ -186,12 +172,9 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
                   color=GRAY, lw=1.5, label="True")
     ax_train.plot(t_plot_full[mask_train], y_pinn[mask_train],
                   color=TEAL, lw=2,
-                  label=f"PINN  (RMSE={m['rmse_pinn_train']:.4f})")
+                  label=f"PINN  (RMSE={m[f'rmse_pinn_{model_type}_train']:.4f})")
     ax_train.scatter(t_obs_train, y_obs_train,
                      color=BLUE, s=30, zorder=5, alpha=0.7, label="Train obs")
-    ax_train.scatter(t_obs_val, y_obs_val,
-                     color=PURPLE, s=30, marker="D", zorder=6, alpha=0.7,
-                     label="Val obs")
     ax_train.scatter([0], [cfg.y0],
                      color=PURPLE, s=120, marker="*", zorder=7)
     ax_train.set_xlabel("time  [s]")
@@ -226,9 +209,10 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
     shade_extrap(ax_extrap, cfg)
     ax_extrap.plot(t_plot_full, y_true_full, color=GRAY, lw=1.5, label="True")
     ax_extrap.plot(t_plot_full, y_pinn,      color=TEAL, lw=2,
-                   label=f"PINN  (extrap RMSE={m['rmse_pinn_ext']:.4f})")
-    ax_extrap.scatter(t_obs, y_obs, color=BLUE, s=25, zorder=5,
-                      alpha=0.5, label="Observations")
+                   label=f"PINN  (extrap RMSE={m[f'rmse_pinn_{model_type}_extrap']:.4f})")
+
+    ax_extrap.scatter(t_obs_train, y_obs_train, color=BLUE, s=25, zorder=5,
+                      alpha=0.5, label="Observations, used for training only")
     ax_extrap.set_xlabel("time  [s]")
     ax_extrap.set_ylabel("displacement  y(t)")
     ax_extrap.set_ylim(-2.5, 2.5)
@@ -245,7 +229,7 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
     shade_extrap(ax_phys, cfg)
     r_pinn = pointwise_residual(y_pinn, t_plot_full, cfg)
     ax_phys.plot(t_plot_full, r_pinn, color=TEAL, lw=1.5,
-                 label=f"PINN  (mean={m['phys_pinn']:.3f})")
+                 label=f"PINN  (mean={m[f'phys_pinn_{model_type}']:.3f})")
     ax_phys.set_xlabel("time  [s]")
     ax_phys.set_ylabel("|m·y'' + c·y' + k·y|")
     ax_phys.set_xlim(0, cfg.t_extrap)
@@ -278,7 +262,7 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
 #  │  |Δω₀| / ω₀  (log)       │  |Δζ|  / ζ  (log)        │
 #  └──────────────────────────┴──────────────────────────┘
 
-def make_param_convergence_figure(bundle: dict, out_path: Path) -> plt.Figure:
+def make_param_convergence_figure(bundle: dict, out_path: Path, model_type: str = "ext_phys") -> plt.Figure:
     """
     Visualise how ω₀_hat and ζ_hat evolve from their initial guesses toward
     the true values over the snapshot epochs.
@@ -291,7 +275,7 @@ def make_param_convergence_figure(bundle: dict, out_path: Path) -> plt.Figure:
     also log the scalar values in train.py's history dict each log_every step.
     """
     cfg: DamperConfig = bundle["cfg"]
-    snaps             = bundle["snaps_pinn"]
+    snaps             = bundle[f"snaps_pinn_{model_type}"]
 
     epochs, w0_vals, zeta_vals = extract_params(snaps)
 
@@ -411,7 +395,7 @@ def _annotate_final(
 # FIGURE 3 — epoch-by-epoch trajectory snapshots
 # =============================================================================
 
-def make_epoch_figure(bundle: dict, out_path: Path) -> plt.Figure:
+def make_epoch_figure(bundle: dict, out_path: Path, model_type: str = "ext_phys") -> plt.Figure:
     """
     2-column grid of panels, one per snapshot epoch.
 
@@ -422,15 +406,12 @@ def make_epoch_figure(bundle: dict, out_path: Path) -> plt.Figure:
     physical parameters have converged at that point in training.
     """
     cfg: DamperConfig = bundle["cfg"]
-    snaps             = bundle["snaps_pinn"]
+    snaps             = bundle[f"snaps_pinn_{model_type}"]
     data              = bundle["data"]
-    pred: Predictor   = bundle["pred"]
+    pred: Predictor   = bundle[f"pred_{model_type}"]
 
     t_obs_train  = data["t_obs_train"]
     y_obs_train  = data["y_obs_train"]
-    t_obs_val    = data["t_obs_val"]
-    y_obs_val    = data["y_obs_val"]
-    t_col        = data["t_col"]
     t_plot_full  = data["t_plot_full"]
     y_true_full  = data["y_true_full"]
 
@@ -451,7 +432,6 @@ def make_epoch_figure(bundle: dict, out_path: Path) -> plt.Figure:
     axes_flat = axes.flatten()
 
     y_lo, y_hi = -2.2, 1.6
-    col_y = y_lo + 0.07 * (y_hi - y_lo)
 
     for idx, epoch in enumerate(epochs_sorted):
         ax = axes_flat[idx]
@@ -473,15 +453,9 @@ def make_epoch_figure(bundle: dict, out_path: Path) -> plt.Figure:
         ax.axvspan(cfg.t_train, cfg.t_extrap, color=GRAY, alpha=0.10, zorder=0)
         ax.axvline(cfg.t_train, color=GRAY, lw=0.8, ls="--", alpha=0.5)
 
-        # Collocation ticks along the bottom
-        ax.scatter(t_col, np.full_like(t_col, col_y),
-                   color=ORANGE, s=6, marker="|", alpha=0.6, zorder=3)
-
         # Observations
         ax.scatter(t_obs_train, y_obs_train,
                    color=BLUE, s=28, zorder=5, alpha=0.85)
-        ax.scatter(t_obs_val, y_obs_val,
-                   color=PURPLE, s=28, marker="D", zorder=6, alpha=0.75)
 
         # IC marker
         ax.scatter([0], [cfg.y0], color=PURPLE, s=130, marker="*", zorder=7)
@@ -519,11 +493,9 @@ def make_epoch_figure(bundle: dict, out_path: Path) -> plt.Figure:
         Line2D([0], [0], color=BLUE,   lw=0, marker="o", markersize=5,
                label=f"Train obs  (N={len(t_obs_train)}, σ={cfg.sigma})"),
         Line2D([0], [0], color=PURPLE, lw=0, marker="D", markersize=5,
-               label=f"Val obs  (N={len(t_obs_val)})"),
+               label=f"Val obs  (N={cfg.n_val})"),
         Line2D([0], [0], color=PURPLE, lw=0, marker="*", markersize=9,
                label=f"IC  y(0)={cfg.y0},  y'(0)={cfg.dy0}"),
-        Line2D([0], [0], color=ORANGE, lw=0, marker="|", markersize=7,
-               label=f"Collocation pts  (N={cfg.n_col}, [0, {cfg.t_extrap}])"),
     ]
     fig.legend(handles=legend_elements, loc="lower center",
                ncol=3, fontsize=8, framealpha=0.6,
@@ -554,8 +526,20 @@ def parse_args() -> argparse.Namespace:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     p.add_argument(
-        "--results", type=str, default=DamperConfig.out_dir + "/training_results.pt",
-        help="Path to training_results.pt written by train.py",
+        "--results", type=str, default="",
+        help="Path to training_results.pt written by train.py (if empty, constructed from --omega_0 and --zeta)",
+    )
+    p.add_argument(
+        "--input_dir", type=str, default=DamperConfig.out_dir,
+        help="Directory containing the results file (used when --results is not set).",
+    )
+    p.add_argument(
+        "--w0", type=float, default=DamperConfig().omega_0,
+        help="Natural frequency ω₀ [rad/s] for filename reconstruction.",
+    )
+    p.add_argument(
+        "--zeta", type=float, default=DamperConfig().zeta,
+        help="Damping ratio ζ for filename reconstruction.",
     )
     p.add_argument(
         "--out_dir", type=str, default=DamperConfig.out_dir,
@@ -575,7 +559,14 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
 
-    results_path = Path(args.results)
+    # Construct results path from omega_0 and zeta if not provided
+    if args.results:
+        results_path = Path(args.results)
+    else:
+        w0   = args.w0
+        zeta = args.zeta
+        results_path = Path(f"{DamperConfig.out_dir}/w0{w0:.1e}_zeta{zeta:.1e}_training_results.pt")
+    
     if not results_path.exists():
         print(
             f"[plot.py] ERROR: results file not found: {results_path}\n"
@@ -591,42 +582,54 @@ def main() -> None:
     raw = torch.load(results_path, map_location="cpu", weights_only=False)
 
     cfg: DamperConfig = raw["config"]
-    snaps = raw["snaps_pinn"]
+    snaps_ext_phys = raw["snaps_pinn_ext_phys"]
+    snaps_blind = raw["snaps_pinn_blind"]
 
     # Report what was recovered
-    final_epoch = max(snaps.keys())
-    w0_final   = snaps[final_epoch]["w0_hat"].item()
-    zeta_final = snaps[final_epoch]["zeta_hat"].item()
+    final_epoch_ext = max(snaps_ext_phys.keys())
+    final_epoch_blind = max(snaps_blind.keys())
+    w0_ext_phys = snaps_ext_phys[final_epoch_ext]["w0_hat"].item()
+    zeta_ext_phys = snaps_ext_phys[final_epoch_ext]["zeta_hat"].item()
+    w0_blind = snaps_blind[final_epoch_blind]["w0_hat"].item()
+    zeta_blind = snaps_blind[final_epoch_blind]["zeta_hat"].item()
+    
     print(f"  Config   : m={cfg.mass}  c={cfg.damping}  k={cfg.stiffness}  "
           f"ζ_true={cfg.zeta:.4f}  ω₀_true={cfg.omega_0:.4f}")
-    print(f"  Snapshots: {sorted(snaps.keys())}")
-    print(f"  Final ω₀_hat  = {w0_final:.4f}  (true {cfg.omega_0:.4f}  "
-          f"err {abs(w0_final - cfg.omega_0):.4f})")
-    print(f"  Final ζ_hat   = {zeta_final:.4f}  (true {cfg.zeta:.4f}  "
-          f"err {abs(zeta_final - cfg.zeta):.4f})\n")
+    print(f"  Snapshots (ext_phys): {sorted(snaps_ext_phys.keys())}")
+    print(f"  Snapshots (blind):    {sorted(snaps_blind.keys())}")
+    print(f"  Final ω₀_hat (ext_phys) = {w0_ext_phys:.4f}  (true {cfg.omega_0:.4f})")
+    print(f"  Final ω₀_hat (blind)    = {w0_blind:.4f}  (true {cfg.omega_0:.4f})")
+    print(f"  Final ζ_hat  (ext_phys) = {zeta_ext_phys:.4f}  (true {cfg.zeta:.4f})")
+    print(f"  Final ζ_hat  (blind)    = {zeta_blind:.4f}  (true {cfg.zeta:.4f})\n")
 
-    # Single shared Predictor — predict_from_state swaps weights in-place
-    pred = Predictor(cfg)
+    # Single shared Predictor for each model
+    pred_ext_phys = Predictor(cfg)
+    pred_blind = Predictor(cfg)
 
     bundle = {
         "cfg":        cfg,
         "device_str": raw["device_str"],
         "data":       raw["data"],
-        "hist_pinn":  raw["hist_pinn"],
-        "snaps_pinn": snaps,
-        "y_pinn_full":raw["y_pinn_full"],
+        "hist_pinn_ext_phys":  raw["hist_pinn_ext_phys"],
+        "hist_pinn_blind":     raw["hist_pinn_blind"],
+        "snaps_pinn_ext_phys": snaps_ext_phys,
+        "snaps_pinn_blind":    snaps_blind,
+        "y_pinn_ext_phys_full": raw["y_pinn_ext_phys_full"],
+        "y_pinn_blind_full":    raw["y_pinn_blind_full"],
         "metrics":    raw["metrics"],
-        "pred":       pred,
+        "pred_ext_phys": pred_ext_phys,
+        "pred_blind":    pred_blind,
     }
 
-    print("Generating Figure 1 — trajectory summary …")
-    make_summary_figure(bundle, out_path=out_dir / "pinn_fig1_summary.png")
+    print("Generating figures for PINN (extended physics) model …")
+    make_summary_figure(bundle, out_path=out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_pinn_fig1_summary_ext_phys.png", model_type="ext_phys")
+    make_param_convergence_figure(bundle, out_path=out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_pinn_fig2_param_conv_ext_phys.png", model_type="ext_phys")
+    make_epoch_figure(bundle, out_path=out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_pinn_fig3_pinn_epochs_ext_phys.png", model_type="ext_phys")
 
-    print("Generating Figure 2 — parameter convergence …")
-    make_param_convergence_figure(bundle, out_path=out_dir / "pinn_fig2_param_conv.png")
-
-    print("Generating Figure 3 — epoch trajectory snapshots …")
-    make_epoch_figure(bundle, out_path=out_dir / "pinn_fig3_pinn_epochs.png")
+    print("Generating figures for PINN (blind) model …")
+    make_summary_figure(bundle, out_path=out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_pinn_fig1_summary_blind.png", model_type="blind")
+    make_param_convergence_figure(bundle, out_path=out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_pinn_fig2_param_conv_blind.png", model_type="blind")
+    make_epoch_figure(bundle, out_path=out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_pinn_fig3_pinn_epochs_blind.png", model_type="blind")
 
     print(f"\n  All figures written to  {out_dir}/")
 

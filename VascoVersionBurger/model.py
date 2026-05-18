@@ -68,8 +68,8 @@ class BurgerConfig:
     n_val_x: int = 200  # number of validation observations along space axis
     sigma:       float  = 0.05  # measurement noise std dev
     n_ic_samples_x: int = 200  # initial condition samples in x dimension (for IC loss)
-    n_col_x:       int  = 50   # collocation points (physics residual) in x dimension
-    n_col_t:       int  = 40   # collocation points (physics residual) in t dimension
+    n_col:       int  = 400   # collocation points (physics residual)
+    n_col_pool:  int  = 10000 # pool of collocation points to sample from each epoch
     seed:        int    = 42    # global RNG seed
 
     # ── Plotting sampling ───────────────────────────────────────────────────────────────
@@ -82,7 +82,7 @@ class BurgerConfig:
 
     # ── Network architecture ──────────────────────────────────────────────────
     hidden:   int = 48   # neurons per hidden layer
-    n_layers: int = 8    # number of hidden layers
+    n_layers: int = 6    # number of hidden layers
 
     # ── Optimiser ────────────────────────────────────────────────────────────
     beta1:    float = 0.9    # Adam beta1
@@ -97,7 +97,7 @@ class BurgerConfig:
     log_every:   int = 100     # history-dict write frequency (epochs)
 
     # ── Early stopping ────────────────────────────────────────────────────────
-    patience:  int   = 50     # patience in units of log_every
+    patience:  int   = 30     # patience in units of log_every
     min_delta: float = 1e-6   # minimum improvement to reset the counter
 
     # ── Snapshot epochs for trajectory plots ─────────────────────────────────

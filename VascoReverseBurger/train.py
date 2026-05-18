@@ -35,6 +35,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import torch.nn as nn
+from torch import amp
 from scipy.special import erfc
 from model import BurgerConfig, FCNet, Predictor
 from Burger_PDE import BurgersSolver
@@ -254,21 +255,6 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
     x_obs_val = x_obs_val_mat.reshape(-1)
     u_obs_val = analytic(x_obs_val, t_obs_val, cfg, solver)
 
-    # ── Collocation points (randomly chosen) ───────────────────────────────────
-    t_col_vec_blind      = np.random.uniform(cfg.t0, cfg.t_train, cfg.n_col_t)
-    x_col_vec_blind      = np.random.uniform(cfg.x_begin, cfg.x_end, cfg.n_col_x)  
-    
-    t_col_vec_physics_ext= np.random.uniform(cfg.t0, cfg.t_extrap, cfg.n_col_t)
-    x_col_vec_physics_ext= np.random.uniform(cfg.x_begin, cfg.x_end, cfg.n_col_x)
-
-    t_matcol_blind,  x_matcol_blind  = np.meshgrid(t_col_vec_blind,  x_col_vec_blind,  indexing="ij")
-    t_col_blind = t_matcol_blind.reshape(-1)
-    x_col_blind = x_matcol_blind.reshape(-1)
-
-    t_matcol_physics_ext,  x_matcol_physics_ext  = np.meshgrid(t_col_vec_physics_ext,  x_col_vec_physics_ext,  indexing="ij")
-    t_col_physics_ext = t_matcol_physics_ext.reshape(-1)
-    x_col_physics_ext = x_matcol_physics_ext.reshape(-1)
-
     # ── Dense grids for post-hoc evaluation and plotting (CPU numpy only) ────
     t_plot_train = np.linspace(cfg.t0, cfg.t_train,  np.round(cfg.n_plot_t * (cfg.t_train - cfg.t0) / (cfg.t_extrap - cfg.t0)).astype(int))
     t_plot_full  = np.linspace(cfg.t0, cfg.t_extrap, cfg.n_plot_t)
@@ -291,11 +277,6 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
         # numpy — validation split
         "t_obs_val":   t_obs_val,
         "u_obs_val":   u_obs_val,
-        # numpy — collocation & IC (also converted to tensors below)
-        "t_col_blind":       t_col_blind,
-        "x_col_blind":       x_col_blind,
-        "t_col_physics_ext": t_col_physics_ext,
-        "x_col_physics_ext": x_col_physics_ext,
         # numpy — dense evaluation grids
         "t_flattened_train": t_flattened_train,
         "x_flattened_train": x_flattened_train,
@@ -311,11 +292,6 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
         "t_obs_val_t":   to_tensor(t_obs_val),
         "x_obs_val_t":   to_tensor(x_obs_val),
         "u_obs_val_t":   to_tensor(u_obs_val),
-        # tensors on DEVICE — collocation (requires_grad for ODE residual)
-        "t_col_blind_t": to_tensor(t_col_blind, requires_grad=True),
-        "x_col_blind_t": to_tensor(x_col_blind, requires_grad=True),
-        "t_col_physics_ext_t": to_tensor(t_col_physics_ext, requires_grad=True),
-        "x_col_physics_ext_t": to_tensor(x_col_physics_ext, requires_grad=True),
         # tensor on DEVICE — IC point (requires_grad for y'(0))
         "t_ic_t":  to_tensor(t_ic,  requires_grad=True),
         "x_samples_ic_t": to_tensor(x_samples_ic, requires_grad=False),
@@ -341,26 +317,22 @@ def loss_physics(
     """
     u_hat = model(x,t)
 
-    du = torch.autograd.grad(
-        u_hat, x,
+    du, dotu = torch.autograd.grad(
+        u_hat, (x, t),
         grad_outputs=torch.ones_like(u_hat),
         create_graph=True,
-    )[0]
+        retain_graph=True
+    )
 
+    # Compute d²u/dx²
     d2u = torch.autograd.grad(
         du, x,
         grad_outputs=torch.ones_like(du),
-        create_graph=True,
-    )[0]
-
-    dotu = torch.autograd.grad(
-        u_hat, t,
-        grad_outputs=torch.ones_like(u_hat),
-        create_graph=True,
+        create_graph=True
     )[0]
 
     residual = dotu + u_hat * du - model.v_hat * d2u
-    return torch.mean(residual ** 2)
+    return torch.mean(residual**2)
 
 
 def loss_ic(
@@ -399,6 +371,7 @@ def train_model(
     extrapolated_physics: bool,
     label:       str,
     ckpt_path:   Path,
+    use_ic:     bool = True,
 ) -> tuple[dict, dict]:
     """
     Train *model* in-place on *device* and return (history, snapshots).
@@ -439,10 +412,6 @@ def train_model(
     x_obs_val_t   = data["x_obs_val_t"]
     t_obs_val_t   = data["t_obs_val_t"]
     u_obs_val_t   = data["u_obs_val_t"]
-    t_col_blind_t = data["t_col_blind_t"]
-    x_col_blind_t = data["x_col_blind_t"]
-    t_col_physics_ext_t = data["t_col_physics_ext_t"]
-    x_col_physics_ext_t = data["x_col_physics_ext_t"]
     t_ic_t        = data["t_ic_t"]
     x_samples_ic_t = data["x_samples_ic_t"]
 
@@ -469,6 +438,15 @@ def train_model(
     t_selected_epoch = t_obs_train_t
     u_selected_epoch = u_obs_train_t
 
+    x_pool = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.x_end - cfg.x_begin) + cfg.x_begin
+    x_pool.requires_grad_(True)
+
+    t_pool_ext_physics = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.t_extrap - cfg.t0) + cfg.t0
+    t_pool_ext_physics.requires_grad_(True)
+
+    t_pool_blind = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.t_train - cfg.t0) + cfg.t0
+    t_pool_blind.requires_grad_(True)
+
     for epoch in range(1, cfg.n_epochs + 1):
         model.train()
         optimiser.zero_grad()
@@ -483,19 +461,27 @@ def train_model(
         
         u_pred   = model(x_selected_epoch, t_selected_epoch)
         l_data   = torch.mean((u_pred - u_selected_epoch) ** 2)
+        l_total = l_data
+        l_phys  = torch.zeros(1, device=device)
+        l_ic    = torch.zeros(1, device=device)
 
         if use_physics:
-            if extrapolated_physics:
-                l_phys = loss_physics(model, x_col_physics_ext_t, t_col_physics_ext_t, cfg)
-            else:
-                l_phys = loss_physics(model, x_col_blind_t, t_col_blind_t, cfg)
+            idx = torch.randint(0, cfg.n_col_pool, (cfg.n_col,))
+            x_col_t = x_pool[idx]
 
+            if extrapolated_physics:
+            # ── Collocation points (randomly chosen) ───────────────────────────────────
+                t_col_t = t_pool_ext_physics[idx]
+            else:
+                t_col_t = t_pool_blind[idx]
+        
+            l_phys = loss_physics(model, x_col_t, t_col_t, cfg)
+
+            l_total += l_phys*cfg.lambda_phys
+
+        if use_ic:
             l_ic   = loss_ic(model, x_samples_ic_t, t_ic_t, cfg)
-            l_total = l_data + cfg.lambda_phys * l_phys + cfg.lambda_ic * l_ic
-        else:
-            l_phys  = torch.zeros(1, device=device)
-            l_ic    = torch.zeros(1, device=device)
-            l_total = l_data
+            l_total += l_ic*cfg.lambda_ic
 
         l_total.backward()
         optimiser.step()
@@ -607,8 +593,7 @@ def parse_args() -> argparse.Namespace:
     g = p.add_argument_group("Data")
     g.add_argument("--n_obs",        type=int,   default=BurgerConfig.n_obs_total,   help="Total noisy observations")
     g.add_argument("--sigma",        type=float, default=BurgerConfig.sigma, help="Measurement noise std dev")
-    g.add_argument("--n_col_x",      type=int,   default=BurgerConfig.n_col_x,  help="Collocation points in x")
-    g.add_argument("--n_col_t",      type=int,   default=BurgerConfig.n_col_t,  help="Collocation points in t")
+    g.add_argument("--n_col",      type=int,   default=BurgerConfig.n_col,  help="Collocation points for physics loss")
     g.add_argument("--seed",         type=int,   default=BurgerConfig.seed,   help="RNG seed")
 
     # Initial guess viscosity
@@ -666,10 +651,8 @@ def main_training() -> None:
         t_train      = args.t_train,
         t_extrap     = args.t_extrap,
         n_obs_total  = args.n_obs,
-        val_fraction = args.val_fraction,
         sigma        = args.sigma,
-        n_col_t      = args.n_col_t,
-        n_col_x      = args.n_col_x,
+        n_col        = args.n_col,
         seed         = args.seed,
         lambda_phys  = args.lambda_phys,
         lambda_ic    = args.lambda_ic,
@@ -717,7 +700,7 @@ def main_training() -> None:
     n_train = len(data["t_obs_train"])
     n_val   = len(data["t_obs_val"])
     print(f"\n  Observations: {cfg.n_obs_total} total  →  {n_train} train / {n_val} val")
-    print(f"  Collocation : {cfg.n_col_t * cfg.n_col_x} pts over [{cfg.x_begin}, {cfg.x_end}] × [{cfg.t0}, {cfg.t_extrap}]")
+    print(f"  Collocation : {cfg.n_col} pts over [{cfg.x_begin}, {cfg.x_end}] × [{cfg.t0}, {cfg.t_extrap}]")
     print(f"  IC enforced at t={cfg.t0} via L_ic (not in observations)\n")
 
     # ── PINN model (extended physics) ─────────────────────────────────────────────
@@ -840,10 +823,8 @@ def evaluate_model() -> None:
         t_train      = args.t_train,
         t_extrap     = args.t_extrap,
         n_obs_total  = args.n_obs,
-        val_fraction = args.val_fraction,
         sigma        = args.sigma,
-        n_col_t      = args.n_col_t,
-        n_col_x      = args.n_col_x,
+        n_col        = args.n_col,
         seed         = args.seed,
         lambda_phys  = args.lambda_phys,
         lambda_ic    = args.lambda_ic,

@@ -108,8 +108,6 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
 
     t_obs_train  = data["t_obs_train"]
     y_obs_train  = data["y_obs_train"]
-    t_col_ext    = data["t_col_phys_ext"]
-    t_col_blind  = data["t_col_blind"]
     t_plot_train = data["t_plot_train"]
     t_plot_full  = data["t_plot_full"]
     y_true_train = data["y_true_train"]
@@ -137,10 +135,10 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
     # ── P1: training data ─────────────────────────────────────────────────────
     # Val set (dense noiseless grid) intentionally omitted — it traces the
     # true solution and carries no additional visual information.
+    # Collocation points omitted — they are randomized each epoch.
     ax_data.set_title(
         "Panel 1 — Training data: sparse noisy observations vs true trajectory\n"
-        f"N_train={len(t_obs_train)}  σ={cfg.sigma}  |  "
-        "Orange ticks = col. ext. [0, t_extrap]   Gray ticks = col. blind [0, t_train]",
+        f"N_train={len(t_obs_train)}  σ={cfg.sigma}",
         fontsize=9, loc="left", pad=6, color="#444441",
     )
     ax_data.plot(t_plot_train, y_true_train,
@@ -151,18 +149,6 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
     ax_data.scatter([0], [cfg.y0],
                     color=PURPLE, s=160, marker="*", zorder=7,
                     label=f"IC  y(0)={cfg.y0}  [enforced via L_ic]")
-
-    # Two collocation rows offset vertically for legibility
-    y_min  = min(y_obs_train.min(), y_true_train.min()) - 0.10
-    y_min2 = y_min - 0.10
-    ax_data.scatter(t_col_ext,
-                    np.full_like(t_col_ext,   y_min),
-                    color=ORANGE,    s=8, marker="|", zorder=4, alpha=0.7,
-                    label=f"Col. ext.   (N={len(t_col_ext)}, t∈[0, {cfg.t_extrap}])")
-    ax_data.scatter(t_col_blind,
-                    np.full_like(t_col_blind, y_min2),
-                    color=ORANGE_BL, s=8, marker="|", zorder=4, alpha=0.7,
-                    label=f"Col. blind  (N={len(t_col_blind)}, t∈[0, {cfg.t_train}])")
 
     ax_data.set_xlabel("time  [s]")
     ax_data.set_ylabel("displacement  y(t)")
@@ -314,8 +300,6 @@ def make_epoch_figure(
     """
     t_obs_train = data["t_obs_train"]
     y_obs_train = data["y_obs_train"]
-    t_col_ext   = data["t_col_phys_ext"]
-    t_col_blind = data["t_col_blind"]
     t_plot_full = data["t_plot_full"]
     y_true_full = data["y_true_full"]
 
@@ -333,8 +317,6 @@ def make_epoch_figure(
     axes_flat = axes.flatten()
 
     y_lo, y_hi  = -2.2, 1.6
-    col_y_ext   = y_lo + 0.09 * (y_hi - y_lo)
-    col_y_blind = y_lo + 0.03 * (y_hi - y_lo)
 
     for idx, epoch in enumerate(epochs):
         ax = axes_flat[idx]
@@ -352,14 +334,6 @@ def make_epoch_figure(
 
         ax.axvspan(cfg.t_train, cfg.t_extrap, color=GRAY, alpha=0.10, zorder=0)
         ax.axvline(cfg.t_train, color=GRAY, lw=0.8, ls="--", alpha=0.5)
-
-        # Two collocation rows
-        ax.scatter(t_col_ext,
-                   np.full_like(t_col_ext,   col_y_ext),
-                   color=ORANGE,    s=6, marker="|", alpha=0.7, zorder=3)
-        ax.scatter(t_col_blind,
-                   np.full_like(t_col_blind, col_y_blind),
-                   color=ORANGE_BL, s=6, marker="|", alpha=0.7, zorder=3)
 
         # Train obs only — val grid not plotted
         ax.scatter(t_obs_train, y_obs_train,
@@ -395,10 +369,6 @@ def make_epoch_figure(
                label=f"Train obs  (N={len(t_obs_train)}, σ={cfg.sigma})"),
         Line2D([0], [0], color=PURPLE,      lw=0, marker="*", markersize=9,
                label=f"IC  y(0)={cfg.y0},  y'(0)={cfg.dy0}"),
-        Line2D([0], [0], color=ORANGE,      lw=0, marker="|", markersize=7,
-               label=f"Col. ext.   (N={len(t_col_ext)}, [0, {cfg.t_extrap}])"),
-        Line2D([0], [0], color=ORANGE_BL,   lw=0, marker="|", markersize=7,
-               label=f"Col. blind  (N={len(t_col_blind)}, [0, {cfg.t_train}])"),
     ]
     fig.legend(handles=legend_elements, loc="lower center",
                ncol=3, fontsize=8, framealpha=0.6,
@@ -432,11 +402,11 @@ def parse_args() -> argparse.Namespace:
         help="Directory containing the results file (used when --results is not set).",
     )
     p.add_argument(
-        "--w0", type=float, default=None,
+        "--w0", type=float, default=DamperConfig().omega_0,
         help="Natural frequency ω₀ [rad/s] for filename reconstruction.",
     )
     p.add_argument(
-        "--zeta", type=float, default=None,
+        "--zeta", type=float, default=DamperConfig().zeta,
         help="Damping ratio ζ for filename reconstruction.",
     )
     p.add_argument(
@@ -462,8 +432,8 @@ def main() -> None:
         results_path = Path(args.results)
     else:
         cfg_defaults = DamperConfig()
-        w0   = args.w0   if args.w0   is not None else cfg_defaults.omega_0
-        zeta = args.zeta if args.zeta is not None else cfg_defaults.zeta
+        w0   = args.w0
+        zeta = args.zeta
         filename = f"w0{w0:.1e}_zeta{zeta:.1e}_{cfg_defaults.suffix_results_pt}"
         results_path = Path(args.input_dir) / filename
 
@@ -489,9 +459,9 @@ def main() -> None:
     print(f"  Train obs: N={len(data['t_obs_train'])}  "
           f"Val grid : N={len(data['t_obs_val'])} "
           f"(dense, noiseless — used for early stopping only, not plotted)")
+    print(f"  Snapshots ML        : {sorted(raw['snaps_ml'].keys())}")
     print(f"  Snapshots PINN ext  : {sorted(raw['snaps_pinn_ext_phys'].keys())}")
-    print(f"  Snapshots PINN blind: {sorted(raw['snaps_pinn_blind'].keys())}")
-    print(f"  Snapshots ML        : {sorted(raw['snaps_ml'].keys())}\n")
+    print(f"  Snapshots PINN blind: {sorted(raw['snaps_pinn_blind'].keys())}\n")
 
     bundle = {
         "cfg":                  cfg,
@@ -516,7 +486,25 @@ def main() -> None:
     print("Generating Figure 1 — summary …")
     make_summary_figure(bundle, out_path=out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_fig1_summary.png")
 
-    print("Generating Figure 2 — PINN (ext. physics) epoch snapshots …")
+    print("Generating Figure 2 — Standard ML epoch snapshots …")
+    make_epoch_figure(
+        snapshots   = bundle["snaps_ml"],
+        cfg         = cfg,
+        data        = data,
+        pred        = pred_ml,
+        model_color = RED,
+        model_label = "Std ML",
+        fig_title   = (
+            f"Standard ML — trajectory evolution across epochs  "
+            f"[device={bundle['device_str']}]\n"
+            f"m={cfg.mass}  c={cfg.damping}  k={cfg.stiffness}  |  "
+            "Data loss only — no physics enforcement, no IC constraint"
+        ),
+        out_path    = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_fig2_ml_epochs.png",
+        clip_y      = True,
+    )
+
+    print("Generating Figure 3 — PINN (ext. physics) epoch snapshots …")
     make_epoch_figure(
         snapshots   = bundle["snaps_pinn_ext_phys"],
         cfg         = cfg,
@@ -531,11 +519,11 @@ def main() -> None:
             f"Collocation extends to t_extrap={cfg.t_extrap}  |  "
             f"λ_phys={cfg.lambda_phys}  λ_ic={cfg.lambda_ic}"
         ),
-        out_path    = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_fig2_pinn_ext_epochs.png",
+        out_path    = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_fig3_pinn_ext_epochs.png",
         clip_y      = False,
     )
 
-    print("Generating Figure 3 — PINN (blind) epoch snapshots …")
+    print("Generating Figure 4 — PINN (blind) epoch snapshots …")
     make_epoch_figure(
         snapshots   = bundle["snaps_pinn_blind"],
         cfg         = cfg,
@@ -550,26 +538,8 @@ def main() -> None:
             f"Collocation only in training window [0, {cfg.t_train}]  |  "
             f"λ_phys={cfg.lambda_phys}  λ_ic={cfg.lambda_ic}"
         ),
-        out_path    = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_fig3_pinn_blind_epochs.png",
+        out_path    = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_fig4_pinn_blind_epochs.png",
         clip_y      = False,
-    )
-
-    print("Generating Figure 4 — Standard-ML epoch snapshots …")
-    make_epoch_figure(
-        snapshots   = bundle["snaps_ml"],
-        cfg         = cfg,
-        data        = data,
-        pred        = pred_ml,
-        model_color = RED,
-        model_label = "Std ML",
-        fig_title   = (
-            f"Standard ML — trajectory evolution across epochs  "
-            f"[device={bundle['device_str']}]\n"
-            f"m={cfg.mass}  c={cfg.damping}  k={cfg.stiffness}  |  "
-            "Data loss only — no physics enforcement, no IC constraint"
-        ),
-        out_path    = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_fig4_ml_epochs.png",
-        clip_y      = True,
     )
 
     print(f"\n  All figures written to  {out_dir}/")
