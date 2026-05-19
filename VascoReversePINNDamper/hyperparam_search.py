@@ -8,7 +8,7 @@ import numpy as np
 def search_learning_rate_param():
     # Define a range of learning rates to search over
     # learning_rates = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e-0]  # Search over a range of learning rates
-    learning_rates = 10**np.linspace(-3.5, -0.5, num=25) # Search over a range of learning rates from 10^-3.5 to 10^-1.5: [3.16e-4, 5.62e-4, 1e-3, 1.78e-3, 3.16e-3, 5.62e-3, 1e-2, 1.78e-2, 3.16e-2]
+    learning_rates =10**np.linspace(-3.5, -2.5, num=13) # Search over a range of learning rates from 10^-3.5 to 10^-1.5: [3.16e-4, 5.62e-4, 1e-3, 1.78e-3, 3.16e-3, 5.62e-3, 1e-2, 1.78e-2, 3.16e-2]
     plot_RMSE = []  # To store RMSE values for plotting later
     plot_w0_diff = []  # To store w0 differences for plotting later
     plot_zeta_diff = []  # To store zeta differences for plotting later

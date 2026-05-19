@@ -97,13 +97,14 @@ For the reverse problem we have to tune lr_param
 We will look at 3 things that need to be optimized: RMSE and distances to true values of w0 and zeta
 
 Starting search: learning_rates = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e-0]
-Best learning rate RMSE: 0.001 with RMSE: 0.004002771307036508
-Best learning rate w0: 0.01 with difference: 0.004451186567684617 (from w0_hat: 1.9955488134323154)
-Best learning rate zeta: 0.001 with difference: 0.0009697452508586474 (from zeta_hat: 0.12403025474914135)
-We will keep searching around 0.1-0.001:
-Zoomed search: learning_rates =10**np.linspace(-3.5, -0.5, num=25)
-Best learning rate RMSE: 0.01 with RMSE: 0.002715598467403243
-Best learning rate w0: 0.005623413251903491 with difference: 0.00044879758739879705 (from w0_hat: 2.000448797587399)
-Best learning rate zeta: 0.042169650342858224 with difference: 0.0006081193295721377 (from zeta_hat: 0.12560811932957214)
+Best learning rate RMSE: 0.001 with RMSE: 0.015065502428895695
+Best learning rate w0: 0.001 with difference: 0.008181622678776979 (from w0_hat: 1.991818377321223)
+Best learning rate zeta: 0.001 with difference: 0.006121750773675744 (from zeta_hat: 0.13112175077367574)
 
-We will choose 0.01, it also has a decent zeta_hat: 0.1271 (0.0021 diff) and decent omega0_hat: 2.0013 (0.0013 diff).
+We will keep searching around 0.001:
+Zoomed search: learning_rates =10**np.linspace(-3.5, -2.5, num=13)
+Best learning rate RMSE: 0.0014677992676220691 with RMSE: 0.003969613806554789
+Best learning rate w0: 0.001 with difference: 8.328602825624642e-06 (from w0_hat: 2.0000083286028256)
+Best learning rate zeta: 0.0008254041852680181 with difference: 0.0013658944244949733 (from zeta_hat: 0.12636589442449497)
+
+We will choose 0.001, it also has a decent zeta_hat: 0.1264 (0.0014 diff) and decent RMSE: 0.0042

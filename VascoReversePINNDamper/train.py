@@ -745,7 +745,7 @@ def evaluate_model(w0: float, zeta: float, suffix_results_pt=DamperConfig.suffix
     print("=" * 70)
     print("RESULTS SUMMARY  (best-val checkpoint)")
     print("=" * 70)
-    print(f"  {'Metric':<38}  {'Std ML':>10}  {'PINN (phys. ext.)':>10}  {'PINN (blind)':>10}")
+    print(f"  {'Metric':<38}  {'PINN (phys. ext.)':>10}  {'PINN (blind)':>10}")
     print("  " + "-" * 62)
     print(f"  {'RMSE  (training interval)':38}  {rmse_pinn_ext_phys_train:>10.4f}  {rmse_pinn_blind_train:>10.4f}")
     print(f"  {'RMSE  (extrapolation)':38}  {rmse_pinn_ext_phys_extrap:>10.4f}  {rmse_pinn_blind_extrap:>10.4f}")

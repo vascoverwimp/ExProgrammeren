@@ -88,8 +88,8 @@ class DamperConfig:
     # ── Optimiser ────────────────────────────────────────────────────────────
     beta1:    float = 0.9    # Adam beta1
     beta2:    float = 0.999  # Adam beta2
-    lr:       float = 0.01   # initial Adam learning rate
-    lr_param: float = 0.0061054   # learning rate for physical parameters (zeta_hat, w0_hat)
+    lr:       float = 0.00316   # initial Adam learning rate
+    lr_param: float = 0.001   # learning rate for physical parameters (zeta_hat, w0_hat)
     lr_step:  int   = 3000   # StepLR: decay every this many epochs
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
 
