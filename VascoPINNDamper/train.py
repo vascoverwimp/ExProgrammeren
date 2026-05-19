@@ -308,8 +308,8 @@ def train_model(
 
     t0_wall = time.perf_counter()
 
-    t_col_pool_extrap = torch.rand(cfg.n_col_pool, device=device)*(cfg.t_extrap - 0.0) + 0.0
-    t_col_pool_train  = torch.rand(cfg.n_col_pool, device=device)*(cfg.t_train - 0.0) + 0.0
+    t_col_pool_extrap = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.t_extrap - 0.0) + 0.0
+    t_col_pool_train  = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.t_train - 0.0) + 0.0
 
     t_selected_epoch = t_obs_train_t
     y_selected_epoch = y_obs_train_t
@@ -337,7 +337,6 @@ def train_model(
             else:
                 t_col = t_col_pool_train[idx].clone().detach().requires_grad_(True)
                 
-            t_col.to(device)
             l_phys = loss_physics(model, t_col, cfg)
 
         if use_ic:

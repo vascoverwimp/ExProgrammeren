@@ -464,7 +464,7 @@ def train_model(
         if use_physics:
             idx = torch.randint(0, cfg.n_col_pool, (cfg.n_col,))
             x_col_t = x_pool[idx].clone().detach().requires_grad_(True)
-            x_col_t.to(device)
+
             if extrapolated_physics:
             # ── Collocation points (randomly chosen) ───────────────────────────────────
                 t_col_t = t_pool_ext_physics[idx].clone().detach().requires_grad_(True)
@@ -472,9 +472,7 @@ def train_model(
             else:
                 t_col_t = t_pool_blind[idx].clone().detach().requires_grad_(True)
 
-            t_col_t.to(device)
             l_phys = loss_physics(model, x_col_t, t_col_t, cfg)
-
 
         if use_ic:
             l_ic   = loss_ic(model, x_samples_ic_t, t_ic_t, cfg)
@@ -635,7 +633,7 @@ def parse_args() -> argparse.Namespace:
 # 6.  MAIN
 # =============================================================================
 
-def main_training() -> None:
+def main() -> None:
     args = parse_args()
 
     # ── Convert CLI arguments to kwargs for train_and_save_both ───────────────
@@ -683,6 +681,7 @@ def main_training() -> None:
     print(f"  IC enforced at t={args.t0} via L_ic (not in observations)\n")
 
     train_and_save_both(**kwargs)
+    evaluate_model(situation=args.situation,v=args.viscosity)
 
 
 def train_and_save_both(**kwargs) -> None:
@@ -744,11 +743,7 @@ def train_and_save_both(**kwargs) -> None:
 
     # ── Data ──────────────────────────────────────────────────────────────────
     data = generate_data(cfg, device)
-    n_train = len(data["t_obs_train"])
-    n_val   = len(data["t_obs_val"])
-    print(f"\n  Observations: {cfg.n_obs_total} total  →  {n_train} train / {n_val} val")
-    print(f"  Collocation : {cfg.n_col} pts over [{cfg.x_begin}, {cfg.x_end}] × [{cfg.t0}, {cfg.t_extrap}]")
-    print(f"  IC enforced at t={cfg.t0} via L_ic (not in observations)\n")
+
 
     # ── PINN model (extended physics) ─────────────────────────────────────────────
     print()
@@ -927,5 +922,4 @@ def evaluate_blind(situation: str = BurgerConfig.situation, v: float = BurgerCon
     return rmse_pinn_blind_train, nu_hat_blind
 
 if __name__ == "__main__":
-    main_training()
-    evaluate_model()
+    main()

@@ -115,7 +115,7 @@ class BurgerConfig:
     suffix_results_pt: str = "training_results.pt"  # torch.save bundle 
     suffix_ckpt_pinn_ext_phys:  str = "best_pinn_ext_phys.pt"         # best-so-far extended physics PINN checkpoint
     suffix_ckpt_pinn_blind:    str = "best_pinn_blind.pt"           # best-so-far blind PINN checkpoint
-    suffix_ckpt_ml:    str = "best_ml.pt"           # best-so-far standard ML checkpoint
+
 
     # ── Derived quantities (read-only) ────────────────────────────────────────
     @property

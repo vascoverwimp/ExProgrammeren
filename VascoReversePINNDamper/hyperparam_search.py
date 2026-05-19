@@ -63,7 +63,7 @@ def search_learning_rate_param():
     plt.title('Learning Rate vs RMSE for PINN (blind)')
     plt.grid(True)
     plt.savefig(cfg.out_dir+"/learning_rate_vs_rmse.png")
-    plt.show()
+
 
     plt.figure(figsize=(8, 5))
     plt.plot([lr for lr, w0_diff in plot_w0_diff], [w0_diff for lr, w0_diff in plot_w0_diff], marker='o')
@@ -73,7 +73,7 @@ def search_learning_rate_param():
     plt.title('Learning Rate vs w0 Difference for PINN (blind)')
     plt.grid(True)
     plt.savefig(cfg.out_dir + "/learning_rate_vs_w0_diff.png")
-    plt.show()
+
 
     plt.figure(figsize=(8, 5))
     plt.plot([lr for lr, zeta_diff in plot_zeta_diff], [zeta_diff for lr, zeta_diff in plot_zeta_diff], marker='o')
@@ -83,6 +83,7 @@ def search_learning_rate_param():
     plt.title('Learning Rate vs zeta Difference for PINN (blind)')
     plt.grid(True)
     plt.savefig(cfg.out_dir+"/learning_rate_vs_zeta_diff.png")
+    
     plt.show()
 
 

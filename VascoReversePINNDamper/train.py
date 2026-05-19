@@ -341,7 +341,6 @@ def train_model(
             else:
                 t_col = t_col_pool_train[idx].clone().detach().requires_grad_(True)
                 
-            t_col.to(device)
             l_phys = loss_physics(model, t_col, cfg)
 
         
@@ -591,8 +590,8 @@ def train_and_save_both(**kwargs) -> None:
         'patience': kwargs.get('patience', DamperConfig.patience),
         'min_delta': kwargs.get('min_delta', DamperConfig.min_delta),
         'out_dir': kwargs.get('out_dir', DamperConfig.out_dir),
-        'w0_init': kwargs.get('w0_init', DamperConfig.ini_guess_w0),
-        'zeta_init': kwargs.get('zeta_init', DamperConfig.ini_guess_zeta),
+        'ini_guess_w0': kwargs.get('w0_init', DamperConfig.ini_guess_w0),
+        'ini_guess_zeta': kwargs.get('zeta_init', DamperConfig.ini_guess_zeta),
     }
     cfg = DamperConfig(**config_kwargs)
     # ── Reproducibility ───────────────────────────────────────────────────────

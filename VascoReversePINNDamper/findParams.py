@@ -1,12 +1,13 @@
+from pathlib import Path
 from model import DamperConfig
 from train import train_and_save_both, evaluate_model
 import matplotlib.pyplot as plt
 import numpy as np
 
-def viscosity_predictions():
+def damper_predictions():
     mass = 1.0  # kg
-    dampings = np.linspace(0.5, 5, num=10)  # Search over a range of damping coefficients from 10^-5 to 10^-1
-    stiffnesses = np.linspace(0.5, 5, num=10)  # Search over a range of stiffness coefficients from 10^-5 to 10^-1
+    dampings = np.linspace(0.5, 5.5, num=6)
+    stiffnesses = np.linspace(0.5, 5.5, num=6) 
 
     plotting = []  # To store RMSE values for plotting later
     for damping in dampings:
@@ -17,9 +18,13 @@ def viscosity_predictions():
                 damping = damping,
                 stiffness = stiffness,
             )
-            train_and_save_both(**kwargs)
             true_w0 = cfg.omega_0
             true_zeta = cfg.zeta
+            location = Path(f"{cfg.out_dir}/w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_results_pt}")
+
+            if not location.exists():
+                train_and_save_both(**kwargs)
+
             w0_hat_blind, zeta_hat_blind, w0_hat_ext_phys, zeta_hat_ext_phys = evaluate_model(true_w0, true_zeta)
             plotting.append((damping, stiffness, true_w0, true_zeta, w0_hat_blind, zeta_hat_blind, w0_hat_ext_phys, zeta_hat_ext_phys))
             print(f"Damping: {damping:.1e}, Stiffness: {stiffness:.1e}, Omega0 (true): {true_w0:.4f}, Zeta (true): {true_zeta:.4f}")
@@ -36,8 +41,7 @@ def viscosity_predictions():
     plt.title(f'Omega0 Estimation vs True Omega0')
     plt.grid(True)
     plt.legend()
-    plt.savefig(f"omega0_predictions.png")
-    plt.show()
+    plt.savefig(f"{cfg.out_dir}/omega0_predictions.png")
 
     # Plot the results (zeta)
     plt.figure(figsize=(8, 5))
@@ -50,8 +54,7 @@ def viscosity_predictions():
     plt.title(f'Zeta Estimation vs True Zeta')
     plt.grid(True)
     plt.legend()
-    plt.savefig(f"zeta_predictions.png")
-    plt.show()
+    plt.savefig(f"{cfg.out_dir}/zeta_predictions.png")
 
     # Plot the results (zeta function of damping and stiffness, colormap)
     zeta_true = np.array([true_zeta for _, _, _, true_zeta, _, _, _, _ in plotting]).reshape(len(dampings), len(stiffnesses))
@@ -83,8 +86,8 @@ def viscosity_predictions():
     plt.colorbar(im2, ax=axes[2])
     
     plt.tight_layout()
-    plt.savefig(f"zeta_2d.png")
-    plt.show()
+    plt.savefig(f"{cfg.out_dir}/zeta_2d.png")
+
 
     # Plot the results (omega0 function of damping and stiffness, colormap)
     omega0_true = np.array([true_w0 for _, _, true_w0, _, _, _, _, _ in plotting]).reshape(len(dampings), len(stiffnesses))
@@ -116,6 +119,10 @@ def viscosity_predictions():
     plt.colorbar(im2, ax=axes[2])
     
     plt.tight_layout()
-    plt.savefig(f"omega0_2d.png")
+    plt.savefig(f"{cfg.out_dir}/omega0_2d.png")
+
     plt.show()
+
+if __name__ == "__main__":
+    damper_predictions()
 

@@ -463,7 +463,6 @@ def train_model(
         if use_physics:
             idx = torch.randint(0, cfg.n_col_pool, (cfg.n_col,))
             x_col_t = x_pool[idx].clone().detach().requires_grad_(True)
-            x_col_t.to(device)
 
             if extrapolated_physics:
             # ── Collocation points (randomly chosen) ───────────────────────────────────
@@ -471,7 +470,6 @@ def train_model(
             else:
                 t_col_t = t_pool_blind[idx].clone().detach().requires_grad_(True)
 
-            t_col_t.to(device)
             l_phys = loss_physics(model, x_col_t, t_col_t, cfg)
 
 
@@ -629,7 +627,7 @@ def parse_args() -> argparse.Namespace:
 # 6.  MAIN
 # =============================================================================
 
-def main_training() -> None:
+def main() -> None:
     args = parse_args()
 
     # ── Convert CLI arguments to kwargs for train_and_save_both ───────────────
@@ -673,10 +671,11 @@ def main_training() -> None:
     print(f"  Collocation : {args.n_col} pts over [{args.x_begin}, {args.x_end}] × [{args.t0}, {args.t_extrap} (phys. ext.) / {args.t_train} (blind)]")
     print(f"  IC enforced at t={args.t0} via L_ic (not in observations)\n")
 
-    train_and_save_both(**kwargs)
+    train_and_save_three(**kwargs)
+    evaluate_model(situation=args.situation, v=args.viscosity)
 
 
-def train_and_save_both(**kwargs) -> None:
+def train_and_save_three(**kwargs) -> None:
     """
     Train both PINN models (extended physics and blind) with provided config kwargs.
     
@@ -727,17 +726,6 @@ def train_and_save_both(**kwargs) -> None:
     out_dir = Path(cfg.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    ckpt_pinn_ext_phys = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_ckpt_pinn_ext_phys}"
-    ckpt_pinn_blind    = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_ckpt_pinn_blind}"
-    results_path = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_results_pt}"
-
-    # ── Data ──────────────────────────────────────────────────────────────────
-    data = generate_data(cfg, device)
-    n_train = len(data["t_obs_train"])
-    n_val   = len(data["t_obs_val"])
-    print(f"\n  Observations: {cfg.n_obs_total} total  →  {n_train} train / {n_val} val")
-    print(f"  Collocation : {cfg.n_col} pts over [{cfg.x_begin}, {cfg.x_end}] × [{cfg.t0}, {cfg.t_extrap}]")
-    print(f"  IC enforced at t={cfg.t0} via L_ic (not in observations)\n")
 
     ckpt_pinn_ext_phys = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_ckpt_pinn_ext_phys}"
     ckpt_pinn_blind    = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_ckpt_pinn_blind}"
@@ -746,11 +734,7 @@ def train_and_save_both(**kwargs) -> None:
 
     # ── Data ──────────────────────────────────────────────────────────────────
     data = generate_data(cfg, device)
-    n_train = len(data["t_obs_train"])
-    n_val   = len(data["t_obs_val"])
-    print(f"\n  Observations: {cfg.n_obs_total} total  →  {n_train} train / {n_val} val")
-    print(f"  Collocation : {cfg.n_col} pts over [{cfg.x_begin}, {cfg.x_end}] × [{cfg.t0}, {cfg.t_extrap}]")
-    print(f"  IC enforced at t={cfg.t0} via L_ic (not in observations)\n")
+
 
     # ── Standard ML model ─────────────────────────────────────────────────────
     print("=" * 70)
@@ -950,5 +934,4 @@ def evaluate_blind(situation: str = BurgerConfig.situation, v: float = BurgerCon
     return rmse_pinn_blind_train
 
 if __name__ == "__main__":
-    main_training()
-    evaluate_blind()
+    main()
