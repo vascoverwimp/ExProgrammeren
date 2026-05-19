@@ -59,7 +59,7 @@ class BurgerConfig:
     ini_guess_v: float = 0.33
 
     # ── Initial conditions ───────────────────────────────────────────────────
-    situation: str = "Gaussian"  # "N-wave","Gaussian", or "Step"
+    situation: str = "N-wave"  # "N-wave","Gaussian", or "Step"
     # ── Data ─────────────────────────────────────────────────────────────────
     n_obs_total:       int    = 1000   # total noisy observations (before split)
     n_bins:            int    = 20    # bins for stratisfying validation split along time axis (unused)
@@ -78,8 +78,8 @@ class BurgerConfig:
     n_plot_t: int = 200  # temporal resolution for all plots (including snapshots)
 
     # ── PINN loss weights ─────────────────────────────────────────────────────
-    lambda_phys: float = 0.1  # physics-residual weight
-    lambda_ic:   float = 50.0  # initial-condition weight (>> lambda_phys)
+    lambda_phys: float = 0.7943282347242815  # physics-residual weight
+    lambda_ic:   float = 1.2589254117941673  # initial-condition weight (>> lambda_phys)
 
     # ── Network architecture ──────────────────────────────────────────────────
     hidden:   int = 48   # neurons per hidden layer
@@ -88,10 +88,10 @@ class BurgerConfig:
     # ── Optimiser ────────────────────────────────────────────────────────────
     beta1:    float = 0.9    # Adam beta1
     beta2:    float = 0.999  # Adam beta2
-    lr:       float = 0.01   # initial Adam learning rate
+    lr:       float = 0.0018077686769634343   # initial Adam learning rate
     lr_step:  int   = 3000   # StepLR: decay every this many epochs
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
-    lr_param: float = 0.13593563908785256    # learning rate for physical parameters (relative to lr)
+    lr_param: float = 0.0003981071705534969    # learning rate for physical parameters (relative to lr)
 
     # ── Training loop ─────────────────────────────────────────────────────────
     n_epochs:    int = 40_000   # maximum training epochs

@@ -8,7 +8,7 @@ import numpy as np
 def search_learning_rate_param():
     # Define a range of learning rates to search over
     # learning_rates = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e-0]  # Search over a range of learning rates
-    learning_rates =10**np.linspace(-2.7, -0.5, num=13) # Search over a range of learning rates from 10^-3.5 to 10^-1.5: [3.16e-4, 5.62e-4, 1e-3, 1.78e-3, 3.16e-3, 5.62e-3, 1e-2, 1.78e-2, 3.16e-2]
+    learning_rates =10**np.linspace(-1.8, -4.2, num=25) # Search over a range of learning rates from 10^-3.5 to 10^-1.5: [3.16e-4, 5.62e-4, 1e-3, 1.78e-3, 3.16e-3, 5.62e-3, 1e-2, 1.78e-2, 3.16e-2]
     plot_RMSE = []  # To store RMSE values for plotting later
     plot_v_diff = []  # To store nu differences for plotting later
     device = get_device()
@@ -51,7 +51,7 @@ def search_learning_rate_param():
     plt.title('Learning Rate vs RMSE for PINN (blind)')
     plt.grid(True)
     plt.savefig(cfg.out_dir+"/learning_rate_vs_rmse.png")
-    plt.show()
+
 
     plt.figure(figsize=(8, 5))
     plt.plot([lr for lr, v_diff in plot_v_diff], [v_diff for lr, v_diff in plot_v_diff], marker='o')
@@ -61,7 +61,7 @@ def search_learning_rate_param():
     plt.title('Learning Rate vs viscosity Difference for PINN (blind)')
     plt.grid(True)
     plt.savefig(cfg.out_dir+"/learning_rate_vs_v_diff.png")
-    plt.show()
+
 
 
 

@@ -117,8 +117,13 @@ We will continue with 465 collocation points
 For the reverse problem we have to tune lr_param
 We will look at 3 things that need to be optimized: RMSE and distances to true values of nu (0.1)
 
+Let's try this for the third time
 Starting search: learning_rates = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e-0]
-Best learning rate RMSE: 0.0001 with RMSE: 0.005672723182501369
-Best learning rate v: 0.01 with difference: 0.002280541619882684
+Best learning rate RMSE: 0.0001 with RMSE: 0.009095883946199172
+Best learning rate v: 0.001 with difference: 0.013415724608118615 (from v_hat: 0.08658427539188139)
 
-We will choose 0.01, also has decent RMSE (0.005268695495348943)
+Zoomed search: learning_rates =10**np.linspace(-1.8, -4.2, num=25)
+Best learning rate RMSE: 0.00019952623149688788 with RMSE: 0.0063437969652230764
+Best learning rate v: 0.0003981071705534969 with difference: 0.0006189258710126155 (from v_hat: 0.09938107412898739)
+
+We will choose 0.0003981071705534969 as it also has a decent RMSE (0.0102)
