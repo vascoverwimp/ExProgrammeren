@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def viscosity_predictions(situation:str):
-    viscosities = np.logspace(-5, -1, num=3)  # Search over a range of viscosities from 10^-3 to 10^-1
+    viscosities = np.logspace(-5, -1, num=5)  # Search over a range of viscosities from 10^-3 to 10^-1
     plotting = []  # To store RMSE values for plotting later
     for v in viscosities:
         cfg = BurgerConfig(situation=situation, v=v)
@@ -36,8 +36,8 @@ def viscosity_predictions(situation:str):
     plt.grid(True)
     plt.legend()
     plt.savefig(f"{cfg.out_dir}/viscosity_predictions_{situation}.png")
-    plt.show()
+
 
 if __name__ == "__main__":
-    situation = "Gaussian"
+    situation = "N-wave"
     viscosity_predictions(situation)

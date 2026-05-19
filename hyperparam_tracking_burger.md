@@ -121,11 +121,4 @@ Starting search: learning_rates = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e-0]
 Best learning rate RMSE: 0.0001 with RMSE: 0.005672723182501369
 Best learning rate v: 0.01 with difference: 0.002280541619882684
 
-
-We will keep searching around 0.1-0.01 (best nu, okay RMSE):
-Zoomed search: learning_rates =10**np.linspace(-2.7, -0.5, num=13)
-Best learning rate RMSE: 0.0070794578438413735 with RMSE: 0.005268695495348943
-Best learning rate v: 0.13593563908785256 with difference: 0.0006435052857390322 (from v_hat: 0.10064350528573904)
-RMSE are all around the same (0.6)
-
-We will choose 0.13593563908785256, also has decent RMSE (0.005268695495348943)
+We will choose 0.01, also has decent RMSE (0.005268695495348943)
