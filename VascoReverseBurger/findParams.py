@@ -43,5 +43,5 @@ def viscosity_predictions(situation:str):
 
 
 if __name__ == "__main__":
-    situation = "N-wave"
+    situation = "Gaussian"
     viscosity_predictions(situation)
