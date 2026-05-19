@@ -331,7 +331,7 @@ def loss_physics(
         create_graph=True
     )[0]
 
-    residual = dotu + u_hat * du - model.v_hat * d2u
+    residual = dotu + u_hat * du - 10**model.log_v_hat * d2u
     return torch.mean(residual**2)
 
 
@@ -400,8 +400,8 @@ def train_model(
     snapshots : dict { epoch: CPU state_dict }
     """
     model.to(device)
-    model.v_hat.data = model.v_hat.data.to(device)
-    optimiser = torch.optim.Adam([{'params': model.net.parameters(), 'lr': cfg.lr, 'betas': (cfg.beta1, cfg.beta2)}, {'params': [model.v_hat], 'lr': cfg.lr_param}])
+    model.log_v_hat.data = model.log_v_hat.data.to(device)
+    optimiser = torch.optim.Adam([{'params': model.net.parameters(), 'lr': cfg.lr, 'betas': (cfg.beta1, cfg.beta2)}, {'params': [model.log_v_hat], 'lr': cfg.lr_param}])
     scheduler = torch.optim.lr_scheduler.StepLR(
         optimiser, step_size=cfg.lr_step, gamma=cfg.lr_gamma
     )
@@ -439,13 +439,10 @@ def train_model(
     u_selected_epoch = u_obs_train_t
 
     x_pool = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.x_end - cfg.x_begin) + cfg.x_begin
-    x_pool.requires_grad_(True)
 
     t_pool_ext_physics = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.t_extrap - cfg.t0) + cfg.t0
-    t_pool_ext_physics.requires_grad_(True)
 
     t_pool_blind = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.t_train - cfg.t0) + cfg.t0
-    t_pool_blind.requires_grad_(True)
 
     for epoch in range(1, cfg.n_epochs + 1):
         model.train()
@@ -461,28 +458,28 @@ def train_model(
         
         u_pred   = model(x_selected_epoch, t_selected_epoch)
         l_data   = torch.mean((u_pred - u_selected_epoch) ** 2)
-        l_total = l_data
         l_phys  = torch.zeros(1, device=device)
         l_ic    = torch.zeros(1, device=device)
 
         if use_physics:
             idx = torch.randint(0, cfg.n_col_pool, (cfg.n_col,))
-            x_col_t = x_pool[idx]
-
+            x_col_t = x_pool[idx].clone().detach().requires_grad_(True)
+            x_col_t.to(device)
             if extrapolated_physics:
             # ── Collocation points (randomly chosen) ───────────────────────────────────
-                t_col_t = t_pool_ext_physics[idx]
+                t_col_t = t_pool_ext_physics[idx].clone().detach().requires_grad_(True)
+
             else:
-                t_col_t = t_pool_blind[idx]
-        
+                t_col_t = t_pool_blind[idx].clone().detach().requires_grad_(True)
+
+            t_col_t.to(device)
             l_phys = loss_physics(model, x_col_t, t_col_t, cfg)
 
-            l_total += l_phys*cfg.lambda_phys
 
         if use_ic:
             l_ic   = loss_ic(model, x_samples_ic_t, t_ic_t, cfg)
-            l_total += l_ic*cfg.lambda_ic
 
+        l_total = l_data + cfg.lambda_phys * l_phys + cfg.lambda_ic * l_ic
         l_total.backward()
         optimiser.step()
         scheduler.step()

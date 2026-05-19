@@ -212,7 +212,7 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
         f"  |  device={bundle['device_str']}{shock_note}\n"
         f"Std ML vs PINN ext. physics vs PINN blind  |  "
         f"{cfg.n_obs_total} obs  σ={cfg.sigma}  |  "
-        f"{cfg.n_col_t}×{cfg.n_col_x} col. pts  |  "
+        f"{cfg.n_col} col. pts, randomly chosen each epoch |  "
         f"λ_phys={cfg.lambda_phys}  λ_ic={cfg.lambda_ic}  |  "
         f"train window: t ≤ {cfg.t_train}",
         fontsize=8.5, y=0.975, color="#2C2C2A",

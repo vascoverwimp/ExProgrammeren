@@ -88,13 +88,13 @@ class DamperConfig:
     # ── Optimiser ────────────────────────────────────────────────────────────
     beta1:    float = 0.9    # Adam beta1
     beta2:    float = 0.999  # Adam beta2
-    lr:       float = 0.00316   # initial Adam learning rate
+    lr:       float = 0.01   # initial Adam learning rate
     lr_param: float = 0.0061054   # learning rate for physical parameters (zeta_hat, w0_hat)
     lr_step:  int   = 3000   # StepLR: decay every this many epochs
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
 
     # ── Training loop ─────────────────────────────────────────────────────────
-    n_epochs:    int = 8_000   # maximum training epochs
+    n_epochs:    int = 10_000   # maximum training epochs
     print_every: int = 1_000   # console log frequency (epochs)
     log_every:   int = 100     # history-dict write frequency (epochs)
 
@@ -155,8 +155,8 @@ class FCNet(nn.Module):
             layers += [nn.Linear(hidden, hidden), nn.Tanh()]
         layers += [nn.Linear(hidden, 1)]
         self.net = nn.Sequential(*layers)
-        self.zeta_hat = nn.Parameter(torch.tensor([ini_guess_zeta], requires_grad=True))
-        self.w0_hat = nn.Parameter(torch.tensor([ini_guess_w0], requires_grad=True))
+        self.log_zeta_hat = nn.Parameter(torch.tensor([np.log10(ini_guess_zeta)], requires_grad=True))
+        self.log_w0_hat = nn.Parameter(torch.tensor([np.log10(ini_guess_w0)], requires_grad=True))
 
     def forward(self, t: torch.Tensor) -> torch.Tensor:
         return self.net(t)
@@ -217,8 +217,8 @@ class Predictor:
     def predict_params(self) -> dict:
         """Return the current estimates of the physical parameters."""
         return {
-            "w0_hat": self.model.w0_hat.item(),
-            "zeta_hat": self.model.zeta_hat.item(),
+            "w0_hat": 10 ** self.model.log_w0_hat.item(),
+            "zeta_hat": 10 ** self.model.log_zeta_hat.item(),
         }
 
     def predict(self, t: np.ndarray) -> np.ndarray:

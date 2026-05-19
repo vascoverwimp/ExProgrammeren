@@ -437,13 +437,10 @@ def train_model(
     u_selected_epoch = u_obs_train_t
 
     x_pool = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.x_end - cfg.x_begin) + cfg.x_begin
-    x_pool.requires_grad_(True)
 
     t_pool_ext_physics = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.t_extrap - cfg.t0) + cfg.t0
-    t_pool_ext_physics.requires_grad_(True)
 
     t_pool_blind = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.t_train - cfg.t0) + cfg.t0
-    t_pool_blind.requires_grad_(True)
 
     for epoch in range(1, cfg.n_epochs + 1):
         model.train()
@@ -465,21 +462,23 @@ def train_model(
 
         if use_physics:
             idx = torch.randint(0, cfg.n_col_pool, (cfg.n_col,))
-            x_col_t = x_pool[idx]
+            x_col_t = x_pool[idx].clone().detach().requires_grad_(True)
+            x_col_t.to(device)
 
             if extrapolated_physics:
             # ── Collocation points (randomly chosen) ───────────────────────────────────
-                t_col_t = t_pool_ext_physics[idx]
+                t_col_t = t_pool_ext_physics[idx].clone().detach().requires_grad_(True)
             else:
-                t_col_t = t_pool_blind[idx]
+                t_col_t = t_pool_blind[idx].clone().detach().requires_grad_(True)
+
+            t_col_t.to(device)
             l_phys = loss_physics(model, x_col_t, t_col_t, cfg)
 
-            l_total += cfg.lambda_phys * l_phys
 
         if use_ic:
             l_ic   = loss_ic(model, x_samples_ic_t, t_ic_t, cfg)
-            l_total += cfg.lambda_ic * l_ic
 
+        l_total = l_data + cfg.lambda_phys * l_phys + cfg.lambda_ic * l_ic
         l_total.backward()
         optimiser.step()
         scheduler.step()
@@ -813,86 +812,45 @@ def main_training() -> None:
     print(f"  Best PINN (blind) checkpoint : {ckpt_pinn_blind}")
     print("\n  Run  python plot.py  to generate figures.\n")
 
-def evaluate_model() -> None:
-    
-    # ── Load best checkpoints for final evaluation ────────────────────────────
-    # Using best-val checkpoints rather than last-epoch weights ensures
-    # the saved result reflects the model at its generalisation peak.
-    args = parse_args()
-    # ── Build config from CLI arguments ───────────────────────────────────────
-    cfg = BurgerConfig(
-        v            = args.viscosity,
-        situation    = args.situation,
-        x_begin      = args.x_begin,
-        x_end        = args.x_end,
-        t0           = args.t0,
-        t_train      = args.t_train,
-        t_extrap     = args.t_extrap,
-        n_obs_total  = args.n_obs,
-        sigma        = args.sigma,
-        n_col        = args.n_col,
-        seed         = args.seed,
-        lambda_phys  = args.lambda_phys,
-        lambda_ic    = args.lambda_ic,
-        hidden       = args.hidden,
-        n_layers     = args.n_layers,
-        lr           = args.lr,
-        lr_step      = args.lr_step,
-        lr_gamma     = args.lr_gamma,
-        n_epochs     = args.n_epochs,
-        print_every  = args.print_every,
-        log_every    = args.log_every,
-        patience     = args.patience,
-        min_delta    = args.min_delta,
-        out_dir      = args.out_dir,
-    )
-    out_dir = Path(cfg.out_dir)
-    results_path = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_results_pt}"
+def evaluate_blind(situation: str = BurgerConfig.situation, v: float = BurgerConfig.v) -> float:
+
+    out_dir = Path(BurgerConfig.out_dir)
+    results_path = out_dir / f"{situation}_{v:.1e}_{BurgerConfig.suffix_results_pt}"
     raw = torch.load(results_path, map_location="cpu", weights_only=False)
-    config = raw["config"]
+    config: BurgerConfig = raw["config"]
     data = raw["data"]
-    ckpt_pinn_ext_phys = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_ckpt_pinn_ext_phys}"
-    ckpt_pinn_blind    = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_ckpt_pinn_blind}"
-    ckpt_ml   = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_ckpt_ml}"
-    pred_ml   = Predictor(config, checkpoint_path=str(ckpt_ml))
-    pred_pinn_ext_phys = Predictor(config, checkpoint_path=str(ckpt_pinn_ext_phys))
+    ckpt_pinn_blind    = out_dir / f"{config.situation}_{config.v:.1e}_{config.suffix_ckpt_pinn_blind}"
     pred_pinn_blind    = Predictor(config, checkpoint_path=str(ckpt_pinn_blind))
 
     t_flattened_full  = data["t_flattened_full"]
     x_flattened_full  = data["x_flattened_full"]
     u_true_full  = data["u_true_full"]
 
-    u_ml_full   = pred_ml.predict(x_flattened_full, t_flattened_full)
-    u_pinn_ext_phys_full = pred_pinn_ext_phys.predict(x_flattened_full, t_flattened_full)
     u_pinn_blind_full    = pred_pinn_blind.predict(x_flattened_full, t_flattened_full)
 
     mask_train  = t_flattened_full <= config.t_train
 
     mask_extrap = t_flattened_full >  config.t_train
 
-    rmse_ml_train   = Predictor.rmse(u_ml_full[mask_train],   u_true_full[mask_train])
-    rmse_pinn_ext_phys_train = Predictor.rmse(u_pinn_ext_phys_full[mask_train],  u_true_full[mask_train])
     rmse_pinn_blind_train = Predictor.rmse(u_pinn_blind_full[mask_train],  u_true_full[mask_train])
-    rmse_ml_extrap     = Predictor.rmse(u_ml_full[mask_extrap],  u_true_full[mask_extrap])
-    rmse_pinn_ext_phys_extrap   = Predictor.rmse(u_pinn_ext_phys_full[mask_extrap], u_true_full[mask_extrap])
+
     rmse_pinn_blind_extrap = Predictor.rmse(u_pinn_blind_full[mask_extrap], u_true_full[mask_extrap])
-    phys_ml         = Predictor.physics_residual(u_ml_full, x_flattened_full, t_flattened_full, cfg)
-    phys_pinn_ext_phys       = Predictor.physics_residual(u_pinn_ext_phys_full, x_flattened_full, t_flattened_full, cfg)
-    phys_pinn_blind       = Predictor.physics_residual(u_pinn_blind_full, x_flattened_full, t_flattened_full, cfg)
+
+    phys_pinn_blind       = Predictor.physics_residual(u_pinn_blind_full, x_flattened_full, t_flattened_full, config)
 
     # ── Console summary ───────────────────────────────────────────────────────
     print()
     print("=" * 70)
     print("RESULTS SUMMARY  (best-val checkpoint)")
     print("=" * 70)
-    print(f"  {'Metric':<38}  {'Std ML':>10}  {'PINN (ext. physics)':>10} {'PINN (blind)':>10}")
+    print(f"  {'Metric':<38} {'PINN (blind)':>10}")
     print("  " + "-" * 62)
-    print(f"  {'RMSE  (training interval)':38}  {rmse_ml_train:>10.4f}  {rmse_pinn_ext_phys_train:>10.4f}  {rmse_pinn_blind_train:>10.4f}")
-    print(f"  {'RMSE  (extrapolation)':38}  {rmse_ml_extrap:>10.4f}  {rmse_pinn_ext_phys_extrap:>10.4f}  {rmse_pinn_blind_extrap:>10.4f}")
-    print(f"  {'Physics Residual':38}  {phys_ml:>10.4f}  {phys_pinn_ext_phys:>10.4f}  {phys_pinn_blind:>10.4f}")
+    print(f"  {'RMSE  (training interval)':38}  {rmse_pinn_blind_train:>10.4f}")
+    print(f"  {'RMSE  (extrapolation)':38}  {rmse_pinn_blind_extrap:>10.4f}")
+    print(f"  {'Physics Residual':38}  {phys_pinn_blind:>10.4f}")
 
-
+    return rmse_pinn_blind_train
 
 if __name__ == "__main__":
     main_training()
-    evaluate_model()
+    evaluate_blind()

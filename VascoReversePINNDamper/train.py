@@ -208,7 +208,7 @@ def loss_physics(
         create_graph=True,
     )[0]
 
-    residual = d2y + 2*model.zeta_hat * model.w0_hat * dy + model.w0_hat**2 * y_hat
+    residual = d2y + 2* 10**model.log_zeta_hat * 10**model.log_w0_hat * dy + 10**(2*model.log_w0_hat) * y_hat
     return torch.mean(residual ** 2)
 
 
@@ -229,6 +229,7 @@ def loss_ic(
         grad_outputs=torch.ones_like(y_hat_0),
         create_graph=True,
     )[0]
+
     return torch.mean((y_hat_0 - cfg.y0) ** 2 + (dy_0 - cfg.dy0) ** 2)
 
 
@@ -273,16 +274,17 @@ def train_model(
     history   : dict of lists logged every cfg.log_every epochs
     snapshots : dict { epoch: CPU state_dict }
     """
-    if device.type == "cuda":
-        torch.cuda.init()
-        torch.cuda.synchronize()
+
     model.to(device)
     torch.manual_seed(cfg.seed)
 
-    optimiser = torch.optim.Adam([{'params': model.net.parameters(), 'lr': cfg.lr, 'betas': (cfg.beta1, cfg.beta2)}, {'params': [model.zeta_hat, model.w0_hat], 'lr': cfg.lr_param}])
+    optimiser = torch.optim.Adam([{'params': model.net.parameters(), 'lr': cfg.lr, 'betas': (cfg.beta1, cfg.beta2)}, {'params': [model.log_zeta_hat, model.log_w0_hat], 'lr': cfg.lr_param}])
     scheduler = torch.optim.lr_scheduler.StepLR(
         optimiser, step_size=cfg.lr_step, gamma=cfg.lr_gamma
     )
+    if device.type == "cuda":
+        torch.cuda.init()
+        torch.cuda.synchronize()
 
     t_obs_train_t = data["t_obs_train_t"]
     y_obs_train_t = data["y_obs_train_t"]
@@ -308,8 +310,9 @@ def train_model(
 
     t0_wall = time.perf_counter()
 
-    t_col_pool_extrap = torch.rand(cfg.n_col_pool, device=device, requires_grad=True)*(cfg.t_extrap - 0.0) + 0.0
-    t_col_pool_train  = torch.rand(cfg.n_col_pool, device=device, requires_grad=True)*(cfg.t_train - 0.0) + 0.0
+
+    t_col_pool_extrap = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.t_extrap - 0.0) + 0.0
+    t_col_pool_train  = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.t_train - 0.0) + 0.0
 
     t_selected_epoch = t_obs_train_t
     y_selected_epoch = y_obs_train_t
@@ -328,24 +331,26 @@ def train_model(
         # Data loss — MSE on training observations only (not validation)
         y_pred   = model(t_selected_epoch)
         l_data   = torch.mean((y_pred - y_selected_epoch) ** 2)
-        l_total = l_data
         l_phys  = torch.zeros(1, device=device)
         l_ic    = torch.zeros(1, device=device)
         if use_physics:
             idx = torch.randint(0, cfg.n_col_pool, (cfg.n_col,))
             if extrapolated_physics:
-                t_col = t_col_pool_extrap[idx]
-            else:
-                t_col = t_col_pool_train[idx]
+                t_col = t_col_pool_extrap[idx].clone().detach().requires_grad_(True)
 
+            else:
+                t_col = t_col_pool_train[idx].clone().detach().requires_grad_(True)
+                
+            t_col.to(device)
             l_phys = loss_physics(model, t_col, cfg)
-            l_total += cfg.lambda_phys * l_phys
+
         
         if use_ic:
 
             l_ic   = loss_ic(model, t_ic_t, cfg)
-            l_total += cfg.lambda_ic * l_ic
 
+
+        l_total  = l_data + cfg.lambda_phys * l_phys + cfg.lambda_ic * l_ic
         l_total.backward()
         optimiser.step()
         scheduler.step()

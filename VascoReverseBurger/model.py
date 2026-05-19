@@ -94,7 +94,7 @@ class BurgerConfig:
     lr_param: float = 1e-2    # learning rate for physical parameters (relative to lr)
 
     # ── Training loop ─────────────────────────────────────────────────────────
-    n_epochs:    int = 80_000   # maximum training epochs
+    n_epochs:    int = 40_000   # maximum training epochs
     print_every: int = 1_000   # console log frequency (epochs)
     log_every:   int = 100     # history-dict write frequency (epochs)
 
@@ -104,7 +104,7 @@ class BurgerConfig:
 
     # ── Snapshot epochs for trajectory plots ─────────────────────────────────
     snapshot_epochs: list = field(
-        default_factory=lambda: [1, 50, 200, 1_000, 8_000, 20_000, 40_000, 80_000]
+        default_factory=lambda: [1, 50, 200, 1_000, 8_000, 20_000, 40_000]
     )
 
 
@@ -192,7 +192,7 @@ class FCNet(nn.Module):
             layers += [nn.Linear(hidden, hidden), nn.Tanh()]
         layers += [nn.Linear(hidden, 1)]
         self.net = nn.Sequential(*layers)
-        self.v_hat = nn.Parameter(torch.tensor([ini_guess_v], requires_grad=True))
+        self.log_v_hat = nn.Parameter(torch.tensor([np.log10(ini_guess_v)], requires_grad=True))
     def forward(self, x, t):
         xt = torch.cat([x, t], dim=1)
         return self.net(xt)
@@ -252,7 +252,7 @@ class Predictor:
     def predict_params(self) -> dict:
         """Return the current estimates of the physical parameters."""
         return {
-            "v_hat": self.model.v_hat.item(),
+            "v_hat": 10**self.model.log_v_hat.item(),
         }
     
     def predict(self, x: np.ndarray, t: np.ndarray) -> np.ndarray:

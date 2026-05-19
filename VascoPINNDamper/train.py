@@ -308,8 +308,8 @@ def train_model(
 
     t0_wall = time.perf_counter()
 
-    t_col_pool_extrap = torch.rand(cfg.n_col_pool, device=device, requires_grad=True)*(cfg.t_extrap - 0.0) + 0.0
-    t_col_pool_train  = torch.rand(cfg.n_col_pool, device=device, requires_grad=True)*(cfg.t_train - 0.0) + 0.0
+    t_col_pool_extrap = torch.rand(cfg.n_col_pool, device=device)*(cfg.t_extrap - 0.0) + 0.0
+    t_col_pool_train  = torch.rand(cfg.n_col_pool, device=device)*(cfg.t_train - 0.0) + 0.0
 
     t_selected_epoch = t_obs_train_t
     y_selected_epoch = y_obs_train_t
@@ -328,24 +328,23 @@ def train_model(
         # Data loss — MSE on training observations only (not validation)
         y_pred   = model(t_selected_epoch)
         l_data   = torch.mean((y_pred - y_selected_epoch) ** 2)
-        l_total = l_data
         l_phys  = torch.zeros(1, device=device)
         l_ic    = torch.zeros(1, device=device)
         if use_physics:
             idx = torch.randint(0, cfg.n_col_pool, (cfg.n_col,))
             if extrapolated_physics:
-                t_col = t_col_pool_extrap[idx]
+                t_col = t_col_pool_extrap[idx].clone().detach().requires_grad_(True)
             else:
-                t_col = t_col_pool_train[idx]
-
+                t_col = t_col_pool_train[idx].clone().detach().requires_grad_(True)
+                
+            t_col.to(device)
             l_phys = loss_physics(model, t_col, cfg)
 
-            l_total += cfg.lambda_phys * l_phys
         if use_ic:
             l_ic   = loss_ic(model, t_ic_t, cfg)
-            l_total += cfg.lambda_ic * l_ic
 
 
+        l_total = l_data + cfg.lambda_phys * l_phys + cfg.lambda_ic * l_ic
         l_total.backward()
         optimiser.step()
         scheduler.step()

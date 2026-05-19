@@ -54,10 +54,10 @@ class BurgerConfig:
     x_end:    float = 7.0    # right boundary of observation window  [m]
 
     # ── Physical parameters ───────────────────────────────────────────────────
-    v:      float = 0.00001      # viscosity  [m^2/s]
+    v:      float = 0.1      # viscosity  [m^2/s]
 
     # ── Initial conditions ───────────────────────────────────────────────────
-    situation: str = "Gaussian"  # "N-wave","Gaussian", or "Step"
+    situation: str = "N-wave"  # "N-wave","Gaussian", or "Step"
     # ── Data ─────────────────────────────────────────────────────────────────
     n_obs_total:       int    = 1000   # total noisy observations (before split)
     n_bins:            int    = 20    # bins for stratisfying validation split along time axis (unused)
@@ -77,8 +77,8 @@ class BurgerConfig:
     n_plot_t: int = 200  # temporal resolution for all plots (including snapshots)
 
     # ── PINN loss weights ─────────────────────────────────────────────────────
-    lambda_phys: float = 0.1  # physics-residual weight
-    lambda_ic:   float = 50.0  # initial-condition weight (>> lambda_phys)
+    lambda_phys: float = 0.7943282347242815  # physics-residual weight
+    lambda_ic:   float = 1.2589254117941673  # initial-condition weight (>> lambda_phys)
 
     # ── Network architecture ──────────────────────────────────────────────────
     hidden:   int = 48   # neurons per hidden layer
@@ -87,12 +87,12 @@ class BurgerConfig:
     # ── Optimiser ────────────────────────────────────────────────────────────
     beta1:    float = 0.9    # Adam beta1
     beta2:    float = 0.999  # Adam beta2
-    lr:       float = 0.01   # initial Adam learning rate
+    lr:       float = 0.0018077686769634343   # initial Adam learning rate
     lr_step:  int   = 3000   # StepLR: decay every this many epochs
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
 
     # ── Training loop ─────────────────────────────────────────────────────────
-    n_epochs:    int = 80_000   # maximum training epochs
+    n_epochs:    int = 40_000   # maximum training epochs
     print_every: int = 1_000   # console log frequency (epochs)
     log_every:   int = 100     # history-dict write frequency (epochs)
 
@@ -102,7 +102,7 @@ class BurgerConfig:
 
     # ── Snapshot epochs for trajectory plots ─────────────────────────────────
     snapshot_epochs: list = field(
-        default_factory=lambda: [1, 50, 200, 1_000, 8_000, 20_000, 40_000, 80_000]
+        default_factory=lambda: [1, 50, 200, 1_000, 8_000, 20_000, 40_000]
     )
 
     # ── Output paths ──────────────────────────────────────────────────────────

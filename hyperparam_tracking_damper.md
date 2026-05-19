@@ -18,13 +18,11 @@ As our test we will choose the one that minimizes the RMSE (at the plotting defi
     sigma:       float = 0.05  # measurement noise std dev
     seed:        int   = 42    # global RNG seed
 
-We will investigate using the following physics (underdamped) system
-    # ── Physical parameters ───────────────────────────────────────────────────
-    mass:      float = 1.0   # m  [kg]
-    damping:   float = 0.5   # c  [N·s/m]
-    stiffness: float = 4.0   # k  [N/m]
-    y0:        float = 1.0   # initial displacement   y(0)
-    dy0:       float = 0.0   # initial velocity       y'(0)
+    # ── Optimiser ────────────────────────────────────────────────────────────
+    beta1:    float = 0.9    # Adam beta1
+    beta2:    float = 0.999  # Adam beta2
+    lr_step:  int   = 3000   # StepLR: decay every this many epochs
+    lr_gamma: float = 0.5    # StepLR: multiplicative factor
 
     # ── Time domain ───────────────────────────────────────────────────────────
     t_train:  float = 6.0    # end of observation window   [s]
@@ -33,6 +31,14 @@ We will investigate using the following physics (underdamped) system
     # ── Early stopping ────────────────────────────────────────────────────────
     patience:  int   = 30     # patience in units of log_every
     min_delta: float = 1e-6   # minimum improvement to reset the counter
+
+We will investigate using the following physics (underdamped) system
+    # ── Physical parameters ───────────────────────────────────────────────────
+    mass:      float = 1.0   # m  [kg]
+    damping:   float = 0.5   # c  [N·s/m]
+    stiffness: float = 4.0   # k  [N/m]
+    y0:        float = 1.0   # initial displacement   y(0)
+    dy0:       float = 0.0   # initial velocity       y'(0)
 
 *Base:*
     # ── Data ─────────────────────────────────────────────────────────────────
@@ -44,8 +50,6 @@ We will investigate using the following physics (underdamped) system
 
     # ── Optimiser ────────────────────────────────────────────────────────────
     lr:       float = 1e-3   # initial Adam learning rate
-    lr_step:  int   = 3000   # StepLR: decay every this many epochs
-    lr_gamma: float = 0.5    # StepLR: multiplicative factor
 
 
 
@@ -93,14 +97,13 @@ For the reverse problem we have to tune lr_param
 We will look at 3 things that need to be optimized: RMSE and distances to true values of w0 and zeta
 
 Starting search: learning_rates = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e-0]
-Best learning rate RMSE: 0.01 with RMSE: 0.0065126725190346015
-Best learning rate w0: 0.01 with difference: 0.0075609683990478516 (from w0_hat: 1.9924390316009521)
-Best learning rate zeta: 0.001 with difference: 0.00044608861207962036 (from zeta_hat: 0.12455391138792038)
+Best learning rate RMSE: 0.001 with RMSE: 0.004002771307036508
+Best learning rate w0: 0.01 with difference: 0.004451186567684617 (from w0_hat: 1.9955488134323154)
+Best learning rate zeta: 0.001 with difference: 0.0009697452508586474 (from zeta_hat: 0.12403025474914135)
+We will keep searching around 0.1-0.001:
+Zoomed search: learning_rates =10**np.linspace(-3.5, -0.5, num=25)
+Best learning rate RMSE: 0.01 with RMSE: 0.002715598467403243
+Best learning rate w0: 0.005623413251903491 with difference: 0.00044879758739879705 (from w0_hat: 2.000448797587399)
+Best learning rate zeta: 0.042169650342858224 with difference: 0.0006081193295721377 (from zeta_hat: 0.12560811932957214)
 
-We will keep searching around 0.01-0.001:
-Zoomed search: learning_rates =10**np.linspace(-3.5, -1.5, num=15)
-Best learning rate RMSE: 0.006105402296585327 with RMSE: 0.00412373159709762
-Best learning rate w0: 0.006105402296585327 with difference: 0.0006521940231323242 (from w0_hat: 1.9993478059768677)
-Best learning rate zeta: 0.011787686347935873 with difference: 0.0012118816375732422 (from zeta_hat: 0.12621188163757324)
-
-We will choose 0.0061054, it also has a decent zeta_hat: 0.1270 (0.0020 diff)
+We will choose 0.01, it also has a decent zeta_hat: 0.1271 (0.0021 diff) and decent omega0_hat: 2.0013 (0.0013 diff).
