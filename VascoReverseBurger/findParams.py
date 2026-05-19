@@ -5,7 +5,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def viscosity_predictions(situation:str):
-    viscosities = np.logspace(-1, 0, num=2)  
+    viscosities1 = np.logspace(-5, 1, num=7)
+    viscosities2 = np.linspace(0.2,0.9,num=8)
+    viscosities3 = np.linspace(0.02,0.09,num=8)
+    viscosities4 = np.linspace(2,9,num=8)
+    viscosities = np.concatenate((viscosities1,viscosities2,viscosities3,viscosities4))
     plotting = []  # To store RMSE values for plotting later
     for v in viscosities:
         cfg = BurgerConfig(situation=situation, v=v)
@@ -23,8 +27,8 @@ def viscosity_predictions(situation:str):
 
     # Plot the results
     plt.figure(figsize=(8, 5))
-    plt.plot([v for v, _, _ in plotting], [nu_hat_blind for _, nu_hat_blind, _ in plotting], marker='o', label='PINN (blind)')
-    plt.plot([v for v, _, _ in plotting], [nu_hat_ext_phys for _, _, nu_hat_ext_phys in plotting], marker='o', label='PINN (ext phys)')
+    plt.scatter([v for v, _, _ in plotting], [nu_hat_blind for _, nu_hat_blind, _ in plotting], marker='o', label='PINN (blind)')
+    plt.scatter([v for v, _, _ in plotting], [nu_hat_ext_phys for _, _, nu_hat_ext_phys in plotting], marker='o', label='PINN (ext phys)')
     # add a reference line for the true viscosity => first diagonal
     plt.axline((0, 0), slope=1, color='gray', linestyle='--', label='True Viscosity')
     plt.xscale('log')
