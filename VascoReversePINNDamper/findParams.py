@@ -121,7 +121,7 @@ def damper_predictions():
     plt.tight_layout()
     plt.savefig(f"{cfg.out_dir}/omega0_2d.png")
 
-    plt.show()
+
 
 if __name__ == "__main__":
     damper_predictions()
