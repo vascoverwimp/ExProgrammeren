@@ -638,40 +638,35 @@ def parse_args() -> argparse.Namespace:
 def main_training() -> None:
     args = parse_args()
 
-    # ── Build config from CLI arguments ───────────────────────────────────────
-    cfg = BurgerConfig(
-        v            = args.viscosity,
-        situation    = args.situation,
-        x_begin      = args.x_begin,
-        x_end        = args.x_end,
-        t0           = args.t0,
-        t_train      = args.t_train,
-        t_extrap     = args.t_extrap,
-        n_obs_total  = args.n_obs,
-        sigma        = args.sigma,
-        n_col        = args.n_col,
-        seed         = args.seed,
-        lambda_phys  = args.lambda_phys,
-        lambda_ic    = args.lambda_ic,
-        hidden       = args.hidden,
-        n_layers     = args.n_layers,
-        lr           = args.lr,
-        lr_step      = args.lr_step,
-        lr_gamma     = args.lr_gamma,
-        lr_param     = args.lr_param,
-        n_epochs     = args.n_epochs,
-        print_every  = args.print_every,
-        log_every    = args.log_every,
-        patience     = args.patience,
-        min_delta    = args.min_delta,
-        out_dir      = args.out_dir,
-        ini_guess_v  = args.v_init,
-    )
-
-    # ── Reproducibility ───────────────────────────────────────────────────────
-    torch.manual_seed(cfg.seed)
-    np.random.seed(cfg.seed)
-
+    # ── Convert CLI arguments to kwargs for train_and_save_both ───────────────
+    kwargs = {
+        'viscosity': args.viscosity,
+        'situation': args.situation,
+        'x_begin': args.x_begin,
+        'x_end': args.x_end,
+        't0': args.t0,
+        't_train': args.t_train,
+        't_extrap': args.t_extrap,
+        'n_obs_total': args.n_obs,
+        'sigma': args.sigma,
+        'n_col': args.n_col,
+        'seed': args.seed,
+        'lambda_phys': args.lambda_phys,
+        'lambda_ic': args.lambda_ic,
+        'hidden': args.hidden,
+        'n_layers': args.n_layers,
+        'lr': args.lr,
+        'lr_step': args.lr_step,
+        'lr_gamma': args.lr_gamma,
+        'lr_param': args.lr_param,
+        'n_epochs': args.n_epochs,
+        'print_every': args.print_every,
+        'log_every': args.log_every,
+        'patience': args.patience,
+        'min_delta': args.min_delta,
+        'out_dir': args.out_dir,
+        'ini_guess_v': args.v_init,
+    }
     # ── Device ────────────────────────────────────────────────────────────────
     device = get_device()
     print("=" * 70)
@@ -680,9 +675,64 @@ def main_training() -> None:
         print(f"  GPU    : {torch.cuda.get_device_name(0)}")
         vram_gb = torch.cuda.get_device_properties(0).total_memory / 1e9
         print(f"  VRAM   : {vram_gb:.1f} GB")
-    print(f"  ν    : {cfg.v:.4f}    Situation : {cfg.situation}")
-    print(f"  ν_init : {cfg.ini_guess_v:.4f}")
+    print(f"  ν    : {args.viscosity:.4f}    Situation : {args.situation}")
+    print(f"  ν_init : {args.v_init:.4f}")
     print("=" * 70)
+    print(f"\n  Observations: {args.n_obs} for training (with noise σ={args.sigma})")
+    print(f"  Collocation : {args.n_col} pts over [{args.x_begin}, {args.x_end}] × [{args.t0}, {args.t_extrap} (phys. ext.) / {args.t_train} (blind)]")
+    print(f"  IC enforced at t={args.t0} via L_ic (not in observations)\n")
+
+    train_and_save_both(**kwargs)
+
+
+def train_and_save_both(**kwargs) -> None:
+    """
+    Train both PINN models (extended physics and blind) with provided config kwargs.
+    
+    Accepts keyword arguments matching BurgerConfig fields:
+      situation, viscosity (v), x_begin, x_end, t0, t_train, t_extrap,
+      n_obs_total, sigma, n_col, seed, lambda_phys, lambda_ic, hidden,
+      n_layers, lr, lr_step, lr_gamma, lr_param, n_epochs, print_every,
+      log_every, patience, min_delta, out_dir, ini_guess_v
+    """
+    # Map kwargs to BurgerConfig parameter names
+    config_kwargs = {
+        'v': kwargs.get('viscosity', BurgerConfig.v),
+        'situation': kwargs.get('situation', BurgerConfig.situation),
+        'x_begin': kwargs.get('x_begin', BurgerConfig.x_begin),
+        'x_end': kwargs.get('x_end', BurgerConfig.x_end),
+        't0': kwargs.get('t0', BurgerConfig.t0),
+        't_train': kwargs.get('t_train', BurgerConfig.t_train),
+        't_extrap': kwargs.get('t_extrap', BurgerConfig.t_extrap),
+        'n_obs_total': kwargs.get('n_obs_total', BurgerConfig.n_obs_total),
+        'sigma': kwargs.get('sigma', BurgerConfig.sigma),
+        'n_col': kwargs.get('n_col', BurgerConfig.n_col),
+        'seed': kwargs.get('seed', BurgerConfig.seed),
+        'lambda_phys': kwargs.get('lambda_phys', BurgerConfig.lambda_phys),
+        'lambda_ic': kwargs.get('lambda_ic', BurgerConfig.lambda_ic),
+        'hidden': kwargs.get('hidden', BurgerConfig.hidden),
+        'n_layers': kwargs.get('n_layers', BurgerConfig.n_layers),
+        'lr': kwargs.get('lr', BurgerConfig.lr),
+        'lr_step': kwargs.get('lr_step', BurgerConfig.lr_step),
+        'lr_gamma': kwargs.get('lr_gamma', BurgerConfig.lr_gamma),
+        'lr_param': kwargs.get('lr_param', BurgerConfig.lr_param),
+        'n_epochs': kwargs.get('n_epochs', BurgerConfig.n_epochs),
+        'print_every': kwargs.get('print_every', BurgerConfig.print_every),
+        'log_every': kwargs.get('log_every', BurgerConfig.log_every),
+        'patience': kwargs.get('patience', BurgerConfig.patience),
+        'min_delta': kwargs.get('min_delta', BurgerConfig.min_delta),
+        'out_dir': kwargs.get('out_dir', BurgerConfig.out_dir),
+        'ini_guess_v': kwargs.get('ini_guess_v', BurgerConfig.ini_guess_v),
+    }
+    cfg = BurgerConfig(**config_kwargs)
+
+    # ── Reproducibility ───────────────────────────────────────────────────────
+    torch.manual_seed(cfg.seed)
+    np.random.seed(cfg.seed)
+
+    # ── Device ────────────────────────────────────────────────────────────────
+    device = get_device()
+
 
     # ── Output directory ──────────────────────────────────────────────────────
     out_dir = Path(cfg.out_dir)
@@ -736,10 +786,6 @@ def main_training() -> None:
     x_flattened_full  = data["x_flattened_full"]
     u_true_full  = data["u_true_full"]
 
-    t_flattened_full  = data["t_flattened_full"]
-    x_flattened_full  = data["x_flattened_full"]
-    u_true_full  = data["u_true_full"]
-
     u_pinn_ext_phys_full = pred_pinn_ext_phys.predict(x_flattened_full, t_flattened_full)
     u_pinn_blind_full = pred_pinn_blind.predict(x_flattened_full, t_flattened_full)
 
@@ -755,20 +801,6 @@ def main_training() -> None:
     rmse_pinn_blind_extrap = Predictor.rmse(u_pinn_blind_full[mask_extrap], u_true_full[mask_extrap])
     phys_pinn_ext_phys       = Predictor.physics_residual(u_pinn_ext_phys_full, x_flattened_full, t_flattened_full, cfg)
     phys_pinn_blind       = Predictor.physics_residual(u_pinn_blind_full, x_flattened_full, t_flattened_full, cfg)
-    # ── Console summary ───────────────────────────────────────────────────────
-    print()
-    print("=" * 70)
-    print("RESULTS SUMMARY  (best-val checkpoint)")
-    print("=" * 70)
-    print(f"  Device : {device}")
-    print(f"  {'Metric':<38} {'PINN (extended physics)':>10} {'PINN (blind)':>10}")
-    print(f"  {'RMSE  (training interval)':38}   {rmse_pinn_ext_phys_train:>10.4f}  {rmse_pinn_blind_train:>10.4f}")
-    print(f"  {'RMSE  (extrapolation)':38}   {rmse_pinn_ext_phys_extrap:>10.4f}  {rmse_pinn_blind_extrap:>10.4f}")
-    print(f"  {'Physics Residual':38}   {phys_pinn_ext_phys:>10.4f}  {phys_pinn_blind:>10.4f}")
-    print(f"  {'True nu':38}  {cfg.v:>10.4f}")
-    print(f"  {'nu_hat':38}  {nu_hat_ext_phys:>10.4f} {nu_hat_blind:>10.4f}")
-    print("  " + "-" * 62)
-
 
     # ── Save results bundle for plot.py ───────────────────────────────────────
     metrics = {
@@ -799,51 +831,20 @@ def main_training() -> None:
         },
         results_path,
     )
-    print(f"\n  Results saved to  {results_path}")
-    print(f"  Best PINN (extended physics) checkpoint : {ckpt_pinn_ext_phys}")
-    print(f"  Best PINN (blind) checkpoint : {ckpt_pinn_blind}")
-    print("\n  Run  python plot.py  to generate figures.\n")
 
-def evaluate_model() -> None:
+def evaluate_model(situation: str = BurgerConfig.situation, v: float = BurgerConfig.v) -> tuple[float, float]:
     
     # ── Load best checkpoints for final evaluation ────────────────────────────
     # Using best-val checkpoints rather than last-epoch weights ensures
     # the saved result reflects the model at its generalisation peak.
-    args = parse_args()
-    # ── Build config from CLI arguments ───────────────────────────────────────
-    cfg = BurgerConfig(
-        v            = args.viscosity,
-        situation    = args.situation,
-        x_begin      = args.x_begin,
-        x_end        = args.x_end,
-        t0           = args.t0,
-        t_train      = args.t_train,
-        t_extrap     = args.t_extrap,
-        n_obs_total  = args.n_obs,
-        sigma        = args.sigma,
-        n_col        = args.n_col,
-        seed         = args.seed,
-        lambda_phys  = args.lambda_phys,
-        lambda_ic    = args.lambda_ic,
-        hidden       = args.hidden,
-        n_layers     = args.n_layers,
-        lr           = args.lr,
-        lr_step      = args.lr_step,
-        lr_gamma     = args.lr_gamma,
-        n_epochs     = args.n_epochs,
-        print_every  = args.print_every,
-        log_every    = args.log_every,
-        patience     = args.patience,
-        min_delta    = args.min_delta,
-        out_dir      = args.out_dir,
-    )
-    out_dir = Path(cfg.out_dir)
-    results_path = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_results_pt}"
+
+    out_dir = Path(BurgerConfig.out_dir)
+    results_path = out_dir / f"{situation}_{v:.1e}_{BurgerConfig.suffix_results_pt}"
     raw = torch.load(results_path, map_location="cpu", weights_only=False)
     config = raw["config"]
     data = raw["data"]
-    ckpt_pinn_ext_phys = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_ckpt_pinn_ext_phys}"
-    ckpt_pinn_blind    = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_ckpt_pinn_blind}"
+    ckpt_pinn_ext_phys = out_dir / f"{config.situation}_{config.v:.1e}_{config.suffix_ckpt_pinn_ext_phys}"
+    ckpt_pinn_blind    = out_dir / f"{config.situation}_{config.v:.1e}_{config.suffix_ckpt_pinn_blind}"
 
     pred_pinn_ext_phys = Predictor(config, checkpoint_path=str(ckpt_pinn_ext_phys))
     pred_pinn_blind    = Predictor(config, checkpoint_path=str(ckpt_pinn_blind))
@@ -861,14 +862,13 @@ def evaluate_model() -> None:
     mask_train  = t_flattened_full <= config.t_train
 
     mask_extrap = t_flattened_full >  config.t_train
-    mask_extrap = t_flattened_full >  cfg.t_train
 
     rmse_pinn_ext_phys_train = Predictor.rmse(u_pinn_ext_phys_full[mask_train],  u_true_full[mask_train])
     rmse_pinn_blind_train = Predictor.rmse(u_pinn_blind_full[mask_train],  u_true_full[mask_train])
     rmse_pinn_ext_phys_extrap   = Predictor.rmse(u_pinn_ext_phys_full[mask_extrap], u_true_full[mask_extrap])
     rmse_pinn_blind_extrap = Predictor.rmse(u_pinn_blind_full[mask_extrap], u_true_full[mask_extrap])
-    phys_pinn_ext_phys       = Predictor.physics_residual(u_pinn_ext_phys_full, x_flattened_full, t_flattened_full, cfg)
-    phys_pinn_blind       = Predictor.physics_residual(u_pinn_blind_full, x_flattened_full, t_flattened_full, cfg)
+    phys_pinn_ext_phys       = Predictor.physics_residual(u_pinn_ext_phys_full, x_flattened_full, t_flattened_full, config)
+    phys_pinn_blind       = Predictor.physics_residual(u_pinn_blind_full, x_flattened_full, t_flattened_full, config)
     # ── Console summary ───────────────────────────────────────────────────────
     print()
     print("=" * 70)
@@ -878,10 +878,53 @@ def evaluate_model() -> None:
     print(f"  {'RMSE  (training interval)':38}   {rmse_pinn_ext_phys_train:>10.4f}  {rmse_pinn_blind_train:>10.4f}")
     print(f"  {'RMSE  (extrapolation)':38}   {rmse_pinn_ext_phys_extrap:>10.4f}  {rmse_pinn_blind_extrap:>10.4f}")
     print(f"  {'Physics Residual':38}   {phys_pinn_ext_phys:>10.4f}  {phys_pinn_blind:>10.4f}")
-    print(f"  {'True nu':38}  {cfg.v:>10.4f}")
+    print(f"  {'True nu':38}  {config.v:>10.4f}")
     print(f"  {'nu_hat':38}  {nu_hat_ext_phys:>10.4f} {nu_hat_blind:>10.4f}")
     print("  " + "-" * 62)
 
+    return nu_hat_blind, nu_hat_ext_phys
+
+def evaluate_blind(situation: str = BurgerConfig.situation, v: float = BurgerConfig.v) -> tuple[float, float]:
+
+    out_dir = Path(BurgerConfig.out_dir)
+    results_path = out_dir / f"{situation}_{v:.1e}_{BurgerConfig.suffix_results_pt}"
+    raw = torch.load(results_path, map_location="cpu", weights_only=False)
+    config: BurgerConfig = raw["config"]
+    data = raw["data"]
+    ckpt_pinn_blind    = out_dir / f"{config.situation}_{config.v:.1e}_{config.suffix_ckpt_pinn_blind}"
+    pred_pinn_blind    = Predictor(config, checkpoint_path=str(ckpt_pinn_blind))
+
+    t_flattened_full  = data["t_flattened_full"]
+    x_flattened_full  = data["x_flattened_full"]
+    u_true_full  = data["u_true_full"]
+
+    u_pinn_blind_full    = pred_pinn_blind.predict(x_flattened_full, t_flattened_full)
+
+    mask_train  = t_flattened_full <= config.t_train
+
+    mask_extrap = t_flattened_full >  config.t_train
+
+    rmse_pinn_blind_train = Predictor.rmse(u_pinn_blind_full[mask_train],  u_true_full[mask_train])
+
+    rmse_pinn_blind_extrap = Predictor.rmse(u_pinn_blind_full[mask_extrap], u_true_full[mask_extrap])
+
+    phys_pinn_blind       = Predictor.physics_residual(u_pinn_blind_full, x_flattened_full, t_flattened_full, config)
+
+    nu_hat_blind = pred_pinn_blind.predict_params()["v_hat"]
+    # ── Console summary ───────────────────────────────────────────────────────
+    print()
+    print("=" * 70)
+    print("RESULTS SUMMARY  (best-val checkpoint)")
+    print("=" * 70)
+    print(f"  {'Metric':<38} {'PINN (blind)':>10}")
+    print("  " + "-" * 62)
+    print(f"  {'RMSE  (training interval)':38}  {rmse_pinn_blind_train:>10.4f}")
+    print(f"  {'RMSE  (extrapolation)':38}  {rmse_pinn_blind_extrap:>10.4f}")
+    print(f"  {'Physics Residual':38}  {phys_pinn_blind:>10.4f}")
+    print(f"  {'True nu':38}  {config.v:>10.4f}")
+    print(f"  {'nu_hat':38}  {nu_hat_blind:>10.4f}")
+
+    return rmse_pinn_blind_train, nu_hat_blind
 
 if __name__ == "__main__":
     main_training()

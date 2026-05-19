@@ -497,7 +497,6 @@ def parse_args() -> argparse.Namespace:
 
     return p.parse_args()
 
-
 # =============================================================================
 # 6.  MAIN
 # =============================================================================
@@ -506,38 +505,36 @@ def main() -> None:
     args = parse_args()
 
     # ── Build config from CLI arguments ───────────────────────────────────────
-    cfg = DamperConfig(
-        mass         = args.mass,
-        damping      = args.damping,
-        stiffness    = args.stiffness,
-        y0           = args.y0,
-        dy0          = args.dy0,
-        t_train      = args.t_train,
-        t_extrap     = args.t_extrap,
-        n_obs        = args.n_obs,
-        sigma        = args.sigma,
-        n_col        = args.n_col,
-        seed         = args.seed,
-        lambda_phys  = args.lambda_phys,
-        lambda_ic    = args.lambda_ic,
-        hidden       = args.hidden,
-        n_layers     = args.n_layers,
-        lr           = args.lr,
-        lr_param     = args.lr_param,
-        lr_step      = args.lr_step,
-        lr_gamma     = args.lr_gamma,
-        n_epochs     = args.n_epochs,
-        print_every  = args.print_every,
-        log_every    = args.log_every,
-        patience     = args.patience,
-        min_delta    = args.min_delta,
-        out_dir      = args.out_dir,
-    )
-
-    # ── Reproducibility ───────────────────────────────────────────────────────
-    torch.manual_seed(cfg.seed)
-    np.random.seed(cfg.seed)
-
+    kwargs = {
+        'mass': args.mass,
+        'damping': args.damping,
+        'stiffness': args.stiffness,
+        'y0': args.y0,
+        'dy0': args.dy0,
+        't_train': args.t_train,
+        't_extrap': args.t_extrap,
+        'n_obs': args.n_obs,
+        'sigma': args.sigma,
+        'n_col': args.n_col,
+        'seed': args.seed,
+        'lambda_phys': args.lambda_phys,
+        'lambda_ic': args.lambda_ic,
+        'hidden': args.hidden,
+        'n_layers': args.n_layers,
+        'lr': args.lr,
+        'lr_param': args.lr_param,
+        'lr_step': args.lr_step,
+        'lr_gamma': args.lr_gamma,
+        'n_epochs': args.n_epochs,
+        'print_every': args.print_every,
+        'log_every': args.log_every,
+        'patience': args.patience,
+        'min_delta': args.min_delta,
+        'out_dir': args.out_dir,
+        'ini_guess_w0': args.w0_init,
+        'ini_guess_zeta': args.zeta_init,
+    }
+    cfg = DamperConfig(**kwargs)
     # ── Device ────────────────────────────────────────────────────────────────
     device = get_device()
     print("=" * 70)
@@ -549,6 +546,62 @@ def main() -> None:
     print(f"  ζ      : {cfg.zeta:.4f}   ω₀ = {cfg.omega_0:.4f}   ωd = {cfg.omega_d:.4f}")
     print(f"Initial guess: ζ₀ = {cfg.ini_guess_zeta:.4f}   ω₀₀ = {cfg.ini_guess_w0:.4f}")
     print("=" * 70)
+    # ── Data ──────────────────────────────────────────────────────────────────
+    print(f"\n  Noisy observations: {cfg.n_obs} to train") 
+    print(f"  Collocation : random {cfg.n_col} pts over [0, {cfg.t_extrap} (phys. ext.)/ {cfg.t_train} (blind)]")
+    print(f"  IC enforced at t=0 via L_ic (not in observations)\n")
+
+    train_and_save_both(**kwargs)
+    evaluate_model(cfg.omega_0, cfg.zeta)
+
+def train_and_save_both(**kwargs) -> None:
+    """
+    Train both PINN models (extended physics and blind) with provided config kwargs.
+    
+    Accepts keyword arguments matching DamperConfig fields:
+      mass, damping, stiffness, t_train, t_extrap, y0, dy0,
+      n_obs, sigma, n_col, seed, lambda_phys, lambda_ic, hidden,
+      n_layers, lr, lr_step, lr_gamma, n_epochs, print_every,
+      log_every, patience, min_delta, out_dir
+    """
+    # Map kwargs to DamperConfig parameter names
+    config_kwargs = {
+        'mass': kwargs.get('mass', DamperConfig.mass),
+        'damping': kwargs.get('damping', DamperConfig.damping),
+        'stiffness': kwargs.get('stiffness', DamperConfig.stiffness),
+        'y0': kwargs.get('y0', DamperConfig.y0),
+        'dy0': kwargs.get('dy0', DamperConfig.dy0),
+        't_train': kwargs.get('t_train', DamperConfig.t_train),
+        't_extrap': kwargs.get('t_extrap', DamperConfig.t_extrap),
+        'n_obs': kwargs.get('n_obs', DamperConfig.n_obs),
+        'sigma': kwargs.get('sigma', DamperConfig.sigma),
+        'n_col': kwargs.get('n_col', DamperConfig.n_col),
+        'seed': kwargs.get('seed', DamperConfig.seed),
+        'lambda_phys': kwargs.get('lambda_phys', DamperConfig.lambda_phys),
+        'lambda_ic': kwargs.get('lambda_ic', DamperConfig.lambda_ic),
+        'hidden': kwargs.get('hidden', DamperConfig.hidden),
+        'n_layers': kwargs.get('n_layers', DamperConfig.n_layers),
+        'lr': kwargs.get('lr', DamperConfig.lr),
+        'lr_param': kwargs.get('lr_param', DamperConfig.lr_param),
+        'lr_step': kwargs.get('lr_step', DamperConfig.lr_step),
+        'lr_gamma': kwargs.get('lr_gamma', DamperConfig.lr_gamma),
+        'n_epochs': kwargs.get('n_epochs', DamperConfig.n_epochs),
+        'print_every': kwargs.get('print_every', DamperConfig.print_every),
+        'log_every': kwargs.get('log_every', DamperConfig.log_every),
+        'patience': kwargs.get('patience', DamperConfig.patience),
+        'min_delta': kwargs.get('min_delta', DamperConfig.min_delta),
+        'out_dir': kwargs.get('out_dir', DamperConfig.out_dir),
+        'w0_init': kwargs.get('w0_init', DamperConfig.ini_guess_w0),
+        'zeta_init': kwargs.get('zeta_init', DamperConfig.ini_guess_zeta),
+    }
+    cfg = DamperConfig(**config_kwargs)
+    # ── Reproducibility ───────────────────────────────────────────────────────
+    torch.manual_seed(cfg.seed)
+    np.random.seed(cfg.seed)
+
+    # ── Device ────────────────────────────────────────────────────────────────
+    device = get_device()
+
 
     # ── Output directory ──────────────────────────────────────────────────────
     out_dir = Path(cfg.out_dir)
@@ -560,12 +613,6 @@ def main() -> None:
 
     # ── Data ──────────────────────────────────────────────────────────────────
     data = generate_data(cfg, device)
-    n_train = len(data["t_obs_train"])
-    n_val   = len(data["t_obs_val"])
-    print(f"\n  Noisy observations: {n_train} to train") 
-    print(f" Perfect observations: {n_val} to validate (for early stopping and best checkpoint selection)")
-    print(f"  Collocation : {cfg.n_col} pts over [0, {cfg.t_extrap}] for extended and [0, {cfg.t_train}] for blind physics loss\n")
-    print(f"  IC enforced at t=0 via L_ic (not in observations)\n")
 
     # ── PINN model (normal + extrapolated) ──────────────────────────────────
     print()
@@ -619,28 +666,6 @@ def main() -> None:
     phys_pinn_blind          = Predictor.physics_residual(y_pinn_blind_full, t_plot_full, cfg)
     y0_pinn_ext_phys         = float(pred_pinn_ext_phys.predict(np.array([0.0])))
     y0_pinn_blind            = float(pred_pinn_blind.predict(np.array([0.0])))
-    w0_hat_ext_phys          = pred_pinn_ext_phys.predict_params()["w0_hat"]
-    w0_hat_blind             = pred_pinn_blind.predict_params()["w0_hat"]
-    zeta_hat_ext_phys        = pred_pinn_ext_phys.predict_params()["zeta_hat"]
-    zeta_hat_blind           = pred_pinn_blind.predict_params()["zeta_hat"]
-    # ── Console summary ───────────────────────────────────────────────────────
-    print()
-    print("=" * 70)
-    print("RESULTS SUMMARY  (best-val checkpoint)")
-    print("=" * 70)
-    print(f"  Device : {device}")
-    print(f"  {'Metric':<38} {'PINN (phys. ext.)':>10}  {'PINN (blind)':>10}")
-    print("  " + "-" * 62)
-    print(f"  {'RMSE  (training interval)':38}  {rmse_pinn_ext_phys_train:>10.4f}  {rmse_pinn_blind_train:>10.4f}")
-    print(f"  {'RMSE  (extrapolation)':38}  {rmse_pinn_ext_phys_extrap:>10.4f}  {rmse_pinn_blind_extrap:>10.4f}")
-    print(f"  {'Physics residual  (full domain)':38}  {phys_pinn_ext_phys:>10.4f}  {phys_pinn_blind:>10.4f}")
-    print(f"  {'ŷ(0)':38}  {y0_pinn_ext_phys:>10.4f}  {y0_pinn_blind:>10.4f}")
-    print(f"  {'True w0':38}  {cfg.omega_0:>10.4f}  {cfg.omega_0:>10.4f}")
-    print(f"  {'w0_hat':38}  {w0_hat_ext_phys:>10.4f}  {w0_hat_blind:>10.4f}")
-    print(f"  {'True zeta':38}  {cfg.zeta:>10.4f}  {cfg.zeta:>10.4f}")
-    print(f"  {'zeta_hat':38}  {zeta_hat_ext_phys:>10.4f}  {zeta_hat_blind:>10.4f}")
-
-
 
     # ── Save results bundle for plot.py ───────────────────────────────────────
     metrics = {
@@ -670,10 +695,69 @@ def main() -> None:
         },
         results_path,
     )
-    print(f"\n  Results saved to  {results_path}")
-    print(f"  Best PINN (phys. ext.) checkpoint : {ckpt_pinn_ext_phys}")
-    print(f"  Best PINN (blind) checkpoint : {ckpt_pinn_blind}")
-    print("\n  Run  python plot.py  to generate figures.\n")
+
+def evaluate_model(w0: float, zeta: float, suffix_results_pt=DamperConfig.suffix_results_pt) -> tuple[float, float, float, float]:
+
+    results_path = Path(f"{DamperConfig.out_dir}/w0{w0:.1e}_zeta{zeta:.1e}_{suffix_results_pt}")
+
+    raw = torch.load(results_path, map_location="cpu", weights_only=False)
+
+    cfg: DamperConfig = raw["config"]
+    data = raw["data"]
+
+    # ── Output directory ──────────────────────────────────────────────────────
+    out_dir = Path(cfg.out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+
+    ckpt_pinn_ext_phys = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_ext_phys}"
+    ckpt_pinn_blind = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_blind}"
+
+    # ── Load best checkpoints for final evaluation ────────────────────────────
+    # Using best-val checkpoints rather than last-epoch weights ensures
+    # the saved result reflects the model at its generalisation peak.
+    pred_pinn_ext_phys = Predictor(cfg, checkpoint_path=str(ckpt_pinn_ext_phys))
+    pred_pinn_blind = Predictor(cfg, checkpoint_path=str(ckpt_pinn_blind))
+
+    t_plot_full  = data["t_plot_full"]
+    y_true_full  = data["y_true_full"]
+
+    y_pinn_ext_phys_full = pred_pinn_ext_phys.predict(t_plot_full)
+    y_pinn_blind_full = pred_pinn_blind.predict(t_plot_full)
+
+    mask_train  = t_plot_full <= cfg.t_train
+    mask_extrap = t_plot_full >  cfg.t_train
+
+    rmse_pinn_ext_phys_train = Predictor.rmse(y_pinn_ext_phys_full[mask_train],  y_true_full[mask_train])
+    rmse_pinn_blind_train = Predictor.rmse(y_pinn_blind_full[mask_train],  y_true_full[mask_train])
+    rmse_pinn_ext_phys_extrap   = Predictor.rmse(y_pinn_ext_phys_full[mask_extrap], y_true_full[mask_extrap])
+    rmse_pinn_blind_extrap   = Predictor.rmse(y_pinn_blind_full[mask_extrap], y_true_full[mask_extrap])
+    phys_pinn_ext_phys       = Predictor.physics_residual(y_pinn_ext_phys_full, t_plot_full, cfg)
+    phys_pinn_blind          = Predictor.physics_residual(y_pinn_blind_full, t_plot_full, cfg)
+    y0_pinn_ext_phys         = float(pred_pinn_ext_phys.predict(np.array([0.0])))
+    y0_pinn_blind            = float(pred_pinn_blind.predict(np.array([0.0])))
+    w0_hat_ext_phys          = pred_pinn_ext_phys.predict_params()["w0_hat"]
+    w0_hat_blind             = pred_pinn_blind.predict_params()["w0_hat"]
+    zeta_hat_ext_phys        = pred_pinn_ext_phys.predict_params()["zeta_hat"]
+    zeta_hat_blind           = pred_pinn_blind.predict_params()["zeta_hat"]
+
+    # ── Console summary ───────────────────────────────────────────────────────
+    print()
+    print("=" * 70)
+    print("RESULTS SUMMARY  (best-val checkpoint)")
+    print("=" * 70)
+    print(f"  {'Metric':<38}  {'Std ML':>10}  {'PINN (phys. ext.)':>10}  {'PINN (blind)':>10}")
+    print("  " + "-" * 62)
+    print(f"  {'RMSE  (training interval)':38}  {rmse_pinn_ext_phys_train:>10.4f}  {rmse_pinn_blind_train:>10.4f}")
+    print(f"  {'RMSE  (extrapolation)':38}  {rmse_pinn_ext_phys_extrap:>10.4f}  {rmse_pinn_blind_extrap:>10.4f}")
+    print(f"  {'Physics residual  (full domain)':38}  {phys_pinn_ext_phys:>10.4f}  {phys_pinn_blind:>10.4f}")
+    print(f"  {'ŷ(0)':38}  {y0_pinn_ext_phys:>10.4f}  {y0_pinn_blind:>10.4f}")
+    print(f"  {'True w0':38}  {cfg.omega_0:>10.4f}  {cfg.omega_0:>10.4f}")
+    print(f"  {'w0_hat':38}  {w0_hat_ext_phys:>10.4f}  {w0_hat_blind:>10.4f}")
+    print(f"  {'True zeta':38}  {cfg.zeta:>10.4f}  {cfg.zeta:>10.4f}")
+    print(f"  {'zeta_hat':38}  {zeta_hat_ext_phys:>10.4f}  {zeta_hat_blind:>10.4f}")
+
+    return w0_hat_blind, zeta_hat_blind, w0_hat_ext_phys, zeta_hat_ext_phys
 
 def evaluate_blind(w0: float, zeta: float, suffix_results_pt=DamperConfig.suffix_results_pt) -> tuple[float, float, float]:
 

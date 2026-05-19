@@ -68,7 +68,7 @@ class BurgerConfig:
     n_val_x: int = 200  # number of validation observations along space axis
     sigma:       float  = 0.05  # measurement noise std dev
     n_ic_samples_x: int = 200  # initial condition samples in x dimension (for IC loss)
-    n_col:       int  = 400   # collocation points (physics residual)
+    n_col:       int  = 465   # collocation points (physics residual)
     n_col_pool:  int  = 10000 # pool of collocation points to sample from each epoch
     seed:        int    = 42    # global RNG seed
 

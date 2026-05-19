@@ -95,31 +95,37 @@ Best initial condition weight: 1.2589254117941673, Best physics weight: 0.794328
 This is still at the edge of our search, but we want ic > data > phy, so we can't optimize any further without endangering this balance.
 
 *Number of collocation points*
-Default value: 100
+Default value: 400
 Starting search:
-num_collocations = [20, 50, 100, 200, 500]
-Best number of collocation points: 20 with RMSE: 0.011735529299658041
-But basically flatline, so will use 100 to be safe
+num_collocations = [10, 20, 50, 100, 200, 500]
+Best number of collocation points: 100 with RMSE: 0.005246076092433926
+but 400 was better earlier: RMSE 0.004674636637779943, so we will search around there and around 100
 
-*Number of observations per epoch*
+Zoomed search (around 400):
+num_collocations = np.linspace(300, 480, num=13, dtype=int)
+Best number of collocation points: 465 with RMSE: 0.004064392036313775
 
-Best = all observations => will do that
+Zoomed search (around 100):
+num_collocations = np.linspace(60, 180, num=13, dtype=int)  
+Best number of collocation points: 120 with RMSE: 0.004415001238839823
 
+We will continue with 465 collocation points
 
 
 *One last one: lr_param*
 
 For the reverse problem we have to tune lr_param
-We will look at 3 things that need to be optimized: RMSE and distances to true values of w0 and zeta
+We will look at 3 things that need to be optimized: RMSE and distances to true values of nu (0.1)
 
 Starting search: learning_rates = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e-0]
-Best learning rate RMSE: 0.001 with RMSE: 0.004002771307036508
-Best learning rate w0: 0.01 with difference: 0.004451186567684617 (from w0_hat: 1.9955488134323154)
-Best learning rate zeta: 0.001 with difference: 0.0009697452508586474 (from zeta_hat: 0.12403025474914135)
-We will keep searching around 0.1-0.001:
-Zoomed search: learning_rates =10**np.linspace(-3.5, -0.5, num=25)
-Best learning rate RMSE: 0.006105402296585327 with RMSE: 0.00412373159709762
-Best learning rate w0: 0.006105402296585327 with difference: 0.0006521940231323242 (from w0_hat: 1.9993478059768677)
-Best learning rate zeta: 0.011787686347935873 with difference: 0.0012118816375732422 (from zeta_hat: 0.12621188163757324)
+Best learning rate RMSE: 0.0001 with RMSE: 0.005672723182501369
+Best learning rate v: 0.01 with difference: 0.002280541619882684
 
-We will choose , it also has a decent zeta_hat: 0.1270 (0.0020 diff)
+
+We will keep searching around 0.1-0.01 (best nu, okay RMSE):
+Zoomed search: learning_rates =10**np.linspace(-2.7, -0.5, num=13)
+Best learning rate RMSE: 0.0070794578438413735 with RMSE: 0.005268695495348943
+Best learning rate v: 0.13593563908785256 with difference: 0.0006435052857390322 (from v_hat: 0.10064350528573904)
+RMSE are all around the same (0.6)
+
+We will choose 0.13593563908785256, also has decent RMSE (0.005268695495348943)

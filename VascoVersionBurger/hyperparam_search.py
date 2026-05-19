@@ -87,8 +87,8 @@ def search_weights():
     plt.show()
 
 def search_num_collocations():
-    num_collocations = [10, 20, 50, 100, 200, 500]
-    # num_collocations = np.linspace(10, 100, num=19)  # Search over a range of numbers of collocation points
+    # num_collocations = [10, 20, 50, 100, 200, 500]+
+    num_collocations = np.linspace(60, 180, num=13, dtype=int)    # Search over a range of numbers of collocation points
     plot_RMSE = []  # To store RMSE values for plotting later
     device = get_device()
     default_cfg = BurgerConfig()
@@ -125,5 +125,5 @@ def search_num_collocations():
 
 if __name__ == "__main__":
     # search_learning_rate()
-    search_weights()
-    # search_num_collocations()
+    # search_weights()
+    search_num_collocations()
