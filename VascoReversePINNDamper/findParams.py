@@ -6,8 +6,8 @@ import numpy as np
 
 def damper_predictions():
     mass = 1.0  # kg
-    dampings = np.linspace(0.5, 5.5, num=6)
-    stiffnesses = np.linspace(0.5, 5.5, num=6) 
+    dampings = np.linspace(0.5, 5.5, num=11)
+    stiffnesses = np.linspace(0.5, 5.5, num=11) 
 
     plotting = []  # To store RMSE values for plotting later
     for damping in dampings:
@@ -32,8 +32,8 @@ def damper_predictions():
             print(f"  Omega0 Hat (ext phys): {w0_hat_ext_phys:.4f}, Zeta Hat (ext phys): {zeta_hat_ext_phys:.4f}")
     # Plot the results (omega0)
     plt.figure(figsize=(8, 5))
-    plt.plot([omega0 for _, _, omega0, _, _, _, _, _ in plotting], [w0_hat_blind for _, _, _, _, w0_hat_blind, _, _, _ in plotting], marker='o', label='PINN (blind)')
-    plt.plot([omega0 for _, _, omega0, _, _, _, _, _ in plotting], [w0_hat_ext_phys for _, _, _, _, _, _, w0_hat_ext_phys, _ in plotting], marker='o', label='PINN (ext phys)')
+    plt.scatter([omega0 for _, _, omega0, _, _, _, _, _ in plotting], [w0_hat_blind for _, _, _, _, w0_hat_blind, _, _, _ in plotting], marker='o', label='PINN (blind)')
+    plt.scatter([omega0 for _, _, omega0, _, _, _, _, _ in plotting], [w0_hat_ext_phys for _, _, _, _, _, _, w0_hat_ext_phys, _ in plotting], marker='o', label='PINN (ext phys)')
     # add a reference line for the true viscosity
     plt.axline((0, 0), slope=1, color='gray', linestyle='--', label='True Omega0')
     plt.xlabel('Omega0 (True)')
@@ -45,8 +45,8 @@ def damper_predictions():
 
     # Plot the results (zeta)
     plt.figure(figsize=(8, 5))
-    plt.plot([zeta for _, _, _, zeta, _, _, _, _ in plotting], [zeta_hat_blind for _, _, _, _, zeta_hat_blind, _, _, _ in plotting], marker='o', label='PINN (blind)')
-    plt.plot([zeta for _, _, _, zeta, _, _, _, _ in plotting], [zeta_hat_ext_phys for _, _, _, _, _, _, zeta_hat_ext_phys, _ in plotting], marker='o', label='PINN (ext phys)')
+    plt.scatter([zeta for _, _, _, zeta, _, _, _, _ in plotting], [zeta_hat_blind for _, _, _, _, _, zeta_hat_blind, _, _ in plotting], marker='o', label='PINN (blind)')
+    plt.scatter([zeta for _, _, _, zeta, _, _, _, _ in plotting], [zeta_hat_ext_phys for _, _, _, _, _, _, _, zeta_hat_ext_phys in plotting], marker='o', label='PINN (ext phys)')
     # add a reference line for the true viscosity
     plt.axline((0, 0), slope=1, color='gray', linestyle='--', label='True Zeta')
     plt.xlabel('Zeta (True)')
@@ -59,7 +59,7 @@ def damper_predictions():
     # Plot the results (zeta function of damping and stiffness, colormap)
     zeta_true = np.array([true_zeta for _, _, _, true_zeta, _, _, _, _ in plotting]).reshape(len(dampings), len(stiffnesses))
     zeta_blind = np.array([zeta_hat_blind for _, _, _, _, _, zeta_hat_blind, _, _ in plotting]).reshape(len(dampings), len(stiffnesses))
-    zeta_ext_phys = np.array([zeta_hat_ext_phys for _, _, _, _, _, _, zeta_hat_ext_phys, _ in plotting]).reshape(len(dampings), len(stiffnesses))
+    zeta_ext_phys = np.array([zeta_hat_ext_phys for _, _, _, _, _, _, _, zeta_hat_ext_phys in plotting]).reshape(len(dampings), len(stiffnesses))
     
     # Use same scale for all colorbars
     vmin = min(zeta_true.min(), zeta_blind.min(), zeta_ext_phys.min())
@@ -92,7 +92,7 @@ def damper_predictions():
     # Plot the results (omega0 function of damping and stiffness, colormap)
     omega0_true = np.array([true_w0 for _, _, true_w0, _, _, _, _, _ in plotting]).reshape(len(dampings), len(stiffnesses))
     omega0_blind = np.array([w0_hat_blind for _, _, _, _, w0_hat_blind, _, _, _ in plotting]).reshape(len(dampings), len(stiffnesses))
-    omega0_ext_phys = np.array([w0_hat_ext_phys for _, _, _, _, _, _, _, w0_hat_ext_phys in plotting]).reshape(len(dampings), len(stiffnesses))
+    omega0_ext_phys = np.array([w0_hat_ext_phys for _, _, _, _, _, _, w0_hat_ext_phys, _ in plotting]).reshape(len(dampings), len(stiffnesses))
     
     # Use same scale for all colorbars
     vmin_w = min(omega0_true.min(), omega0_blind.min(), omega0_ext_phys.min())
