@@ -160,5 +160,5 @@ def search_num_obs_per_epoch():
 if __name__ == "__main__":
     # search_learning_rate()
     # search_weights()
-    # search_num_collocations()
+    search_num_collocations()
     # search_num_obs_per_epoch()

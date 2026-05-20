@@ -1,0 +1,338 @@
+\documentclass[12pt, a4paper]{article}
+
+% Packages
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{biblatex}
+\usepackage{enumitem}
+
+\addbibresource{bibliography.bib}
+% Geometry
+\geometry{margin=1in}
+
+% Headers and footers
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\thepage}
+\lhead{PINNs for Differential Equations}
+
+% Title
+\title{\textbf{Physics-Informed Neural Networks: Applications to Differential Equations}}
+\author{Vasco Verwimp}
+\date{28 May 2026}
+
+% Custom theorem styles
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{remark}{Remark}[section]
+
+% Custom commands
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pdd}[2]{\frac{\partial^2 #1}{\partial #2^2}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\R}{\mathbb{R}}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+% =============================================================================
+% INTRODUCTION
+% =============================================================================
+
+\section{Introduction}
+Traditional approaches to solving differential equations rely on analytical methods or classical numerical techniques such as finite difference methods, finite element methods, and spectral methods. However, these methods often struggle with high-dimensional problems, complex geometries, and inverse problems. In recent years, machine learning has emerged as a powerful alternative for solving differential equations, offering flexibility and scalability that traditional methods cannot provide.
+
+Physics-Informed Neural Networks (PINNs) combine the neural networks with physical constraints encoded in differential equations. This approach has proven effective for predicting system evolution, and can be extended to extracting the physical parameters underlying observations.
+
+PINNS are applied to two classical differential equation problems:
+
+\begin{enumerate}
+    \item \textbf{The Damped Harmonic Oscillator}: A second-order ordinary differential equation (ODE) representing mechanical vibrations with friction.
+    \item \textbf{Burgers' Equation}: A nonlinear partial differential equation (PDE) that combines advection and diffusion processes.
+\end{enumerate}
+
+We investigate how PINNs can solve these equations by training neural networks to simultaneously satisfy the observed data and the underlying physics constraints. This will be used to extrapolate into a time-domain for which no observational data was given. As a benchmark, we will use a standard machine learning model: a simple neural network. Additionally, we will compare two different implementations: a fully blind PINN, which can only train on the training domain and has no information about how "good" it is doing in the extrapolation domain during its training, and an extended physics PINN, for which the physics loss will also be applied to the extrapolation domain so it can improve in this regard, even though no observational data is given.
+
+% =============================================================================
+% SECTION 1: PHYSICS-INFORMED NEURAL NETWORKS
+% =============================================================================
+
+\section{Physics-Informed Neural Networks (PINNs)}
+
+A Physics-Informed Neural Network is a neural network that is trained to solve differential equations by incorporating the equation's physics directly into the loss function. The network learns to approximate the solution $u(x,t)$ such that it satisfies both:
+\begin{enumerate}
+    \item The observed data (data loss, $\mathcal{L}_{\text{data}}$)
+    \item The differential equation (physics loss, $\mathcal{L}_{\text{phys}}$)
+    \item Initial and boundary conditions (constraint loss, $\mathcal{L}_{\text{ic}}$)
+\end{enumerate}
+
+The key innovation that has greatly increased the ease of use of PINNs is automatic differentiation to compute derivatives. This allows us to directly enforce the physics constraints encoded in differential equations.
+
+Let $u(x, t)$ denote the solution to a differential equation. A neural network $u_\theta(x, t)$ is trained to approximate this solution, where $\theta$ represents the network's parameters. The total loss function is:
+
+\begin{equation}
+\mathcal{L}_{\text{total}}(\theta) = \mathcal{L}_{\text{data}}(\theta) + \lambda_{\text{phys}} \mathcal{L}_{\text{phys}}(\theta) + \lambda_{\text{ic}} \mathcal{L}_{\text{ic}}(\theta)
+\end{equation}
+
+where:
+
+\begin{itemize}
+    \item $\mathcal{L}_{\text{data}}$ is the \textbf{data loss}: measures the discrepancy between network predictions and observed data
+    \begin{equation}
+        \mathcal{L}_{\text{data}} = \frac{1}{N_{\text{data}}} \sum_{i=1}^{N_{\text{data}}} \left(u_\theta(x_i, t_i) - u_i^{\text{obs}}\right)^2
+    \end{equation}
+    
+    \item $\mathcal{L}_{\text{phys}}$ is the \textbf{physics loss}: enforces the differential equation at randomly chosen points, called collocation points, in a certain region.
+    \begin{equation}
+        \mathcal{L}_{\text{phys}} = \frac{1}{N_{\text{col}}} \sum_{j=1}^{N_{\text{col}}} \left(\mathcal{F}\left(u_\theta, \pd{u_\theta}{x}, \pd{u_\theta}{t}, \ldots\right)\big|_{x=x_j, t=t_j}\right)^2
+    \end{equation}
+    
+    where $\mathcal{F}$ represents the differential equation operator: the solution $u$ has $\mathcal{F}(u(x,t))$=0 for $\forall x,t$.
+    
+    \item $\mathcal{L}_{\text{ic}}$ is the \textbf{initial/boundary condition loss}: enforces initial and boundary conditions
+    \begin{equation}
+        \mathcal{L}_{\text{ic}} = \frac{1}{N_{\text{ic}}} \sum_{k=1}^{N_{\text{ic}}} \left(u_\theta(x_k, t_0) - u_0(x_k)\right)^2
+    \end{equation}
+    
+    \item $\lambda_{\text{phys}}$ and $\lambda_{\text{ic}}$ are \textbf{loss weights} controlling the trade-off between fitting data and satisfying physics.
+\end{itemize}
+
+\subsection{Advantages and disadvantages of PINNs}
+
+\subsubsection*{Advantages}
+\begin{itemize}[label=$+$]
+    \item \textbf{No mesh required}: Unlike finite difference or finite element methods, PINNs do not require discretization of the spatial and temporal domains; collocation points.
+    \item \textbf{Inverse problems}: Can be used to identify unknown physical parameters from data.
+    \item \textbf{Extendability}: The neural network learns about the workings of the physical system; this allows it to make meaningful predictions in regions that it was not trained for
+\end{itemize}
+
+\subsection{Implementation Details}
+
+In practice, a PINN is typically implemented as follows:
+
+\begin{enumerate}
+    \item \textbf{Network architecture}: A fully-connected feedforward neural network with several hidden layers and activation functions (e.g., tanh, GELU).
+    \item \textbf{Automatic differentiation}: Use frameworks like PyTorch or TensorFlow to compute $\pd{u_\theta}{x}$, $\pd{u_\theta}{t}$, and higher-order derivatives.
+    \item \textbf{Optimization}: Train the network using gradient-based optimizers (e.g., Adam, L-BFGS) to minimize the combined loss function.
+    \item \textbf{Collocation points}: Sample interior collocation points to evaluate the physics residual and boundary/initial condition points separately.
+\end{enumerate}
+
+% =============================================================================
+% SECTION 2: DAMPED HARMONIC OSCILLATOR
+% =============================================================================
+
+\section{The Damped Harmonic Oscillator}
+
+\subsection{Problem Description}
+
+The damped harmonic oscillator is one of the most fundamental systems in classical mechanics, describing the motion of a mass attached to a spring with damping. It is governed by the following second-order ordinary differential equation:
+
+\begin{equation}
+m \ddot{y}(t) + c \dot{y}(t) + k y(t) = 0
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $m$ is the mass [kg]
+    \item $c$ is the damping coefficient [kg/s]
+    \item $k$ is the spring stiffness [N/m]
+    \item $y(t)$ is the displacement [m]
+    \item $\dot{y}(t) = \frac{dy}{dt}$ is the velocity
+    \item $\ddot{y}(t) = \frac{d^2y}{dt^2}$ is the acceleration
+\end{itemize}
+
+The system is typically subject to initial conditions:
+\begin{equation}
+y(0) = y_0, \quad \dot{y}(0) = v_0
+\end{equation}
+
+\subsection{Physical Characterization}
+
+The behavior of the damped harmonic oscillator can be characterized using two non-dimensional quantities:
+
+\begin{definition}[Natural Frequency]
+The \textbf{undamped natural frequency} is given by:
+\begin{equation}
+\omega_0 = \sqrt{\frac{k}{m}}
+\end{equation}
+\end{definition}
+
+\begin{definition}[Damping Ratio]
+The \textbf{damping ratio} is given by:
+\begin{equation}
+\zeta = \frac{c}{2\sqrt{mk}} = \frac{c}{2m\omega_0}
+\end{equation}
+\end{definition}
+
+The damping ratio determines the system's behavior:
+
+\begin{itemize}
+    \item \textbf{Underdamped} ($\zeta < 1$): Oscillatory response with exponential decay
+    \item \textbf{Critically damped} ($\zeta = 1$): Fastest non-oscillatory return to equilibrium
+    \item \textbf{Overdamped} ($\zeta > 1$): Slow non-oscillatory return to equilibrium
+\end{itemize}
+
+\subsection{Analytical Solution}
+
+For the underdamped case ($\zeta < 1$), the analytical solution is:
+
+\begin{equation}
+y(t) = e^{-\zeta \omega_0 t} \left( A \cos(\omega_d t) + B \sin(\omega_d t) \right)
+\end{equation}
+
+where $\omega_d = \omega_0 \sqrt{1 - \zeta^2}$ is the \textbf{damped natural frequency}, and constants $A$, $B$ are determined by initial conditions:
+
+\begin{align}
+A &= y_0 \\
+B &= \frac{v_0 + \zeta \omega_0 y_0}{\omega_d}
+\end{align}
+
+\subsection{Application to PINNs}
+
+The PINN approach for the damped oscillator involves:
+
+\begin{enumerate}
+    \item \textbf{Data generation}: Generate synthetic noisy observations by solving the ODE and adding measurement noise.
+    \item \textbf{Forward problem}: Train a PINN to predict $y(t)$ given the system parameters $(m, c, k)$.
+    \item \textbf{Inverse problem}: Train a PINN to identify unknown parameters $(\omega_0, \zeta)$ from noisy displacement measurements.
+\end{enumerate}
+
+The physics loss enforces:
+\begin{equation}
+\mathcal{L}_{\text{phys}} = \frac{1}{N_{\text{col}}} \sum_{j=1}^{N_{\text{col}}} \left( m \ddot{u}_\theta(t_j) + c \dot{u}_\theta(t_j) + k u_\theta(t_j) \right)^2
+\end{equation}
+
+where derivatives $\dot{u}_\theta$ and $\ddot{u}_\theta$ are computed via automatic differentiation.
+
+% =============================================================================
+% SECTION 3: BURGERS' EQUATION
+% =============================================================================
+
+\section{Burgers' Equation}
+
+\subsection{Problem Description}
+
+Burgers' equation is a fundamental nonlinear partial differential equation that arises in fluid dynamics, gas dynamics, and heat conduction. It combines nonlinear advection with linear diffusion:
+
+\begin{equation}
+\pd{u}{t} + u \pd{u}{x} = \nu \pdd{u}{x}
+\label{eq:burgers}
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $u(x, t)$ is the solution variable (velocity in fluid dynamics)
+    \item $\nu > 0$ is the viscosity coefficient [m$^2$/s]
+    \item $x$ is the spatial coordinate [-7, 7] (typical domain)
+    \item $t$ is the temporal coordinate [0, 3] (typical domain)
+\end{itemize}
+
+The equation is supplemented with:
+\begin{enumerate}
+    \item \textbf{Initial condition}: $u(x, 0) = u_0(x)$ for $x \in [x_{\min}, x_{\max}]$
+    \item \textbf{Boundary conditions}: Typically Dirichlet: $u(x_{\min}, t) = u(x_{\max}, t) = 0$
+\end{enumerate}
+
+\subsection{Physical Interpretation}
+
+The three terms in Burgers' equation have clear physical meanings:
+
+\begin{itemize}
+    \item $\pd{u}{t}$: \textbf{Time derivative} — rate of change of the solution
+    \item $u \pd{u}{x}$: \textbf{Advection} — nonlinear transport of the solution field (sharpening effects)
+    \item $\nu \pdd{u}{x}$: \textbf{Diffusion} — smoothing due to viscosity (dissipation)
+\end{itemize}
+
+The balance between advection (nonlinear steepening) and diffusion (smoothing) creates complex dynamics:
+\begin{itemize}
+    \item Small $\nu$: Advection dominates, steep fronts form and can develop shocks
+    \item Large $\nu$: Diffusion dominates, smooth solutions evolve slowly
+    \item Moderate $\nu$: Intricate interplay creates rich dynamics
+\end{itemize}
+
+\subsection{Cole-Hopf Transformation}
+
+A remarkable property of Burgers' equation is that it can be linearized via the Cole-Hopf transformation:
+
+\begin{equation}
+u = -2\nu \frac{\pd{\phi}{x}}{\phi}
+\end{equation}
+
+This transforms Burgers' equation into the linear heat equation:
+
+\begin{equation}
+\pd{\phi}{t} = \nu \pdd{\phi}{x}
+\end{equation}
+
+which has known analytical solutions. However, for PINN applications, we work with the nonlinear form directly.
+
+\subsection{Benchmark Initial Conditions}
+
+Two standard initial conditions are commonly used:
+
+\subsubsection{Gaussian Pulse}
+\begin{equation}
+u(x, 0) = \exp\left(-\frac{x^2}{2}\right)
+\end{equation}
+
+This represents a smooth, localized disturbance that diffuses over time.
+
+\subsubsection{N-Wave}
+\begin{equation}
+u(x, 0) = \exp\left(-\frac{(x-1)^2}{2}\right) - \exp\left(-\frac{(x+1)^2}{2}\right)
+\end{equation}
+
+This represents a wave-like structure with positive and negative lobes that interact via nonlinear advection.
+
+\subsection{Challenges for Numerical Methods}
+
+Burgers' equation presents several challenges:
+
+\begin{itemize}
+    \item \textbf{Nonlinearity}: Standard linear solvers do not apply. Solutions can develop steep gradients and shocks.
+    \item \textbf{Multiscale behavior}: Solutions exhibit both rapid changes (shocks) and smooth regions.
+    \item \textbf{Conservation laws}: Proper numerical schemes must preserve physical conservation properties.
+    \item \textbf{Stability}: Explicit time-stepping schemes require stringent CFL conditions.
+\end{itemize}
+
+\subsection{Application to PINNs}
+
+PINNs offer a meshfree alternative for solving Burgers' equation:
+
+\begin{enumerate}
+    \item \textbf{Network input}: $(x, t)$ pairs representing spatial-temporal locations
+    \item \textbf{Network output}: $u(x, t)$ the solution at that location
+    \item \textbf{Physics residual}: Computed via automatic differentiation:
+    \begin{equation}
+        r(x, t) = \pd{u_\theta}{t} + u_\theta \pd{u_\theta}{x} - \nu \pdd{u_\theta}{x}
+    \end{equation}
+    \item \textbf{Loss function}: Combines data loss, physics residual penalty, and initial/boundary condition enforcement
+\end{enumerate}
+
+\subsection{Solution Behavior}
+
+The solution behavior depends critically on the viscosity parameter $\nu$:
+
+\begin{itemize}
+    \item \textbf{Low viscosity} ($\nu \to 0$): Solutions approach those of the inviscid Burgers equation (purely hyperbolic), which can develop shocks
+    \item \textbf{High viscosity}: Solutions become smooth and decay toward zero
+    \item \textbf{Moderate viscosity}: Rich transient dynamics with traveling wave formation
+\end{itemize}
+
+
+
+\end{document}

@@ -35,13 +35,14 @@ def viscosity_predictions(situation:str):
     plt.yscale('log')
 
     plt.xlabel('Viscosity')
-    plt.ylabel('Estimated Viscosity (Nu Hat)')
-    plt.title(f'Viscosity Estimation vs True Viscosity for {situation}')
+    plt.ylabel('Estimated Viscosity')
+    plt.title(f'Viscosity Estimation vs True Viscosity for {situation} initial condition')
     plt.grid(True)
     plt.legend()
     plt.savefig(f"{cfg.out_dir}/viscosity_predictions_{situation}.png")
 
 
 if __name__ == "__main__":
-    situation = "Gaussian"
-    viscosity_predictions(situation)
+    situations = ["Gaussian","Step","N-wave"]
+    for situation in situations:
+        viscosity_predictions(situation)

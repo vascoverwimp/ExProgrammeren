@@ -552,6 +552,8 @@ def main() -> None:
 
     train_and_save_both(**kwargs)
     evaluate_model(cfg.omega_0, cfg.zeta)
+    print(f"Run plot.py --w0 {cfg.omega_0} --zeta {cfg.zeta} using the script also in this folder")
+
 
 def train_and_save_both(**kwargs) -> None:
     """
