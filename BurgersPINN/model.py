@@ -108,7 +108,7 @@ class BurgerConfig:
     # ── Output paths ──────────────────────────────────────────────────────────
     dir_analytic: str = "./AnalyticBurger"                # directory for analytic solution data
     suffix_analytic_pt: str = "analytic_solution.npz"  # numpy bundle 
-    out_dir:    str = "./VascoVersionBurger/Output"                  # directory for all saved files
+    out_dir:    str = "./BurgersPINN/Output"                  # directory for all saved files
     suffix_results_pt: str = "training_results.pt"  # torch.save bundle 
     suffix_ckpt_pinn_ext_phys:  str = "best_pinn_ext_phys.pt"         # best-so-far extended physics PINN checkpoint
     suffix_ckpt_pinn_blind:    str = "best_pinn_blind.pt"           # best-so-far blind PINN checkpoint

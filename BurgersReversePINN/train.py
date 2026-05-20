@@ -35,8 +35,6 @@ from pathlib import Path
 import numpy as np
 import torch
 import torch.nn as nn
-from torch import amp
-from scipy.special import erfc
 from model import BurgerConfig, FCNet, Predictor
 from Burger_PDE import BurgersSolver
 

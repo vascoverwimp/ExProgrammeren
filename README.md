@@ -22,48 +22,52 @@ Physics-Informed Neural Networks combine machine learning with physics constrain
    - Tests neural network's ability to learn nonlinear dynamics
    - Parameter recovery: viscosity
 
-
-
 ## Directory Structure
 
 ```
 ExProgrammeren/
-├── VascoReverseBurger/          # Burgers' equation with reverse-mode differentiation
-│   ├── model.py                 # PINN architecture and BurgerConfig
-│   ├── train.py                 # Training loop with ML/PINN modes
+├── VascoReverseBurger/          # Solving the reverse problem for the Burgers' equation
+│   ├── model.py                 # PINN architecture, BurgerConfig, predictor
+│   ├── train.py                 # Training loop with both PINN modes, argument parsing if run
 │   ├── Burger_PDE.py            # Crank-Nicolson solver for synthetic data
-│   ├── findParams.py            # Hyperparameter search utilities
-│   ├── hyperparam_search.py     # Grid/random search for optimal parameters
-│   ├── plot_claude.py           # Visualization of predictions vs. ground truth
+│   ├── findParams.py            # Evaluation of the retrieval of the viscosity parameter
+│   ├── hyperparam_search.py     # Search for optimal hyperparameters
+│   ├── plot.py                  # Plot over the epochs, comparison for several time slices and evolution of losses
 │   └── Output/                  # Training results and saved models
 │
-├── VascoReversePINNDamper/      # Damped system with reverse-mode differentiation
-│   ├── model.py                 # PINN architecture and DamperConfig
-│   ├── train.py                 # Training loop (blind PINN, ext phys PINN)
-│   ├── findParams.py            # Parameter recovery and predictions
-│   ├── hyperparam_search.py     # Hyperparameter optimization
-│   ├── plot_claude.py           # Phase portraits and parameter estimates
+├── VascoReversePINNDamper/      # Solving the reverse problem for the damped harmonic oscillator
+│   ├── model.py                 # PINN architecture, DamperConfig, predictor
+│   ├── train.py                 # Training loop with both PINN modes, argument parsing if run
+│   ├── findParams.py            # Evaluation of the retrieval of the natural frequency and damping ratio parameters
+│   ├── hyperparam_search.py     # Search for optimal hyperparameters
+│   ├── plot.py                  # Plot over the epochs, comparison for several time slices and evolution of losses
 │   └── Output/                  # Training results and saved models
 │
-├── VascoPINNDamper/             # Original implementation for damped system
-│   ├── model.py
-│   ├── train.py
-│   ├── plot_claude.py
+├── VascoPINNDamper/             # Solving the damped harmonic oscillator using PINNs and standard neural network
+│   ├── model.py                 # Architectures, DamperConfig, predictor
+│   ├── train.py                 # Training loop with both PINN modes and standard neural network, argument parsing if run
+│   ├── plot.py                  # Plot over the epochs, comparison for several time slices and evolution of losses
+│   ├── hyperparam_search.py     # Search for optimal hyperparameters
 │   ├── Hyperparam_optim/        # Hyperparameter optimization results
 │   └── Output/
 │
-├── VascoVersionBurger/          # Alternative PINN implementation for Burgers' eq.
-│   └── [similar structure]
+├── VascoVersionBurger/          # Solving Burgers' equation using PINNS and standard neural network
+│   ├── model.py                 # Architectures, BurgerConfig, predictor
+│   ├── train.py                 # Training loop with both PINN modes and standard neural network, argument parsing if run
+│   ├── Burger_PDE.py            # Crank-Nicolson solver for synthetic data
+│   ├── hyperparam_search.py     # Search for optimal hyperparameters
+│   ├── plot.py                  # Plot over the epochs, comparison for several time slices and evolution of losses
+│   └── Output/                  # Training results and saved models
 │
 ├── AnalyticBurger/              # Precomputed analytic solutions for Burgers' eq.
 │   ├── Gaussian_*.npz           # Solutions for Gaussian IC with various viscosities
 │   ├── N-wave_*.npz             # Solutions for N-wave IC with various viscosities
-│   └── [many more configurations]
+│   └── Step_*.npz               # Solutions for Step IC with various viscosities
 │
 ├── Original/                    # Original reference implementations
 │
-├── hyperparam_tracking_burger.md        # Hyperparameter search logs & results
-├── hyperparam_tracking_damper.md        # Hyperparameter search logs & results
+├── hyperparam_tracking_burger.md        # Hyperparameter search logs & results for burgers' equation
+├── hyperparam_tracking_damper.md        # Hyperparameter search logs & results for damped harmonic oscillator
 ├── Questions.md                         # Research questions & investigation notes
 ├── tips.txt                             # Best practices & implementation notes
 └── README.md                            # This file
@@ -72,29 +76,27 @@ ExProgrammeren/
 ## Key Features
 
 ### 1. **Dual Physics Applications**
+   - **Damped System**: Solves a simple ODE with known analytical solution
    - **Burgers' Equation**: Solves a nonlinear PDE with spatial-temporal structure
-   - **Damped System**: Identifies unknown physical parameters (damping, stiffness)
 
 ### 2. **Training Modes**
    - **Standard ML**: Data loss only
-   - **PINN (Blind)**: Data + physics residual + initial condition losses
-   - **PINN (Extended Physics)**: Physics-informed with additional constraints
+   - **PINN (Blind)**: Data + physics residual (on training region) + initial condition losses
+   - **PINN (Extended Physics)**: Physics-residual extended to the extrapolated region
 
 ### 3. **Automatic Differentiation**
    - Uses PyTorch for computing derivatives (∂u/∂t, ∂u/∂x, ∂²u/∂x², etc.)
-   - Second-order derivatives via automatic differentiation
    - Efficient reverse-mode AD for loss backpropagation
 
 ### 4. **Hyperparameter Optimization**
-   - Grid search for loss weights (λ_physics, λ_ic)
    - Learning rate optimization (Adam optimizer with StepLR decay)
+   - Grid search for loss weights (λ_physics, λ_ic)
    - Collocation point density tuning
    - Best hyperparameters logged and tracked
 
 ### 5. **Robust Training Infrastructure**
    - Early stopping based on validation loss
    - Checkpoint saving (best models preserved)
-   - Mixed-precision training support (AMP)
    - Device auto-detection (CUDA > MPS > CPU)
 
 ## Getting Started
@@ -102,36 +104,29 @@ ExProgrammeren/
 ### Requirements
 - Python 3.8+
 - PyTorch (CUDA-enabled recommended)
-- NumPy, SciPy, Matplotlib
-- See individual directories for specific versions
+- NumPy, Matplotlib, pathlib
 
-### Installation
+### Usage
 
-```bash
+Note: the paths of input and output files are all configurable by either directly modifying the config class in model.py or by adding it as an argument (e.g. --out_dir changes the output directory).
+
+The default configuration works only if your working folder is the project folder.
+
 # Navigate to the project directory
 cd ExProgrammeren
 
 # Install dependencies (if needed)
 pip install torch numpy scipy matplotlib
 
-# Or use a virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
-
 ### Quick Start
 
 #### Training on Burgers' Equation
 
-```bash
-cd VascoReverseBurger
-
 # Train with default parameters
-python train.py
+python BurgersPINN/train.py
 
 # Train with custom parameters
-python train.py --n_epochs 5000 --lr 0.001 --lambda_phys 1.0 --lambda_ic 50.0
+python BurgersPINN/train.py --n_epochs 5000 --lr 0.001 --lambda_phys 1.0 --lambda_ic 50.0
 
 # Specify initial condition type
 python train.py --situation "Gaussian"  # or "N-wave"
