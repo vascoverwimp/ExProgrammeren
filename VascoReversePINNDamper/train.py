@@ -630,7 +630,7 @@ def train_and_save_both(**kwargs) -> None:
     # ── PINN model (blind) ───────────────────────────────────────────────────
     print()
     print("=" * 70)
-    print("Training PINN  (data + physics (normal + extrapolated) + IC loss)")
+    print("Training PINN  (data + physics (normal only) + IC loss)")
     print("=" * 70)
     model_pinn = FCNet.from_config(cfg)
     print(f"  Parameters: {model_pinn.param_count()}")
