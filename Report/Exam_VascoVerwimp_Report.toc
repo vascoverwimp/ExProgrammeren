@@ -1,20 +1,21 @@
 \babel@toc {english}{}\relax 
-\contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
-\contentsline {section}{\numberline {2}Physics-Informed Neural Networks (PINNs)}{2}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Advantages and disadvantages of PINNs}{3}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Implementation Details}{3}{subsection.2.2}%
-\contentsline {section}{\numberline {3}The Damped Harmonic Oscillator}{4}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Problem Description}{4}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Physical Characterization}{4}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Analytical Solution}{5}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Application to PINNs}{5}{subsection.3.4}%
-\contentsline {section}{\numberline {4}Burgers' Equation}{5}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Problem Description}{5}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Physical Interpretation}{6}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Cole-Hopf Transformation}{6}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Benchmark Initial Conditions}{6}{subsection.4.4}%
-\contentsline {subsubsection}{\numberline {4.4.1}Gaussian Pulse}{6}{subsubsection.4.4.1}%
-\contentsline {subsubsection}{\numberline {4.4.2}N-Wave}{7}{subsubsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.5}Challenges for Numerical Methods}{7}{subsection.4.5}%
-\contentsline {subsection}{\numberline {4.6}Application to PINNs}{7}{subsection.4.6}%
-\contentsline {subsection}{\numberline {4.7}Solution Behavior}{7}{subsection.4.7}%
+\contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Physics-Informed Neural Networks (PINNs)}{2}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Advantages and disadvantages of PINNs}{3}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}Implementation Details}{4}{subsection.1.1.2}%
+\contentsline {section}{\numberline {1.2}The Damped Harmonic Oscillator}{4}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Problem Description}{4}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Physical Characterization}{4}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}Analytical Solution}{5}{subsection.1.2.3}%
+\contentsline {subsection}{\numberline {1.2.4}Application to PINNs}{5}{subsection.1.2.4}%
+\contentsline {section}{\numberline {1.3}Burgers' Equation}{6}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Problem Description}{6}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.3.2}Physical Interpretation}{6}{subsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.3.3}Cole-Hopf Transformation}{7}{subsection.1.3.3}%
+\contentsline {subsection}{\numberline {1.3.4}Benchmark Initial Conditions}{7}{subsection.1.3.4}%
+\contentsline {subsubsection}{Gaussian Pulse}{7}{section*.3}%
+\contentsline {subsubsection}{N-Wave}{7}{section*.4}%
+\contentsline {subsection}{\numberline {1.3.5}Challenges for Numerical Methods}{7}{subsection.1.3.5}%
+\contentsline {subsection}{\numberline {1.3.6}Application to PINNs}{8}{subsection.1.3.6}%
+\contentsline {subsection}{\numberline {1.3.7}Solution Behavior}{8}{subsection.1.3.7}%
+\contentsline {chapter}{\numberline {2}Understanding a Given Solution}{9}{chapter.2}%

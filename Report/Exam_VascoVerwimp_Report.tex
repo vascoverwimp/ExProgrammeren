@@ -1,4 +1,4 @@
-\documentclass[12pt, a4paper]{article}
+\documentclass[12pt, a4paper]{report}
 
 % Packages
 \usepackage[english]{babel}
@@ -23,10 +23,10 @@
 \pagestyle{fancy}
 \fancyhf{}
 \rhead{\thepage}
-\lhead{PINNs for Differential Equations}
+\lhead{Exam Programming for Physics: Physics-Informed Neural Networks}
 
 % Title
-\title{\textbf{Physics-Informed Neural Networks: Applications to Differential Equations}}
+\title{\textbf{Exam Programming for Physics:\\Physics-Informed Neural Networks to Solve Differential Equations}}
 \author{Vasco Verwimp}
 \date{28 May 2026}
 
@@ -53,7 +53,7 @@
 % INTRODUCTION
 % =============================================================================
 
-\section{Introduction}
+\chapter{Introduction}
 Traditional approaches to solving differential equations rely on analytical methods or classical numerical techniques such as finite difference methods, finite element methods, and spectral methods. However, these methods often struggle with high-dimensional problems, complex geometries, and inverse problems. In recent years, machine learning has emerged as a powerful alternative for solving differential equations, offering flexibility and scalability that traditional methods cannot provide.
 
 Physics-Informed Neural Networks (PINNs) combine the neural networks with physical constraints encoded in differential equations. This approach has proven effective for predicting system evolution, and can be extended to extracting the physical parameters underlying observations.
@@ -126,7 +126,7 @@ In practice, a PINN is typically implemented as follows:
 
 \begin{enumerate}
     \item \textbf{Network architecture}: A fully-connected feedforward neural network with several hidden layers and activation functions (e.g., tanh, GELU).
-    \item \textbf{Automatic differentiation}: Use frameworks like PyTorch or TensorFlow to compute $\pd{u_\theta}{x}$, $\pd{u_\theta}{t}$, and higher-order derivatives.
+    \item \textbf{Automatic differentiation}: Using frameworks like PyTorch or TensorFlow to compute any order derivatives.
     \item \textbf{Optimization}: Train the network using gradient-based optimizers (e.g., Adam, L-BFGS) to minimize the combined loss function.
     \item \textbf{Collocation points}: Sample interior collocation points to evaluate the physics residual and boundary/initial condition points separately.
 \end{enumerate}
@@ -332,6 +332,8 @@ The solution behavior depends critically on the viscosity parameter $\nu$:
     \item \textbf{High viscosity}: Solutions become smooth and decay toward zero
     \item \textbf{Moderate viscosity}: Rich transient dynamics with traveling wave formation
 \end{itemize}
+
+\chapter{Understanding a Given Solution}
 
 
 

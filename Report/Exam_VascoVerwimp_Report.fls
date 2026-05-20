@@ -2,8 +2,8 @@ PWD c:\Users\vasco\Desktop\ExProgrammeren\Report
 INPUT C:\Users\vasco\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
 INPUT c:\Users\vasco\Desktop\ExProgrammeren\Report\Exam_VascoVerwimp_Report.tex
 OUTPUT Exam_VascoVerwimp_Report.log
-INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
-INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
+INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\tex\latex\base\report.cls
+INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\tex\latex\base\report.cls
 INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\tex\latex\base\size12.clo
 INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\tex\latex\base\size12.clo
 INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\tex\latex\base\size12.clo
@@ -221,6 +221,7 @@ INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\tex\latex\amsfonts\umsb.fd
 INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm10.tfm
 INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm10.tfm
 INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm7.tfm
+INPUT C:\Users\vasco\AppData\Local\MiKTeX\fonts\map\pdftex\pdftex.map
 INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr17.tfm
 INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
 INPUT .\Exam_VascoVerwimp_Report.toc
@@ -245,7 +246,8 @@ INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\sym
 INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm10.tfm
 INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm7.tfm
 OUTPUT Exam_VascoVerwimp_Report.toc
-INPUT C:\Users\vasco\AppData\Local\MiKTeX\fonts\map\pdftex\pdftex.map
+INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr17.tfm
+INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
 INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\tcrm1200.tfm
 INPUT C:\Users\vasco\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
 INPUT Exam_VascoVerwimp_Report.aux
