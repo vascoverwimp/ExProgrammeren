@@ -138,7 +138,7 @@ def _heatmap(
     # Shockwave formation time (inviscid case)
     if show_shockwave:
         t_shock = cfg.inviscid_shockwave_time
-        if t_vals[0] <= t_shock <= t_vals[-1]:
+        if not np.isinf(t_shock) and t_vals[0] <= t_shock <= t_vals[-1]:
             ax.axhline(t_shock, color="#FF6B6B", lw=1.0, ls=":", alpha=0.8)
             ax.text(
                 x_vals[int(len(x_vals) * 0.98)], t_shock + 0.01 * (t_vals[-1] - t_vals[0]),
@@ -246,6 +246,7 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
     ax_loss.set_ylabel("loss")
     ax_loss.legend(fontsize=6.5, framealpha=0.5)
 
+    shock_info = f"shockwave (inviscid): t ≈ {cfg.inviscid_shockwave_time:.3f}" if not np.isinf(cfg.inviscid_shockwave_time) else "no shockwave"
     fig.suptitle(
         f"Burgers' PINN Dual Model Comparison  |  device={device_str}  |  ν_true={cfg.v}  "
         f"situation={cfg.situation}  |  "
@@ -253,7 +254,7 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
         f"{cfg.n_obs_total} obs  σ={cfg.sigma}  |  "
         f"{cfg.n_col} random collocation pts every epoch |  "
         f"λ_phys={cfg.lambda_phys}  λ_ic={cfg.lambda_ic}  |  "
-        f"training window: t ≤ {cfg.t_train}  |  shockwave (inviscid): t ≈ {cfg.inviscid_shockwave_time:.3f}",
+        f"training window: t ≤ {cfg.t_train}  |  {shock_info}",
         fontsize=9, y=0.975, color="#2C2C2A",
     )
 
@@ -307,7 +308,8 @@ def make_slice_figure(bundle: dict, out_path: Path,
         i_t = int(np.argmin(np.abs(t_vals - t_target)))
         t_actual = t_vals[i_t]
         in_extrap = t_actual > cfg.t_train
-        near_shockwave = abs(t_actual - cfg.inviscid_shockwave_time) < 0.2
+        near_shockwave = (not np.isinf(cfg.inviscid_shockwave_time) and 
+                         abs(t_actual - cfg.inviscid_shockwave_time) < 0.2)
 
         u_true_s = grid_true[i_t, :]
         u_blind_s = grid_blind[i_t, :]
@@ -343,10 +345,11 @@ def make_slice_figure(bundle: dict, out_path: Path,
     for idx in range(n_slices, len(axes_flat)):
         axes_flat[idx].set_visible(False)
 
+    shock_info = f"shockwave (inviscid): t ≈ {cfg.inviscid_shockwave_time:.3f} (⚡ red panels)" if not np.isinf(cfg.inviscid_shockwave_time) else "no shockwave"
     fig.suptitle(
         f"Burgers' PINN Dual Model — u(x) profiles at fixed times\n"
         f"ν={cfg.v}  situation={cfg.situation}  |  "
-        f"Training window: t ≤ {cfg.t_train}  |  shockwave (inviscid): t ≈ {cfg.inviscid_shockwave_time:.3f} (⚡ red panels)",
+        f"Training window: t ≤ {cfg.t_train}  |  {shock_info}",
         fontsize=9, y=1.01, color="#2C2C2A",
     )
     fig.tight_layout()
@@ -500,7 +503,8 @@ def make_epoch_figure_blind(bundle: dict, out_path: Path) -> plt.Figure:
         err_ep = np.abs(grid_pred - grid_true)
 
         # Check if this epoch is close to shockwave time (use max_epoch ~= t_shock as proxy)
-        is_near_shock = abs(epoch - cfg.inviscid_shockwave_time) < 500  # within 500 epochs if thinking about time
+        is_near_shock = (not np.isinf(cfg.inviscid_shockwave_time) and 
+                        abs(epoch - cfg.inviscid_shockwave_time) < 500)  # within 500 epochs if thinking about time
         shock_marker = " ⚡" if is_near_shock else ""
 
         _heatmap(ax_pred, t_vals_ep, x_vals_ep, grid_pred,
@@ -514,11 +518,12 @@ def make_epoch_figure_blind(bundle: dict, out_path: Path) -> plt.Figure:
             ax_pred.set_facecolor("#FFE0E0")
             ax_err.set_facecolor("#FFE0E0")
 
+    shock_info = f"shockwave: t ≈ {cfg.inviscid_shockwave_time:.3f} (dashed line)" if not np.isinf(cfg.inviscid_shockwave_time) else "no shockwave"
     fig.suptitle(
         f"PINN_blind Solution Field Evolution\n"
         f"ν={cfg.v}  situation={cfg.situation}  |  "
         f"λ_phys={cfg.lambda_phys}  λ_ic={cfg.lambda_ic}  |  "
-        f"Training window: t ≤ {cfg.t_train}  |  shockwave: t ≈ {cfg.inviscid_shockwave_time:.3f} (dashed line)",
+        f"Training window: t ≤ {cfg.t_train}  |  {shock_info}",
         fontsize=9.5, y=1.005, color="#2C2C2A",
     )
     fig.tight_layout()
@@ -582,11 +587,12 @@ def make_epoch_figure_ext_phys(bundle: dict, out_path: Path) -> plt.Figure:
                 f"|error|  epoch {epoch}",
                 cfg, vmin=0, vmax=vmax_err_global, cmap=CMAP_ERROR, cbar_label="|error|")
 
+    shock_info = f"shockwave: t ≈ {cfg.inviscid_shockwave_time:.3f} (dashed line)" if not np.isinf(cfg.inviscid_shockwave_time) else "no shockwave"
     fig.suptitle(
         f"PINN_ext_phys Solution Field Evolution\n"
         f"ν={cfg.v}  situation={cfg.situation}  |  "
         f"λ_phys={cfg.lambda_phys}  λ_ic={cfg.lambda_ic}  |  "
-        f"Training window: t ≤ {cfg.t_train}  |  shockwave: t ≈ {cfg.inviscid_shockwave_time:.3f} (dashed line)",
+        f"Training window: t ≤ {cfg.t_train}  |  {shock_info}",
         fontsize=9.5, y=1.005, color="#2C2C2A",
     )
     fig.tight_layout()

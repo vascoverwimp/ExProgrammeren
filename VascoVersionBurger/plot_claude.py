@@ -108,7 +108,7 @@ def _heatmap(
     ax.text(x_lo, cfg.t_train + 0.02 * t_span,
             "extrap ↑", color="white", fontsize=7, va="bottom")
 
-    if time_shockwave is not None:
+    if time_shockwave is not None and not np.isinf(time_shockwave) and t_vals[0] <= time_shockwave <= t_vals[-1]:
         ax.axhline(time_shockwave, color=SHOCK, lw=1.2, ls="--", alpha=0.9)
         ax.text(x_lo, time_shockwave + 0.02 * t_span,
                 "shock", color=SHOCK, fontsize=7, va="bottom")
@@ -205,7 +205,10 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
     ax_loss.set_xlabel("epoch"); ax_loss.set_ylabel("loss")
     ax_loss.legend(fontsize=6, framealpha=0.5, ncol=2)
 
-    shock_note = f"  |  shock: t={time_shockwave:.4g} s" if time_shockwave is not None else ""
+    if time_shockwave is not None and not np.isinf(time_shockwave):
+        shock_note = f"  |  shock: t={time_shockwave:.4g} s"
+    else:
+        shock_note = ""
     fig.suptitle(
         f"Burgers' equation — {cfg.situation}  ν={cfg.v}  "
         f"x∈[{cfg.x_begin}, {cfg.x_end}]  t∈[{cfg.t0}, {cfg.t_extrap}]"
@@ -247,7 +250,7 @@ def make_slice_figure(bundle: dict, out_path: Path,
     n_tr = int(np.sum(slice_times <= cfg.t_train))
 
     # Ensure the shock time is always shown as one of the slices
-    if time_shockwave is not None:
+    if time_shockwave is not None and not np.isinf(time_shockwave):
         i_shock = int(np.argmin(np.abs(t_vals - time_shockwave)))
         t_snap  = t_vals[i_shock]
         if not np.any(np.isclose(slice_times, t_snap)):
@@ -269,7 +272,7 @@ def make_slice_figure(bundle: dict, out_path: Path,
         i_t     = int(np.argmin(np.abs(t_vals - t_target)))
         t_act   = t_vals[i_t]
         in_ext  = t_act > cfg.t_train
-        is_shock = (time_shockwave is not None
+        is_shock = (time_shockwave is not None and not np.isinf(time_shockwave)
                     and np.isclose(t_act, time_shockwave, atol=(t_vals[1] - t_vals[0])))
 
         u_tr = grid_true[i_t, :]
@@ -310,7 +313,10 @@ def make_slice_figure(bundle: dict, out_path: Path,
     for idx in range(n_slices, len(axes_flat)):
         axes_flat[idx].set_visible(False)
 
-    shock_note = f"  |  shock: t={time_shockwave:.4g} s  (red panels)" if time_shockwave is not None else ""
+    if time_shockwave is not None and not np.isinf(time_shockwave):
+        shock_note = f"  |  shock: t={time_shockwave:.4g} s  (red panels)"
+    else:
+        shock_note = ""
     fig.suptitle(
         f"Burgers' equation — {cfg.situation}  ν={cfg.v}  |  "
         f"u(x) profiles at fixed times\n"
