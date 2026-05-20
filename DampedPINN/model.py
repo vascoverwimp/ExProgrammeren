@@ -102,7 +102,7 @@ class DamperConfig:
     )
 
     # ── Output paths ──────────────────────────────────────────────────────────
-    out_dir:    str = "./VascoPINNDamper/Output"                  # directory for all saved files
+    out_dir:    str = "./DampedPINN/Output"                  # directory for all saved files
     suffix_results_pt: str = "training_results.pt"  # torch.save bundle 
     suffix_ckpt_pinn_ext_phys:  str = "best_pinn_ext_phys.pt"         # best-so-far extended physics PINN checkpoint
     suffix_ckpt_pinn_blind:    str = "best_pinn_blind.pt"           # best-so-far blind PINN checkpoint

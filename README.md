@@ -26,7 +26,15 @@ Physics-Informed Neural Networks combine machine learning with physics constrain
 
 ```
 ExProgrammeren/
-├── VascoReverseBurger/          # Solving the reverse problem for the Burgers' equation
+├── BurgersPINN/                 # Solving Burgers' equation using PINNS and standard neural network
+│   ├── model.py                 # Architectures, BurgerConfig, predictor
+│   ├── train.py                 # Training loop with both PINN modes and standard neural network, argument parsing if run
+│   ├── Burger_PDE.py            # Crank-Nicolson solver for synthetic data
+│   ├── hyperparam_search.py     # Search for optimal hyperparameters
+│   ├── plot.py                  # Plot over the epochs, comparison for several time slices and evolution of losses
+│   └── Output/                  # Training results and saved models
+│
+├── BurgersReversePINN/          # Solving the reverse problem for the Burgers' equation
 │   ├── model.py                 # PINN architecture, BurgerConfig, predictor
 │   ├── train.py                 # Training loop with both PINN modes, argument parsing if run
 │   ├── Burger_PDE.py            # Crank-Nicolson solver for synthetic data
@@ -35,15 +43,7 @@ ExProgrammeren/
 │   ├── plot.py                  # Plot over the epochs, comparison for several time slices and evolution of losses
 │   └── Output/                  # Training results and saved models
 │
-├── VascoReversePINNDamper/      # Solving the reverse problem for the damped harmonic oscillator
-│   ├── model.py                 # PINN architecture, DamperConfig, predictor
-│   ├── train.py                 # Training loop with both PINN modes, argument parsing if run
-│   ├── findParams.py            # Evaluation of the retrieval of the natural frequency and damping ratio parameters
-│   ├── hyperparam_search.py     # Search for optimal hyperparameters
-│   ├── plot.py                  # Plot over the epochs, comparison for several time slices and evolution of losses
-│   └── Output/                  # Training results and saved models
-│
-├── VascoPINNDamper/             # Solving the damped harmonic oscillator using PINNs and standard neural network
+├── DampedPINN/                  # Solving the damped harmonic oscillator using PINNs and standard neural network
 │   ├── model.py                 # Architectures, DamperConfig, predictor
 │   ├── train.py                 # Training loop with both PINN modes and standard neural network, argument parsing if run
 │   ├── plot.py                  # Plot over the epochs, comparison for several time slices and evolution of losses
@@ -51,13 +51,14 @@ ExProgrammeren/
 │   ├── Hyperparam_optim/        # Hyperparameter optimization results
 │   └── Output/
 │
-├── VascoVersionBurger/          # Solving Burgers' equation using PINNS and standard neural network
-│   ├── model.py                 # Architectures, BurgerConfig, predictor
-│   ├── train.py                 # Training loop with both PINN modes and standard neural network, argument parsing if run
-│   ├── Burger_PDE.py            # Crank-Nicolson solver for synthetic data
+├── DampedReversePINN/           # Solving the reverse problem for the damped harmonic oscillator
+│   ├── model.py                 # PINN architecture, DamperConfig, predictor
+│   ├── train.py                 # Training loop with both PINN modes, argument parsing if run
+│   ├── findParams.py            # Evaluation of the retrieval of the natural frequency and damping ratio parameters
 │   ├── hyperparam_search.py     # Search for optimal hyperparameters
 │   ├── plot.py                  # Plot over the epochs, comparison for several time slices and evolution of losses
 │   └── Output/                  # Training results and saved models
+│
 │
 ├── AnalyticBurger/              # Precomputed analytic solutions for Burgers' eq.
 │   ├── Gaussian_*.npz           # Solutions for Gaussian IC with various viscosities
@@ -112,16 +113,19 @@ Note: the paths of input and output files are all configurable by either directl
 
 The default configuration works only if your working folder is the project folder.
 
+```bash
+
 # Navigate to the project directory
 cd ExProgrammeren
 
 # Install dependencies (if needed)
 pip install torch numpy scipy matplotlib
+```
 
 ### Quick Start
 
 #### Training on Burgers' Equation
-
+```bash
 # Train with default parameters
 python BurgersPINN/train.py
 
@@ -129,25 +133,19 @@ python BurgersPINN/train.py
 python BurgersPINN/train.py --n_epochs 5000 --lr 0.001 --lambda_phys 1.0 --lambda_ic 50.0
 
 # Specify initial condition type
-python train.py --situation "Gaussian"  # or "N-wave"
+python BurgersPINN/train.py --situation "Gaussian"  # or "N-wave"
 
 # Visualize results
-python plot_claude.py
+python BurgersPINN/plot.py
 ```
 
 #### Training on Damped System
-
 ```bash
-cd VascoReversePINNDamper
-
 # Train for a single damping/stiffness pair
-python train.py --mass 1.0 --damping 2.5 --stiffness 3.0
+python DampedPINN/train.py --mass 1.0 --damping 2.5 --stiffness 3.0
 
-# Perform parameter recovery across a grid
-python findParams.py
-
-# Hyperparameter optimization
-python hyperparam_search.py
+# Visualize results
+python DampedPINN/plot.py
 ```
 
 ## Core Modules
@@ -156,9 +154,9 @@ python hyperparam_search.py
 Defines the neural network architecture, configuration dataclass, and prediction wrapper.
 
 - **FCNet**: Fully-connected neural network with configurable depth/width
-  - Input: time (for ODE) or time+space (for PDE)
-  - Hidden layers: ReLU activation (configurable)
-  - Output: solution or solution+derivatives
+  - Input: time (for damped) or time+space (for Burgers')
+  - Hidden layers: Tanh activation, important for backpropagation of derivatives
+  - Output: solution
   
 - **Config Dataclass** (BurgerConfig / DamperConfig):
   - Physical parameters (viscosity ν, mass m, damping c, stiffness k)
@@ -174,7 +172,7 @@ Main training loop implementing the PINN framework.
 **Workflow:**
 1. Parse CLI arguments into Config object
 2. Generate synthetic training/validation data
-3. Train Standard-ML model (data loss only)
+3. Train Standard-ML model (data loss only) (only possible in normal case)
 4. Train PINN models (data + physics + IC losses)
 5. Apply early stopping and checkpoint management
 6. Save results to `training_results.pt` for visualization
@@ -205,106 +203,31 @@ Parameter identification and model evaluation.
 - Recovers estimates of ω₀ and ζ
 - Generates comparison plots (true vs. predicted parameters)
 
-### `hyperparam_search.py`
-Automated hyperparameter optimization.
+**For Burgers:**
+- Evaluates PINN predictions for multiple ICs and viscosities
+- Recovers estimates of ν
+- Generates comparison plots (true vs. predicted parameters)
 
-- Grid or random search over parameter ranges
+### `hyperparam_search.py`
+Search for hyperparameter optimization.
+
+- Grid search over parameter ranges
 - Tracks RMSE on training/validation splits
 - Logs best configurations to markdown files
 - Enables reproducible hyperparameter tuning
 
-### `plot_claude.py`
+### `plot.py`
 Visualization module for results.
 
 **Features:**
 - Overlay of PINN predictions vs. observations
 - Heatmaps of spatial-temporal solutions
-- Phase portraits (for damper system)
+- Epoch evolution portraits
 - Error visualizations (residuals, prediction errors)
 - Parameter estimation plots (true vs. recovered)
 
-## Configuration & Hyperparameters
-
-### Training Hyperparameters (from tracking files)
-
-**Burgers' Equation (N-wave, Gaussian ICs):**
-- **Learning Rate**: 0.0018 (optimized via grid search)
-- **Lambda Physics**: 0.794 (physics loss weight)
-- **Lambda IC**: 1.259 (initial condition loss weight)
-- **Collocation Points**: 200–500 (adaptive per configuration)
-- **Epochs**: 40,000
-- **Early Stopping Patience**: 30 (validation check intervals)
-
-**Damped System:**
-- Varies across mass, damping, stiffness combinations
-- Typically: λ_phys ∈ [0.1, 1.0], λ_ic ∈ [10, 100]
+## Hyperparameters
 
 See `hyperparam_tracking_burger.md` and `hyperparam_tracking_damper.md` for detailed search logs.
 
-## Baseline Results
 
-### Burgers' Equation
-- **Base RMSE** (initial): 0.1248
-- **After Learning Rate Optimization**: 0.012209
-- **After Weight Optimization**: 0.004675
-
-### Damped System
-- Recovers ω₀ and ζ to ~4 significant figures with sufficient training data
-- Physics-informed PINN outperforms blind ML, especially with limited observations
-
-## Research Questions & Investigation
-
-See `Questions.md` for active research topics:
-1. Loss function design and weighted optimization
-2. Physics residual scaling with ω₀
-3. Role of initial condition enforcement
-4. Network architecture impact on extrapolation
-5. Trade-offs between data fit and physics satisfaction
-
-## Best Practices (from `tips.txt`)
-
-- **Data Preprocessing**: Split data → preprocess (never preprocess → split to avoid data leakage)
-- **Model Architecture**: Store architecture and predictor in separate files
-- **Configuration Management**: Use dataclass for all parameters (no magic numbers)
-- **Checkpointing**: Save best models periodically; never lose progress to crashes
-- **Early Stopping**: Monitor validation loss; stop if no improvement for N iterations
-- **Data Consistency**: Arrange synthetic data consistent with real-world scenarios
-
-## Performance Considerations
-
-- **Compute Device**: Auto-selects GPU (CUDA/MPS) if available; falls back to CPU
-- **Mixed Precision Training**: Enabled for faster convergence with lower memory
-- **Batch Processing**: Collocation points and observations handled in configurable batches
-- **Scalability**: Tested up to 10,000 collocation points and 1,000 observations
-
-## Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| NaN losses | Reduce learning rate; check physics loss scaling |
-| Poor extrapolation | Increase λ_phys; add more collocation points beyond training domain |
-| Training plateau | Tune learning rate decay (lr_step, lr_gamma); increase network depth |
-| Out of memory | Reduce batch sizes; decrease hidden layer width; use CPU |
-
-## Citation & References
-
-This project is part of a comparative study on Physics-Informed Neural Networks for educational purposes. References:
-
-- Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). Physics-informed neural networks: A deep learning framework for solving forward and inverse problems.
-- Han et al. (2018). Solving high-dimensional PDEs using deep learning.
-
-## License
-
-This project is part of academic coursework. Modify and use freely for educational purposes.
-
-## Contact & Questions
-
-For questions or issues:
-- Review existing research notes in `Questions.md`
-- Check hyperparameter logs in `hyperparam_tracking_*.md`
-- Refer to docstrings in individual modules
-
----
-
-**Last Updated**: May 2026  
-**Project Status**: Active development & experimentation
