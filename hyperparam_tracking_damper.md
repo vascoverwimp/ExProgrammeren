@@ -81,9 +81,9 @@ Best RMSE: 0.01045978
 *Number of collocation points*
 Default value: 100
 Starting search:
-num_collocations = [20, 50, 100, 200, 500]
-Best number of collocation points: 20 with RMSE: 0.011735529299658041
-But basically flatline, so will use 100 to be safe
+num_collocations = np.linspace(100, 500, num=61, dtype=int)
+We see that it is basically invariant under the number of collocation
+Stick to default: 100
 
 *Number of observations per epoch*
 
