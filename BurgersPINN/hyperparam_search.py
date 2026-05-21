@@ -42,7 +42,6 @@ def search_learning_rate():
     plt.title('Learning Rate vs RMSE for PINN (blind)')
     plt.grid(True)
     plt.savefig(out_dir / f"learning_rate_search.png")
-    plt.show()
 
 def search_weights():
     ic_weights = 10**np.linspace(0.1, 0.9, num=4)  
@@ -87,19 +86,19 @@ def search_weights():
     plt.show()
 
 def search_num_collocations():
-    # num_collocations = [10, 20, 50, 100, 200, 500]+
-    num_collocations = np.linspace(60, 180, num=13, dtype=int)    # Search over a range of numbers of collocation points
+    # num_collocations = [10, 20, 50, 100, 200, 300, 400, 500]
+    num_collocations = np.linspace(210, 490, 15, dtype=int)   # Search over a range of numbers of collocation points
     plot_RMSE = []  # To store RMSE values for plotting later
     device = get_device()
     default_cfg = BurgerConfig()
-    data = generate_data(default_cfg, device=device)  # Generate data once, can be reused for all weight combinations
+
     out_dir = Path(default_cfg.out_dir)
     ckpt_pinn_blind = out_dir / f"{default_cfg.situation}_{default_cfg.v:.1e}_{default_cfg.suffix_ckpt_pinn_blind}"
     best_rmse = float('inf')
     best_num_col = None
     for num_col in num_collocations:
         cfg = BurgerConfig(n_col=num_col)
-
+        data = generate_data(cfg, device=device) 
 
         print(f"Testing number of collocation points: {num_col}")
         model_pinn_blind = FCNet.from_config(cfg)
@@ -121,7 +120,7 @@ def search_num_collocations():
     plt.title('Number of Collocation Points vs RMSE for PINN (blind)')
     plt.grid(True)
     plt.savefig(out_dir / f"num_collocations_search.png")
-    plt.show()
+
 
 if __name__ == "__main__":
     # search_learning_rate()

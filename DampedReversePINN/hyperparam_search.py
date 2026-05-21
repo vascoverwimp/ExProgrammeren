@@ -7,8 +7,9 @@ import numpy as np
 
 def search_learning_rate_param():
     # Define a range of learning rates to search over
-    # learning_rates = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e-0]  # Search over a range of learning rates
-    learning_rates =10**np.linspace(-3.5, -2.5, num=13) # Search over a range of learning rates from 10^-3.5 to 10^-1.5: [3.16e-4, 5.62e-4, 1e-3, 1.78e-3, 3.16e-3, 5.62e-3, 1e-2, 1.78e-2, 3.16e-2]
+    learning_rates = np.logspace(-5,0,num=6)
+    learning_rates = np.logspace(-3.5,-0.5,num=31)  # Search over a range of learning rates
+
     plot_RMSE = []  # To store RMSE values for plotting later
     plot_w0_diff = []  # To store w0 differences for plotting later
     plot_zeta_diff = []  # To store zeta differences for plotting later
@@ -35,7 +36,7 @@ def search_learning_rate_param():
         train_model(model_pinn_blind, data=data, cfg=cfg, device=device, use_physics=True, extrapolated_physics=False,         label       = "PINN (blind)",
         ckpt_path   = ckpt_pinn_blind)
         rmse, w0_hat, zeta_hat = evaluate_blind(cfg.omega_0, cfg.zeta)
-        print(f"RMSE for learning rate {lr_param}: {rmse:.4f}")
+        print(f"RMSE for learning rate {lr_param}: {rmse:.4f}\n")
         plot_RMSE.append((lr_param, rmse))
         plot_w0_diff.append((lr_param, abs(w0_hat - cfg.omega_0)))
         plot_zeta_diff.append((lr_param, abs(zeta_hat - cfg.zeta)))

@@ -69,7 +69,7 @@ class BurgerConfig:
     n_val_x: int = 200  # number of validation observations along space axis
     sigma:       float  = 0.05  # measurement noise std dev
     n_ic_samples_x: int = 200  # initial condition samples in x dimension (for IC loss)
-    n_col:       int  = 465   # collocation points (physics residual)
+    n_col:       int  = 250   # collocation points (physics residual)
     n_col_pool:  int  = 10000 # pool of collocation points to sample from each epoch
     seed:        int    = 42    # global RNG seed
 
@@ -91,7 +91,7 @@ class BurgerConfig:
     lr:       float = 0.0018077686769634343   # initial Adam learning rate
     lr_step:  int   = 3000   # StepLR: decay every this many epochs
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
-    lr_param: float = 0.0003981071705534969    # learning rate for physical parameters (relative to lr)
+    lr_param: float = 0.00019952623149688788    # learning rate for physical parameters (relative to lr)
 
     # ── Training loop ─────────────────────────────────────────────────────────
     n_epochs:    int = 40_000   # maximum training epochs

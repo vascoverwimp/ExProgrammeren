@@ -97,20 +97,11 @@ This is still at the edge of our search, but we want ic > data > phy, so we can'
 *Number of collocation points*
 Default value: 400
 Starting search:
-num_collocations = [10, 20, 50, 100, 200, 500]
-Best number of collocation points: 100 with RMSE: 0.005246076092433926
-but 400 was better earlier: RMSE 0.004674636637779943, so we will search around there and around 100
-
-Zoomed search (around 400):
-num_collocations = np.linspace(300, 480, num=13, dtype=int)
-Best number of collocation points: 465 with RMSE: 0.004064392036313775
-
-Zoomed search (around 100):
-num_collocations = np.linspace(60, 180, num=13, dtype=int)  
-Best number of collocation points: 120 with RMSE: 0.004415001238839823
-
-We will continue with 465 collocation points
-
+num_collocations = [10, 20, 50, 100, 200, 300, 400, 500]
+Best number of collocation points: 300 with RMSE: 0.005644020877243901
+Keep looking around 300-400
+num_collocations = np.linspace(210, 490, 15)
+Best number of collocation points: 250 with RMSE: 0.004315248141050536
 
 *One last one: lr_param*
 
@@ -119,11 +110,10 @@ We will look at 3 things that need to be optimized: RMSE and distances to true v
 
 Let's try this for the third time
 Starting search: learning_rates = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e-0]
-Best learning rate RMSE: 0.0001 with RMSE: 0.009095883946199172
-Best learning rate v: 0.001 with difference: 0.013415724608118615 (from v_hat: 0.08658427539188139)
+Best learning rate RMSE: 0.0001 with RMSE: 0.011156415551776214
+Best learning rate v: 0.001 with difference: 0.04093186918169268 (from v_hat: 0.05906813081830733)
 
-Zoomed search: learning_rates =10**np.linspace(-1.8, -4.2, num=25)
-Best learning rate RMSE: 0.00019952623149688788 with RMSE: 0.0063437969652230764
-Best learning rate v: 0.0003981071705534969 with difference: 0.0006189258710126155 (from v_hat: 0.09938107412898739)
-
-We will choose 0.0003981071705534969 as it also has a decent RMSE (0.0102)
+Zoomed search: learning_rates =np.logspace(-1.8, -4.2, num=25)
+Best learning rate RMSE: 0.0001584893192461111 with RMSE: 0.00529069332427842
+Best learning rate v: 0.00019952623149688788 with difference: 0.0009480903908367228 (from v_hat: 0.09905190960916328)
+These lie very close together, we will choose 0.00019952623149688788 as it also has a decent RMSE (0.0055)
