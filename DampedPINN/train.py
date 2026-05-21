@@ -537,7 +537,7 @@ def main() -> None:
 
     train_and_save_three(**kwargs)
     evaluate_model(cfg.omega_0, cfg.zeta)
-    print(f"Run plot.py --w0 {cfg.omega_0} --zeta {cfg.zeta} using the script also in this folder")
+    print(f"Run DampedPINN/plot.py --w0 {cfg.omega_0} --zeta {cfg.zeta} to generate plots")
 
 def train_and_save_three(**kwargs) -> None:
     """

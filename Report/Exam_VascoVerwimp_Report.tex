@@ -14,6 +14,8 @@
 \usepackage{subcaption}
 \usepackage{biblatex}
 \usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{tcolorbox}
 
 \addbibresource{bibliography.bib}
 % Geometry
@@ -30,11 +32,6 @@
 \author{Vasco Verwimp}
 \date{28 May 2026}
 
-% Custom theorem styles
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[section]
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{remark}{Remark}[section]
 
 % Custom commands
 \newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
@@ -54,18 +51,19 @@
 % =============================================================================
 
 \chapter{Introduction}
+
 Traditional approaches to solving differential equations rely on analytical methods or classical numerical techniques such as finite difference methods, finite element methods, and spectral methods. However, these methods often struggle with high-dimensional problems, complex geometries, and inverse problems. In recent years, machine learning has emerged as a powerful alternative for solving differential equations, offering flexibility and scalability that traditional methods cannot provide.
 
-Physics-Informed Neural Networks (PINNs) combine the neural networks with physical constraints encoded in differential equations. This approach has proven effective for predicting system evolution, and can be extended to extracting the physical parameters underlying observations.
+Physics-Informed Neural Networks (PINNs) are a relatively new technique to solve problems described by ordinary or partial differential equations with boundary conditions. The idea gained traction in the late 1990s when several authors discussed solving these equations with a neural network by incorporating the equation directly into the loss function. During this era, the technique remained a niche academic curiosity because computers were not fast enough, and modern libraries (like PyTorch or TensorFlow) did not exist to handle the complex automatic differentiation required.
 
-PINNS are applied to two classical differential equation problems:
+PINNs are applied to two classical differential equation problems:
 
 \begin{enumerate}
     \item \textbf{The Damped Harmonic Oscillator}: A second-order ordinary differential equation (ODE) representing mechanical vibrations with friction.
     \item \textbf{Burgers' Equation}: A nonlinear partial differential equation (PDE) that combines advection and diffusion processes.
 \end{enumerate}
 
-We investigate how PINNs can solve these equations by training neural networks to simultaneously satisfy the observed data and the underlying physics constraints. This will be used to extrapolate into a time-domain for which no observational data was given. As a benchmark, we will use a standard machine learning model: a simple neural network. Additionally, we will compare two different implementations: a fully blind PINN, which can only train on the training domain and has no information about how "good" it is doing in the extrapolation domain during its training, and an extended physics PINN, for which the physics loss will also be applied to the extrapolation domain so it can improve in this regard, even though no observational data is given.
+We investigate how PINNs can solve these equations by training neural networks to simultaneously satisfy the observed data and the underlying physics constraints. This will be used to extrapolate into regions for which no observational data was given. As a benchmark, we will use a standard machine learning model: a simple neural network trained on data loss only. Additionally, we will compare different PINN implementations to assess their predictive capabilities.
 
 % =============================================================================
 % SECTION 1: PHYSICS-INFORMED NEURAL NETWORKS
@@ -115,20 +113,25 @@ where:
 
 \subsubsection*{Advantages}
 \begin{itemize}[label=$+$]
-    \item \textbf{No mesh required}: Unlike finite difference or finite element methods, PINNs do not require discretization of the spatial and temporal domains; collocation points.
+    \item \textbf{No mesh required}: Unlike finite difference or finite element methods, PINNs do not require discretization of the spatial and temporal domains; collocation points can be chosen at random, which limits the discretization effects.
     \item \textbf{Inverse problems}: Can be used to identify unknown physical parameters from data.
-    \item \textbf{Extendability}: The neural network learns about the workings of the physical system; this allows it to make meaningful predictions in regions that it was not trained for
+    \item \textbf{Extendability}: The neural network learns about the workings of the physical system; this allows it to make meaningful predictions in regions that it was not trained for.
 \end{itemize}
-
+\subsubsection*{Disadvantages}
+\begin{itemize}[label=$-$]
+    \item \textbf{Longer compute time}: The added calculation of gradients (via automatic differentiation) significantly increases computational cost compared to standard neural networks.
+    \item \textbf{Hyperparameter sensitivity}: Performance is very sensitive to the choice of loss weights ($\lambda_{\text{phys}}$, $\lambda_{\text{ic}}$), network architecture, and optimizer settings. Careful tuning is required and can be time-consuming.
+    \item \textbf{Discontinuities and shocks}: PINNs struggle with discontinuous solutions and shock fronts because derivatives can become extreme in these cases.
+\end{itemize}
 \subsection{Implementation Details}
 
-In practice, a PINN is typically implemented as follows:
+In practice, a PINN is typically implemented using the following structure:
 
 \begin{enumerate}
     \item \textbf{Network architecture}: A fully-connected feedforward neural network with several hidden layers and activation functions (e.g., tanh, GELU).
+    \item \textbf{Collocation points}: Sample interior collocation points to evaluate the physics residual and boundary/initial condition points separately.    
     \item \textbf{Automatic differentiation}: Using frameworks like PyTorch or TensorFlow to compute any order derivatives.
     \item \textbf{Optimization}: Train the network using gradient-based optimizers (e.g., Adam, L-BFGS) to minimize the combined loss function.
-    \item \textbf{Collocation points}: Sample interior collocation points to evaluate the physics residual and boundary/initial condition points separately.
 \end{enumerate}
 
 % =============================================================================
@@ -147,12 +150,12 @@ m \ddot{y}(t) + c \dot{y}(t) + k y(t) = 0
 
 where:
 \begin{itemize}
-    \item $m$ is the mass [kg]
-    \item $c$ is the damping coefficient [kg/s]
-    \item $k$ is the spring stiffness [N/m]
-    \item $y(t)$ is the displacement [m]
-    \item $\dot{y}(t) = \frac{dy}{dt}$ is the velocity
-    \item $\ddot{y}(t) = \frac{d^2y}{dt^2}$ is the acceleration
+    \item $m$ is the mass [$kg$]
+    \item $c$ is the damping coefficient [$kg/s$]
+    \item $k$ is the spring stiffness [$N/m$]
+    \item $y(t)$ is the displacement [$m$]
+    \item $\dot{y}(t) = \frac{dy}{dt}$ is the velocity [$m/s$]
+    \item $\ddot{y}(t) = \frac{d^2y}{dt^2}$ is the acceleration [$m/s^2$]
 \end{itemize}
 
 The system is typically subject to initial conditions:
@@ -162,23 +165,19 @@ y(0) = y_0, \quad \dot{y}(0) = v_0
 
 \subsection{Physical Characterization}
 
-The behavior of the damped harmonic oscillator can be characterized using two non-dimensional quantities:
+\noindent The behavior of the damped harmonic oscillator can be characterized using two non-dimensional quantities:\\
 
-\begin{definition}[Natural Frequency]
 The \textbf{undamped natural frequency} is given by:
 \begin{equation}
 \omega_0 = \sqrt{\frac{k}{m}}
 \end{equation}
-\end{definition}
 
-\begin{definition}[Damping Ratio]
 The \textbf{damping ratio} is given by:
 \begin{equation}
 \zeta = \frac{c}{2\sqrt{mk}} = \frac{c}{2m\omega_0}
 \end{equation}
-\end{definition}
 
-The damping ratio determines the system's behavior:
+\noindent The damping ratio determines the system's behavior:
 
 \begin{itemize}
     \item \textbf{Underdamped} ($\zeta < 1$): Oscillatory response with exponential decay
@@ -187,36 +186,20 @@ The damping ratio determines the system's behavior:
 \end{itemize}
 
 \subsection{Analytical Solution}
+Each situation can be solved analytically:
+\begin{itemize}
+    \item Overdamped: $\Rightarrow\; 
+    y(t) = Ae^{-\omega_0(\zeta + \sqrt{\zeta^2-1})t}
+    + Be^{-\omega_0(\zeta - \sqrt{\zeta^2-1})t}$
 
-For the underdamped case ($\zeta < 1$), the analytical solution is:
+    \item Critically damped: $\Rightarrow\; 
+    y(t) = (A + Bt)e^{-\omega_0 t}$
 
-\begin{equation}
-y(t) = e^{-\zeta \omega_0 t} \left( A \cos(\omega_d t) + B \sin(\omega_d t) \right)
-\end{equation}
-
-where $\omega_d = \omega_0 \sqrt{1 - \zeta^2}$ is the \textbf{damped natural frequency}, and constants $A$, $B$ are determined by initial conditions:
-
-\begin{align}
-A &= y_0 \\
-B &= \frac{v_0 + \zeta \omega_0 y_0}{\omega_d}
-\end{align}
-
-\subsection{Application to PINNs}
-
-The PINN approach for the damped oscillator involves:
-
-\begin{enumerate}
-    \item \textbf{Data generation}: Generate synthetic noisy observations by solving the ODE and adding measurement noise.
-    \item \textbf{Forward problem}: Train a PINN to predict $y(t)$ given the system parameters $(m, c, k)$.
-    \item \textbf{Inverse problem}: Train a PINN to identify unknown parameters $(\omega_0, \zeta)$ from noisy displacement measurements.
-\end{enumerate}
-
-The physics loss enforces:
-\begin{equation}
-\mathcal{L}_{\text{phys}} = \frac{1}{N_{\text{col}}} \sum_{j=1}^{N_{\text{col}}} \left( m \ddot{u}_\theta(t_j) + c \dot{u}_\theta(t_j) + k u_\theta(t_j) \right)^2
-\end{equation}
-
-where derivatives $\dot{u}_\theta$ and $\ddot{u}_\theta$ are computed via automatic differentiation.
+    \item Underdamped: $\Rightarrow\; 
+    y(t) = e^{-\zeta \omega_0 t}
+    \left(A\cos \omega_d t + B\sin \omega_d t\right)$
+\end{itemize}
+where $\omega_d = \omega_0 \sqrt{1 - \zeta^2}$ is the \textbf{damped natural frequency}, and constants $A$, $B$ are determined by initial conditions.
 
 % =============================================================================
 % SECTION 3: BURGERS' EQUATION
@@ -235,17 +218,13 @@ Burgers' equation is a fundamental nonlinear partial differential equation that 
 
 where:
 \begin{itemize}
-    \item $u(x, t)$ is the solution variable (velocity in fluid dynamics)
-    \item $\nu > 0$ is the viscosity coefficient [m$^2$/s]
-    \item $x$ is the spatial coordinate [-7, 7] (typical domain)
-    \item $t$ is the temporal coordinate [0, 3] (typical domain)
+    \item $u(x, t)$ is the displacement variable [$m/s$]
+    \item $\nu > 0$ is the viscosity coefficient [$m^2/s$]
+    \item $x$ is the spatial coordinate [$m$]
+    \item $t$ is the temporal coordinate [$s$]
 \end{itemize}
 
-The equation is supplemented with:
-\begin{enumerate}
-    \item \textbf{Initial condition}: $u(x, 0) = u_0(x)$ for $x \in [x_{\min}, x_{\max}]$
-    \item \textbf{Boundary conditions}: Typically Dirichlet: $u(x_{\min}, t) = u(x_{\max}, t) = 0$
-\end{enumerate}
+The equation is supplemented with an \textbf{initial condition}: $u(x, 0) = u_0(x)$.
 
 \subsection{Physical Interpretation}
 
@@ -260,81 +239,171 @@ The three terms in Burgers' equation have clear physical meanings:
 The balance between advection (nonlinear steepening) and diffusion (smoothing) creates complex dynamics:
 \begin{itemize}
     \item Small $\nu$: Advection dominates, steep fronts form and can develop shocks
-    \item Large $\nu$: Diffusion dominates, smooth solutions evolve slowly
-    \item Moderate $\nu$: Intricate interplay creates rich dynamics
+    \item Moderate $\nu$: Interplay between smoothing and transport
+    \item Large $\nu$: Diffusion dominates, smoothing then dissipation
 \end{itemize}
-
-\subsection{Cole-Hopf Transformation}
-
-A remarkable property of Burgers' equation is that it can be linearized via the Cole-Hopf transformation:
-
-\begin{equation}
-u = -2\nu \frac{\pd{\phi}{x}}{\phi}
-\end{equation}
-
-This transforms Burgers' equation into the linear heat equation:
-
-\begin{equation}
-\pd{\phi}{t} = \nu \pdd{\phi}{x}
-\end{equation}
-
-which has known analytical solutions. However, for PINN applications, we work with the nonlinear form directly.
 
 \subsection{Benchmark Initial Conditions}
 
-Two standard initial conditions are commonly used:
+Three benchmark initial conditions are commonly used for testing Burgers' equation:
 
-\subsubsection{Gaussian Pulse}
+\subsubsection{Gaussian Initial Condition}
 \begin{equation}
 u(x, 0) = \exp\left(-\frac{x^2}{2}\right)
 \end{equation}
 
-This represents a smooth, localized disturbance that diffuses over time.
+This represents a smooth, localized disturbance that is transported and/or diffused over time.
 
-\subsubsection{N-Wave}
+\subsubsection{Step Up Function}
 \begin{equation}
-u(x, 0) = \exp\left(-\frac{(x-1)^2}{2}\right) - \exp\left(-\frac{(x+1)^2}{2}\right)
+u(x, 0) = \begin{cases} 1 & \text{if } x > 0 \\ 0 & \text{otherwise} \end{cases}
 \end{equation}
 
-This represents a wave-like structure with positive and negative lobes that interact via nonlinear advection.
+This represents a sharp discontinuity that smooths out and/or shows rarefraction over time.
+\subsubsection{N-Wave}
+\begin{equation}
+u(x, 0) = \begin{cases} -x & \text{if } |x| < 1 \\ 0 & \text{otherwise} \end{cases}
+\end{equation}
 
-\subsection{Challenges for Numerical Methods}
-
-Burgers' equation presents several challenges:
-
-\begin{itemize}
-    \item \textbf{Nonlinearity}: Standard linear solvers do not apply. Solutions can develop steep gradients and shocks.
-    \item \textbf{Multiscale behavior}: Solutions exhibit both rapid changes (shocks) and smooth regions.
-    \item \textbf{Conservation laws}: Proper numerical schemes must preserve physical conservation properties.
-    \item \textbf{Stability}: Explicit time-stepping schemes require stringent CFL conditions.
-\end{itemize}
-
-\subsection{Application to PINNs}
-
-PINNs offer a meshfree alternative for solving Burgers' equation:
-
-\begin{enumerate}
-    \item \textbf{Network input}: $(x, t)$ pairs representing spatial-temporal locations
-    \item \textbf{Network output}: $u(x, t)$ the solution at that location
-    \item \textbf{Physics residual}: Computed via automatic differentiation:
-    \begin{equation}
-        r(x, t) = \pd{u_\theta}{t} + u_\theta \pd{u_\theta}{x} - \nu \pdd{u_\theta}{x}
-    \end{equation}
-    \item \textbf{Loss function}: Combines data loss, physics residual penalty, and initial/boundary condition enforcement
-\end{enumerate}
-
-\subsection{Solution Behavior}
-
-The solution behavior depends critically on the viscosity parameter $\nu$:
-
-\begin{itemize}
-    \item \textbf{Low viscosity} ($\nu \to 0$): Solutions approach those of the inviscid Burgers equation (purely hyperbolic), which can develop shocks
-    \item \textbf{High viscosity}: Solutions become smooth and decay toward zero
-    \item \textbf{Moderate viscosity}: Rich transient dynamics with traveling wave formation
-\end{itemize}
+This represents a linear wave-like structure that produces two lobes that evolve towards each other, producing a shockwave for small viscosities.
 
 \chapter{Understanding a Given Solution}
+As a first exercise, we were given a list of questions to answer thoroughly. These questions pertain a given PINN implementation for the damped harmonic oscillator. The questions provide a better understanding in the inner workings of the script and possible limitations and errors that are present. These are separated into questions about the methods and about the code.\\
+
+\subsection*{Questions about the methods}
+
+\begin{tcolorbox}[title=Methods Question 1,sharp corners, colframe=black, colback=white]
+    Identify the total loss function in the code and write its expression down in your report. Identify the different contributions to the loss function.
+\end{tcolorbox}
+
+The loss function is implemented in the training loop as follows: \verb|loss_total| is used as the total loss function. If the use of physics is disabled, this only includes the data loss (\verb|l_data|)
+\begin{verbatim}
+y_pred = model(t_obs_t)
+l_data = torch.mean((y_pred - y_obs_t) ** 2)
+
+if use_physics:
+    l_phys = loss_physics(model, t_col_t)
+    l_ic   = loss_ic(model, t_ic_t)
+    loss_total = l_data + LAMBDA_PHYS * l_phys + LAMBDA_IC * l_ic
+else:
+    l_phys     = torch.zeros(1, device=DEVICE)
+    l_ic       = torch.zeros(1, device=DEVICE)
+    loss_total = l_data 
+\end{verbatim}
+\begin{tcolorbox}[title=Methods Question 2,sharp corners, colframe=black, colback=white]
+    Is the inclusion of the initial condition loss essential for this particular example? When would it be essential?
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Methods Question 3,sharp corners, colframe=black, colback=white]
+    The loss function used here is based on the mean squared errors (MSE) between predictions and data points or initial condition, and on the mean squared residual (MSR) of the PDE for the collocation points. Why are these specific functional forms used, and would there be alternative functions that could replace the MSE or MSR?
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Methods Question 4,sharp corners, colframe=black, colback=white]
+    What is the type of neural network used in this example? How many input nodes, output nodes and hidden layers does it have? How many parameters are then being optimized? What type of activation function is used and why? What quantity or quantities are provided at the input, and what quantity or quantities do we extract from the output of the network? Are the dimensions of this Neural Network architecture adequate, too small or too large for this example? How would you determine this?
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Methods Question 5,sharp corners, colframe=black, colback=white]
+    How many input samples are provided to the neural network model during each of its training cycles or epochs? What kind of samples are provided? Does the network receive again for each epoch the same exact samples? Would there be a better way to provide samples to this network for training over the various epochs?
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Methods Question 6,sharp corners, colframe=black, colback=white]
+    The example uses the Adam algorithm as the so-called optimizer. What is the purpose of this optimizer? What is specific about the Adam algorithm, and what are its main hyper-parameters? Are there viable alternatives for the Adam optimizer?
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Methods Question 7,sharp corners, colframe=black, colback=white]
+    The example also uses an additional optimizer: a learning rate scheduler. What does this scheduler do? Is it a necessary ingredient for training a neural network? What are its main hyper-parameters? Are there alternatives that can be usefully applied in this example?
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Methods Question 8,sharp corners, colframe=black, colback=white]
+    How many epochs is the network trained for? How would you determine whether you have trained for too little or too many epochs?
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Methods Question 9,sharp corners, colframe=black, colback=white]
+    Would it make sense to have a set of validation points? How would these look like? How would you use them?
+\end{tcolorbox}
 
 
+\subsection*{Questions about the code}
+
+\begin{tcolorbox}[title=Code Question 1,sharp corners, colframe=black, colback=white]
+    Why are these two lines of code good, or bad, for:
+    \begin{verbatim}
+    torch.manual_seed(42)
+    np.random.seed(42)
+    \end{verbatim}
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Code Question 2,sharp corners, colframe=black, colback=white]
+    What is the purpose of the \texttt{np.ndarray} statements in this function definition:
+    \begin{verbatim}
+    def analytic(t: np.ndarray) -> np.ndarray:
+    \end{verbatim}
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Code Question 3,sharp corners, colframe=black, colback=white]
+    The data points are created randomly and then sorted before being offered to the neural net, using this statement:
+    \begin{verbatim}
+    t_obs = np.sort(np.random.uniform(0.1, T_TRAIN, N_OBS))
+    \end{verbatim}
+    Is this good or bad?
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Code Question 4,sharp corners, colframe=black, colback=white]
+    The collocation points are created uniformly on a fixed grid, using this statement:
+    \begin{verbatim}
+    t_col = np.linspace(0.0, T_EXTRAP, N_COL)
+    \end{verbatim}
+    Is this good or bad?
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Code Question 5,sharp corners, colframe=black, colback=white]
+    What is this statement doing? Is it necessary?
+    \begin{verbatim}
+    optimiser.zero_grad()
+    \end{verbatim}
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Code Question 6,sharp corners, colframe=black, colback=white]
+    What are these statements doing in the training cycle? Is their order important?
+    \begin{verbatim}
+    loss_total.backward()
+    optimiser.step()
+    scheduler.step()
+    \end{verbatim}
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Code Question 7,sharp corners, colframe=black, colback=white]
+    Why do the collocation time input tensor and the initial condition time input tensor require the gradient option, while the input data tensors do not require a gradient?
+    \begin{verbatim}
+    t_obs_t = to_tensor(t_obs)
+    y_obs_t = to_tensor(y_obs)
+    t_col_t = to_tensor(t_col, requires_grad=True)
+    t_ic_t = to_tensor(t_ic, requires_grad=True)
+    \end{verbatim}
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Code Question 8,sharp corners, colframe=black, colback=white]
+    When presenting arrays of time points to the input of my neural network, I need to convert them into a PyTorch tensor, using this helper function:
+    \begin{verbatim}
+    def to_tensor(arr, requires_grad=False):
+        return torch.tensor(arr, dtype=torch.float32,
+                          requires_grad=requires_grad).unsqueeze(1)
+    \end{verbatim}
+    What does the \texttt{unsqueeze(1)} method of the \texttt{torch.tensor} class do, and why do I need to do this?
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Code Question 9,sharp corners, colframe=black, colback=white]
+    When computing the first and second derivatives of $y(t)$ we use the \texttt{torch.autograd} method. Explain why the \texttt{grad\_outputs} are set to ones and why we need to take the zero-th element [0] of this output in the statements below:
+    \begin{verbatim}
+    dy = torch.autograd.grad(
+        y_hat, t,
+        grad_outputs=torch.ones_like(y_hat),
+        create_graph=True)[0]
+    \end{verbatim}
+\end{tcolorbox}
+
+
+
+\chapter{Structure and Implementation}
 
 \end{document}

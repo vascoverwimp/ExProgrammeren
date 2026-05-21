@@ -680,7 +680,7 @@ def main() -> None:
 
     train_and_save_both(**kwargs)
     evaluate_model(situation=args.situation,v=args.viscosity)
-    print(f"Run plot.py --situation {args.situation} --viscosity {args.viscosity} using the script also in this folder")
+    print(f"Run BurgersReversePINN/plot.py --situation {args.situation} --viscosity {args.viscosity} to generate plots")
 
 
 def train_and_save_both(**kwargs) -> None:
