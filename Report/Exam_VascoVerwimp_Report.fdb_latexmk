@@ -1,11 +1,11 @@
 # Fdb version 4
-["biber Exam_VascoVerwimp_Report"] 1779375206.83315 "Exam_VascoVerwimp_Report.bcf" "Exam_VascoVerwimp_Report.bbl" "Exam_VascoVerwimp_Report" 1779387283.63835 0
-  "Exam_VascoVerwimp_Report.bcf" 1779387283 107353 5126ec284b7cb1b18cd2d41da2972233 "pdflatex"
+["biber Exam_VascoVerwimp_Report"] 1779375206.83315 "Exam_VascoVerwimp_Report.bcf" "Exam_VascoVerwimp_Report.bbl" "Exam_VascoVerwimp_Report" 1779391816.5108 0
+  "Exam_VascoVerwimp_Report.bcf" 1779391816 107353 5126ec284b7cb1b18cd2d41da2972233 "pdflatex"
   (generated)
   "Exam_VascoVerwimp_Report.bbl"
   "Exam_VascoVerwimp_Report.blg"
   (rewritten before read)
-["pdflatex"] 1779387281.22177 "c:/Users/vasco/Desktop/ExProgrammeren/Report/Exam_VascoVerwimp_Report.tex" "Exam_VascoVerwimp_Report.pdf" "Exam_VascoVerwimp_Report" 1779387283.6394 0
+["pdflatex"] 1779391814.37979 "c:/Users/vasco/Desktop/ExProgrammeren/Report/Exam_VascoVerwimp_Report.tex" "Exam_VascoVerwimp_Report.pdf" "Exam_VascoVerwimp_Report" 1779391816.51168 0
   "C:/Users/vasco/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1779281824 82686 2381c3433487640bf26aa76a10db7eb2 ""
   "C:/Users/vasco/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1200.pk" 1779281873 14064 b94ce3d406d11e80dc5158aa16c7a992 ""
   "C:/Users/vasco/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1702674902 24213232 39d45e5c003962287c84928246815fe8 ""
@@ -183,13 +183,13 @@
   "C:/Users/vasco/AppData/Local/Programs/MiKTeX/tex/latex/trimspaces/trimspaces.sty" 1253169183 1380 971a51b00a14503ddf754cab24c3f209 ""
   "C:/Users/vasco/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/vasco/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
-  "Exam_VascoVerwimp_Report.aux" 1779387283 2798 b552d6a6dfce639bcbb999a27107ebe3 "pdflatex"
+  "Exam_VascoVerwimp_Report.aux" 1779391816 3478 39257c37fea3d296327a946ae4213590 "pdflatex"
   "Exam_VascoVerwimp_Report.bbl" 1779375214 486 ee04f40f768daeed26442158e95aba61 "biber Exam_VascoVerwimp_Report"
-  "Exam_VascoVerwimp_Report.out" 1779387283 2607 8a89ab691de2cf7d2cce93f186697fd8 "pdflatex"
-  "Exam_VascoVerwimp_Report.run.xml" 1779387283 2447 fc0fdb269cd35a73e06dbb9dc92cdb69 "pdflatex"
-  "Exam_VascoVerwimp_Report.tex" 1779387280 35657 428ba00d5190565bfcafb7aad5d7b548 ""
-  "Exam_VascoVerwimp_Report.toc" 1779387283 1480 cd418a05b3bf3a72981a6d1b9b5cda1f "pdflatex"
-  "c:/Users/vasco/Desktop/ExProgrammeren/Report/Exam_VascoVerwimp_Report.tex" 1779387280 35657 428ba00d5190565bfcafb7aad5d7b548 ""
+  "Exam_VascoVerwimp_Report.out" 1779391816 3481 b10171fff306043dc1c3c564a0584096 "pdflatex"
+  "Exam_VascoVerwimp_Report.run.xml" 1779391816 2447 fc0fdb269cd35a73e06dbb9dc92cdb69 "pdflatex"
+  "Exam_VascoVerwimp_Report.tex" 1779391811 37653 0d8a8de992c99dbb095e37ed8dd9f13a ""
+  "Exam_VascoVerwimp_Report.toc" 1779391816 1844 67e40e1026e61910735d4ae9bc5ff2be "pdflatex"
+  "c:/Users/vasco/Desktop/ExProgrammeren/Report/Exam_VascoVerwimp_Report.tex" 1779391811 37653 0d8a8de992c99dbb095e37ed8dd9f13a ""
   (generated)
   "Exam_VascoVerwimp_Report.aux"
   "Exam_VascoVerwimp_Report.bcf"

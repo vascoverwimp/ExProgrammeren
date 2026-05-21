@@ -71,10 +71,6 @@ ExProgrammeren/
 │
 ├── Original/                    # Original reference implementations
 │
-├── hyperparam_tracking_burger.md        # Hyperparameter search logs & results for burgers' equation
-├── hyperparam_tracking_damper.md        # Hyperparameter search logs & results for damped harmonic oscillator
-├── Questions.md                         # Research questions & investigation notes
-├── tips.txt                             # Best practices & implementation notes
 └── README.md                            # This file
 ```
 

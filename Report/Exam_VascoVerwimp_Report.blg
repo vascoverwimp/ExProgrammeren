@@ -1,9 +1,0 @@
-[0] Config.pm:307> INFO - This is Biber 2.19
-[0] Config.pm:310> INFO - Logfile is 'Exam_VascoVerwimp_Report.blg'
-[262] biber-MSWIN64:340> INFO - === 
-[368] Biber.pm:419> INFO - Reading 'Exam_VascoVerwimp_Report.bcf'
-[487] Biber.pm:979> INFO - Found 0 citekeys in bib section 0
-[510] bbl.pm:660> INFO - Writing 'Exam_VascoVerwimp_Report.bbl' with encoding 'UTF-8'
-[510] bbl.pm:763> INFO - Output to Exam_VascoVerwimp_Report.bbl
-[510] Biber.pm:131> WARN - The file 'Exam_VascoVerwimp_Report.bcf' does not contain any citations!
-[510] Biber.pm:133> INFO - WARNINGS: 1

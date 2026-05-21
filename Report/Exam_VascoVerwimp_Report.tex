@@ -109,7 +109,7 @@ where:
     \item $\lambda_{\text{phys}}$ and $\lambda_{\text{ic}}$ are \textbf{loss weights} controlling the trade-off between fitting data and satisfying physics.
 \end{itemize}
 
-\subsection{Advantages and disadvantages of PINNs}
+\subsection{Advantages And Disadvantages Of PINNs}
 
 \subsubsection*{Advantages}
 \begin{itemize}[label=$+$]
@@ -474,7 +474,7 @@ The \verb|requires_grad| option is only necessary if one needs to calculate the 
 The unsqueeze method adds a new dimension of a single index, depending on the number this dimension is x (for 0), y (for 1), or z(for 2). The input to the neural network should be a [N,1] tensor, as discussed in methods question 4, but the NumPy array is just a [N] array, so the unsqueeze makes sure to turn it into the right tensor.\\
 
 \begin{tcolorbox}[title=Code Question 9,sharp corners, colframe=black, colback=white]
-    When computing the first and second derivatives of $y(t)$ we use the \verb|torch.autograd| method. Explain why the \verb|grad\_outputs| are set to ones and why we need to take the zero-th element [0] of this output in the statements below:
+    When computing the first and second derivatives of $y(t)$ we use the \verb|torch.autograd| method. Explain why the \verb|grad_outputs| are set to ones and why we need to take the zero-th element [0] of this output in the statements below:
     \begin{verbatim}
     dy = torch.autograd.grad(
         y_hat, t,
@@ -482,9 +482,22 @@ The unsqueeze method adds a new dimension of a single index, depending on the nu
         create_graph=True)[0]
     \end{verbatim}
 \end{tcolorbox}
+The \verb|grad_outputs| option signifies the tensor $v$ that the gradient needs to be multiplied by, shown as follows:
+\[
+ \text{output}_i = v^i \frac{dy}{dt}(t_i)
+\]
+This can be used if we know the derivative of every timestamp with respect to another variable, then we can input this as the grad output in order to emulate the chain rule with respect to that variable. Only in this case, the variable that we are trying to find the derivative of is t itself, so we supply a [N,1] tensor of ones with the same length as the time tensor. The function can accept multiple tensors of variables to calculate the autograd to, because of this it will return a tuple of all of the gradients in the order in which the variables were supplied. In this case, only one variable is supplied, so it returns a tuple with only one element; the [0] is used to pick the first and only element out of this tuple.
 
-
+Using these questions as a starting point, the damped harmonic oscillator script will be improved and adapted into a more flexible and clear framework. Additionally, the reverse problem will be executed. This approach will then be translated for the Burgers' equation, which will add a new dimension of complexity.
 
 \chapter{Structure and Implementation}
+All 4 version of PINN scripts have very similar structure; firstly, this structure is shown and motivated. This will give a clear picture of the implementation of the models, without needing to be specific about one or the other. Following this, a few important differences are noted between the implementation of the damped harmonic oscillator and the Burgers' equation. Finally, we will conclude this chapter with the process of hyperparameter tuning for the different cases. This will provide a solid base for the understanding of the process that produces the results shown in the next chapter.
+\section{General Structure}
 
+\section{Differences In Implementation Between The Damped Harmonic Oscillator And The Burgers' Equation}
+
+\chapter{Results}
+
+
+\chapter{Conclusion}
 \end{document}

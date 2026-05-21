@@ -1,7 +1,7 @@
 \babel@toc {english}{}\relax 
 \contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Physics-Informed Neural Networks (PINNs)}{2}{section.1.1}%
-\contentsline {subsection}{\numberline {1.1.1}Advantages and disadvantages of PINNs}{3}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Advantages And Disadvantages Of PINNs}{3}{subsection.1.1.1}%
 \contentsline {subsection}{\numberline {1.1.2}Implementation Details}{4}{subsection.1.1.2}%
 \contentsline {section}{\numberline {1.2}The Damped Harmonic Oscillator}{4}{section.1.2}%
 \contentsline {subsection}{\numberline {1.2.1}Problem Description}{4}{subsection.1.2.1}%
@@ -16,3 +16,7 @@
 \contentsline {subsubsection}{N-Wave}{6}{section*.6}%
 \contentsline {chapter}{\numberline {2}Understanding a Given Solution}{7}{chapter.2}%
 \contentsline {chapter}{\numberline {3}Structure and Implementation}{16}{chapter.3}%
+\contentsline {section}{\numberline {3.1}General Structure}{16}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Differences In Implementation Between The Damped Harmonic Oscillator And The Burgers' Equation}{16}{section.3.2}%
+\contentsline {chapter}{\numberline {4}Results}{17}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Conclusion}{18}{chapter.5}%
