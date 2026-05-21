@@ -165,8 +165,7 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
     fig.suptitle(
         f"Damped oscillator — Training Loss Progression\n"
         f"m={cfg.mass}  c={cfg.damping}  k={cfg.stiffness}  "
-        f"ζ={cfg.zeta:.3f}  ω₀={cfg.omega_0:.3f}  |  "
-        f"λ_phys={cfg.lambda_phys}  λ_ic={cfg.lambda_ic}",
+        f"ζ={cfg.zeta:.3f}  ω₀={cfg.omega_0:.3f}",
         fontsize=11, y=1.02, color="#2C2C2A", fontweight="bold"
     )
     fig.tight_layout()
@@ -348,7 +347,6 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
         f"Std ML vs PINN (ext.) vs PINN (blind)  |  device={device_str}\n"
         f"m={cfg.mass}  c={cfg.damping}  k={cfg.stiffness}  "
         f"ζ={cfg.zeta:.3f}  ω₀={cfg.omega_0:.3f}  ωd={cfg.omega_d:.3f} rad/s  |  "
-        f"λ_phys={cfg.lambda_phys}  λ_ic={cfg.lambda_ic}  |  "
         f"y(0): true={cfg.y0}  ML={m['y0_ml']:.3f}  "
         f"ext={m['y0_pinn_ext_phys']:.3f}  blind={m['y0_pinn_blind']:.3f}",
         fontsize=9, y=0.975, color="#2C2C2A",
@@ -601,8 +599,7 @@ def main() -> None:
             f"PINN (ext. physics) — trajectory evolution across epochs  "
             f"[device={bundle['device_str']}]\n"
             f"m={cfg.mass}  c={cfg.damping}  k={cfg.stiffness}  |  "
-            f"Collocation extends to t_extrap={cfg.t_extrap}  |  "
-            f"λ_phys={cfg.lambda_phys}  λ_ic={cfg.lambda_ic}"
+            f"Collocation extends to t_extrap={cfg.t_extrap}"
         ),
         out_path    = out_dir / f"{tag}_fig4_pinn_ext_epochs.png",
         clip_y      = False,
@@ -621,8 +618,7 @@ def main() -> None:
             f"PINN (blind) — trajectory evolution across epochs  "
             f"[device={bundle['device_str']}]\n"
             f"m={cfg.mass}  c={cfg.damping}  k={cfg.stiffness}  |  "
-            f"Collocation only in training window [0, {cfg.t_train}]  |  "
-            f"λ_phys={cfg.lambda_phys}  λ_ic={cfg.lambda_ic}"
+            f"Collocation only in training window [0, {cfg.t_train}]"
         ),
         out_path    = out_dir / f"{tag}_fig5_pinn_blind_epochs.png",
         clip_y      = False,

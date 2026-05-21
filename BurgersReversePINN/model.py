@@ -159,11 +159,6 @@ class BurgerConfig:
         else:
             raise ValueError(f"Unknown situation: {self.situation}")
 
-    @property
-    def ic_der_func(self):
-        """Initial condition function du/dt(x,t0) based on the chosen situation."""
-        return lambda x: torch.zeros_like(x)
-
     def abs_path(self, filename: str) -> Path:
         """Return an absolute Path for a file stored in out_dir."""
         return Path(self.out_dir) / filename

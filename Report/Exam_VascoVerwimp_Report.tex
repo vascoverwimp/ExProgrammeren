@@ -128,10 +128,10 @@ where:
 In practice, a PINN is typically implemented using the following structure:
 
 \begin{enumerate}
-    \item \textbf{Network architecture}: A fully-connected feedforward neural network with several hidden layers and activation functions (e.g., tanh, GELU).
+    \item \textbf{Network architecture}: A fully-connected feedforward neural network with several hidden layers and activation functions.
     \item \textbf{Collocation points}: Sample interior collocation points to evaluate the physics residual and boundary/initial condition points separately.    
     \item \textbf{Automatic differentiation}: Using frameworks like PyTorch or TensorFlow to compute any order derivatives.
-    \item \textbf{Optimization}: Train the network using gradient-based optimizers (e.g., Adam, L-BFGS) to minimize the combined loss function.
+    \item \textbf{Optimization}: Train the network using gradient-based optimizer to minimize the combined loss function.
 \end{enumerate}
 
 % =============================================================================
@@ -276,7 +276,7 @@ As a first exercise, we were given a list of questions to answer thoroughly. The
     Identify the total loss function in the code and write its expression down in your report. Identify the different contributions to the loss function.
 \end{tcolorbox}
 
-The loss function is implemented in the training loop as follows: \verb|loss_total| is used as the total loss function. If the use of physics is disabled, this only includes the data loss (\verb|l_data|)
+The loss function is implemented in the training loop as follows: 
 \begin{verbatim}
 y_pred = model(t_obs_t)
 l_data = torch.mean((y_pred - y_obs_t) ** 2)
@@ -290,38 +290,109 @@ else:
     l_ic       = torch.zeros(1, device=DEVICE)
     loss_total = l_data 
 \end{verbatim}
+\verb|loss_total| is used as the total loss function. If the use of physics is disabled, this only includes the data loss (\verb|l_data|), which is the mean-squared error between the model prediction and the given training observation points.\\
+In case the use of physics is enabled, two terms are added: \verb|LAMBDA_IC * l_ic|, giving the initial condition loss weighted with a factor $\lambda_{ic}$, and \verb|LAMBDA_PHYS * l_phys|, giving the physics loss weighted with a factor $\lambda_{phys}$. This is consistent with the standard implementation mentioned in the introduction, the calculation of the losses are as follows:
+\begin{verbatim}
+def loss_physics(model: nn.Module, t: torch.Tensor) -> torch.Tensor:
+    """
+    L_physics = mean( r(t_i)^2 )  over collocation points
+
+    r(t) = m*y_hat''(t) + c*y_hat'(t) + k*y_hat(t)
+
+    Both derivatives are obtained via automatic differentiation through the
+    network.  create_graph=True on the first call keeps the computation graph
+    alive so the second differentiation can flow back through it.
+
+    The [0] unpacks the single-element tuple returned by autograd.grad
+    (the API always returns a tuple, one entry per input tensor).
+    """
+    y_hat = model(t)
+
+    # first derivative  dy/dt
+    dy = torch.autograd.grad(
+        y_hat, t,
+        grad_outputs=torch.ones_like(y_hat),
+        create_graph=True
+    )[0]
+
+    # second derivative  d2y/dt2
+    d2y = torch.autograd.grad(
+        dy, t,
+        grad_outputs=torch.ones_like(dy),
+        create_graph=True
+    )[0]
+
+    residual = M * d2y + C * dy + K * y_hat
+    return torch.mean(residual ** 2)
+
+def loss_ic(model: nn.Module, t: torch.Tensor) -> torch.Tensor:
+    """
+    L_ic = ( y_hat(0) - Y0 )^2  +  ( y_hat'(0) - DY0 )^2
+
+    Both initial conditions are enforced explicitly.
+    y_hat'(0) is obtained via autograd because initial velocity
+    is never directly observed in the data.
+    """
+    y_hat_0 = model(t)
+
+    dy_0 = torch.autograd.grad(
+        y_hat_0, t,
+        grad_outputs=torch.ones_like(y_hat_0),
+        create_graph=True
+    )[0]
+
+    return torch.mean((y_hat_0 - Y0) ** 2 + (dy_0 - DY0) ** 2)
+\end{verbatim}
+To find the physics loss, the first and second time derivatives are calculated using the autograd PyTorch function. These are used to assign a physics residual to every collocation point by applying the differential equation operator $\mathcal{F}$. The mean of the squares of these residuals is taken and returned as the physics loss.\\
+The initial condition loss is calculated using the mean of the squares of the error of the predicted value of $y(0)$ and $\dot{y}(0)$ when compared to their given truth values. Once again, the autograd PyTorch function is used to find the first time derivatives (which is needed to find $\dot{y}(0)$).\\
 \begin{tcolorbox}[title=Methods Question 2,sharp corners, colframe=black, colback=white]
     Is the inclusion of the initial condition loss essential for this particular example? When would it be essential?
 \end{tcolorbox}
-
+The inclusion of the initial condition loss is not essential in this particular example, as it is not needed to uniquely determine the solution (in the underdamped case): two observations are (in most cases) sufficient to constraint the solution to one possibility. It would be essential if we didn't have observational data, or if multiple different solutions could provide very similar observation e.g. critically damped. Additionally, in the reverse problem the initial behavior is of great importance to accurately recover the physical parameters present in the observational data.\\
 \begin{tcolorbox}[title=Methods Question 3,sharp corners, colframe=black, colback=white]
     The loss function used here is based on the mean squared errors (MSE) between predictions and data points or initial condition, and on the mean squared residual (MSR) of the PDE for the collocation points. Why are these specific functional forms used, and would there be alternative functions that could replace the MSE or MSR?
 \end{tcolorbox}
-
+These specific functional forms provide positive errors or residuals that grow when the predictions deviate from the target solution. By using a mean-square, the derivative of the loss is proportional to the difference in the required value (0 for residuals, targets for error) which greatly simplifies the computation needed during backpropagation.\\
 \begin{tcolorbox}[title=Methods Question 4,sharp corners, colframe=black, colback=white]
     What is the type of neural network used in this example? How many input nodes, output nodes and hidden layers does it have? How many parameters are then being optimized? What type of activation function is used and why? What quantity or quantities are provided at the input, and what quantity or quantities do we extract from the output of the network? Are the dimensions of this Neural Network architecture adequate, too small or too large for this example? How would you determine this?
 \end{tcolorbox}
+The architecture used is a fully connected feedforward neural network (sometimes also called a Multi-Layer Perceptron or MLP). It is composed of one input layer of one neuron (time), 4 hidden layers with each 32 neurons, and one output layer of one neuron (displacement). Each neuron (except for the input neuron) has its own bias (1 for the output layer and 4 times 32 for the hidden layer) and each connection has a weight (2 times 32 for the connections between the input layer and first hidden layer and between the last hidden layer and the output layer plus 3 times 32 squared for the connections between the hidden layers). This amounts to 3265 total trainable parameters. \\
+The input is expected to be a [N,1] tensor of time, this produces an [N,1] output tensor of displacement. By enabling the input to be a vector rather than a single number, it is possible to parallelize the full calculation by using matrix multiplication.\\
+The activation function used is the hyperbolic tangent function, this function transforms any value into a -1 to 1 range while keeping the ordering as it is strictly increasing. Additionally, it smooths out large differences at large values. Most importantly though, it has an easily computable first and second derivative:
+\[ 
+\pd{\tanh(y)}{x} = (1-\tanh^2(y))\pd{y}{x} 
+\]
+\[
+\pdd{\tanh(y)}{x} = (1-\tanh^2(y))\pdd{y}{x} + (-2\tanh(y))(1-\tanh^2(y))\pd{y}{x}
+\]
+These are all just polynomials in function of the original tanh and derivatives of the input, this greatly simplifies the computation in backpropagation. Additionally, they allow for the calculation of $\frac{dy}{dt}$ and higher order derivatives by the full backpropagation of the result in function of the input parameter. Other activation functions (including ReLU) have derivatives that are either zero on large parts of their domain or have discontinuities. These prevent this backpropagation which is needed to evaluate the initial condition and physics loss that are essential in a PINN.\\
+The dimensions of this architecture are adequate, this can be seen by comparing the validation loss to the training loss. If the training loss keeps increasing while the validation loss saturates, the network is too large and is overfitting; on the other hand if both the validation loss and training loss do not decrease to a low enough level, the network cannot represent the system as it is too small and underfitting. When we do this test with validation points that are kept seperate from the training set, we see that both the validation loss and training loss keep decreasing. The training loss is better than the validation loss (in the case that these points have the same origin), which is to be expected as this is the quantity (or one of the quantities) the network was actively trying to minimize.\\
 
 \begin{tcolorbox}[title=Methods Question 5,sharp corners, colframe=black, colback=white]
     How many input samples are provided to the neural network model during each of its training cycles or epochs? What kind of samples are provided? Does the network receive again for each epoch the same exact samples? Would there be a better way to provide samples to this network for training over the various epochs?
 \end{tcolorbox}
-
+The neural network model receives 15 randomly chosen timestamps with their corresponding y value to which normal distributed noise has been added. These timestamps and corresponding y values are the same for every epoch. This can be improved in two ways. One could provide new samples each epoch to provide additional training data, however this is not possible in every application (for example if the dataset of real life observations is limited). Another way is to supply only a randomly chosen subset of the 15 randomly chosen timestamps each training cycle. This technique prevents the network on training on only a few samples, which is possible as only two observations can fully fix the solution of the damped harmonic oscillator. This technique is known as mini-batching.\\
 \begin{tcolorbox}[title=Methods Question 6,sharp corners, colframe=black, colback=white]
     The example uses the Adam algorithm as the so-called optimizer. What is the purpose of this optimizer? What is specific about the Adam algorithm, and what are its main hyper-parameters? Are there viable alternatives for the Adam optimizer?
 \end{tcolorbox}
+An optimizer is responsible for updating the parameters in the neural network: in this case just the weights and biases. It does this by using the results of a backpropagation to view how changing the parameter infinitesimally would change the result. The Adam optimizer is a momentum based optimizer: once it starts going one way it will continue for a certain time by remembering previous results. This is done by adapting the step size of parameters by the first and second moments of the gradients. The influence of past moments decays using two parameters: $\beta_1$ and $\beta_2$ for respectively the first and second moment. Additionally, the Adam optimizer takes in a base learning rate which scales the step size. Finally, there is one last hyperparameter $\epsilon$ which is a numerical correction that prevents the numerator of the step size of going to zero. The Adam optimizer is popular as it requires very little hyperparameter optimization: the default values for the hyperparameters $\beta_1$, $\beta_2$, and $\epsilon$ are adequate for almost every problem, thus only requiring the optimization of the learning rate.\\
+Alternatively, one could use standard stochastic gradient descent, which only uses the gradient of the loss, but this can easily get stuck in local minima. Because of this, moment based optimizer like RMSProp and AdaGrad are more viable alternatives, but both have disadvantages: RMSProp requires more hyperparameter tuning and AdaGrad can have slow convergence. The Adam optimizer is a compromise between these two which is why it is the most popular optimizer.\\
 
 \begin{tcolorbox}[title=Methods Question 7,sharp corners, colframe=black, colback=white]
     The example also uses an additional optimizer: a learning rate scheduler. What does this scheduler do? Is it a necessary ingredient for training a neural network? What are its main hyper-parameters? Are there alternatives that can be usefully applied in this example?
 \end{tcolorbox}
+The learning rate supplied to the Adam optimizer comes from StepLR. It begins with a starting learning rate, which is its most important hyperparameter, the learning rate is then decreased with a decay factor $\gamma$ every $N$ epochs. These are two other influential hyperparameters.\\
+The use of a learning rate scheduler is not strictly necessary, but can help fine-tune the results: a large starting learning rate may get close to the global minimum, but will struggle to eventually fall into the middle of it. For this reason, decreasing the learning rate is favorable. This decrease can alternatively be done in a continuous manner by using a power function like $e^{-kn_\text{epoch}}$ or only when the validation loss stops improving (Reduce-on plateau). Other popular choices like cosine annealing and cyclical learning rates implement oscillating learning rates, which can help escape local minima. \\
 
 \begin{tcolorbox}[title=Methods Question 8,sharp corners, colframe=black, colback=white]
     How many epochs is the network trained for? How would you determine whether you have trained for too little or too many epochs?
 \end{tcolorbox}
+The network is trained for 8000 epochs. By looking at the graph of validation loss over the epochs, one can determine whether this was too much or too little: if the validation loss flattens out way before the end of the training, the training was too long. On the other hand, if the validation loss is still decreasing when the training process is stopped, the training was too short.\\
 
 \begin{tcolorbox}[title=Methods Question 9,sharp corners, colframe=black, colback=white]
     Would it make sense to have a set of validation points? How would these look like? How would you use them?
 \end{tcolorbox}
-
+A set of validation points allows one to investigate if the network is overfitting and when the neural network has been trained enough. How these would look depends on the goal: if one would like to simply quantify how accurate the neural network can reproduce the solution, these can be created by randomly choosing points in the training domain and providing the true analytic value as their truth value. On the other hand, if one is attempting to replicate a real data analysis scenario in which the number of observations is limited and imperfect then these need to be chosen out of the given observations. This can be replicated by first creating a larger observation set by randomly choosing timestamps and adding Gaussian noise to the true value. From this we can do a stratified splitting of the observation set into validation and training points. This makes sure that the validation points are spread out over the full training interval (see later for specifics).
 
 \subsection*{Questions about the code}
 
@@ -332,13 +403,15 @@ else:
     np.random.seed(42)
     \end{verbatim}
 \end{tcolorbox}
+These make it so the random choices that are being made will always have the same seed in every run. This causes the program to produce a consistent output, even though it is randomly sampling points. \\
 
 \begin{tcolorbox}[title=Code Question 2,sharp corners, colframe=black, colback=white]
-    What is the purpose of the \texttt{np.ndarray} statements in this function definition:
+    What is the purpose of the \verb|np.ndarray| statements in this function definition:
     \begin{verbatim}
     def analytic(t: np.ndarray) -> np.ndarray:
     \end{verbatim}
 \end{tcolorbox}
+The first applies to the t input: it indicates that this input is expected to be a NumPy array, this helps the readability and error-tracing of the code since most IDEs indicate when this is not matching the given input. The second explains what type the output of the function will be, which has the same benefits as the first.\\
 
 \begin{tcolorbox}[title=Code Question 3,sharp corners, colframe=black, colback=white]
     The data points are created randomly and then sorted before being offered to the neural net, using this statement:
@@ -347,6 +420,8 @@ else:
     \end{verbatim}
     Is this good or bad?
 \end{tcolorbox}
+The creation of random timestamps is good: this makes sure that there are no grid artifacts and that the neural network gets points that are not evenly spaced. This is especially the case with the damped harmonic oscillator, as this even spacing could show up in (partial) resonance with the solution which could for example cause all displacements on the random timestamps to be 0.\\
+The sorting step is neutral: the datapoints are all passed into the neural network in parallel so sorting them does not really do anything. It can help with the plotting, but has no effect on the training results.\\
 
 \begin{tcolorbox}[title=Code Question 4,sharp corners, colframe=black, colback=white]
     The collocation points are created uniformly on a fixed grid, using this statement:
@@ -355,6 +430,7 @@ else:
     \end{verbatim}
     Is this good or bad?
 \end{tcolorbox}
+This line of code shows that the collocation points are chosen equally spaced all the way to the end of the extrapolating area. Choosing the collocation points in this way is not the best idea: the even spacing could show up in resonance and in doing so only sample part of the behavior of the solution. Additionally, taking these collocation points in the extrapolating area means that the extrapolation is not a true blind test: the neural network has been trained in minimizing the physics loss in this area.\\
 
 \begin{tcolorbox}[title=Code Question 5,sharp corners, colframe=black, colback=white]
     What is this statement doing? Is it necessary?
@@ -362,6 +438,7 @@ else:
     optimiser.zero_grad()
     \end{verbatim}
 \end{tcolorbox}
+This statement resets the gradients of the optimizer, this is important as when \verb|loss_total.backwards()| is called, the gradient found is added to the existing gradient instead of setting it as a new value. If we remove this, gradients from past epochs will keep affecting the current epoch in an undesired manner. \\
 
 \begin{tcolorbox}[title=Code Question 6,sharp corners, colframe=black, colback=white]
     What are these statements doing in the training cycle? Is their order important?
@@ -371,6 +448,8 @@ else:
     scheduler.step()
     \end{verbatim}
 \end{tcolorbox}
+\verb|loss_total.backward()| does the backward propagation: this process looks at how infinitesimal changes in each trainable parameter will affect the total loss, effectively calculating the gradient in this parameter space. It then adds it to the selected optimizer. Following this, \verb|optimiser.step()| updates the trainable parameters by tweaking them with regard to their gradient and the given learning rate. After this, \verb|scheduler.step()| steps the learning rate to the next setting.\\
+The order of these statements is essential: the second needs the first to function, and if the stepping of the scheduler is arranged in front of the optimizer then the first learning rate setting is never used.\\
 
 \begin{tcolorbox}[title=Code Question 7,sharp corners, colframe=black, colback=white]
     Why do the collocation time input tensor and the initial condition time input tensor require the gradient option, while the input data tensors do not require a gradient?
@@ -381,6 +460,7 @@ else:
     t_ic_t = to_tensor(t_ic, requires_grad=True)
     \end{verbatim}
 \end{tcolorbox}
+The \verb|requires_grad| option is only necessary if one needs to calculate the derivative with respect to the tensor. This is not necessary for the observation points, as these are only used as inputs to the model. The collocation and initial condition points do require the calculation of the derivative: the initial condition sets $y(0)$ and $\dot{y}(0)$, so the calculation of the predicted $\dot{y}(0)$ demands the use of this option; similarly, the physics loss requires the calculation of $\dot{y}$ and $\ddot{y}$ at the collocation points.\\
 
 \begin{tcolorbox}[title=Code Question 8,sharp corners, colframe=black, colback=white]
     When presenting arrays of time points to the input of my neural network, I need to convert them into a PyTorch tensor, using this helper function:
@@ -389,11 +469,12 @@ else:
         return torch.tensor(arr, dtype=torch.float32,
                           requires_grad=requires_grad).unsqueeze(1)
     \end{verbatim}
-    What does the \texttt{unsqueeze(1)} method of the \texttt{torch.tensor} class do, and why do I need to do this?
+    What does the \verb|unsqueeze(1)| method of the \verb|torch.tensor| class do, and why do I need to do this?
 \end{tcolorbox}
+The unsqueeze method adds a new dimension of a single index, depending on the number this dimension is x (for 0), y (for 1), or z(for 2). The input to the neural network should be a [N,1] tensor, as discussed in methods question 4, but the NumPy array is just a [N] array, so the unsqueeze makes sure to turn it into the right tensor.\\
 
 \begin{tcolorbox}[title=Code Question 9,sharp corners, colframe=black, colback=white]
-    When computing the first and second derivatives of $y(t)$ we use the \texttt{torch.autograd} method. Explain why the \texttt{grad\_outputs} are set to ones and why we need to take the zero-th element [0] of this output in the statements below:
+    When computing the first and second derivatives of $y(t)$ we use the \verb|torch.autograd| method. Explain why the \verb|grad\_outputs| are set to ones and why we need to take the zero-th element [0] of this output in the statements below:
     \begin{verbatim}
     dy = torch.autograd.grad(
         y_hat, t,

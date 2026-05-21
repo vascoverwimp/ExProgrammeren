@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.15)  21 MAY 2026 14:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.15)  21 MAY 2026 20:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -794,6 +794,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 Package hyperref Info: Link coloring OFF on input line 42.
+ (Exam_VascoVerwimp_Report.out) (Exam_VascoVerwimp_Report.out)
 \@outlinefile=\write5
 \openout5 = `Exam_VascoVerwimp_Report.out'.
 
@@ -858,8 +859,7 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 45.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{C:/Users/vasco/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
-No file Exam_VascoVerwimp_Report.toc.
+{C:/Users/vasco/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] (Exam_VascoVerwimp_Report.toc)
 \tf@toc=\write6
 \openout6 = `Exam_VascoVerwimp_Report.toc'.
 
@@ -921,41 +921,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 271--272
 
  []
 
-c:/Users/vasco/Desktop/ExProgrammeren/Report/Exam_VascoVerwimp_Report.tex:279: Missing $ inserted.
-<inserted text> 
-                $
-l.279         y_
-                pred = model(t_obs_t)
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-c:/Users/vasco/Desktop/ExProgrammeren/Report/Exam_VascoVerwimp_Report.tex:281: Missing $ inserted.
-<inserted text> 
-                $
-l.281 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-c:/Users/vasco/Desktop/ExProgrammeren/Report/Exam_VascoVerwimp_Report.tex:282: Missing $ inserted.
-<inserted text> 
-                $
-l.282         if use_
-                     physics:
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-c:/Users/vasco/Desktop/ExProgrammeren/Report/Exam_VascoVerwimp_Report.tex:290: Missing $ inserted.
-<inserted text> 
-                $
-l.290 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
 [7
 
 ]
+Overfull \hbox (10.15733pt too wide) in paragraph at lines 302--302
+[]    \OT1/cmtt/m/n/12 Both derivatives are obtained via automatic differentiation through the[] 
+ []
+
+
+Overfull \hbox (22.50734pt too wide) in paragraph at lines 303--303
+[]    \OT1/cmtt/m/n/12 network.  create_graph=True on the first call keeps the computation graph[] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 346--350
+
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -964,6 +946,15 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [8]
+Underfull \hbox (badness 10000) in paragraph at lines 351--354
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 355--358
+
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -972,6 +963,15 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [9]
+Underfull \hbox (badness 10000) in paragraph at lines 367--370
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 374--377
+
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -980,50 +980,122 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [10]
+Underfull \hbox (badness 10000) in paragraph at lines 378--380
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 384--386
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[11]
+Underfull \hbox (badness 10000) in paragraph at lines 390--391
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 406--407
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[12]
+Underfull \hbox (badness 10000) in paragraph at lines 414--415
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 423--425
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 433--434
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[13]
+Underfull \hbox (badness 10000) in paragraph at lines 441--442
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 451--453
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 463--464
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[14]
+Underfull \hbox (badness 10000) in paragraph at lines 474--475
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[15]
 Chapter 3.
-[11
+[16
 
 ] (Exam_VascoVerwimp_Report.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `Exam_VascoVerwimp_Report.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Exam_VascoVerwimp_Report.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  8A89AB691DE2CF7D2CCE93F186697FD8;2607.
-
-Package biblatex Warning: Please (re)run Biber on the file:
-(biblatex)                Exam_VascoVerwimp_Report
-(biblatex)                and rerun LaTeX afterwards.
-
+Package rerunfilecheck Info: File `Exam_VascoVerwimp_Report.out' has not changed.
+(rerunfilecheck)             Checksum: 8A89AB691DE2CF7D2CCE93F186697FD8;2607.
 Package logreq Info: Writing requests to 'Exam_VascoVerwimp_Report.run.xml'.
 \openout1 = `Exam_VascoVerwimp_Report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 30918 strings out of 474587
- 588880 string characters out of 5745701
- 1939558 words of memory out of 5000000
- 52641 multiletter control sequences out of 15000+600000
+ 30947 strings out of 474587
+ 589562 string characters out of 5745701
+ 1938558 words of memory out of 5000000
+ 52659 multiletter control sequences out of 15000+600000
  568251 words of font info for 75 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 83i,11n,87p,742b,1780s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 83i,12n,87p,1231b,1828s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\vasco\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on Exam_VascoVerwimp_Report.pdf (12 pages, 178631 bytes).
+Output written on Exam_VascoVerwimp_Report.pdf (17 pages, 203287 bytes).
 PDF statistics:
- 174 PDF objects out of 1000 (max. 8388607)
- 55 named destinations out of 1000 (max. 500000)
- 13 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 252 PDF objects out of 1000 (max. 8388607)
+ 60 named destinations out of 1000 (max. 500000)
+ 125 words of extra memory for PDF output out of 10000 (max. 10000000)
 

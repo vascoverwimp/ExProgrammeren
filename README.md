@@ -1,4 +1,4 @@
-# Physics-Informed Neural Networks (PINNs) — Comparative Study
+# Physics-Informed Neural Networks (PINNs) — Exam Assignment
 
 A comprehensive implementation and comparative study of Physics-Informed Neural Networks (PINNs) for solving two classical PDEs: **damped spring-mass system** and the **Burgers' equation**. This project explores multiple PINN architectures, reverse-mode differentiation, and parameter identification techniques.
 
@@ -8,17 +8,19 @@ Physics-Informed Neural Networks combine machine learning with physics constrain
 
 1. **Damped Spring-Mass System** — A second-order ODE with parameter identification:
 
-   ```
+   ```math
    m·y''(t) + c·y'(t) + k·y(t) = 0
    ```
+
    - State characterization via natural frequency (ω₀) and damping ratio (ζ)
    - Parameter recovery: ω₀ and ζ
 
 2. **Burgers' Equation** — A nonlinear partial differential equation commonly used as a benchmark:
 
-   ```
+   ```math
    ∂u/∂t + u ∂u/∂x = ν ∂²u/∂x²
    ```
+
    - Initial conditions: Gaussian, Step or N-wave profiles
    - Fully implicit Crank-Nicolson solver for generating synthetic "truth" data
    - Tests neural network's ability to learn nonlinear dynamics
@@ -26,7 +28,7 @@ Physics-Informed Neural Networks combine machine learning with physics constrain
 
 ## Directory Structure
 
-```
+```dir
 ExProgrammeren/
 ├── BurgersPINN/                 # Solving Burgers' equation using PINNS and standard neural network
 │   ├── model.py                 # Architectures, BurgerConfig, predictor
@@ -192,14 +194,14 @@ Main training loop implementing the PINN framework.
 
 **Loss Functions:**
 
-```
+```math
 L_total = L_data + λ_phys · L_physics + λ_ic · L_ic
 ```
 
 Where:
 
 - `L_data` = MSE between predictions and observations
-- `L_physics` = MSE of PDE/ODE residual at collocation points
+- `L_physics` = MSR of PDE/ODE residual at collocation points
 - `L_ic` = MSE of initial conditions
 
 ### `Burger_PDE.py` (Burgers' Equation only)

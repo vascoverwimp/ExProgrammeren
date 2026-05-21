@@ -352,8 +352,8 @@ def loss_ic(
         create_graph=True,
     )[0]
     ic_conditions_func = cfg.ic_func
-    ic_der_conditions_func = cfg.ic_der_func
-    return torch.mean((u_hat_0 - ic_conditions_func(x)) ** 2 + (du_0 - ic_der_conditions_func(x)) ** 2)
+
+    return torch.mean((u_hat_0 - ic_conditions_func(x)) ** 2)
 
 
 # =============================================================================

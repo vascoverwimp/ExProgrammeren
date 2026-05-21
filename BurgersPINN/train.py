@@ -348,14 +348,10 @@ def loss_ic(
     entire downstream trajectory.
     """
     u_hat_0 = model(x, t)
-    du_0 = torch.autograd.grad(
-        u_hat_0, t,
-        grad_outputs=torch.ones_like(u_hat_0),
-        create_graph=True,
-    )[0]
+    
     ic_conditions_func = cfg.ic_func
-    ic_der_conditions_func = cfg.ic_der_func
-    return torch.mean((u_hat_0 - ic_conditions_func(x)) ** 2 + (du_0 - ic_der_conditions_func(x)) ** 2)
+
+    return torch.mean((u_hat_0 - ic_conditions_func(x)) ** 2)
 
 
 # =============================================================================
