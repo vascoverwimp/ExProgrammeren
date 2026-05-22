@@ -77,8 +77,8 @@ class BurgersSolver:
     t_end:          float
     dt:             float
     x_bounds:       Tuple[float, float]
+    viscosity:       float
 
-    viscosity:       float = 0.01
     newton_tol:      float = 1e-10
     newton_max_iter: int   = 50
 

@@ -293,8 +293,8 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
         "x_obs_val_t":   to_tensor(x_obs_val),
         "u_obs_val_t":   to_tensor(u_obs_val),
         # tensor on DEVICE — IC point (requires_grad for y'(0))
-        "t_ic_t":  to_tensor(t_ic,  requires_grad=True),
-        "x_samples_ic_t": to_tensor(x_samples_ic, requires_grad=False),
+        "t_ic_t":  to_tensor(t_ic),
+        "x_samples_ic_t": to_tensor(x_samples_ic),
     }
 
 

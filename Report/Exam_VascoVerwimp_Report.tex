@@ -482,22 +482,93 @@ The unsqueeze method adds a new dimension of a single index, depending on the nu
         create_graph=True)[0]
     \end{verbatim}
 \end{tcolorbox}
-The \verb|grad_outputs| option signifies the tensor $v$ that the gradient needs to be multiplied by, shown as follows:
+The \verb|grad_outputs| option signifies the tensor $v$ that the gradient needs to be multiplied by to create a scalar, shown as follows:
 \[
- \text{output}_i = v^i \frac{dy}{dt}(t_i)
+S = \sum_j v^j y_j
 \]
-This can be used if we know the derivative of every timestamp with respect to another variable, then we can input this as the grad output in order to emulate the chain rule with respect to that variable. Only in this case, the variable that we are trying to find the derivative of is t itself, so we supply a [N,1] tensor of ones with the same length as the time tensor. The function can accept multiple tensors of variables to calculate the autograd to, because of this it will return a tuple of all of the gradients in the order in which the variables were supplied. In this case, only one variable is supplied, so it returns a tuple with only one element; the [0] is used to pick the first and only element out of this tuple.
+This is necessary as we require a vector as output which is created by taking the gradient of a scalar quantity.
+When $v$ is all ones, then this becomes simply:
+\[
+S = \sum_j y_j
+\]
+The gradient with respect to $t_i$ then becomes:
+\[
+\nabla_i S = \frac{\partial \sum_j y_j}{\partial t_i}
+\]
+It is reasonable to assume that only $y_i$ is dependent on $t_i$, which finally gives us the result that we were looking for:
+\[
+\nabla_i S = \frac{\partial y_i}{\partial t_i}
+\]
+The function can also accept multiple tensors of variables to calculate the autograd to, because of this it will return a tuple of all of the gradients in the order in which the variables were supplied. In this case, only one variable is supplied, so it returns a tuple with only one element; the [0] is used to pick the first and only element out of this tuple.
 
 Using these questions as a starting point, the damped harmonic oscillator script will be improved and adapted into a more flexible and clear framework. Additionally, the reverse problem will be executed. This approach will then be translated for the Burgers' equation, which will add a new dimension of complexity.
 
 \chapter{Structure and Implementation}
 All 4 version of PINN scripts have very similar structure; firstly, this structure is shown and motivated. This will give a clear picture of the implementation of the models, without needing to be specific about one or the other. Following this, a few important differences are noted between the implementation of the damped harmonic oscillator and the Burgers' equation. Finally, we will conclude this chapter with the process of hyperparameter tuning for the different cases. This will provide a solid base for the understanding of the process that produces the results shown in the next chapter.
 \section{General Structure}
+The process is split over 3 scripts: \verb|model.py|, \verb|train.py| and \verb|plot.py|. The first contains the architecture, an inference predictor, and a configuration dataclass that will hold all parameters necessary for creating and training a model. The second will create an object of this configuration class by parsing its argument when called, using the settings provided it will generate the data and collocation points required to train the models. It will then train and save the model alongside the configuration needed to create it, while also providing useful metrics to evaluate the model quantitatively. The third can then be called in order to create plots showing the resulting solutions, compared both through the model's generations and in comparison to other models and the true result.
+\subsection{Configuration and Inference}
+Each model is governed by a dedicated configuration dataclass (\verb|DamperConfig| for the damped oscillator and \verb|BurgerConfig| for Burgers' equation), which acts as the single source of truth for every parameter. Physical constants, domain boundaries, data-generation settings, architectural choices, optimizer hyper-parameters, loss weights, early-stopping criteria, snapshot epochs, and output paths are all declared as typed fields with explicit default values. Because the dataclass is instantiated once at the start of \verb|train.py| and then passed by reference into every downstream function, there is no risk of different parts of the pipeline operating under inconsistent assumptions. By parsing arguments in \verb|train.py|, the fields can be set from the terminal before anything else runs, so the full configuration used for a given run is always recoverable from the serialized bundle which is saved in the training results file.
 
+Derived physical quantities are exposed as read-only \verb|@property| attributes computed directly from the primary fields, ensuring they stay consistent regardless of how the object was constructed. For the oscillator these include the undamped natural frequency $\omega_0 = \sqrt{k/m}$, the damping ratio $\zeta = c/(2\sqrt{mk})$, and the damped natural frequency $\omega_d = \omega_0\sqrt{1-\zeta^2}$. For Burgers' equation the analogous derived quantity is the inviscid shockwave formation time. This time can be derived using the method of characteristics; this would give the following result:
+\[
+t_\text{shock}=\min -\frac{1}{u'(x,0)}
+\]
+This differs between initial-condition scenarios: it equals unity for the N-wave, $e^{1/2}$ for the Gaussian, and infinity for the step function (where characteristics do not cross).
+Computing these from primary fields rather than storing them separately eliminates an entire class of consistency bugs when hyper-parameters are swept.
+
+The \verb|FCNet| class defines a fully-connected network built from a configurable number of hidden layers, each followed by a \verb|Tanh| activation, with a linear readout. For the one-dimensional oscillator the network maps a scalar time $t$ to a scalar displacement $\hat{y}$; for the two-dimensional Burgers' problem it maps a concatenated $(x, t)$ pair to a scalar velocity $\hat{u}$. In the reverse implementations, the network additionally carries one or multiple trainable scalar parameters corresponding to physics based parameters that were used to generate the observational data. We have chosen to use the base-10 logarithm for this, as every parameter that we are estimating needs to be strictly positive, and in doing this the reverse transformation $10^{\hat{theta}}$ is positive. This parameter is updated alongside the network weights during training. A \verb|from_config| class method constructs the network directly from a configuration object, removing any need to pass architectural arguments separately.
+
+The \verb|Predictor| class provides a stateless CPU-side inference wrapper around \verb|FCNet|. It accepts an optional checkpoint path at construction time and loads weights immediately if one is provided, this enables one to evaluate the model's evolution over the epochs during certain chosen checkpoints. Otherwise, the network is left at its random initialization and weights must be supplied later via \verb|load_state_dict|. All forward passes are performed inside a \verb|torch.no_grad()| context after moving inputs to \verb|float32| tensors, and outputs are returned as plain NumPy arrays, which makes downstream plotting code free of device-management concerns. The class also includes static methods for computing RMSE and an approximate physics residual via NumPy gradient functionality. For the reverse problems, \verb|predict_params| recovers the current estimate of the parameter by exponentiating the found estimate (which corresponds to the logarithm of the parameter). 
+
+\subsection{Data Generation and Sampling}
+The \verb|generate_data| function is responsible for producing every array and tensor that the training loop and plotting scripts will use. It is self-contained and returns a single dictionary holding both NumPy arrays and device-resident PyTorch tensors. Observations are drawn by sampling locations uniformly at random within the training window and evaluating the ground-truth solution at those locations, then corrupting the result with additive Gaussian noise of standard deviation $\sigma$. 
+
+In earlier versions, the observations would be split into a validation and training sets by stratified splitting. This is a technique that ensures the validation points are chosen over the whole training region, which is not necessarily always the case for random splitting. In the submitted version, validation points are used that are evenly spaced, without the addition of noise. The number of validation points is also chosen to be greater than the number of training points. In doing this, the validation loss becomes more accurate: it directly shows how much the solution diverts from the truth value. On the other hand, in many real life scenarios it is not possible to arbitrarily generate new noiseless observations, as this requires the truth to be known. This is why the stratified splitting approach has remained present (although unused) in the final solution. This set is used only for early stopping; it is never plotted, because on a dense grid it would simply retrace the true-solution curve and add visual clutter without conveying additional information. The true values of the solution are provided by the \verb|analytic| function when provided the necessary inputs: which configuration is used and the coordinates probed.
+
+Two pools of collocation points are pre-allocated on the compute device at the start of training rather than being resampled every epoch. One pool covers the full domain including the extrapolation region, and the other is restricted to the training window. Both pools are large (of order $10^4$ points) to ensure good coverage; at each epoch a random index vector selects $n_\text{col}$ points from the appropriate pool, introducing stochasticity in the physics loss without the overhead of repeatedly calling a random number generator for the full pool. Initial-condition samples are likewise pre-allocated and these remain constant throughout training. Dense evaluation grids covering the full domain are constructed in NumPy and kept on the CPU; they are embedded in the returned dictionary for use by the plotting script but play no role during the training loop.
+
+\subsection{Training and Saving}
+The \verb|train_model| function implements the complete training loop for a single model and is the only place in the codebase where gradient computation occurs. It accepts three Boolean flags: \verb|use_ic|, \verb|use_physics| and \verb|extrapolated_physics|, that control which loss components are active and which collocation pool is sampled from, allowing the same function to train the data-only baseline, the physics-informed model with full-domain collocation, and the physics-informed model confined to the training window, without code duplication. At the start of the loop the model is moved to the target device, a fresh Adam optimizer is constructed with the specified learning-rate and momentum parameters, and a step learning-rate scheduler is attached that multiplies the rate by $\gamma$ every fixed number of epochs. In the case of the reverse problem, the logarithm estimators are also assigned to the optimizer with their own separate learning rate \verb|lr_param|.
+
+The total loss at each epoch is the sum of three terms weighted by configurable coefficients (if both \verb|use_physics| and \verb|extrapolated_physics| are set to true):
+\[
+  \mathcal{L}_\text{total} = \mathcal{L}_\text{data} + \lambda_\text{phys}\,\mathcal{L}_\text{phys} + \lambda_\text{IC}\,\mathcal{L}_\text{IC}.
+\]
+The data loss $\mathcal{L}_\text{data}$ is the mean-squared error between the network's predictions at the observation locations and the noisy measurements. The physics loss $\mathcal{L}_\text{phys}$ is the mean-squared ODE or PDE residual evaluated at the collocation points using automatic differentiation: \verb|create_graph=True| is passed to the first \verb|autograd.grad| call so that the computation graph is kept alive through the second derivative, which is required for the damped-oscillator loss ($m\hat{y}'' + c\hat{y}' + k\hat{y}$) and the Burgers' diffusion term ($-\hat{\nu}\,\partial_{xx}\hat{u}$). The IC loss $\mathcal{L}_\text{IC}$ penalizes deviation of the network's output from the prescribed initial condition.
+
+Checkpointing and early stopping are interleaved with the training loop at intervals of \verb|log_every| epochs. At each logging step the model is switched to evaluation mode, the validation loss is computed inside a \verb|no_grad| context, and all scalar losses are appended to a history dictionary. If the validation loss has decreased by more than \verb|min_delta| relative to the best value seen so far, the current weights are serialized to the checkpoint file together with the epoch index, the validation loss, and the configuration object; a patience counter is reset to zero. Otherwise, the counter is incremented and if it reaches the \verb|patience| threshold the loop exits early. This scheme guarantees that the best weights are always on disk even if the run is interrupted, and that training terminates automatically when generalization ceases to improve, without requiring the user to specify the number of epochs precisely.
+
+At epochs listed as \verb|snapshot_epochs| in the configuration class, the model's state dictionary is copied to the CPU with a deep copy and stored in a \verb|snapshots| dictionary keyed by epoch number. The CPU copy is taken by iterating over \verb|model.state_dict().items()| and calling \verb|.cpu()| on each tensor before the deep copy, so the live model on the compute device is never disturbed. 
+
+The calling code in \verb|train_and_save_three| (or \verb|train_and_save_both| for the reverse problems) trains all three relevant networks (standard machine learning neural network (not applicable with the reverse problem), PINN with physics extending into the extrapolated area, and a truly blind PINN). After this, it loads the best-val checkpoint into a \verb|Predictor|, evaluates it on the dense plotting grid, computes RMSE and physics-residual metrics separately for the training and extrapolation intervals, and serializes all acquired metrics and data into a single \verb|training_results.pt| bundle that \verb|plot.py| can load without any knowledge of how training was run. Importantly, this also includes the configuration class so that the architecture of the networks trained are saved directly besides the actual network weights.
+
+\subsection{Evaluation and Plotting}
+\verb|evaluate_model| will print the acquired metrics of the trained models by looking at the training results file that matches the given parameters ($\omega_0$ and $\zeta$ for damped oscillator, \verb|situation| ("Step", "Gaussian", or "N-wave") and viscosity for Burgers'). Additionally, it returns these metrics for the normal PINNs or the estimated parameters for the reverse problem PINNs.
+
+The plotting script begins by loading the \verb|training_results.pt| bundle with \verb|torch.load| mapped to CPU, extracting the configuration object, all history dictionaries, snapshot dictionaries, pre-computed dense predictions, and scalar metrics. Fresh \verb|Predictor| instances are constructed from the recovered configuration. This design means the plotting script can be run on any machine regardless of the device used during training, and it never needs to reconstruct the training data or re-run any forward passes beyond those required for the snapshot panels.
+
+Multiple figures are made to show the results and the evolution of the network over the epochs:
+\begin{itemize}
+    \item \textbf{Loss-figure:} the evolution of all loss components on a logarithmic scale, using color to encode the loss category and line style to distinguish between models.
+    \item \textbf{Evolution over the epochs:} Each model is shown evolving by using the multiple snapshots taken during training.
+    \item \textbf{Focus on extrapolation window:} In both cases, the extrapolation window is specifically shown, which helps in assessing the behavior of the solutions in this area of interest. 
+\end{itemize}
+
+The plotting script parses the arguments to acquire the location of the training results file: one can provide the location directly via \verb|--results|. Alternatively, if this argument is not set, one can supply in which folder to find it and which parameters are used via \verb|--input_dir|, and for example for the Burgers' equation \verb|--situation| and \verb|--viscosity|. If any of these are missing, the default value is used.
 \section{Differences In Implementation Between The Damped Harmonic Oscillator And The Burgers' Equation}
+There are some important things to note that do differ between the two different cases. This includes both problems specific for each case and some presentation differences.
+
+Firstly, in the case of the Burgers' problem the ground truth cannot be written in closed form for arbitrary initial conditions, so a finite-volume solver (\verb|BurgersSolver|) is used to pre-compute a dense set of solution snapshots on a fine spatio-temporal grid extending well beyond the plotting domain. The solver result is cached to a folder as a compressed NumPy archive on the first run and reloaded on subsequent runs, avoiding repeated expensive computation during hyper-parameter sweeps. This gives the result on a discretized mesh, when a value is probed in the gaps of this mesh an interpolation is used to acquire the value. The solving method used is fully implicit Crank-Nicolson method to discretize the PDE, this then is applied using the Newton method. This class was constructed using the Claude generative AI, after creation the inference function that applies the interpolation and the time stepping were modified to correct the creation and interpolation of the computed grid. For boundary values we have decided to use Dirichlet boundary values, but at distant points outside the spatial bounds of the system so that these boundary conditions are not able to influence the behavior of the solution in the observed bounds. These analytical solutions were compared to literature results and showed a good match.
+
+The damped oscillator 
+\section{Hyperparameter Optimization}
+
 
 \chapter{Results}
+\section{Damped Harmonic Oscillator}
 
+\section{Burgers' Equation}
 
 \chapter{Conclusion}
 \end{document}
