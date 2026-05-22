@@ -22,8 +22,10 @@
 \contentsline {subsection}{\numberline {3.1.3}Training and Saving}{19}{subsection.3.1.3}%
 \contentsline {subsection}{\numberline {3.1.4}Evaluation and Plotting}{20}{subsection.3.1.4}%
 \contentsline {section}{\numberline {3.2}Differences In Implementation Between The Damped Harmonic Oscillator And The Burgers' Equation}{21}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Hyperparameter Optimization}{21}{section.3.3}%
-\contentsline {chapter}{\numberline {4}Results}{22}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Damped Harmonic Oscillator}{22}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Burgers' Equation}{22}{section.4.2}%
-\contentsline {chapter}{\numberline {5}Conclusion}{23}{chapter.5}%
+\contentsline {section}{\numberline {3.3}Hyperparameter Optimization}{22}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Damped Harmonic Oscillator}{22}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Burgers' Equation}{23}{subsection.3.3.2}%
+\contentsline {chapter}{\numberline {4}Results}{27}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Damped Harmonic Oscillator}{27}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Burgers' Equation}{27}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Conclusion}{28}{chapter.5}%

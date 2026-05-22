@@ -246,6 +246,3 @@ Visualization module for results.
 - Error visualizations (residuals, prediction errors)
 - Parameter estimation plots (true vs. recovered)
 
-## Hyperparameters
-
-See `hyperparam_tracking_burger.md` and `hyperparam_tracking_damper.md` for detailed search logs.

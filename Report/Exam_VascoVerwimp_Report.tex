@@ -512,7 +512,7 @@ Each model is governed by a dedicated configuration dataclass (\verb|DamperConfi
 
 Derived physical quantities are exposed as read-only \verb|@property| attributes computed directly from the primary fields, ensuring they stay consistent regardless of how the object was constructed. For the oscillator these include the undamped natural frequency $\omega_0 = \sqrt{k/m}$, the damping ratio $\zeta = c/(2\sqrt{mk})$, and the damped natural frequency $\omega_d = \omega_0\sqrt{1-\zeta^2}$. For Burgers' equation the analogous derived quantity is the inviscid shockwave formation time. This time can be derived using the method of characteristics; this would give the following result:
 \[
-t_\text{shock}=\min -\frac{1}{u'(x,0)}
+t_\text{shock}=\min (-\frac{1}{u'(x,0)})
 \]
 This differs between initial-condition scenarios: it equals unity for the N-wave, $e^{1/2}$ for the Gaussian, and infinity for the step function (where characteristics do not cross).
 Computing these from primary fields rather than storing them separately eliminates an entire class of consistency bugs when hyper-parameters are swept.
@@ -528,14 +528,16 @@ In earlier versions, the observations would be split into a validation and train
 
 Two pools of collocation points are pre-allocated on the compute device at the start of training rather than being resampled every epoch. One pool covers the full domain including the extrapolation region, and the other is restricted to the training window. Both pools are large (of order $10^4$ points) to ensure good coverage; at each epoch a random index vector selects $n_\text{col}$ points from the appropriate pool, introducing stochasticity in the physics loss without the overhead of repeatedly calling a random number generator for the full pool. Initial-condition samples are likewise pre-allocated and these remain constant throughout training. Dense evaluation grids covering the full domain are constructed in NumPy and kept on the CPU; they are embedded in the returned dictionary for use by the plotting script but play no role during the training loop.
 
+In earlier renditions of the code, mini-batching was used. This is a technique that selects a random set of observations out of the total observations to be used each epoch. This ensures that the network does not overtrain on certain observations, which improves the robustness of the solving process. However, during the optimization phase, it was found that the optimal number of observations supplied per epoch is equal to the total number of observations. Because of this, this implementation is commented, but left inside the code to show the reader that this is an option that can increase the robustness of the solving process.
+
 \subsection{Training and Saving}
 The \verb|train_model| function implements the complete training loop for a single model and is the only place in the codebase where gradient computation occurs. It accepts three Boolean flags: \verb|use_ic|, \verb|use_physics| and \verb|extrapolated_physics|, that control which loss components are active and which collocation pool is sampled from, allowing the same function to train the data-only baseline, the physics-informed model with full-domain collocation, and the physics-informed model confined to the training window, without code duplication. At the start of the loop the model is moved to the target device, a fresh Adam optimizer is constructed with the specified learning-rate and momentum parameters, and a step learning-rate scheduler is attached that multiplies the rate by $\gamma$ every fixed number of epochs. In the case of the reverse problem, the logarithm estimators are also assigned to the optimizer with their own separate learning rate \verb|lr_param|.
 
 The total loss at each epoch is the sum of three terms weighted by configurable coefficients (if both \verb|use_physics| and \verb|extrapolated_physics| are set to true):
 \[
-  \mathcal{L}_\text{total} = \mathcal{L}_\text{data} + \lambda_\text{phys}\,\mathcal{L}_\text{phys} + \lambda_\text{IC}\,\mathcal{L}_\text{IC}.
+  \mathcal{L}_\text{total} = \mathcal{L}_\text{data} + \lambda_\text{phys}\,\mathcal{L}_\text{phys} + \lambda_\text{ic}\,\mathcal{L}_\text{ic}.
 \]
-The data loss $\mathcal{L}_\text{data}$ is the mean-squared error between the network's predictions at the observation locations and the noisy measurements. The physics loss $\mathcal{L}_\text{phys}$ is the mean-squared ODE or PDE residual evaluated at the collocation points using automatic differentiation: \verb|create_graph=True| is passed to the first \verb|autograd.grad| call so that the computation graph is kept alive through the second derivative, which is required for the damped-oscillator loss ($m\hat{y}'' + c\hat{y}' + k\hat{y}$) and the Burgers' diffusion term ($-\hat{\nu}\,\partial_{xx}\hat{u}$). The IC loss $\mathcal{L}_\text{IC}$ penalizes deviation of the network's output from the prescribed initial condition.
+The data loss $\mathcal{L}_\text{data}$ is the mean-squared error between the network's predictions at the observation locations and the noisy measurements. The physics loss $\mathcal{L}_\text{phys}$ is the mean-squared ODE or PDE residual evaluated at the collocation points using automatic differentiation: \verb|create_graph=True| is passed to the first \verb|autograd.grad| call so that the computation graph is kept alive through the second derivative, which is required for the damped-oscillator loss ($m\hat{y}'' + c\hat{y}' + k\hat{y}$) and the Burgers' diffusion term ($-\hat{\nu}\,\partial_{xx}\hat{u}$). The initial condition loss $\mathcal{L}_\text{ic}$ penalizes deviation of the network's output from the prescribed initial condition.
 
 Checkpointing and early stopping are interleaved with the training loop at intervals of \verb|log_every| epochs. At each logging step the model is switched to evaluation mode, the validation loss is computed inside a \verb|no_grad| context, and all scalar losses are appended to a history dictionary. If the validation loss has decreased by more than \verb|min_delta| relative to the best value seen so far, the current weights are serialized to the checkpoint file together with the epoch index, the validation loss, and the configuration object; a patience counter is reset to zero. Otherwise, the counter is incremented and if it reaches the \verb|patience| threshold the loop exits early. This scheme guarantees that the best weights are always on disk even if the run is interrupted, and that training terminates automatically when generalization ceases to improve, without requiring the user to specify the number of epochs precisely.
 
@@ -561,9 +563,196 @@ There are some important things to note that do differ between the two different
 
 Firstly, in the case of the Burgers' problem the ground truth cannot be written in closed form for arbitrary initial conditions, so a finite-volume solver (\verb|BurgersSolver|) is used to pre-compute a dense set of solution snapshots on a fine spatio-temporal grid extending well beyond the plotting domain. The solver result is cached to a folder as a compressed NumPy archive on the first run and reloaded on subsequent runs, avoiding repeated expensive computation during hyper-parameter sweeps. This gives the result on a discretized mesh, when a value is probed in the gaps of this mesh an interpolation is used to acquire the value. The solving method used is fully implicit Crank-Nicolson method to discretize the PDE, this then is applied using the Newton method. This class was constructed using the Claude generative AI, after creation the inference function that applies the interpolation and the time stepping were modified to correct the creation and interpolation of the computed grid. For boundary values we have decided to use Dirichlet boundary values, but at distant points outside the spatial bounds of the system so that these boundary conditions are not able to influence the behavior of the solution in the observed bounds. These analytical solutions were compared to literature results and showed a good match.
 
-The damped oscillator 
-\section{Hyperparameter Optimization}
+The damped oscillator also has a different initial condition loss: both the initial displacement and initial velocity are included in this loss. On the other hand, the Burgers' equation will only calculate the loss of the initial value, not its derivative over time. This is because this derivative is already fixed by the differential equation itself, which can be rewritten as follows:
+\[
+\pd{u}{t} = \nu \pdd{u}{x} - u\pd{u}{x}
+\]
+This also allows us to disable the gradient requirements of the points that are used to enforce this initial condition.
 
+Of course, the greatest difference between the two is that the Burgers' equation is a problem with 1+1 dimensions, which means it has an extra spatial dimension in comparison to the damped oscillator. This means the full solution cannot be shown with a single graph anymore. Instead, we use two techniques: time slices show the profile of $u$ at different times, where one is chosen to be close to the shockwave time (if the solution would be inviscid), and heatmaps show the total evolution of the value of $u$ both over time and space. Not only the plotting, but also the sampling is affected by this: for the regular sampling (initial conditions, plots and validation) we use an evenly spaced grid instead of evenly spaced points, for the random sampling (collocation and training points) the same method still applies, only now two parameters need to be drawn out of the uniform distribution over respectively the spatial or time bounds.
+\section{Hyperparameter Optimization}
+Hyperparameter optimization was performed sequentially, tuning one group of parameters at a time and carrying the best value forward into subsequent searches. The metric used throughout was the RMSE of the blind PINN on the training interval, evaluated on the dense plotting grid. A coarse logarithmic sweep followed by a zoomed search was used in each stage to balance exploration with precision. The choice for sequential optimization is one that allows better direct visualization of the process, which is why it was chosen in favor of the more popular random search approach, which optimizes all hyperparameters at the same time. 
+
+Several hyperparameters will be held constant: most significantly the architecture of the model (4 hidden layers of 32 nodes for the damped oscillator and 6 hidden layers of 48 nodes), the learning rate stepper parameters, and the $\beta_1$ and $\beta_2$ parameters of the Adam optimizer. This is because these only need to be changed when either the algorithm struggles to converge (underfitting), or if it overtrains on the training data (overfitting), but we see that for these default values (and reasonable values of the other hyperparameters) this is already the case. 
+
+The other hyperparameters that need to be optimized will achieve two things: a quicker convergence and a more accurate result. The full training process, including which specific situation is used to evaluate the model, is documented in the markdowns provided with the project. For each model, the learning rate will be optimized first. After this, we will look at the weights of both the initial condition loss and physics loss and try to find the optimum in this two-dimensional parameter space. Third, the number of collocations is investigated. Finally, the reverse problem is also optimized by investigating how changing the learning rate of these learned physical parameters will affect both the RMSE and error on the predicted values of the physical parameters.
+\subsection{Damped Harmonic Oscillator}
+The learning rate was searched first over the range $[10^{-5}, 10^{0}]$, identifying $10^{-2}$ as the best coarse value (RMSE $= 0.0103$). A refined search over $10^{[-3.5, -1.5]}$ in 11 steps yielded a final value of $lr = 3.16 \cdot 10^{-3}$ (RMSE $= 0.0076$), which was fixed for all subsequent stages.
+
+The loss weights $\lambda_\text{ic}$ and $\lambda_\text{phys}$ were optimized jointly on a grid. An initial search over $\lambda_\text{ic} \in [10^0, 10^2]$ and $\lambda_\text{phys} \in [10^{-3}, 10^{-1}]$ found $\lambda_\text{ic} = 17.78$ and $\lambda_\text{phys} = 0.1$ at the edge of the search space. A shifted and zoomed grid over $\lambda_\text{ic} \in [10^1, 10^2]$ and $\lambda_\text{phys} \in [10^{-1}, 10^{0}]$ gave the final values $\lambda_\text{ic} = 13.34$ and $\lambda_\text{phys} = 1.0$ (RMSE $= 0.00179$). The constraint $\lambda_\text{data} \geq \lambda_\text{phys}$ was imposed throughout to ensure the data loss remains at least as influential as the physics regularization.
+
+The number of collocation points was swept over 50 values in $[10, 500]$; while performance continued to improve at higher counts (best RMSE $= 6.88\cdot10^{-4}$ at 470 points), the curve was nearly flat, so $N_\text{col} = 80$ was selected as a practical compromise delivering RMSE $\approx 0.001$ at substantially lower computational cost. For the reverse problem an additional parameter, the learning rate of the physical parameters $lr_\text{param}$, was tuned. A coarse search over $[10^{-5}, 10^{0}]$ pointed to $10^{-3}$, and a refined search over $10^{[-3.5, -0.5]}$ in 31 steps identified $lr_\text{param} = 6.31 \cdot 10^{-3}$ as the best compromise between RMSE ($= 0.00171$) and accuracy of the recovered parameters $\hat{\omega}_0$ and $\hat{\zeta}$, yielding $\hat{\omega}_0 = 1.9986$ (error $1.4\cdot10^{-3}$) and $\hat{\zeta} = 0.1249$ (error $1.5\cdot10^{-4}$).
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/Lr_rough.png}
+        \caption{Coarse search over $[10^{-5}, 10^{0}]$.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/Lr_smooth.png}
+        \caption{Zoomed search over $10^{[-3.5, -1.5]}$.}
+    \end{subfigure}
+    \caption{RMSE as a function of learning rate for the damped harmonic oscillator.}
+    \label{fig:dho_lr_sweep}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/weights_rough.png}
+        \caption{Coarse grid over $\lambda_\text{ic} \in [10^0, 10^2]$, $\lambda_\text{phys} \in [10^{-3}, 10^{-1}]$.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/weights_smooth.png}
+        \caption{Zoomed grid over $\lambda_\text{ic} \in [10^1, 10^2]$, $\lambda_\text{phys} \in [10^{-1}, 10^{0}]$.}
+    \end{subfigure}
+    \caption{Grid search over loss weights $\lambda_\text{ic}$ and $\lambda_\text{phys}$ for the damped harmonic oscillator.}
+    \label{fig:dho_weights_grid}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/collocation_smooth.png}
+    \caption{RMSE as a function of number of collocation points for the damped harmonic oscillator. No zoomed search was performed as the curve was nearly flat.}
+    \label{fig:dho_ncol_sweep}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/damped_lrparam_vs_rmse_rough.png}
+        \caption{Coarse search over $[10^{-5}, 10^{0}]$, RMSE.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/damped_lrparam_vs_w0_diff_rough.png}
+        \caption{Coarse search over $[10^{-5}, 10^{0}]$, $\omega_0$ error.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/damped_lrparam_vs_zeta_diff_rough.png}
+        \caption{Coarse search over $[10^{-5}, 10^{0}]$, $\zeta$ error.}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/damped_lrparam_vs_rmse_zoomed.png}
+        \caption{Zoomed search over $10^{[-3.5, -0.5]}$, RMSE.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/damped_lrparam_vs_w0_diff_zoomed.png}
+        \caption{Zoomed search over $10^{[-3.5, -0.5]}$, $\omega_0$ error.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/damped_lrparam_vs_zeta_diff_zoomed.png}
+        \caption{Zoomed search over $10^{[-3.5, -0.5]}$, $\zeta$ error.}
+    \end{subfigure}
+
+    \caption{RMSE and parameter recovery error ($\hat{\omega}_0$, $\hat{\zeta}$) as a function of $lr_\text{param}$ for the damped harmonic oscillator reverse problem.}
+    \label{fig:dho_lrparam_sweep}
+\end{figure}
+
+\subsection{Burgers' Equation}
+The learning rate was searched over $[10^{-5}, 10^{0}]$, with $lr = 10^{-3}$ emerging as the best coarse value (RMSE $= 0.0206$). A zoomed search over $10^{[-3.9, -2.1]}$ in 15 steps identified $lr = 1.808 \cdot 10^{-3}$ (RMSE $= 0.0122$) as the final value, which will be carried forward.
+
+Loss weights were searched jointly on a grid. A coarse search over $\lambda_\text{ic} \in [10^{0.5}, 10^{2.5}]$ and $\lambda_\text{phys} \in [10^{-2.5}, 10^{-0.5}]$ in 5 steps each gave $\lambda_\text{ic} = 3.16$ and $\lambda_\text{phys} = 0.316$ (RMSE $= 0.00569$). A zoomed grid over $\lambda_\text{ic} \in [10^{0.1}, 10^{0.9}]$ and $\lambda_\text{phys} \in [10^{-0.9}, 10^{-0.1}]$ in 4 steps each yielded the final values $\lambda_\text{ic} = 1.259$ and $\lambda_\text{phys} = 0.794$ (RMSE $= 0.00467$). As with the oscillator, the search was deliberately stopped at the boundary where $\lambda_\text{phys}$ approaches $\lambda_\text{data}$, to preserve the intended hierarchy $\lambda_\text{ic} \geq \lambda_\text{data} \geq \lambda_\text{phys}$.
+
+The number of collocation points was swept over $[10, 500]$; the best coarse value was 300 (RMSE $= 0.00564$), and a refined search over $[210, 490]$ in 15 steps gave $N_\text{col} = 250$ (RMSE $= 0.00432$). For the reverse problem the physical-parameter learning rate $lr_\text{param}$ was tuned with a dual objective: minimizing RMSE while accurately recovering $\nu = 0.1$. A coarse search over $[10^{-5}, 10^{0}]$ suggested $lr_\text{param} = 10^{-4}$ for RMSE and $10^{-3}$ for $|\hat{\nu} - \nu|$. A zoomed search over $10^{[-4.2, -1.8]}$ in 25 steps identified $lr_\text{param} = 1.995 \cdot 10^{-4}$ as the best compromise, yielding RMSE $= 0.00529$ and $\hat{\nu} = 0.09905$ (error $9.5\cdot10^{-4}$).
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_learning_rate_search_rough.png}
+        \caption{Coarse search over $[10^{-5}, 10^{0}]$.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_learning_rate_search_zoomed.png}
+        \caption{Zoomed search over $10^{[-3.9, -2.1]}$.}
+    \end{subfigure}
+    \caption{RMSE as a function of learning rate for the Burgers' equation model.}
+    \label{fig:burg_lr_sweep}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_weight_search_rough.png}
+        \caption{Coarse grid over $\lambda_\text{ic} \in [10^{0.5}, 10^{2.5}]$, $\lambda_\text{phys} \in [10^{-2.5}, 10^{-0.5}]$.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_weight_search_zoomed.png}
+        \caption{Zoomed grid over $\lambda_\text{ic} \in [10^{0.1}, 10^{0.9}]$, $\lambda_\text{phys} \in [10^{-0.9}, 10^{-0.1}]$.}
+    \end{subfigure}
+    \caption{Grid search over loss weights $\lambda_\text{ic}$ and $\lambda_\text{phys}$ for the Burgers' equation model.}
+    \label{fig:burg_weights_grid}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_num_collocations_search_rough.png}
+        \caption{Coarse search over $[10, 500]$.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_num_collocations_search.png}
+        \caption{Zoomed search over $[210, 490]$.}
+    \end{subfigure}
+    \caption{RMSE as a function of number of collocation points for the Burgers' equation model.}
+    \label{fig:burg_ncol_sweep}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burgers_lrparam_vs_rmse_rough.png}
+        \caption{Coarse search over $[10^{-5}, 10^{0}]$, RMSE.}
+    \end{subfigure}
+    \hfill
+        \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burgers_lrparam_vs_v_diff_rough.png}
+        \caption{Coarse search over $[10^{-5}, 10^{0}]$, viscosity error.}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burgers_lrparam_vs_rmse_zoomed.png}
+        \caption{Zoomed search over $10^{[-4.2, -1.8]}$, RMSE.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burgers_lrparam_vs_v_diff_zoomed.png}
+        \caption{Zoomed search over $10^{[-4.2, -1.8]}$, viscosity error.}
+    \end{subfigure}
+
+    \caption{RMSE and viscosity recovery error as a function of $lr_\text{param}$ for the Burgers' equation reverse problem.}
+    \label{fig:burg_lrparam_sweep}
+\end{figure}
 
 \chapter{Results}
 \section{Damped Harmonic Oscillator}
