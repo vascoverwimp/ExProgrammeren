@@ -16,6 +16,8 @@
 \usepackage{enumitem}
 \usepackage{csquotes}
 \usepackage{tcolorbox}
+\usepackage{float}
+\usepackage{array}
 
 \addbibresource{bibliography.bib}
 % Geometry
@@ -180,7 +182,7 @@ The \textbf{damping ratio} is given by:
 \noindent The damping ratio determines the system's behavior:
 
 \begin{itemize}
-    \item \textbf{Underdamped} ($\zeta < 1$): Oscillatory response with exponential decay
+    \item \textbf{Underdamped} ($\zeta < 1$): Oscillatory oscillation with exponential decay
     \item \textbf{Critically damped} ($\zeta = 1$): Fastest non-oscillatory return to equilibrium
     \item \textbf{Overdamped} ($\zeta > 1$): Slow non-oscillatory return to equilibrium
 \end{itemize}
@@ -366,7 +368,7 @@ The activation function used is the hyperbolic tangent function, this function t
 \pdd{\tanh(y)}{x} = (1-\tanh^2(y))\pdd{y}{x} + (-2\tanh(y))(1-\tanh^2(y))\pd{y}{x}
 \]
 These are all just polynomials in function of the original tanh and derivatives of the input, this greatly simplifies the computation in backpropagation. Additionally, they allow for the calculation of $\frac{dy}{dt}$ and higher order derivatives by the full backpropagation of the result in function of the input parameter. Other activation functions (including ReLU) have derivatives that are either zero on large parts of their domain or have discontinuities. These prevent this backpropagation which is needed to evaluate the initial condition and physics loss that are essential in a PINN.\\
-The dimensions of this architecture are adequate, this can be seen by comparing the validation loss to the training loss. If the training loss keeps increasing while the validation loss saturates, the network is too large and is overfitting; on the other hand if both the validation loss and training loss do not decrease to a low enough level, the network cannot represent the system as it is too small and underfitting. When we do this test with validation points that are kept seperate from the training set, we see that both the validation loss and training loss keep decreasing. The training loss is better than the validation loss (in the case that these points have the same origin), which is to be expected as this is the quantity (or one of the quantities) the network was actively trying to minimize.\\
+The dimensions of this architecture are adequate, this can be seen by comparing the validation loss to the training loss. If the training loss keeps increasing while the validation loss saturates, the network is too large and is overfitting; on the other hand if both the validation loss and training loss do not decrease to a low enough level, the network cannot represent the system as it is too small and thus underfitting. When we do this test with validation points that are kept separate from the training set, we see that both the validation loss and training loss keep decreasing. The training loss is better than the validation loss (in the case that these points have the same origin), which is to be expected as this is the quantity (or one of the quantities) the network was actively trying to minimize.\\
 
 \begin{tcolorbox}[title=Methods Question 5,sharp corners, colframe=black, colback=white]
     How many input samples are provided to the neural network model during each of its training cycles or epochs? What kind of samples are provided? Does the network receive again for each epoch the same exact samples? Would there be a better way to provide samples to this network for training over the various epochs?
@@ -430,7 +432,7 @@ The sorting step is neutral: the datapoints are all passed into the neural netwo
     \end{verbatim}
     Is this good or bad?
 \end{tcolorbox}
-This line of code shows that the collocation points are chosen equally spaced all the way to the end of the extrapolating area. Choosing the collocation points in this way is not the best idea: the even spacing could show up in resonance and in doing so only sample part of the behavior of the solution. Additionally, taking these collocation points in the extrapolating area means that the extrapolation is not a true blind test: the neural network has been trained in minimizing the physics loss in this area.\\
+This line of code shows that the collocation points are chosen equally spaced all the way to the end of the extrapolating area. Choosing the collocation points in this way is not the best idea: the even spacing could show up in resonance and in doing so only sample part of the behavior of the solution. Another problem with this is that the network can finely tune on this exact spacing, while disobeying the physical equations anywhere else. Additionally, taking these collocation points in the extrapolating area means that the extrapolation is not a true blind test: the neural network has been trained in minimizing the physics loss in this area.\\
 
 \begin{tcolorbox}[title=Code Question 5,sharp corners, colframe=black, colback=white]
     What is this statement doing? Is it necessary?
@@ -526,7 +528,7 @@ The \verb|generate_data| function is responsible for producing every array and t
 
 In earlier versions, the observations would be split into a validation and training sets by stratified splitting. This is a technique that ensures the validation points are chosen over the whole training region, which is not necessarily always the case for random splitting. In the submitted version, validation points are used that are evenly spaced, without the addition of noise. The number of validation points is also chosen to be greater than the number of training points. In doing this, the validation loss becomes more accurate: it directly shows how much the solution diverts from the truth value. On the other hand, in many real life scenarios it is not possible to arbitrarily generate new noiseless observations, as this requires the truth to be known. This is why the stratified splitting approach has remained present (although unused) in the final solution. This set is used only for early stopping; it is never plotted, because on a dense grid it would simply retrace the true-solution curve and add visual clutter without conveying additional information. The true values of the solution are provided by the \verb|analytic| function when provided the necessary inputs: which configuration is used and the coordinates probed.
 
-Two pools of collocation points are pre-allocated on the compute device at the start of training rather than being resampled every epoch. One pool covers the full domain including the extrapolation region, and the other is restricted to the training window. Both pools are large (of order $10^4$ points) to ensure good coverage; at each epoch a random index vector selects $n_\text{col}$ points from the appropriate pool, introducing stochasticity in the physics loss without the overhead of repeatedly calling a random number generator for the full pool. Initial-condition samples are likewise pre-allocated and these remain constant throughout training. Dense evaluation grids covering the full domain are constructed in NumPy and kept on the CPU; they are embedded in the returned dictionary for use by the plotting script but play no role during the training loop.
+Two pools of collocation points are pre-allocated on the compute device at the start of training rather than being resampled every epoch. One pool randomly samples the full domain including the extrapolation region, and the other is restricted to the training window. Both pools are large (of order $10^4$ points) to ensure good coverage; at each epoch a random index vector selects $n_\text{col}$ points from the appropriate pool, introducing stochasticity in the physics loss without the overhead of repeatedly calling a random number generator for the full pool. Initial-condition samples are likewise pre-allocated and these remain constant throughout training. Dense evaluation grids covering the full domain are constructed in NumPy and kept on the CPU; they are embedded in the returned dictionary for use by the plotting script but play no role during the training loop.
 
 In earlier renditions of the code, mini-batching was used. This is a technique that selects a random set of observations out of the total observations to be used each epoch. This ensures that the network does not overtrain on certain observations, which improves the robustness of the solving process. However, during the optimization phase, it was found that the optimal number of observations supplied per epoch is equal to the total number of observations. Because of this, this implementation is commented, but left inside the code to show the reader that this is an option that can increase the robustness of the solving process.
 
@@ -577,13 +579,9 @@ Several hyperparameters will be held constant: most significantly the architectu
 
 The other hyperparameters that need to be optimized will achieve two things: a quicker convergence and a more accurate result. The full training process, including which specific situation is used to evaluate the model, is documented in the markdowns provided with the project. For each model, the learning rate will be optimized first. After this, we will look at the weights of both the initial condition loss and physics loss and try to find the optimum in this two-dimensional parameter space. Third, the number of collocations is investigated. Finally, the reverse problem is also optimized by investigating how changing the learning rate of these learned physical parameters will affect both the RMSE and error on the predicted values of the physical parameters.
 \subsection{Damped Harmonic Oscillator}
+The situation used to optimize the hyperparameters was a mass of 1, a stiffness of 4 and a damping of $0.5$.\\
 The learning rate was searched first over the range $[10^{-5}, 10^{0}]$, identifying $10^{-2}$ as the best coarse value (RMSE $= 0.0103$). A refined search over $10^{[-3.5, -1.5]}$ in 11 steps yielded a final value of $lr = 3.16 \cdot 10^{-3}$ (RMSE $= 0.0076$), which was fixed for all subsequent stages.
-
-The loss weights $\lambda_\text{ic}$ and $\lambda_\text{phys}$ were optimized jointly on a grid. An initial search over $\lambda_\text{ic} \in [10^0, 10^2]$ and $\lambda_\text{phys} \in [10^{-3}, 10^{-1}]$ found $\lambda_\text{ic} = 17.78$ and $\lambda_\text{phys} = 0.1$ at the edge of the search space. A shifted and zoomed grid over $\lambda_\text{ic} \in [10^1, 10^2]$ and $\lambda_\text{phys} \in [10^{-1}, 10^{0}]$ gave the final values $\lambda_\text{ic} = 13.34$ and $\lambda_\text{phys} = 1.0$ (RMSE $= 0.00179$). The constraint $\lambda_\text{data} \geq \lambda_\text{phys}$ was imposed throughout to ensure the data loss remains at least as influential as the physics regularization.
-
-The number of collocation points was swept over 50 values in $[10, 500]$; while performance continued to improve at higher counts (best RMSE $= 6.88\cdot10^{-4}$ at 470 points), the curve was nearly flat, so $N_\text{col} = 80$ was selected as a practical compromise delivering RMSE $\approx 0.001$ at substantially lower computational cost. For the reverse problem an additional parameter, the learning rate of the physical parameters $lr_\text{param}$, was tuned. A coarse search over $[10^{-5}, 10^{0}]$ pointed to $10^{-3}$, and a refined search over $10^{[-3.5, -0.5]}$ in 31 steps identified $lr_\text{param} = 6.31 \cdot 10^{-3}$ as the best compromise between RMSE ($= 0.00171$) and accuracy of the recovered parameters $\hat{\omega}_0$ and $\hat{\zeta}$, yielding $\hat{\omega}_0 = 1.9986$ (error $1.4\cdot10^{-3}$) and $\hat{\zeta} = 0.1249$ (error $1.5\cdot10^{-4}$).
-
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
@@ -599,8 +597,8 @@ The number of collocation points was swept over 50 values in $[10, 500]$; while 
     \caption{RMSE as a function of learning rate for the damped harmonic oscillator.}
     \label{fig:dho_lr_sweep}
 \end{figure}
-
-\begin{figure}[h]
+The loss weights $\lambda_\text{ic}$ and $\lambda_\text{phys}$ were optimized jointly on a grid. An initial search over $\lambda_\text{ic} \in [10^0, 10^2]$ and $\lambda_\text{phys} \in [10^{-3}, 10^{-1}]$ found $\lambda_\text{ic} = 17.78$ and $\lambda_\text{phys} = 0.1$ at the edge of the search space. A shifted and zoomed grid over $\lambda_\text{ic} \in [10^1, 10^2]$ and $\lambda_\text{phys} \in [10^{-1}, 10^{0}]$ gave the final values $\lambda_\text{ic} = 13.34$ and $\lambda_\text{phys} = 1.0$ (RMSE $= 0.00179$). The constraint $\lambda_\text{data} \geq \lambda_\text{phys}$ was imposed throughout to ensure the data loss remains at least as influential as the physics regularization.
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
@@ -616,15 +614,16 @@ The number of collocation points was swept over 50 values in $[10, 500]$; while 
     \caption{Grid search over loss weights $\lambda_\text{ic}$ and $\lambda_\text{phys}$ for the damped harmonic oscillator.}
     \label{fig:dho_weights_grid}
 \end{figure}
-
-\begin{figure}[h]
+The number of collocation points was swept over 50 values in $[10, 500]$; while performance continued to improve at higher counts (best RMSE $= 6.88\cdot10^{-4}$ at 470 points), the curve was nearly flat, so $N_\text{col} = 80$ was selected as a practical compromise delivering RMSE $\approx 0.001$ at substantially lower computational cost. 
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{figures/collocation_smooth.png}
     \caption{RMSE as a function of number of collocation points for the damped harmonic oscillator. No zoomed search was performed as the curve was nearly flat.}
     \label{fig:dho_ncol_sweep}
 \end{figure}
+For the reverse problem an additional parameter, the learning rate of the physical parameters $lr_\text{param}$, was tuned. A coarse search over $[10^{-5}, 10^{0}]$ pointed to $10^{-3}$, and a refined search over $10^{[-3.5, -0.5]}$ in 31 steps identified $lr_\text{param} = 6.31 \cdot 10^{-3}$ as the best compromise between RMSE ($= 0.00171$) and accuracy of the recovered parameters $\hat{\omega}_0$ and $\hat{\zeta}$, yielding $\hat{\omega}_0 = 1.9986$ (error $1.4\cdot10^{-3}$) and $\hat{\zeta} = 0.1249$ (error $1.5\cdot10^{-4}$).
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.31\textwidth}
         \centering
@@ -665,15 +664,11 @@ The number of collocation points was swept over 50 values in $[10, 500]$; while 
     \caption{RMSE and parameter recovery error ($\hat{\omega}_0$, $\hat{\zeta}$) as a function of $lr_\text{param}$ for the damped harmonic oscillator reverse problem.}
     \label{fig:dho_lrparam_sweep}
 \end{figure}
-
+It is clear that both the reverse problem and normal problem are solveable in an accurate way: with a low RMSE and good estimates for the parameters. However, here we only trained on one single case; in the results chapter, this will be investigated for a wider range of cases, which might not all be as correct as the tuned for case.
 \subsection{Burgers' Equation}
+The situation used to optimize the hyperparameters was the N-wave initial condition with a viscosity of $10^{-1}$.\\
 The learning rate was searched over $[10^{-5}, 10^{0}]$, with $lr = 10^{-3}$ emerging as the best coarse value (RMSE $= 0.0206$). A zoomed search over $10^{[-3.9, -2.1]}$ in 15 steps identified $lr = 1.808 \cdot 10^{-3}$ (RMSE $= 0.0122$) as the final value, which will be carried forward.
-
-Loss weights were searched jointly on a grid. A coarse search over $\lambda_\text{ic} \in [10^{0.5}, 10^{2.5}]$ and $\lambda_\text{phys} \in [10^{-2.5}, 10^{-0.5}]$ in 5 steps each gave $\lambda_\text{ic} = 3.16$ and $\lambda_\text{phys} = 0.316$ (RMSE $= 0.00569$). A zoomed grid over $\lambda_\text{ic} \in [10^{0.1}, 10^{0.9}]$ and $\lambda_\text{phys} \in [10^{-0.9}, 10^{-0.1}]$ in 4 steps each yielded the final values $\lambda_\text{ic} = 1.259$ and $\lambda_\text{phys} = 0.794$ (RMSE $= 0.00467$). As with the oscillator, the search was deliberately stopped at the boundary where $\lambda_\text{phys}$ approaches $\lambda_\text{data}$, to preserve the intended hierarchy $\lambda_\text{ic} \geq \lambda_\text{data} \geq \lambda_\text{phys}$.
-
-The number of collocation points was swept over $[10, 500]$; the best coarse value was 300 (RMSE $= 0.00564$), and a refined search over $[210, 490]$ in 15 steps gave $N_\text{col} = 250$ (RMSE $= 0.00432$). For the reverse problem the physical-parameter learning rate $lr_\text{param}$ was tuned with a dual objective: minimizing RMSE while accurately recovering $\nu = 0.1$. A coarse search over $[10^{-5}, 10^{0}]$ suggested $lr_\text{param} = 10^{-4}$ for RMSE and $10^{-3}$ for $|\hat{\nu} - \nu|$. A zoomed search over $10^{[-4.2, -1.8]}$ in 25 steps identified $lr_\text{param} = 1.995 \cdot 10^{-4}$ as the best compromise, yielding RMSE $= 0.00529$ and $\hat{\nu} = 0.09905$ (error $9.5\cdot10^{-4}$).
-
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
@@ -689,8 +684,8 @@ The number of collocation points was swept over $[10, 500]$; the best coarse val
     \caption{RMSE as a function of learning rate for the Burgers' equation model.}
     \label{fig:burg_lr_sweep}
 \end{figure}
-
-\begin{figure}[h]
+Loss weights were searched jointly on a grid. A coarse search over $\lambda_\text{ic} \in [10^{0.5}, 10^{2.5}]$ and $\lambda_\text{phys} \in [10^{-2.5}, 10^{-0.5}]$ in 5 steps each gave $\lambda_\text{ic} = 3.16$ and $\lambda_\text{phys} = 0.316$ (RMSE $= 0.00569$). A zoomed grid over $\lambda_\text{ic} \in [10^{0.1}, 10^{0.9}]$ and $\lambda_\text{phys} \in [10^{-0.9}, 10^{-0.1}]$ in 4 steps each yielded the final values $\lambda_\text{ic} = 1.259$ and $\lambda_\text{phys} = 0.794$ (RMSE $= 0.00467$). As with the oscillator, the search was deliberately stopped at the boundary where $\lambda_\text{phys}$ approaches $\lambda_\text{data}$, to preserve the intended hierarchy $\lambda_\text{ic} \geq \lambda_\text{data} \geq \lambda_\text{phys}$.
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
@@ -706,8 +701,8 @@ The number of collocation points was swept over $[10, 500]$; the best coarse val
     \caption{Grid search over loss weights $\lambda_\text{ic}$ and $\lambda_\text{phys}$ for the Burgers' equation model.}
     \label{fig:burg_weights_grid}
 \end{figure}
-
-\begin{figure}[h]
+The number of collocation points was swept over $[10, 500]$; the best coarse value was 300 (RMSE $= 0.00564$), and a refined search over $[210, 490]$ in 15 steps gave $N_\text{col} = 250$ (RMSE $= 0.00432$). 
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
@@ -723,8 +718,8 @@ The number of collocation points was swept over $[10, 500]$; the best coarse val
     \caption{RMSE as a function of number of collocation points for the Burgers' equation model.}
     \label{fig:burg_ncol_sweep}
 \end{figure}
-
-\begin{figure}[h]
+For the reverse problem the physical-parameter learning rate $lr_\text{param}$ was tuned with a dual objective: minimizing RMSE while accurately recovering $\nu = 0.1$. A coarse search over $[10^{-5}, 10^{0}]$ suggested $lr_\text{param} = 10^{-4}$ for RMSE and $10^{-3}$ for $|\hat{\nu} - \nu|$. A zoomed search over $10^{[-4.2, -1.8]}$ in 25 steps identified $lr_\text{param} = 1.995 \cdot 10^{-4}$ as the best compromise, yielding RMSE $= 0.00529$ and $\hat{\nu} = 0.09905$ (error $9.5\cdot10^{-4}$).
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
@@ -754,9 +749,127 @@ The number of collocation points was swept over $[10, 500]$; the best coarse val
     \label{fig:burg_lrparam_sweep}
 \end{figure}
 
+It is clear that both the reverse problem and normal problem are solveable in an accurate way: with a low RMSE and good estimates for the parameters. However, here we only trained on one single case; in the results chapter, this will be investigated for a wider range of cases, which might not all be as correct as the tuned for case.
 \chapter{Results}
 \section{Damped Harmonic Oscillator}
+\subsection{Normal Problem}
+For the normal problem, we will show the result for a few different situations. Since the system is fully defined by just the damping ratio ($\zeta$) and the undamped natural frequency ($\omega_0$), there is always an arbitrary degree of freedom in the choice of physical parameters. To resolve this, we will fix the mass (in $kg$) to 1. Doing this, the undamped natural frequency is the square root of the stiffness (in $N/m$). The damping ratio becomes the damping (in $Ns/m$) divided by two times the square root of the stiffness.
 
+Three values of $\zeta$ will be shown: an underdamped case ($\zeta = 0.125$), a critically damped case ($\zeta=1$), and an overdamped case ($\zeta=1.5$).
+For each value of $\zeta$, two $\omega_0$ values will be shown: a fast oscillating ($\omega_0=4$) and slower oscillating ($\omega_0=2$).
+This leaves us with following table of all inputs shown, and links to each figure.\\
+\begin{tabular}{c c c !{\vrule width 2pt} c c !{\vrule width 2pt} c}
+\shortstack{Mass\\($kg$)} & \shortstack{Damping\\($Ns/m$)} & \shortstack{Stiffness\\($N/m$)} & \shortstack{$\zeta$\\(-)} & \shortstack{$\omega_0$\\($rad/s$)} & Summary figure\\
+\hline
+ 1 & 1 & 16 & 0.125 & 4 & \ref{fig:zeta0p125w04summary} \\
+ 1 & 0.5 & 4 & 0.125 & 2 & \ref{fig:zeta0p125w02summary} \\
+ 1 & 8 & 16 & 1 & 4 & \ref{fig:zeta1w04summary} \\
+ 1 & 4 & 4 & 1 & 2 & \ref{fig:zeta1w02summary} \\
+ 1 & 12 & 16 & 1.5 & 4 & \ref{fig:zeta1p5w04summary} \\
+ 1 & 6 & 4 & 1.5 & 2 & \ref{fig:zeta1p5w02summary} \\
+\end{tabular}\\
+One interesting figure that is also created is the loss progression figure, these are very similar for each case, so we will show a single example to show which trends show up. For this we have chosen the underdamped case ($\zeta=0.125$) with a quick oscillation ($\omega_0=4$), for which we have plotted the summary figure in~\ref{fig:zeta0p125w04summary} and the loss progression in~\ref{fig:lossprogressionDamped}. Besides these figures, a figure of the progression over the epochs for each network is also created, but this would take up too much space in the report to show. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/dampedLoss_ex.png}
+    \caption{Loss progression for the damped harmonic oscillator with $\zeta=0.125$ (underdamped) and $\omega_0=4$ (quick oscillation). We see that in the training of the PINNs, the initial condition loss is kept very low and most of the progress over the later epoch is due to improvement in the physics loss.}
+    \label{fig:lossprogressionDamped}
+\end{figure}
+It is clear that the PINNs see most of the improvement in both validation loss and total loss by learning on the physics loss. On top of this, we can see that the initial condition loss is constantly kept very low. Interestingly, the PINNs have a lower validation loss than data loss at the end of their training, this indicates that the network was able to learn the underlying pattern in a more accurate way than the noise applied to these observations.\\
+From the summary figures we can conclude that the PINNs were able to more accurately follow the true solution, both in the training window and in the extrapolated window. We see that the extended physics PINN (which has collocation points in the extrapolated window) outperforms the blind PINN in this extrapolated area, but the blind PINN is already a significantly better solution than the standard neural network baseline.\\
+The training of these PINNs show their greatest drawback too: longer computing time due to a more complex calculation of the loss. The time per epoch doubles from 6 ms/epoch for the baseline model to 12 ms/epoch for both PINNs. There is also an effect on the memory usage: the storage of all the derivative graphs brings a significantly heavier workload.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/w04.0e+00_zeta1.2e-01_fig2_summary.png}
+    \caption{Summary figure of the solutions found in the normal problem with $\zeta=0.125$ (underdamped) and $\omega_0=4\,\mathrm{rad/s}$ (quick oscillation)}
+    \label{fig:zeta0p125w04summary}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/w02.0e+00_zeta1.2e-01_fig2_summary.png}
+    \caption{Summary figure of the solutions found in the normal problem with $\zeta=0.125$ (underdamped) and $\omega_0=2\,\mathrm{rad/s}$ (slow oscillation)}
+    \label{fig:zeta0p125w02summary}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/w04.0e+00_zeta1.0e+00_fig2_summary.png}
+    \caption{Summary figure of the solutions found in the normal problem with $\zeta=1$ (critically damped) and $\omega_0=4\,\mathrm{rad/s}$ (quick oscillation)}
+    \label{fig:zeta1w04summary}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/w02.0e+00_zeta1.0e+00_fig2_summary.png}
+    \caption{Summary figure of the solutions found in the normal problem with $\zeta=1$ (critically damped) and $\omega_0=2\,\mathrm{rad/s}$ (slow oscillation)}
+    \label{fig:zeta1w02summary}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/w04.0e+00_zeta1.5e+00_fig2_summary.png}
+    \caption{Summary figure of the solutions found in the normal problem with $\zeta=1.5$ (overdamped) and $\omega_0=4\,\mathrm{rad/s}$ (quick oscillation)}
+    \label{fig:zeta1p5w04summary}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/w02.0e+00_zeta1.5e+00_fig2_summary.png}
+    \caption{Summary figure of the solutions found in the normal problem with $\zeta=1.5$ (overdamped) and $\omega_0=2\,\mathrm{rad/s}$ (slow oscillation)}
+    \label{fig:zeta1p5w02summary}
+\end{figure}
+\subsection{Reverse Problem}
+In the reverse problem, two extra parameters need to be found by the neural network: the logarithms of the damping ratio and the undamped natural frequency. First off, we will see how this affects the success of following the true solution by the neural networks by looking at an example. For this, we will choose an underdamped ($\zeta=0.125$) situation with a slow ($\omega_0=2$) oscillating displacement. The acquired summary of this situation is shown in figure \ref{fig:REVzeta0p125w02summary}, which we will compare to the normal problem solution in figure \ref{fig:zeta0p125w02summary}. On top of this, we can see the predicted parameter evolution over the epochs in figure \ref{fig:predProgressDamped}.\\
+We see that, due to the extra unknown parameters needed to optimize, the convergence takes longer than the normal problem. Additionally, we see that the extended physics implementation struggles to learn the value of the parameter. We hypothesize that this is because there is nothing in the extrapolated region that fixes the parameter, while it does contain a significant amount of the collocation points that are used to change this parameter to minimize the physics loss.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/REVw02.0e+00_zeta1.2e-01_fig2_summary.png}
+    \caption{Summary figure of the solutions found in the reverse problem with $\zeta=0.125$ (underdamped) and $\omega_0=2\,\mathrm{rad/s}$ (slow oscillation)}
+    \label{fig:REVzeta0p125w02summary}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/w02.0e+00_zeta1.2e-01_fig3_param_conv.png}
+    \caption{Progression of the predicted parameters in the reverse problem for the damped harmonic oscillator with $\zeta=0.125$ (underdamped) and $\omega_0=2$ (slow oscillation). Both parameters are accurately recovered in this case.}
+    \label{fig:predProgressDamped}
+\end{figure}
+Keeping the mass fixed at 1 $kg$, we will vary the damping and the stiffness in a grid-like pattern (11 evenly spaced values from 0.5 to 5.5 for both) to see how good both the blind PINN and extended physics PINN are at the recovering of these parameters. The result is visualized in figures \ref{fig:REVdampedzeta} and \ref{fig:REVdampedw0}.\\ 
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.65\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/zeta_predictions.png}
+        \caption{The predicted value of $\zeta$ against its true value.}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/zeta_2d.png}
+        \caption{Heatmaps of the predicted value of $\zeta$ against its true physical parameters.}
+    \end{subfigure}
+
+    \caption{The predicted value (by either the blind or extended physics PINN) of the damping ratio ($\zeta$) is compared to the true value. This is done by making a scatter plot of both against each other and by showing heatmaps of the found values as a function of the stiffness and damping, respectively in $N/m$ and $Ns/m$.}
+    \label{fig:REVdampedzeta}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.65\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/omega0_predictions.png}
+        \caption{The predicted value of $\omega_0$ against its true value.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/omega0_2d.png}
+        \caption{Heatmaps of the predicted value of $\omega_0$ against its true physical parameters.}
+    \end{subfigure}
+
+    \caption{The predicted value (by either the blind or extended physics PINN) of the undamped natural frequency ($\omega_0$) is compared to the true value. This is done by making a scatter plot of both against each other and by showing heatmaps of the found values as a function of the stiffness and damping, respectively in $N/m$ and $Ns/m$.}
+    \label{fig:REVdampedw0}
+\end{figure}
 \section{Burgers' Equation}
 
 \chapter{Conclusion}

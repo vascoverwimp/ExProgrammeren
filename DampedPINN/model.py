@@ -88,7 +88,7 @@ class DamperConfig:
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
 
     # ── Training loop ─────────────────────────────────────────────────────────
-    n_epochs:    int = 10_000   # maximum training epochs
+    n_epochs:    int = 20_000   # maximum training epochs
     print_every: int = 1_000   # console log frequency (epochs)
     log_every:   int = 100     # history-dict write frequency (epochs)
 
@@ -98,7 +98,7 @@ class DamperConfig:
 
     # ── Snapshot epochs for trajectory plots ─────────────────────────────────
     snapshot_epochs: list = field(
-        default_factory=lambda: [1, 50, 200, 500, 1_000, 2_000, 4_000, 8_000]
+        default_factory=lambda: [1, 50, 200, 500, 1_000, 4_000, 8_000, 16_000]
     )
 
     # ── Output paths ──────────────────────────────────────────────────────────

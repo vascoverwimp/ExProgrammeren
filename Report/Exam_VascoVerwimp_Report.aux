@@ -43,11 +43,11 @@
 \newlabel{fig:dho_lr_sweep}{{3.1}{23}{RMSE as a function of learning rate for the damped harmonic oscillator}{figure.caption.9}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Grid search over loss weights $\lambda _\text  {ic}$ and $\lambda _\text  {phys}$ for the damped harmonic oscillator.}}{23}{figure.caption.10}\protected@file@percent }
 \newlabel{fig:dho_weights_grid}{{3.2}{23}{Grid search over loss weights $\lambda _\text {ic}$ and $\lambda _\text {phys}$ for the damped harmonic oscillator}{figure.caption.10}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Burgers' Equation}{23}{subsection.3.3.2}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces RMSE as a function of number of collocation points for the damped harmonic oscillator. No zoomed search was performed as the curve was nearly flat.}}{24}{figure.caption.11}\protected@file@percent }
 \newlabel{fig:dho_ncol_sweep}{{3.3}{24}{RMSE as a function of number of collocation points for the damped harmonic oscillator. No zoomed search was performed as the curve was nearly flat}{figure.caption.11}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces RMSE and parameter recovery error ($\hat  {\omega }_0$, $\hat  {\zeta }$) as a function of $lr_\text  {param}$ for the damped harmonic oscillator reverse problem.}}{25}{figure.caption.12}\protected@file@percent }
-\newlabel{fig:dho_lrparam_sweep}{{3.4}{25}{RMSE and parameter recovery error ($\hat {\omega }_0$, $\hat {\zeta }$) as a function of $lr_\text {param}$ for the damped harmonic oscillator reverse problem}{figure.caption.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces RMSE and parameter recovery error ($\hat  {\omega }_0$, $\hat  {\zeta }$) as a function of $lr_\text  {param}$ for the damped harmonic oscillator reverse problem.}}{24}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:dho_lrparam_sweep}{{3.4}{24}{RMSE and parameter recovery error ($\hat {\omega }_0$, $\hat {\zeta }$) as a function of $lr_\text {param}$ for the damped harmonic oscillator reverse problem}{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Burgers' Equation}{25}{subsection.3.3.2}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces RMSE as a function of learning rate for the Burgers' equation model.}}{25}{figure.caption.13}\protected@file@percent }
 \newlabel{fig:burg_lr_sweep}{{3.5}{25}{RMSE as a function of learning rate for the Burgers' equation model}{figure.caption.13}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces Grid search over loss weights $\lambda _\text  {ic}$ and $\lambda _\text  {phys}$ for the Burgers' equation model.}}{25}{figure.caption.14}\protected@file@percent }
@@ -56,13 +56,37 @@
 \newlabel{fig:burg_ncol_sweep}{{3.7}{26}{RMSE as a function of number of collocation points for the Burgers' equation model}{figure.caption.15}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.8}{\ignorespaces RMSE and viscosity recovery error as a function of $lr_\text  {param}$ for the Burgers' equation reverse problem.}}{26}{figure.caption.16}\protected@file@percent }
 \newlabel{fig:burg_lrparam_sweep}{{3.8}{26}{RMSE and viscosity recovery error as a function of $lr_\text {param}$ for the Burgers' equation reverse problem}{figure.caption.16}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Results}{27}{chapter.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Results}{28}{chapter.4}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Damped Harmonic Oscillator}{27}{section.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Burgers' Equation}{27}{section.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{28}{chapter.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Damped Harmonic Oscillator}{28}{section.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Normal Problem}{28}{subsection.4.1.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Loss progression for the damped harmonic oscillator with $\zeta =0.125$ (underdamped) and $\omega _0=4$ (quick oscillation). We see that in the training of the PINNs, the initial condition loss is kept very low and most of the progress over the later epoch is due to improvement in the physics loss.}}{29}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:lossprogressionDamped}{{4.1}{29}{Loss progression for the damped harmonic oscillator with $\zeta =0.125$ (underdamped) and $\omega _0=4$ (quick oscillation). We see that in the training of the PINNs, the initial condition loss is kept very low and most of the progress over the later epoch is due to improvement in the physics loss}{figure.caption.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Summary figure of the solutions found in the normal problem with $\zeta =0.125$ (underdamped) and $\omega _0=4\,\mathrm  {rad/s}$ (quick oscillation)}}{30}{figure.caption.18}\protected@file@percent }
+\newlabel{fig:zeta0p125w04summary}{{4.2}{30}{Summary figure of the solutions found in the normal problem with $\zeta =0.125$ (underdamped) and $\omega _0=4\,\mathrm {rad/s}$ (quick oscillation)}{figure.caption.18}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Summary figure of the solutions found in the normal problem with $\zeta =0.125$ (underdamped) and $\omega _0=2\,\mathrm  {rad/s}$ (slow oscillation)}}{30}{figure.caption.19}\protected@file@percent }
+\newlabel{fig:zeta0p125w02summary}{{4.3}{30}{Summary figure of the solutions found in the normal problem with $\zeta =0.125$ (underdamped) and $\omega _0=2\,\mathrm {rad/s}$ (slow oscillation)}{figure.caption.19}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces Summary figure of the solutions found in the normal problem with $\zeta =1$ (critically damped) and $\omega _0=4\,\mathrm  {rad/s}$ (quick oscillation)}}{31}{figure.caption.20}\protected@file@percent }
+\newlabel{fig:zeta1w04summary}{{4.4}{31}{Summary figure of the solutions found in the normal problem with $\zeta =1$ (critically damped) and $\omega _0=4\,\mathrm {rad/s}$ (quick oscillation)}{figure.caption.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Summary figure of the solutions found in the normal problem with $\zeta =1$ (critically damped) and $\omega _0=2\,\mathrm  {rad/s}$ (slow oscillation)}}{31}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:zeta1w02summary}{{4.5}{31}{Summary figure of the solutions found in the normal problem with $\zeta =1$ (critically damped) and $\omega _0=2\,\mathrm {rad/s}$ (slow oscillation)}{figure.caption.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces Summary figure of the solutions found in the normal problem with $\zeta =1.5$ (overdamped) and $\omega _0=4\,\mathrm  {rad/s}$ (quick oscillation)}}{32}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:zeta1p5w04summary}{{4.6}{32}{Summary figure of the solutions found in the normal problem with $\zeta =1.5$ (overdamped) and $\omega _0=4\,\mathrm {rad/s}$ (quick oscillation)}{figure.caption.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.7}{\ignorespaces Summary figure of the solutions found in the normal problem with $\zeta =1.5$ (overdamped) and $\omega _0=2\,\mathrm  {rad/s}$ (slow oscillation)}}{32}{figure.caption.23}\protected@file@percent }
+\newlabel{fig:zeta1p5w02summary}{{4.7}{32}{Summary figure of the solutions found in the normal problem with $\zeta =1.5$ (overdamped) and $\omega _0=2\,\mathrm {rad/s}$ (slow oscillation)}{figure.caption.23}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}Reverse Problem}{33}{subsection.4.1.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.8}{\ignorespaces Summary figure of the solutions found in the reverse problem with $\zeta =0.125$ (underdamped) and $\omega _0=2\,\mathrm  {rad/s}$ (slow oscillation)}}{33}{figure.caption.24}\protected@file@percent }
+\newlabel{fig:REVzeta0p125w02summary}{{4.8}{33}{Summary figure of the solutions found in the reverse problem with $\zeta =0.125$ (underdamped) and $\omega _0=2\,\mathrm {rad/s}$ (slow oscillation)}{figure.caption.24}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.9}{\ignorespaces Progression of the predicted parameters in the reverse problem for the damped harmonic oscillator with $\zeta =0.125$ (underdamped) and $\omega _0=2$ (slow oscillation). Both parameters are accurately recovered in this case.}}{34}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:predProgressDamped}{{4.9}{34}{Progression of the predicted parameters in the reverse problem for the damped harmonic oscillator with $\zeta =0.125$ (underdamped) and $\omega _0=2$ (slow oscillation). Both parameters are accurately recovered in this case}{figure.caption.25}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.10}{\ignorespaces The predicted value (by either the blind or extended physics PINN) of the damping ratio ($\zeta $) is compared to the true value. This is done by making a scatter plot of both against each other and by showing heatmaps of the found values as a function of the stiffness and damping, respectively in $N/m$ and $Ns/m$.}}{35}{figure.caption.26}\protected@file@percent }
+\newlabel{fig:REVdampedzeta}{{4.10}{35}{The predicted value (by either the blind or extended physics PINN) of the damping ratio ($\zeta $) is compared to the true value. This is done by making a scatter plot of both against each other and by showing heatmaps of the found values as a function of the stiffness and damping, respectively in $N/m$ and $Ns/m$}{figure.caption.26}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.11}{\ignorespaces The predicted value (by either the blind or extended physics PINN) of the undamped natural frequency ($\omega _0$) is compared to the true value. This is done by making a scatter plot of both against each other and by showing heatmaps of the found values as a function of the stiffness and damping, respectively in $N/m$ and $Ns/m$.}}{36}{figure.caption.27}\protected@file@percent }
+\newlabel{fig:REVdampedw0}{{4.11}{36}{The predicted value (by either the blind or extended physics PINN) of the undamped natural frequency ($\omega _0$) is compared to the true value. This is done by making a scatter plot of both against each other and by showing heatmaps of the found values as a function of the stiffness and damping, respectively in $N/m$ and $Ns/m$}{figure.caption.27}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Burgers' Equation}{36}{section.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{37}{chapter.5}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \abx@aux@read@bbl@mdfivesum{5D0D039BF84E4F45A7144D280F172F5D}
-\gdef \@abspage@last{29}
+\gdef \@abspage@last{38}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.15)  23 MAY 2026 00:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.15)  23 MAY 2026 14:05
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -748,6 +748,22 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 \tcb@temp=\box67
 \tcb@temp=\box68
 \tcb@temp=\box69
+) (C:\Users\vasco\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count444
+\float@exts=\toks45
+\float@box=\box70
+\@float@everytoks=\toks46
+\@floatcapt=\box71
+) (C:\Users\vasco\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
+Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
+\col@sep=\dimen269
+\ar@mcellbox=\box72
+\extrarowheight=\dimen270
+\NC@list=\toks47
+\extratabsurround=\skip94
+\backup@length=\skip95
+\ar@cellbox=\box73
 )
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
@@ -756,44 +772,44 @@ Package csquotes Info: Redefining alias 'default' -> 'english'.
  (Exam_VascoVerwimp_Report.aux)
 \openout1 = `Exam_VascoVerwimp_Report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
  (C:\Users\vasco\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count444
-\scratchdimen=\dimen269
-\scratchbox=\box70
-\nofMPsegments=\count445
-\nofMParguments=\count446
-\everyMPshowfont=\toks45
-\MPscratchCnt=\count447
-\MPscratchDim=\dimen270
-\MPnumerator=\count448
-\makeMPintoPDFobject=\count449
-\everyMPtoPDFconversion=\toks46
+\scratchcounter=\count445
+\scratchdimen=\dimen271
+\scratchbox=\box74
+\nofMPsegments=\count446
+\nofMParguments=\count447
+\everyMPshowfont=\toks48
+\MPscratchCnt=\count448
+\MPscratchDim=\dimen272
+\MPnumerator=\count449
+\makeMPintoPDFobject=\count450
+\everyMPtoPDFconversion=\toks49
 ) (C:\Users\vasco\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (C:\Users\vasco\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring OFF on input line 42.
+Package hyperref Info: Link coloring OFF on input line 44.
  (Exam_VascoVerwimp_Report.out) (Exam_VascoVerwimp_Report.out)
 \@outlinefile=\write5
 \openout5 = `Exam_VascoVerwimp_Report.out'.
@@ -834,6 +850,7 @@ Package hyperref Info: Link coloring OFF on input line 42.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
 Package biblatex Info: Trying to load language 'english'...
 Package biblatex Info: ... file 'english.lbx' found.
@@ -848,13 +865,13 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'Exam_VascoVerwimp_Report.bbl' found.
  (Exam_VascoVerwimp_Report.bbl)
-Package biblatex Info: Reference section=0 on input line 42.
-Package biblatex Info: Reference segment=0 on input line 42.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 45.
+Package biblatex Info: Reference section=0 on input line 44.
+Package biblatex Info: Reference segment=0 on input line 44.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 47.
  (C:\Users\vasco\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 45.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 47.
  (C:\Users\vasco\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
@@ -867,7 +884,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.47 \newpage
+l.49 \newpage
               [1
 
 ]
@@ -875,7 +892,7 @@ Chapter 1.
 [2
 
 ]
-Overfull \hbox (6.75177pt too wide) in paragraph at lines 102--103
+Overfull \hbox (6.75177pt too wide) in paragraph at lines 104--105
 []\OT1/cmr/m/n/12 where $\OMS/cmsy/m/n/12 F$ \OT1/cmr/m/n/12 rep-re-sents the dif-fer-en-tial equa-tion op-er-a-tor: the so-lu-tion $\OML/cmm/m/it/12 u$ \OT1/cmr/m/n/12 has $\OMS/cmsy/m/n/12 F\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 u\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 x; t\OT1/cmr/m/n/12 ))$=0
  []
 
@@ -887,7 +904,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 168--169
+Underfull \hbox (badness 10000) in paragraph at lines 170--171
 
  []
 
@@ -917,24 +934,24 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 [6]
 Chapter 2.
 
-Underfull \hbox (badness 10000) in paragraph at lines 271--272
+Underfull \hbox (badness 10000) in paragraph at lines 273--274
 
  []
 
 [7
 
 ]
-Overfull \hbox (10.15733pt too wide) in paragraph at lines 302--302
+Overfull \hbox (10.15733pt too wide) in paragraph at lines 304--304
 []    \OT1/cmtt/m/n/12 Both derivatives are obtained via automatic differentiation through the[] 
  []
 
 
-Overfull \hbox (22.50734pt too wide) in paragraph at lines 303--303
+Overfull \hbox (22.50734pt too wide) in paragraph at lines 305--305
 []    \OT1/cmtt/m/n/12 network.  create_graph=True on the first call keeps the computation graph[] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 346--350
+Underfull \hbox (badness 10000) in paragraph at lines 348--352
 
  []
 
@@ -946,12 +963,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 351--354
+Underfull \hbox (badness 10000) in paragraph at lines 353--356
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 355--358
+Underfull \hbox (badness 10000) in paragraph at lines 357--360
 
  []
 
@@ -963,12 +980,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 367--370
+Underfull \hbox (badness 10000) in paragraph at lines 369--372
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 374--377
+Underfull \hbox (badness 10000) in paragraph at lines 376--379
 
  []
 
@@ -980,12 +997,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [10]
-Underfull \hbox (badness 10000) in paragraph at lines 378--380
+Underfull \hbox (badness 10000) in paragraph at lines 380--382
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 384--386
+Underfull \hbox (badness 10000) in paragraph at lines 386--388
 
  []
 
@@ -997,12 +1014,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 390--391
+Underfull \hbox (badness 10000) in paragraph at lines 392--393
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 406--407
+Underfull \hbox (badness 10000) in paragraph at lines 408--409
 
  []
 
@@ -1014,17 +1031,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [12]
-Underfull \hbox (badness 10000) in paragraph at lines 414--415
+Underfull \hbox (badness 10000) in paragraph at lines 416--417
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 423--425
+Underfull \hbox (badness 10000) in paragraph at lines 425--427
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 433--434
+Underfull \hbox (badness 10000) in paragraph at lines 435--436
 
  []
 
@@ -1036,17 +1053,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [13]
-Underfull \hbox (badness 10000) in paragraph at lines 441--442
+Underfull \hbox (badness 10000) in paragraph at lines 443--444
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 451--453
+Underfull \hbox (badness 10000) in paragraph at lines 453--455
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 463--464
+Underfull \hbox (badness 10000) in paragraph at lines 465--466
 
  []
 
@@ -1058,7 +1075,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [14]
-Underfull \hbox (badness 10000) in paragraph at lines 474--475
+Underfull \hbox (badness 10000) in paragraph at lines 476--477
 
  []
 
@@ -1098,12 +1115,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [19]
-Overfull \hbox (5.03151pt too wide) in paragraph at lines 544--545
+Overfull \hbox (5.03151pt too wide) in paragraph at lines 546--547
 \OT1/cmr/m/n/12 by epoch num-ber. The CPU copy is taken by it-er-at-ing over [][]\OT1/cmtt/m/n/12 model.state_dict().items()
  []
 
 
-Overfull \hbox (15.08891pt too wide) in paragraph at lines 551--552
+Overfull \hbox (15.08891pt too wide) in paragraph at lines 553--554
 []\OT1/cmr/m/n/12 The plot-ting script be-gins by load-ing the [][]\OT1/cmtt/m/n/12 training_results.pt []\OT1/cmr/m/n/12 bun-dle with [][]\OT1/cmtt/m/n/12 torch.load
  []
 
@@ -1115,7 +1132,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [20]
-Overfull \hbox (35.07986pt too wide) in paragraph at lines 561--561
+Overfull \hbox (35.07986pt too wide) in paragraph at lines 563--563
 []\OT1/cmr/bx/n/17.28 Differences In Im-ple-men-ta-tion Be-tween The Damped
  []
 
@@ -1127,6 +1144,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [21]
+<figures/Lr_rough.png, id=284, 578.16pt x 361.35pt>
+File: figures/Lr_rough.png Graphic file (type png)
+<use figures/Lr_rough.png>
+Package pdftex.def Info: figures/Lr_rough.png  used on input line 588.
+(pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
+<figures/Lr_smooth.png, id=286, 578.16pt x 361.35pt>
+File: figures/Lr_smooth.png Graphic file (type png)
+<use figures/Lr_smooth.png>
+Package pdftex.def Info: figures/Lr_smooth.png  used on input line 594.
+(pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1135,97 +1163,21 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [22]
-<figures/Lr_rough.png, id=278, 578.16pt x 361.35pt>
-File: figures/Lr_rough.png Graphic file (type png)
-<use figures/Lr_rough.png>
-Package pdftex.def Info: figures/Lr_rough.png  used on input line 590.
-(pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/Lr_smooth.png, id=280, 578.16pt x 361.35pt>
-File: figures/Lr_smooth.png Graphic file (type png)
-<use figures/Lr_smooth.png>
-Package pdftex.def Info: figures/Lr_smooth.png  used on input line 596.
-(pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/weights_rough.png, id=281, 578.16pt x 361.35pt>
+<figures/weights_rough.png, id=291, 578.16pt x 361.35pt>
 File: figures/weights_rough.png Graphic file (type png)
 <use figures/weights_rough.png>
-Package pdftex.def Info: figures/weights_rough.png  used on input line 607.
+Package pdftex.def Info: figures/weights_rough.png  used on input line 605.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/weights_smooth.png, id=282, 578.16pt x 361.35pt>
+<figures/weights_smooth.png, id=292, 578.16pt x 361.35pt>
 File: figures/weights_smooth.png Graphic file (type png)
 <use figures/weights_smooth.png>
-Package pdftex.def Info: figures/weights_smooth.png  used on input line 613.
+Package pdftex.def Info: figures/weights_smooth.png  used on input line 611.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/collocation_smooth.png, id=283, 578.16pt x 361.35pt>
+<figures/collocation_smooth.png, id=293, 578.16pt x 361.35pt>
 File: figures/collocation_smooth.png Graphic file (type png)
 <use figures/collocation_smooth.png>
-Package pdftex.def Info: figures/collocation_smooth.png  used on input line 622.
+Package pdftex.def Info: figures/collocation_smooth.png  used on input line 620.
 (pdftex.def)             Requested size: 271.7835pt x 169.86209pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<figures/damped_lrparam_vs_rmse_rough.png, id=284, 578.16pt x 361.35pt>
-File: figures/damped_lrparam_vs_rmse_rough.png Graphic file (type png)
-<use figures/damped_lrparam_vs_rmse_rough.png>
-Package pdftex.def Info: figures/damped_lrparam_vs_rmse_rough.png  used on input line 631.
-(pdftex.def)             Requested size: 140.41893pt x 87.75684pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 632--632
-[]\OT1/cmr/m/n/10.95 (a) |Coarse search over
- []
-
-<figures/damped_lrparam_vs_w0_diff_rough.png, id=285, 578.16pt x 361.35pt>
-File: figures/damped_lrparam_vs_w0_diff_rough.png Graphic file (type png)
-<use figures/damped_lrparam_vs_w0_diff_rough.png>
-Package pdftex.def Info: figures/damped_lrparam_vs_w0_diff_rough.png  used on input line 637.
-(pdftex.def)             Requested size: 140.41893pt x 87.75684pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 638--638
-[]\OT1/cmr/m/n/10.95 (b) |Coarse search over
- []
-
-<figures/damped_lrparam_vs_zeta_diff_rough.png, id=286, 578.16pt x 361.35pt>
-File: figures/damped_lrparam_vs_zeta_diff_rough.png Graphic file (type png)
-<use figures/damped_lrparam_vs_zeta_diff_rough.png>
-Package pdftex.def Info: figures/damped_lrparam_vs_zeta_diff_rough.png  used on input line 643.
-(pdftex.def)             Requested size: 140.41893pt x 87.75684pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 644--644
-[]\OT1/cmr/m/n/10.95 (c) |Coarse search over
- []
-
-<figures/damped_lrparam_vs_rmse_zoomed.png, id=287, 578.16pt x 361.35pt>
-File: figures/damped_lrparam_vs_rmse_zoomed.png Graphic file (type png)
-<use figures/damped_lrparam_vs_rmse_zoomed.png>
-Package pdftex.def Info: figures/damped_lrparam_vs_rmse_zoomed.png  used on input line 649.
-(pdftex.def)             Requested size: 140.41893pt x 87.75684pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 650--650
-[]\OT1/cmr/m/n/10.95 (d) |Zoomed search over
- []
-
-<figures/damped_lrparam_vs_w0_diff_zoomed.png, id=288, 578.16pt x 361.35pt>
-File: figures/damped_lrparam_vs_w0_diff_zoomed.png Graphic file (type png)
-<use figures/damped_lrparam_vs_w0_diff_zoomed.png>
-Package pdftex.def Info: figures/damped_lrparam_vs_w0_diff_zoomed.png  used on input line 655.
-(pdftex.def)             Requested size: 140.41893pt x 87.75684pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 656--656
-[]\OT1/cmr/m/n/10.95 (e) |Zoomed search over
- []
-
-<figures/damped_lrparam_vs_zeta_diff_zoomed.png, id=289, 578.16pt x 361.35pt>
-File: figures/damped_lrparam_vs_zeta_diff_zoomed.png Graphic file (type png)
-<use figures/damped_lrparam_vs_zeta_diff_zoomed.png>
-Package pdftex.def Info: figures/damped_lrparam_vs_zeta_diff_zoomed.png  used on input line 661.
-(pdftex.def)             Requested size: 140.41893pt x 87.75684pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 662--662
-[]\OT1/cmr/m/n/10.95 (f) |Zoomed search over
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1235,85 +1187,134 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [23 <./figures/Lr_rough.png> <./figures/Lr_smooth.png> <./figures/weights_rough.png> <./figures/weights_smooth.png>]
-<figures/burger_learning_rate_search_rough.png, id=302, 578.16pt x 361.35pt>
+<figures/damped_lrparam_vs_rmse_rough.png, id=306, 578.16pt x 361.35pt>
+File: figures/damped_lrparam_vs_rmse_rough.png Graphic file (type png)
+<use figures/damped_lrparam_vs_rmse_rough.png>
+Package pdftex.def Info: figures/damped_lrparam_vs_rmse_rough.png  used on input line 630.
+(pdftex.def)             Requested size: 140.41893pt x 87.75684pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 631--631
+[]\OT1/cmr/m/n/10.95 (a) |Coarse search over
+ []
+
+<figures/damped_lrparam_vs_w0_diff_rough.png, id=307, 578.16pt x 361.35pt>
+File: figures/damped_lrparam_vs_w0_diff_rough.png Graphic file (type png)
+<use figures/damped_lrparam_vs_w0_diff_rough.png>
+Package pdftex.def Info: figures/damped_lrparam_vs_w0_diff_rough.png  used on input line 636.
+(pdftex.def)             Requested size: 140.41893pt x 87.75684pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 637--637
+[]\OT1/cmr/m/n/10.95 (b) |Coarse search over
+ []
+
+<figures/damped_lrparam_vs_zeta_diff_rough.png, id=308, 578.16pt x 361.35pt>
+File: figures/damped_lrparam_vs_zeta_diff_rough.png Graphic file (type png)
+<use figures/damped_lrparam_vs_zeta_diff_rough.png>
+Package pdftex.def Info: figures/damped_lrparam_vs_zeta_diff_rough.png  used on input line 642.
+(pdftex.def)             Requested size: 140.41893pt x 87.75684pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 643--643
+[]\OT1/cmr/m/n/10.95 (c) |Coarse search over
+ []
+
+<figures/damped_lrparam_vs_rmse_zoomed.png, id=309, 578.16pt x 361.35pt>
+File: figures/damped_lrparam_vs_rmse_zoomed.png Graphic file (type png)
+<use figures/damped_lrparam_vs_rmse_zoomed.png>
+Package pdftex.def Info: figures/damped_lrparam_vs_rmse_zoomed.png  used on input line 648.
+(pdftex.def)             Requested size: 140.41893pt x 87.75684pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 649--649
+[]\OT1/cmr/m/n/10.95 (d) |Zoomed search over
+ []
+
+<figures/damped_lrparam_vs_w0_diff_zoomed.png, id=310, 578.16pt x 361.35pt>
+File: figures/damped_lrparam_vs_w0_diff_zoomed.png Graphic file (type png)
+<use figures/damped_lrparam_vs_w0_diff_zoomed.png>
+Package pdftex.def Info: figures/damped_lrparam_vs_w0_diff_zoomed.png  used on input line 654.
+(pdftex.def)             Requested size: 140.41893pt x 87.75684pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 655--655
+[]\OT1/cmr/m/n/10.95 (e) |Zoomed search over
+ []
+
+<figures/damped_lrparam_vs_zeta_diff_zoomed.png, id=311, 578.16pt x 361.35pt>
+File: figures/damped_lrparam_vs_zeta_diff_zoomed.png Graphic file (type png)
+<use figures/damped_lrparam_vs_zeta_diff_zoomed.png>
+Package pdftex.def Info: figures/damped_lrparam_vs_zeta_diff_zoomed.png  used on input line 660.
+(pdftex.def)             Requested size: 140.41893pt x 87.75684pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 661--661
+[]\OT1/cmr/m/n/10.95 (f) |Zoomed search over
+ []
+
+<figures/burger_learning_rate_search_rough.png, id=312, 578.16pt x 361.35pt>
 File: figures/burger_learning_rate_search_rough.png Graphic file (type png)
 <use figures/burger_learning_rate_search_rough.png>
-Package pdftex.def Info: figures/burger_learning_rate_search_rough.png  used on input line 680.
+Package pdftex.def Info: figures/burger_learning_rate_search_rough.png  used on input line 675.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/burger_learning_rate_search_zoomed.png, id=303, 578.16pt x 361.35pt>
+<figures/burger_learning_rate_search_zoomed.png, id=313, 578.16pt x 361.35pt>
 File: figures/burger_learning_rate_search_zoomed.png Graphic file (type png)
 <use figures/burger_learning_rate_search_zoomed.png>
-Package pdftex.def Info: figures/burger_learning_rate_search_zoomed.png  used on input line 686.
+Package pdftex.def Info: figures/burger_learning_rate_search_zoomed.png  used on input line 681.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
 
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<figures/burger_weight_search_rough.png, id=304, 578.16pt x 361.35pt>
+[24 <./figures/collocation_smooth.png> <./figures/damped_lrparam_vs_rmse_rough.png> <./figures/damped_lrparam_vs_w0_diff_rough.png> <./figures/damped_lrparam_vs_zeta_diff_rough.png> <./figures/damped_lrparam_vs_rmse_zoomed.png> <./figures/damped_lrparam_vs_w0_diff_zoomed.png> <./figures/damped_lrparam_vs_zeta_diff_zoomed.png>]
+<figures/burger_weight_search_rough.png, id=328, 578.16pt x 361.35pt>
 File: figures/burger_weight_search_rough.png Graphic file (type png)
 <use figures/burger_weight_search_rough.png>
-Package pdftex.def Info: figures/burger_weight_search_rough.png  used on input line 697.
+Package pdftex.def Info: figures/burger_weight_search_rough.png  used on input line 692.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/burger_weight_search_zoomed.png, id=305, 578.16pt x 361.35pt>
+<figures/burger_weight_search_zoomed.png, id=329, 578.16pt x 361.35pt>
 File: figures/burger_weight_search_zoomed.png Graphic file (type png)
 <use figures/burger_weight_search_zoomed.png>
-Package pdftex.def Info: figures/burger_weight_search_zoomed.png  used on input line 703.
+Package pdftex.def Info: figures/burger_weight_search_zoomed.png  used on input line 698.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<figures/burger_num_collocations_search_rough.png, id=306, 578.16pt x 361.35pt>
+<figures/burger_num_collocations_search_rough.png, id=330, 578.16pt x 361.35pt>
 File: figures/burger_num_collocations_search_rough.png Graphic file (type png)
 <use figures/burger_num_collocations_search_rough.png>
-Package pdftex.def Info: figures/burger_num_collocations_search_rough.png  used on input line 714.
+Package pdftex.def Info: figures/burger_num_collocations_search_rough.png  used on input line 709.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/burger_num_collocations_search.png, id=307, 578.16pt x 361.35pt>
+<figures/burger_num_collocations_search.png, id=331, 578.16pt x 361.35pt>
 File: figures/burger_num_collocations_search.png Graphic file (type png)
 <use figures/burger_num_collocations_search.png>
-Package pdftex.def Info: figures/burger_num_collocations_search.png  used on input line 720.
+Package pdftex.def Info: figures/burger_num_collocations_search.png  used on input line 715.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
 
-LaTeX Warning: `h' float specifier changed to `ht'.
 
-<figures/burgers_lrparam_vs_rmse_rough.png, id=308, 578.16pt x 361.35pt>
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[25 <./figures/burger_learning_rate_search_rough.png> <./figures/burger_learning_rate_search_zoomed.png> <./figures/burger_weight_search_rough.png> <./figures/burger_weight_search_zoomed.png>]
+<figures/burgers_lrparam_vs_rmse_rough.png, id=342, 578.16pt x 361.35pt>
 File: figures/burgers_lrparam_vs_rmse_rough.png Graphic file (type png)
 <use figures/burgers_lrparam_vs_rmse_rough.png>
-Package pdftex.def Info: figures/burgers_lrparam_vs_rmse_rough.png  used on input line 731.
+Package pdftex.def Info: figures/burgers_lrparam_vs_rmse_rough.png  used on input line 726.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/burgers_lrparam_vs_v_diff_rough.png, id=309, 578.16pt x 361.35pt>
+<figures/burgers_lrparam_vs_v_diff_rough.png, id=343, 578.16pt x 361.35pt>
 File: figures/burgers_lrparam_vs_v_diff_rough.png Graphic file (type png)
 <use figures/burgers_lrparam_vs_v_diff_rough.png>
-Package pdftex.def Info: figures/burgers_lrparam_vs_v_diff_rough.png  used on input line 737.
+Package pdftex.def Info: figures/burgers_lrparam_vs_v_diff_rough.png  used on input line 732.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/burgers_lrparam_vs_rmse_zoomed.png, id=310, 578.16pt x 361.35pt>
+<figures/burgers_lrparam_vs_rmse_zoomed.png, id=344, 578.16pt x 361.35pt>
 File: figures/burgers_lrparam_vs_rmse_zoomed.png Graphic file (type png)
 <use figures/burgers_lrparam_vs_rmse_zoomed.png>
-Package pdftex.def Info: figures/burgers_lrparam_vs_rmse_zoomed.png  used on input line 743.
+Package pdftex.def Info: figures/burgers_lrparam_vs_rmse_zoomed.png  used on input line 738.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/burgers_lrparam_vs_v_diff_zoomed.png, id=311, 578.16pt x 361.35pt>
+<figures/burgers_lrparam_vs_v_diff_zoomed.png, id=345, 578.16pt x 361.35pt>
 File: figures/burgers_lrparam_vs_v_diff_zoomed.png Graphic file (type png)
 <use figures/burgers_lrparam_vs_v_diff_zoomed.png>
-Package pdftex.def Info: figures/burgers_lrparam_vs_v_diff_zoomed.png  used on input line 749.
+Package pdftex.def Info: figures/burgers_lrparam_vs_v_diff_zoomed.png  used on input line 744.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[24 <./figures/collocation_smooth.png>]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[25 <./figures/damped_lrparam_vs_rmse_rough.png> <./figures/damped_lrparam_vs_w0_diff_rough.png> <./figures/damped_lrparam_vs_zeta_diff_rough.png> <./figures/damped_lrparam_vs_rmse_zoomed.png> <./figures/damped_lrparam_vs_w0_diff_zoomed.png> <./figures/damped_lrparam_vs_zeta_diff_zoomed.png> <./figures/burger_learning_rate_search_rough.png> <./figures/burger_learning_rate_search_zoomed.png> <./figures/burger_weight_search_rough.png> <./figures/burger_weight_search_zoomed.png>]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1322,12 +1323,158 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [26 <./figures/burger_num_collocations_search_rough.png> <./figures/burger_num_collocations_search.png> <./figures/burgers_lrparam_vs_rmse_rough.png> <./figures/burgers_lrparam_vs_v_diff_rough.png> <./figures/burgers_lrparam_vs_rmse_zoomed.png> <./figures/burgers_lrparam_vs_v_diff_zoomed.png>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[27]
 Chapter 4.
-[27
+<figures/dampedLoss_ex.png, id=370, 786.7794pt x 370.986pt>
+File: figures/dampedLoss_ex.png Graphic file (type png)
+<use figures/dampedLoss_ex.png>
+Package pdftex.def Info: figures/dampedLoss_ex.png  used on input line 774.
+(pdftex.def)             Requested size: 407.66833pt x 192.22887pt.
+[28
 
 ]
+<figures/w04.0e+00_zeta1.2e-01_fig2_summary.png, id=382, 1112.4762pt x 755.4624pt>
+File: figures/w04.0e+00_zeta1.2e-01_fig2_summary.png Graphic file (type png)
+<use figures/w04.0e+00_zeta1.2e-01_fig2_summary.png>
+Package pdftex.def Info: figures/w04.0e+00_zeta1.2e-01_fig2_summary.png  used on input line 783.
+(pdftex.def)             Requested size: 407.66833pt x 276.83083pt.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[29 <./figures/dampedLoss_ex.png>]
+<figures/w02.0e+00_zeta1.2e-01_fig2_summary.png, id=388, 1112.4762pt x 755.4624pt>
+File: figures/w02.0e+00_zeta1.2e-01_fig2_summary.png Graphic file (type png)
+<use figures/w02.0e+00_zeta1.2e-01_fig2_summary.png>
+Package pdftex.def Info: figures/w02.0e+00_zeta1.2e-01_fig2_summary.png  used on input line 790.
+(pdftex.def)             Requested size: 407.66833pt x 276.83083pt.
+<figures/w04.0e+00_zeta1.0e+00_fig2_summary.png, id=389, 1097.5404pt x 755.4624pt>
+File: figures/w04.0e+00_zeta1.0e+00_fig2_summary.png Graphic file (type png)
+<use figures/w04.0e+00_zeta1.0e+00_fig2_summary.png>
+Package pdftex.def Info: figures/w04.0e+00_zeta1.0e+00_fig2_summary.png  used on input line 797.
+(pdftex.def)             Requested size: 407.66833pt x 280.60028pt.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[30 <./figures/w04.0e+00_zeta1.2e-01_fig2_summary.png> <./figures/w02.0e+00_zeta1.2e-01_fig2_summary.png>]
+<figures/w02.0e+00_zeta1.0e+00_fig2_summary.png, id=397, 1097.5404pt x 755.4624pt>
+File: figures/w02.0e+00_zeta1.0e+00_fig2_summary.png Graphic file (type png)
+<use figures/w02.0e+00_zeta1.0e+00_fig2_summary.png>
+Package pdftex.def Info: figures/w02.0e+00_zeta1.0e+00_fig2_summary.png  used on input line 804.
+(pdftex.def)             Requested size: 407.66833pt x 280.60028pt.
+<figures/w04.0e+00_zeta1.5e+00_fig2_summary.png, id=398, 1097.5404pt x 755.4624pt>
+File: figures/w04.0e+00_zeta1.5e+00_fig2_summary.png Graphic file (type png)
+<use figures/w04.0e+00_zeta1.5e+00_fig2_summary.png>
+Package pdftex.def Info: figures/w04.0e+00_zeta1.5e+00_fig2_summary.png  used on input line 811.
+(pdftex.def)             Requested size: 407.66833pt x 280.60028pt.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[31 <./figures/w04.0e+00_zeta1.0e+00_fig2_summary.png> <./figures/w02.0e+00_zeta1.0e+00_fig2_summary.png>]
+<figures/w02.0e+00_zeta1.5e+00_fig2_summary.png, id=405, 1097.5404pt x 755.4624pt>
+File: figures/w02.0e+00_zeta1.5e+00_fig2_summary.png Graphic file (type png)
+<use figures/w02.0e+00_zeta1.5e+00_fig2_summary.png>
+Package pdftex.def Info: figures/w02.0e+00_zeta1.5e+00_fig2_summary.png  used on input line 818.
+(pdftex.def)             Requested size: 407.66833pt x 280.60028pt.
+<figures/REVw02.0e+00_zeta1.2e-01_fig2_summary.png, id=409, 1112.4762pt x 755.4624pt>
+File: figures/REVw02.0e+00_zeta1.2e-01_fig2_summary.png Graphic file (type png)
+<use figures/REVw02.0e+00_zeta1.2e-01_fig2_summary.png>
+Package pdftex.def Info: figures/REVw02.0e+00_zeta1.2e-01_fig2_summary.png  used on input line 827.
+(pdftex.def)             Requested size: 407.66833pt x 276.83083pt.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[32 <./figures/w04.0e+00_zeta1.5e+00_fig2_summary.png> <./figures/w02.0e+00_zeta1.5e+00_fig2_summary.png>]
+<figures/w02.0e+00_zeta1.2e-01_fig3_param_conv.png, id=416, 931.3194pt x 651.3936pt>
+File: figures/w02.0e+00_zeta1.2e-01_fig3_param_conv.png Graphic file (type png)
+<use figures/w02.0e+00_zeta1.2e-01_fig3_param_conv.png>
+Package pdftex.def Info: figures/w02.0e+00_zeta1.2e-01_fig3_param_conv.png  used on input line 834.
+(pdftex.def)             Requested size: 407.66833pt x 285.13309pt.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[33 <./figures/REVw02.0e+00_zeta1.2e-01_fig2_summary.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 838--839
+
+ []
+
+<figures/zeta_predictions.png, id=426, 578.16pt x 361.35pt>
+File: figures/zeta_predictions.png Graphic file (type png)
+<use figures/zeta_predictions.png>
+Package pdftex.def Info: figures/zeta_predictions.png  used on input line 844.
+(pdftex.def)             Requested size: 294.42636pt x 184.01588pt.
+<figures/zeta_2d.png, id=427, 1156.32pt x 289.08pt>
+File: figures/zeta_2d.png Graphic file (type png)
+<use figures/zeta_2d.png>
+Package pdftex.def Info: figures/zeta_2d.png  used on input line 849.
+(pdftex.def)             Requested size: 448.4407pt x 112.10997pt.
+<figures/omega0_predictions.png, id=428, 578.16pt x 361.35pt>
+File: figures/omega0_predictions.png Graphic file (type png)
+<use figures/omega0_predictions.png>
+Package pdftex.def Info: figures/omega0_predictions.png  used on input line 860.
+(pdftex.def)             Requested size: 294.42636pt x 184.01588pt.
+<figures/omega0_2d.png, id=429, 1156.32pt x 289.08pt>
+File: figures/omega0_2d.png Graphic file (type png)
+<use figures/omega0_2d.png>
+Package pdftex.def Info: figures/omega0_2d.png  used on input line 866.
+(pdftex.def)             Requested size: 448.4407pt x 112.10997pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[34 <./figures/w02.0e+00_zeta1.2e-01_fig3_param_conv.png>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[35 <./figures/zeta_predictions.png> <./figures/zeta_2d.png>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[36 <./figures/omega0_predictions.png> <./figures/omega0_2d.png>]
 Chapter 5.
-[28
+[37
 
 ] (Exam_VascoVerwimp_Report.aux)
  ***********
@@ -1335,23 +1482,23 @@ LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
  ***********
 Package rerunfilecheck Info: File `Exam_VascoVerwimp_Report.out' has not changed.
-(rerunfilecheck)             Checksum: 27C650D3E27FB159AC3C392ECADFEC38;5116.
+(rerunfilecheck)             Checksum: 260E9C0B18824BF850E91B05E2276D81;5391.
 Package logreq Info: Writing requests to 'Exam_VascoVerwimp_Report.run.xml'.
 \openout1 = `Exam_VascoVerwimp_Report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 31171 strings out of 474587
- 597458 string characters out of 5745701
- 1940558 words of memory out of 5000000
- 52850 multiletter control sequences out of 15000+600000
+ 31423 strings out of 474587
+ 604080 string characters out of 5745701
+ 1938558 words of memory out of 5000000
+ 53074 multiletter control sequences out of 15000+600000
  569799 words of font info for 81 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  83i,12n,87p,1438b,1828s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\vasco\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on Exam_VascoVerwimp_Report.pdf (29 pages, 881423 bytes).
+Output written on Exam_VascoVerwimp_Report.pdf (38 pages, 3077451 bytes).
 PDF statistics:
- 436 PDF objects out of 1000 (max. 8388607)
- 93 named destinations out of 1000 (max. 500000)
- 334 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 541 PDF objects out of 1000 (max. 8388607)
+ 115 named destinations out of 1000 (max. 500000)
+ 415 words of extra memory for PDF output out of 10000 (max. 10000000)
 

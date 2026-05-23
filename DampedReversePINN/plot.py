@@ -444,7 +444,6 @@ def make_param_convergence_figure(bundle: dict, out_path: Path) -> plt.Figure:
         f"ω₀_true={true_w0:.4f} rad/s   ζ_true={true_zeta:.4f}\n"
         f"Initial guess: ω₀={bundle['cfg'].ini_guess_w0:.4f}  "
         f"ζ={bundle['cfg'].ini_guess_zeta:.4f}  |  "
-        f"lr_param={bundle['cfg'].lr_param}  |  "
         f"snapshots at epochs {list(epochs_ext)}",
         fontsize=9, y=0.998, color="#2C2C2A",
     )
