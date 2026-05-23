@@ -30,4 +30,6 @@
 \contentsline {subsection}{\numberline {4.1.1}Normal Problem}{28}{subsection.4.1.1}%
 \contentsline {subsection}{\numberline {4.1.2}Reverse Problem}{33}{subsection.4.1.2}%
 \contentsline {section}{\numberline {4.2}Burgers' Equation}{36}{section.4.2}%
-\contentsline {chapter}{\numberline {5}Conclusion}{37}{chapter.5}%
+\contentsline {subsection}{\numberline {4.2.1}Normal Problem}{36}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Reverse Problem}{50}{subsection.4.2.2}%
+\contentsline {chapter}{\numberline {5}Conclusion}{55}{chapter.5}%

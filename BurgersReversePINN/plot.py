@@ -410,9 +410,9 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
     ax_true        = fig.add_subplot(gs[0, 0])
     ax_blind       = fig.add_subplot(gs[0, 1])
     ax_ext_phys    = fig.add_subplot(gs[0, 2])
-    ax_err_blind   = fig.add_subplot(gs[1, 0])
-    ax_err_ext_phys= fig.add_subplot(gs[1, 1])
-    ax_empty       = fig.add_subplot(gs[1, 2])
+    ax_err_blind   = fig.add_subplot(gs[1, 1])
+    ax_err_ext_phys= fig.add_subplot(gs[1, 2])
+    ax_empty       = fig.add_subplot(gs[1, 0])
     ax_empty.set_visible(False)
 
     vmin_pred = min(grid_true.min(), grid_blind.min(), grid_ext_phys.min())

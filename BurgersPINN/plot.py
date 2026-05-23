@@ -350,12 +350,12 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
                             left=0.06, right=0.97, top=0.91, bottom=0.07)
 
     ax_true = fig.add_subplot(gs[0, 0])
-    ax_ext  = fig.add_subplot(gs[0, 1])
+    ax_ext  = fig.add_subplot(gs[0, 3])
     ax_bl   = fig.add_subplot(gs[0, 2])
-    ax_ml   = fig.add_subplot(gs[0, 3])
-    ax_eerr = fig.add_subplot(gs[1, 0])
-    ax_berr = fig.add_subplot(gs[1, 1])
-    ax_merr = fig.add_subplot(gs[1, 2])
+    ax_ml   = fig.add_subplot(gs[0, 1])
+    ax_eerr = fig.add_subplot(gs[1, 3])
+    ax_berr = fig.add_subplot(gs[1, 2])
+    ax_merr = fig.add_subplot(gs[1, 1])
     fig.add_subplot(gs[1, 3]).set_visible(False)
 
     kw = dict(cfg=cfg, vmin=vmin_u, vmax=vmax_u, time_shockwave=time_shockwave)

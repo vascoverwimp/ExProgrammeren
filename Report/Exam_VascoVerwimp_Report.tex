@@ -772,7 +772,7 @@ One interesting figure that is also created is the loss progression figure, thes
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/dampedLoss_ex.png}
-    \caption{Loss progression for the damped harmonic oscillator with $\zeta=0.125$ (underdamped) and $\omega_0=4$ (quick oscillation). We see that in the training of the PINNs, the initial condition loss is kept very low and most of the progress over the later epoch is due to improvement in the physics loss.}
+    \caption{Loss progression for the damped harmonic oscillator with $\zeta=0.125$ (underdamped) and $\omega_0=4$ (quick oscillation). We see that in the training of the PINNs, the initial condition loss is kept very low and most of the progress over the later epochs is due to improvement in the physics loss.}
     \label{fig:lossprogressionDamped}
 \end{figure}
 It is clear that the PINNs see most of the improvement in both validation loss and total loss by learning on the physics loss. On top of this, we can see that the initial condition loss is constantly kept very low. Interestingly, the PINNs have a lower validation loss than data loss at the end of their training, this indicates that the network was able to learn the underlying pattern in a more accurate way than the noise applied to these observations.\\
@@ -821,7 +821,7 @@ The training of these PINNs show their greatest drawback too: longer computing t
 \end{figure}
 \subsection{Reverse Problem}
 In the reverse problem, two extra parameters need to be found by the neural network: the logarithms of the damping ratio and the undamped natural frequency. First off, we will see how this affects the success of following the true solution by the neural networks by looking at an example. For this, we will choose an underdamped ($\zeta=0.125$) situation with a slow ($\omega_0=2$) oscillating displacement. The acquired summary of this situation is shown in figure \ref{fig:REVzeta0p125w02summary}, which we will compare to the normal problem solution in figure \ref{fig:zeta0p125w02summary}. On top of this, we can see the predicted parameter evolution over the epochs in figure \ref{fig:predProgressDamped}.\\
-We see that, due to the extra unknown parameters needed to optimize, the convergence takes longer than the normal problem. Additionally, we see that the extended physics implementation struggles to learn the value of the parameter. We hypothesize that this is because there is nothing in the extrapolated region that fixes the parameter, while it does contain a significant amount of the collocation points that are used to change this parameter to minimize the physics loss.
+We see that, due to the extra unknown parameters needed to optimize, the convergence takes longer than the normal problem. Additionally, we see that the extended physics implementation struggles to learn the value of the physical parameters. We hypothesize that this is because there is nothing in the extrapolated region that fixes the parameter, while it does contain a significant amount of the collocation points that are used to change this parameter to minimize the physics loss.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/REVw02.0e+00_zeta1.2e-01_fig2_summary.png}
@@ -836,7 +836,7 @@ We see that, due to the extra unknown parameters needed to optimize, the converg
     \label{fig:predProgressDamped}
 \end{figure}
 Keeping the mass fixed at 1 $kg$, we will vary the damping and the stiffness in a grid-like pattern (11 evenly spaced values from 0.5 to 5.5 for both) to see how good both the blind PINN and extended physics PINN are at the recovering of these parameters. The result is visualized in figures \ref{fig:REVdampedzeta} and \ref{fig:REVdampedw0}.\\ 
-
+It is clear that the parameters can be recovered accurately in some cases, but that this is dependent on a few things: higher damping causes a less accurate recovery of the $\omega_0$ physical parameter and the recovery of the $\zeta$ parameter becomes more difficult when $\zeta$ becomes bigger.
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.65\textwidth}
@@ -860,7 +860,6 @@ Keeping the mass fixed at 1 $kg$, we will vary the damping and the stiffness in 
         \includegraphics[width=\textwidth]{figures/omega0_predictions.png}
         \caption{The predicted value of $\omega_0$ against its true value.}
     \end{subfigure}
-    \hfill
     \begin{subfigure}[b]{0.99\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/omega0_2d.png}
@@ -871,6 +870,247 @@ Keeping the mass fixed at 1 $kg$, we will vary the damping and the stiffness in 
     \label{fig:REVdampedw0}
 \end{figure}
 \section{Burgers' Equation}
+\subsection{Normal Problem}
+For the normal problem, we will show the result for a few different situations. The system requires to things to produce a solution: an initial condition and a viscosity. For the initial conditions, we have the three situations shown in the introduction: "Step" gives a step up functioin, "Gaussian" gives a Gaussian packet, and "N-wave" gives an N-wave profile.
+
+For each situation, three values of $\nu$ will be shown: a low viscosity case ($\nu = 0.01$), a medium viscosity case ($\nu=0.05$), and a high viscosity case ($\nu=0.1$).
+
+This leaves us with following table of all inputs shown, and links to each figure.\\
+\begin{tabular}{c c !{\vrule width 2pt} c}
+Initial Condition & Viscosity $\nu$ ($m^2/s$) & Summary figure\\
+\hline
+ Step & 0.01 & \ref{fig:Step001summary} \\
+ Step & 0.05 & \ref{fig:Step005summary} \\
+ Step & 0.1 & \ref{fig:Step01summary} \\
+ Gaussian & 0.01 & \ref{fig:Gaussian001summary} \\
+ Gaussian & 0.05 & \ref{fig:Gaussian005summary} \\
+ Gaussian & 0.1 & \ref{fig:Gaussian01summary} \\
+ N-wave & 0.01 & \ref{fig:Nwave001summary} \\
+ N-wave & 0.05 & \ref{fig:Nwave005summary} \\
+ N-wave & 0.1 & \ref{fig:Nwave01summary} \\
+\end{tabular}\\
+One interesting figure that is also created is the loss progression figure, these are very similar for each case, so we will show a single example to show which trends show up. For this we have chosen the N-wave initial condition with a high viscosity ($\nu=0.1$), for which we have plotted the summary figure in~\ref{fig:Nwave01summary} and the loss progression in~\ref{fig:lossprogressionBurger}. Besides these figures, a figure of the progression over the epochs for each network is also created, but this would take up too much space in the report to show. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/burger_N-wave_1.0e-01_fig1_loss.png}
+    \caption{Loss progression for the Burgers' normal problam with the N-wave initial condition at high viscosity ($\nu=0.1$). We see that in the training of the PINNs, we see that most of the progress over the later epochs is due to improvement in the physics loss and initial condition loss.}
+    \label{fig:lossprogressionBurger}
+\end{figure}
+It is clear that the PINNs see most of the improvement in both validation loss and total loss by learning on the physics loss, but also is significantly helped by the initial condition loss (as this is still decreasing in later epochs), this is probably because the initial condition loss is weighted less harshly ($\lambda_{ic}\approx 1.3$) than in the damped case (where $\lambda_{ic}\approx 13.3$). Interestingly, now both the PINNs and the standard machine learning have a lower validation loss than data loss at the end of their training, this indicates that the networks (and this time also the neural network) was able to learn the underlying pattern in a more accurate way than the noise applied to these observations. For the neural network this is surprising, but we suspect that this is the result of accidental overfitting: if a generation happens to have a very good validation loss by chance, then this will cease due to early stopping even if the training has not really been able to fully adapt to the training data.\\
+From the summary figures we can conclude that, just like with the harmonic oscillator, the PINNs were able to more accurately follow the true solution, both in the training window and in the extrapolated window. We see that the extended physics PINN (which has collocation points in the extrapolated window) outperforms the blind PINN in this extrapolated area, but the blind PINN is already a significantly better solution than the standard neural network baseline.\\
+The training of these PINNs show their greatest drawback too: longer computing time due to a more complex calculation of the loss. The time per epoch more than doubles from 6 ms/epoch for the baseline model to 16 ms/epoch for both PINNs. There is also an effect on the memory usage: the storage of all the derivative graphs brings a significantly heavier workload.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_Step_1.0e-02_fig2_slices.png}
+        \caption{Timeslices showing the three models solution at certain times in the training interval (indicated in green), around a shocktime (indicated in red), and in the extrapolated interval (indicated in orange).}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_Step_1.0e-02_fig3_heatmaps.png}
+        \caption{Heatmaps showing the three models solution and their errors over time and space.}
+    \end{subfigure}
+    \caption{Visualization of the solutions found in the normal problem with $\nu=0.01$ (low viscosity) and the Step initial condition. This is done by showing both the heatmaps which show the full evolution and error and some specific timeslices including one around the time that the shock would happen in the inviscid case.}
+    \label{fig:Step001summary}
+\end{figure}
+\begin{figure}[H] 
+    \centering
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_Step_5.0e-02_fig2_slices.png}
+        \caption{Timeslices showing the three models solution at certain times in the training interval (indicated in green), around a shocktime (indicated in red), and in the extrapolated interval (indicated in orange).}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_Step_5.0e-02_fig3_heatmaps.png}
+        \caption{Heatmaps showing the three models solution and their errors over time and space.}
+    \end{subfigure}
+    \caption{Visualization of the solutions found in the normal problem with $\nu=0.05$ (medium viscosity) and the Step initial condition. This is done by showing both the heatmaps which show the full evolution and error and some specific timeslices including one around the time that the shock would happen in the inviscid case.}
+    \label{fig:Step005summary}
+\end{figure}
+
+\begin{figure}[H] 
+    \centering
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_Step_1.0e-01_fig2_slices.png}
+        \caption{Timeslices showing the three models solution at certain times in the training interval (indicated in green), around a shocktime (indicated in red), and in the extrapolated interval (indicated in orange).}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_Step_1.0e-01_fig3_heatmaps.png}
+        \caption{Heatmaps showing the three models solution and their errors over time and space.}
+    \end{subfigure}
+    \caption{Visualization of the solutions found in the normal problem with $\nu=0.1$ (high viscosity) and the Step initial condition. This is done by showing both the heatmaps which show the full evolution and error and some specific timeslices including one around the time that the shock would happen in the inviscid case.}
+    \label{fig:Step01summary}
+\end{figure}
+
+\begin{figure}[H] 
+    \centering
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_Gaussian_1.0e-02_fig2_slices.png}
+        \caption{Timeslices showing the three models solution at certain times in the training interval (indicated in green), around a shocktime (indicated in red), and in the extrapolated interval (indicated in orange).}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_Gaussian_1.0e-02_fig3_heatmaps.png}
+        \caption{Heatmaps showing the three models solution and their errors over time and space.}
+    \end{subfigure}
+    \caption{Visualization of the solutions found in the normal problem with $\nu=0.01$ (low viscosity) and the Gaussian initial condition. This is done by showing both the heatmaps which show the full evolution and error and some specific timeslices including one around the time that the shock would happen in the inviscid case.}
+    \label{fig:Gaussian001summary}
+\end{figure}
+
+\begin{figure}[H] 
+    \centering
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_Gaussian_5.0e-02_fig2_slices.png}
+        \caption{Timeslices showing the three models solution at certain times in the training interval (indicated in green), around a shocktime (indicated in red), and in the extrapolated interval (indicated in orange).}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_Gaussian_5.0e-02_fig3_heatmaps.png}
+        \caption{Heatmaps showing the three models solution and their errors over time and space.}
+    \end{subfigure}
+    \caption{Visualization of the solutions found in the normal problem with $\nu=0.05$ (medium viscosity) and the Gaussian initial condition. This is done by showing both the heatmaps which show the full evolution and error and some specific timeslices including one around the time that the shock would happen in the inviscid case.}
+    \label{fig:Gaussian005summary}
+\end{figure}
+
+\begin{figure}[H] 
+    \centering
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_Gaussian_1.0e-01_fig2_slices.png}
+        \caption{Timeslices showing the three models solution at certain times in the training interval (indicated in green), around a shocktime (indicated in red), and in the extrapolated interval (indicated in orange).}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_Gaussian_1.0e-01_fig3_heatmaps.png}
+        \caption{Heatmaps showing the three models solution and their errors over time and space.}
+    \end{subfigure}
+    \caption{Visualization of the solutions found in the normal problem with $\nu=0.1$ (high viscosity) and the Gaussian initial condition. This is done by showing both the heatmaps which show the full evolution and error and some specific timeslices including one around the time that the shock would happen in the inviscid case.}
+    \label{fig:Gaussian01summary}
+\end{figure}
+
+\begin{figure}[H] 
+    \centering
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_N-wave_1.0e-02_fig2_slices.png}
+        \caption{Timeslices showing the three models solution at certain times in the training interval (indicated in green), around a shocktime (indicated in red), and in the extrapolated interval (indicated in orange).}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_N-wave_1.0e-02_fig3_heatmaps.png}
+        \caption{Heatmaps showing the three models solution and their errors over time and space.}
+    \end{subfigure}
+    \caption{Visualization of the solutions found in the normal problem with $\nu=0.01$ (low viscosity) and the N-wave initial condition. This is done by showing both the heatmaps which show the full evolution and error and some specific timeslices including one around the time that the shock would happen in the inviscid case.}
+    \label{fig:Nwave001summary}
+\end{figure}
+
+\begin{figure}[H] 
+    \centering
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_N-wave_5.0e-02_fig2_slices.png}
+        \caption{Timeslices showing the three models solution at certain times in the training interval (indicated in green), around a shocktime (indicated in red), and in the extrapolated interval (indicated in orange).}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_N-wave_5.0e-02_fig3_heatmaps.png}
+        \caption{Heatmaps showing the three models solution and their errors over time and space.}
+    \end{subfigure}
+    \caption{Visualization of the solutions found in the normal problem with $\nu=0.05$ (medium viscosity) and the N-wave initial condition. This is done by showing both the heatmaps which show the full evolution and error and some specific timeslices including one around the time that the shock would happen in the inviscid case.}
+    \label{fig:Nwave005summary}
+\end{figure}
+
+\begin{figure}[H] 
+    \centering
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_N-wave_1.0e-01_fig2_slices.png}
+        \caption{Timeslices showing the three models solution at certain times in the training interval (indicated in green), around a shocktime (indicated in red), and in the extrapolated interval (indicated in orange).}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_N-wave_1.0e-01_fig3_heatmaps.png}
+        \caption{Heatmaps showing the three models solution and their errors over time and space.}
+    \end{subfigure}
+    \caption{Visualization of the solutions found in the normal problem with $\nu=0.1$ (high viscosity) and the N-wave initial condition. This is done by showing both the heatmaps which show the full evolution and error and some specific timeslices including one around the time that the shock would happen in the inviscid case.}
+    \label{fig:Nwave01summary}
+\end{figure}
+These summaries are all models trained with a number of observations that are used to calculate the data loss. This was introduced as it is more general than not allowing any training points. However, the assignment required the networks to be trained without any observational data, but this would, in my opinion, remove the interesting baseline of the standard neural network and decrease the generalizability. However, setting the weights of the physics and initial condition losses to be significantly higher than 1, for example $\lambda_\text{ic} = 1000$, and $\lambda_\text{phys}=100$ has the same effect (the data loss becomes insignificant for the PINNs), while also preserving the baseline comparison of the standard neural network. A summary figure of this approach for the N-wave situation with a low viscosity ($\nu=0.001$) is shown on figure \ref{fig:scammer}. We see that this indeed gives adequate results, however it behaves more like an optimization of the function in terms of the differential equation rather than as true machine learning.
+\begin{figure}[H] 
+    \centering
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_N-wave_1.0e-01_fig2_slices_extra.png}
+        \caption{Timeslices showing the three models solution at certain times in the training interval (indicated in green), around a shocktime (indicated in red), and in the extrapolated interval (indicated in orange).}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/burger_N-wave_1.0e-01_fig3_heatmaps_extra.png}
+        \caption{Heatmaps showing the three models solution and their errors over time and space.}
+    \end{subfigure}
+    \caption{Visualization of the solutions found in the normal problem with $\nu=0.1$ (high viscosity) and the N-wave initial condition, with physics and initial condition weights significantly higher than 1 (respectively 100 and 10000). We see that the PINN solutions are a good estimate of the true analytic function, but not as good as the observation included approach.}
+    \label{fig:scammer}
+\end{figure}
+\subsection{Reverse Problem}
+In the reverse problem, one extra parameter needs to be found by the neural network: the logarithm of the viscosity. First off, we will see how this affects the success of following the true solution by the neural networks by looking at an example. For this, we will choose the N-wave initial condition with a high viscosity ($\nu=0.1$). The acquired summary of this situation is shown in figure \ref{fig:REVNwave01summary}, which we will compare to the normal problem solution in figure \ref{fig:Nwave01summary}. On top of this, we can see the predicted parameter evolution over the epochs in figure \ref{fig:predProgressBurger}.\\
+We see that, due to the extra unknown parameters needed to optimize, the convergence takes longer than the normal problem. Additionally, we see that the extended physics implementation struggles to extract the value of the parameter. We hypothesize that this is because there is nothing in the extrapolated region that fixes the parameter, while it does contain a significant amount of the collocation points that are used to change this parameter to minimize the physics loss.
+\begin{figure}[H] 
+    \centering
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/REVburger_N-wave_1.0e-01_fig2_slices.png}
+        \caption{Timeslices showing the three models solution at certain times in the training interval (indicated in green), around a shocktime (indicated in red), and in the extrapolated interval (indicated in orange).}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.99\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/REVburger_N-wave_1.0e-01_fig3_heatmaps.png}
+        \caption{Heatmaps showing the three models solution and their errors over time and space.}
+    \end{subfigure}
+    \caption{Visualization of the solutions found in the reverse problem with $\nu=0.1$ (high viscosity) and the N-wave initial condition. This is done by showing both the heatmaps which show the full evolution and error and some specific timeslices including one around the time that the shock would happen in the inviscid case.}
+    \label{fig:REVNwave01summary}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/burger_N-wave_1.0e-01_fig2_nu_evolution.png}
+    \caption{Progression of the predicted viscosity in the reverse problem for the N-wave initial condition with $\nu=0.1$ (high viscosity). The viscosity is accurately recovered in this case.}
+    \label{fig:predProgressBurger}
+\end{figure}
+For each situation, we will choose a variety of viscosity values to investigate how good both the blind PINN and extended physics PINN are at the recovering of these parameters. The result is visualized for the step, Gaussian, and N-wave initial conditions in respectively figures \ref{fig:REVburgerStep}, \ref{fig:REVburgerGaussian} and \ref{fig:REVburgerNwave}.\\ 
+It is clear that the viscosity can be recovered accurately in some cases. Each initial condition shows a kind of saturation effect, this is common in parameter estimation based on losses as when the parameter is either too big or too small, then there will be a limit that every value lower will be brought to as the estimate, as this limit has in effect an almost identical effect to having a zero or infinite viscosity. The saturating lower bound is 0.04 for all cases, while the upper bound seems to only be present in the step and N-wave situations at around 0.25. This range can be explained by the fact that we have optimized our solver to work around a viscosity of 0.1, which is about the center of the range. The Gaussian initial condition provides the most consistent retrieval of the viscosity, going past the upper bound.
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.99\textwidth]{figures/viscosity_predictions_Step.png}
+
+    \caption{The predicted value (by either the blind or extended physics PINN) of the viscosity ($\nu$, in $m^2/s$) is compared to the true value for the step initial condition. This is done by making a scatter plot of both against each other.}
+    \label{fig:REVburgerStep}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.99\textwidth]{figures/viscosity_predictions_Gaussian.png}
+
+    \caption{The predicted value (by either the blind or extended physics PINN) of the viscosity ($\nu$, in $m^2/s$) is compared to the true value for the Gaussian initial condition. This is done by making a scatter plot of both against each other.}
+    \label{fig:REVburgerGaussian}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.99\textwidth]{figures/viscosity_predictions_N-wave.png}
+
+    \caption{The predicted value (by either the blind or extended physics PINN) of the viscosity ($\nu$, in $m^2/s$) is compared to the true value for the N-wave initial condition. This is done by making a scatter plot of both against each other.}
+    \label{fig:REVburgerNwave}
+\end{figure}
 
 \chapter{Conclusion}
+For this exam, we first started off with a given script that implements a physics-informed neural network (PINN) for the damped harmonic oscillator and compares it to a standard neural network baseline. After understanding how this script worked through given questions, the script was transformed into three parts that each have a legible architecture that follows the best practices. This includes making the distinction between two different PINN implementations: the blind PINN does not have information about the physics loss in the extrapolated window in the training phase while the extended physics PINN does. Using this clean and improved architecture, an adaptation was made for the reverse problem: in this case the physical parameters that govern the damped harmonic oscillator are also retrieved by the PINN by using their estimates in the calculation of the physics loss instead of the real value. This allows us to retrieve these parameters from the observation points.\\
+This structure was then applied to a 1+1 D problem: the Burgers' equation. Once again the normal as the reverse problem were solved. This posed challenges in both the generation of the sampling and data points as the visualization of the results.\\
+For both the Burgers' equation and the damped harmonic oscillator, the PINN approach produces results that are significantly more accurate than a standard neural network. Additionally, the PINN can be used to predict the evolution into the extrapolation window; this is best done by the PINN with extended physics. However, the training of the PINNs comes with a major drawback: the computation time per epoch is more than double that of a normal neural network, and it requires many more epochs to converge.\\
+The reverse problem was partially successful in both cases: it was clear that the PINN approach was most accurate for the retrieval of parameters around those that were used in the hyperparameter tuning. In the case of the Burgers' equation, a saturation effect was noticeable, where the parameters could only be retrieved up to a set lower limit. In the damped harmonic oscillator case, it seems like for low true $\zeta$, both the $\omega_0$ and $\zeta$ values were accurately retrieved, but when $\zeta$ increases, this becomes harder, although the results are still close.
 \end{document}
