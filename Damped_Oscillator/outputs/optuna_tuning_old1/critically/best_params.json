@@ -1,0 +1,18 @@
+{
+    "regime": "critically",
+    "m": 1.0,
+    "c": 6.0,
+    "k": 9.0,
+    "best_val": 0.0023304016795009375,
+    "best_params": {
+        "hidden": 64,
+        "n_layers": 5,
+        "lambda_phys": 2.1839678253153982,
+        "lambda_ic": 45.568208048937976,
+        "lr": 0.001781296236606211,
+        "scheduler_gamma": 0.6150099204011396,
+        "scheduler_step": 1000,
+        "adam_beta1": 0.8761315265418002,
+        "adam_beta2": 0.999509484529655
+    }
+}

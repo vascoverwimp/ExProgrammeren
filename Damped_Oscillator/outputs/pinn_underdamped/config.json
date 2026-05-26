@@ -11,7 +11,7 @@
     "use_ic": true,
     "lambda_ic": 10.0,
     "train_extrap": true,
-    "use_data": false,
+    "use_data": true,
     "n_obs": 15,
     "n_val": 200,
     "randomise_observation": true,

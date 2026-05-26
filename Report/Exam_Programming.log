@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10) (preloaded format=pdflatex 2026.4.12)  21 MAY 2026 16:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10) (preloaded format=pdflatex 2026.4.12)  26 MAY 2026 19:21
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1272,10 +1272,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 539--540
 Underfull \vbox (badness 2277) has occurred while \output is active []
 
  [18]
-<Images_DHO/demo_forward_model_overdamped/summary.png, id=320, 1156.32pt x 650.43pt>
-File: Images_DHO/demo_forward_model_overdamped/summary.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_overdamped/summary.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_overdamped/summary.png  used on input line 590.
+<Images_DHO/pinn_overdamped/summary.png, id=320, 1156.32pt x 650.43pt>
+File: Images_DHO/pinn_overdamped/summary.png Graphic file (type png)
+<use Images_DHO/pinn_overdamped/summary.png>
+Package pdftex.def Info: Images_DHO/pinn_overdamped/summary.png  used on input line 590.
 (pdftex.def)             Requested size: 339.29898pt x 190.85294pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 595--596
@@ -1287,21 +1287,21 @@ Underfull \hbox (badness 10000) in paragraph at lines 597--598
 
  []
 
-[19 <./Images_DHO/demo_forward_model_overdamped/summary.png>]
-<Images_DHO/demo_forward_model_criticallydamped/summary.png, id=330, 1156.32pt x 650.43pt>
-File: Images_DHO/demo_forward_model_criticallydamped/summary.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_criticallydamped/summary.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_criticallydamped/summary.png  used on input line 619.
+[19 <./Images_DHO/pinn_overdamped/summary.png>]
+<Images_DHO/pinn_criticallydamped/summary.png, id=330, 1156.32pt x 650.43pt>
+File: Images_DHO/pinn_criticallydamped/summary.png Graphic file (type png)
+<use Images_DHO/pinn_criticallydamped/summary.png>
+Package pdftex.def Info: Images_DHO/pinn_criticallydamped/summary.png  used on input line 619.
 (pdftex.def)             Requested size: 339.29898pt x 190.85294pt.
-<Images_DHO/demo_forward_model_underdamped/summary.png, id=333, 1156.32pt x 650.43pt>
-File: Images_DHO/demo_forward_model_underdamped/summary.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_underdamped/summary.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_underdamped/summary.png  used on input line 644.
+<Images_DHO/pinn_underdamped/summary.png, id=333, 1156.32pt x 650.43pt>
+File: Images_DHO/pinn_underdamped/summary.png Graphic file (type png)
+<use Images_DHO/pinn_underdamped/summary.png>
+Package pdftex.def Info: Images_DHO/pinn_underdamped/summary.png  used on input line 644.
 (pdftex.def)             Requested size: 339.29898pt x 190.85294pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [20 <./Images_DHO/demo_forward_model_criticallydamped/summary.png>]
+ [20 <./Images_DHO/pinn_criticallydamped/summary.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 649--650
 
  []
@@ -1311,44 +1311,44 @@ Underfull \hbox (badness 10000) in paragraph at lines 651--652
 
  []
 
-<Images_DHO/demo_forward_model_underdamped/analytic_solution.png, id=345, 578.16pt x 361.35pt>
-File: Images_DHO/demo_forward_model_underdamped/analytic_solution.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_underdamped/analytic_solution.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_underdamped/analytic_solution.png  used on input line 657.
+<Images_DHO/pinn_underdamped/analytic_solution.png, id=345, 578.16pt x 361.35pt>
+File: Images_DHO/pinn_underdamped/analytic_solution.png Graphic file (type png)
+<use Images_DHO/pinn_underdamped/analytic_solution.png>
+Package pdftex.def Info: Images_DHO/pinn_underdamped/analytic_solution.png  used on input line 657.
 (pdftex.def)             Requested size: 271.44194pt x 169.64705pt.
-<Images_DHO/demo_forward_model_underdamped/predicted_solution.png, id=346, 578.16pt x 361.35pt>
-File: Images_DHO/demo_forward_model_underdamped/predicted_solution.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_underdamped/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_underdamped/predicted_solution.png  used on input line 664.
+<Images_DHO/pinn_underdamped/predicted_solution.png, id=346, 578.16pt x 361.35pt>
+File: Images_DHO/pinn_underdamped/predicted_solution.png Graphic file (type png)
+<use Images_DHO/pinn_underdamped/predicted_solution.png>
+Package pdftex.def Info: Images_DHO/pinn_underdamped/predicted_solution.png  used on input line 664.
 (pdftex.def)             Requested size: 271.44194pt x 169.64705pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [21 <./Images_DHO/demo_forward_model_underdamped/summary.png> <./Images_DHO/demo_forward_model_underdamped/analytic_solution.png>]
-<Images_DHO/demo_forward_model_underdamped/epoch_snapshots.png, id=356, 1011.78pt x 693.792pt>
-File: Images_DHO/demo_forward_model_underdamped/epoch_snapshots.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_underdamped/epoch_snapshots.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_underdamped/epoch_snapshots.png  used on input line 671.
+ [21 <./Images_DHO/pinn_underdamped/summary.png> <./Images_DHO/pinn_underdamped/analytic_solution.png>]
+<Images_DHO/pinn_underdamped/epoch_snapshots.png, id=356, 1011.78pt x 693.792pt>
+File: Images_DHO/pinn_underdamped/epoch_snapshots.png Graphic file (type png)
+<use Images_DHO/pinn_underdamped/epoch_snapshots.png>
+Package pdftex.def Info: Images_DHO/pinn_underdamped/epoch_snapshots.png  used on input line 671.
 (pdftex.def)             Requested size: 361.92029pt x 248.17696pt.
-<Images_DHO/demo_forward_model_underdamped/losses.png, id=357, 722.7pt x 361.35pt>
-File: Images_DHO/demo_forward_model_underdamped/losses.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_underdamped/losses.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_underdamped/losses.png  used on input line 678.
+<Images_DHO/pinn_underdamped/losses.png, id=357, 722.7pt x 361.35pt>
+File: Images_DHO/pinn_underdamped/losses.png Graphic file (type png)
+<use Images_DHO/pinn_underdamped/losses.png>
+Package pdftex.def Info: Images_DHO/pinn_underdamped/losses.png  used on input line 678.
 (pdftex.def)             Requested size: 339.29898pt x 169.64705pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [22 <./Images_DHO/demo_forward_model_underdamped/predicted_solution.png> <./Images_DHO/demo_forward_model_underdamped/epoch_snapshots.png>]
-<Images_DHO/demo_forward_model_underdamped_extrapblind/summary.png, id=369, 1156.32pt x 650.43pt>
-File: Images_DHO/demo_forward_model_underdamped_extrapblind/summary.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_underdamped_extrapblind/summary.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_underdamped_extrapblind/summary.png  used on input line 689.
+ [22 <./Images_DHO/pinn_underdamped/predicted_solution.png> <./Images_DHO/pinn_underdamped/epoch_snapshots.png>]
+<Images_DHO/pinn_blindextrap/summary.png, id=369, 1156.32pt x 650.43pt>
+File: Images_DHO/pinn_blindextrap/summary.png Graphic file (type png)
+<use Images_DHO/pinn_blindextrap/summary.png>
+Package pdftex.def Info: Images_DHO/pinn_blindextrap/summary.png  used on input line 689.
 (pdftex.def)             Requested size: 339.29898pt x 190.85294pt.
- [23 <./Images_DHO/demo_forward_model_underdamped/losses.png> <./Images_DHO/demo_forward_model_underdamped_extrapblind/summary.png>]
-<Images_DHO/demo_forward_model_underdamped_ML/summary.png, id=378, 1156.32pt x 650.43pt>
-File: Images_DHO/demo_forward_model_underdamped_ML/summary.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_underdamped_ML/summary.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_underdamped_ML/summary.png  used on input line 699.
+ [23 <./Images_DHO/pinn_underdamped/losses.png> <./Images_DHO/pinn_blindextrap/summary.png>]
+<Images_DHO/pinn_nophys/summary.png, id=378, 1156.32pt x 650.43pt>
+File: Images_DHO/pinn_nophys/summary.png Graphic file (type png)
+<use Images_DHO/pinn_nophys/summary.png>
+Package pdftex.def Info: Images_DHO/pinn_nophys/summary.png  used on input line 699.
 (pdftex.def)             Requested size: 339.29898pt x 190.85294pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 703--704
@@ -1360,56 +1360,56 @@ Underfull \hbox (badness 10000) in paragraph at lines 708--709
 
  []
 
-File: Images_DHO/demo_forward_model_underdamped/predicted_solution.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_underdamped/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_underdamped/predicted_solution.png  used on input line 714.
+File: Images_DHO/pinn_underdamped/predicted_solution.png Graphic file (type png)
+<use Images_DHO/pinn_underdamped/predicted_solution.png>
+Package pdftex.def Info: Images_DHO/pinn_underdamped/predicted_solution.png  used on input line 714.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
-[24 <./Images_DHO/demo_forward_model_underdamped_ML/summary.png>]
-<Images_DHO/demo_forward_model_hyperparameters/low_complexity/predicted_solution.png, id=391, 578.16pt x 361.35pt>
-File: Images_DHO/demo_forward_model_hyperparameters/low_complexity/predicted_solution.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_hyperparameters/low_complexity/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_hyperparameters/low_complexity/predicted_solution.png  used on input line 722.
+[24 <./Images_DHO/pinn_nophys/summary.png>]
+<Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png, id=391, 578.16pt x 361.35pt>
+File: Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png Graphic file (type png)
+<use Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png>
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png  used on input line 722.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
-<Images_DHO/demo_forward_model_hyperparameters/high_lr/predicted_solution.png, id=392, 578.16pt x 361.35pt>
-File: Images_DHO/demo_forward_model_hyperparameters/high_lr/predicted_solution.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_hyperparameters/high_lr/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_hyperparameters/high_lr/predicted_solution.png  used on input line 732.
+<Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png, id=392, 578.16pt x 361.35pt>
+File: Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png Graphic file (type png)
+<use Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png>
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png  used on input line 732.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
 
 Underfull \vbox (badness 2521) has occurred while \output is active []
 
- [25 <./Images_DHO/demo_forward_model_hyperparameters/low_complexity/predicted_solution.png>]
+ [25 <./Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 737--738
 
  []
 
-<Images_DHO/demo_forward_model_hyperparameters/low_lr/predicted_solution.png, id=401, 578.16pt x 361.35pt>
-File: Images_DHO/demo_forward_model_hyperparameters/low_lr/predicted_solution.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_hyperparameters/low_lr/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_hyperparameters/low_lr/predicted_solution.png  used on input line 742.
+<Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png, id=401, 578.16pt x 361.35pt>
+File: Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png Graphic file (type png)
+<use Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png>
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png  used on input line 742.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
-<Images_DHO/demo_forward_model_hyperparameters/large_phys/predicted_solution.png, id=402, 578.16pt x 361.35pt>
-File: Images_DHO/demo_forward_model_hyperparameters/large_phys/predicted_solution.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_hyperparameters/large_phys/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_hyperparameters/large_phys/predicted_solution.png  used on input line 752.
+<Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png, id=402, 578.16pt x 361.35pt>
+File: Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png Graphic file (type png)
+<use Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png>
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png  used on input line 752.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
-[26 <./Images_DHO/demo_forward_model_hyperparameters/high_lr/predicted_solution.png> <./Images_DHO/demo_forward_model_hyperparameters/low_lr/predicted_solution.png>]
-<Images_DHO/demo_forward_model_hyperparameters/large_phys_no_extrap/predicted_solution.png, id=412, 578.16pt x 361.35pt>
-File: Images_DHO/demo_forward_model_hyperparameters/large_phys_no_extrap/predicted_solution.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_hyperparameters/large_phys_no_extrap/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_hyperparameters/large_phys_no_extrap/predicted_solution.png  used on input line 761.
+[26 <./Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png> <./Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png>]
+<Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png, id=412, 578.16pt x 361.35pt>
+File: Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png Graphic file (type png)
+<use Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png>
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png  used on input line 761.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 766--767
 
  []
 
-<Images_DHO/demo_forward_model_hyperparameters/large_phys_no_data/predicted_solution.png, id=414, 578.16pt x 361.35pt>
-File: Images_DHO/demo_forward_model_hyperparameters/large_phys_no_data/predicted_solution.png Graphic file (type png)
-<use Images_DHO/demo_forward_model_hyperparameters/large_phys_no_data/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/demo_forward_model_hyperparameters/large_phys_no_data/predicted_solution.png  used on input line 771.
+<Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png, id=414, 578.16pt x 361.35pt>
+File: Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png Graphic file (type png)
+<use Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png>
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png  used on input line 771.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
-[27 <./Images_DHO/demo_forward_model_hyperparameters/large_phys/predicted_solution.png> <./Images_DHO/demo_forward_model_hyperparameters/large_phys_no_extrap/predicted_solution.png>] [28 <./Images_DHO/demo_forward_model_hyperparameters/large_phys_no_data/predicted_solution.png>]
+[27 <./Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png> <./Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png>] [28 <./Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png>]
 Overfull \hbox (30.34299pt too wide) in paragraph at lines 815--828
  [][] 
  []
@@ -1429,41 +1429,41 @@ Underfull \hbox (badness 10000) in paragraph at lines 853--854
 
  []
 
-<Images_DHO/demo_backward_model_overdamped/predicted_solution.png, id=442, 578.16pt x 361.35pt>
-File: Images_DHO/demo_backward_model_overdamped/predicted_solution.png Graphic file (type png)
-<use Images_DHO/demo_backward_model_overdamped/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/demo_backward_model_overdamped/predicted_solution.png  used on input line 875.
+<Images_DHO/inversepinn_overdamped/predicted_solution.png, id=442, 578.16pt x 361.35pt>
+File: Images_DHO/inversepinn_overdamped/predicted_solution.png Graphic file (type png)
+<use Images_DHO/inversepinn_overdamped/predicted_solution.png>
+Package pdftex.def Info: Images_DHO/inversepinn_overdamped/predicted_solution.png  used on input line 875.
 (pdftex.def)             Requested size: 339.29898pt x 212.05882pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [30]
-<Images_DHO/demo_backward_model_overdamped/parameter_convergence.png, id=452, 722.7pt x 361.35pt>
-File: Images_DHO/demo_backward_model_overdamped/parameter_convergence.png Graphic file (type png)
-<use Images_DHO/demo_backward_model_overdamped/parameter_convergence.png>
-Package pdftex.def Info: Images_DHO/demo_backward_model_overdamped/parameter_convergence.png  used on input line 882.
+<Images_DHO/inversepinn_overdamped/parameter_convergence.png, id=452, 722.7pt x 361.35pt>
+File: Images_DHO/inversepinn_overdamped/parameter_convergence.png Graphic file (type png)
+<use Images_DHO/inversepinn_overdamped/parameter_convergence.png>
+Package pdftex.def Info: Images_DHO/inversepinn_overdamped/parameter_convergence.png  used on input line 882.
 (pdftex.def)             Requested size: 339.29898pt x 169.64705pt.
-<Images_DHO/demo_backward_model_criticallydamped/predicted_solution.png, id=456, 578.16pt x 361.35pt>
-File: Images_DHO/demo_backward_model_criticallydamped/predicted_solution.png Graphic file (type png)
-<use Images_DHO/demo_backward_model_criticallydamped/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/demo_backward_model_criticallydamped/predicted_solution.png  used on input line 906.
+<Images_DHO/inversepinn_criticallydamped/predicted_solution.png, id=456, 578.16pt x 361.35pt>
+File: Images_DHO/inversepinn_criticallydamped/predicted_solution.png Graphic file (type png)
+<use Images_DHO/inversepinn_criticallydamped/predicted_solution.png>
+Package pdftex.def Info: Images_DHO/inversepinn_criticallydamped/predicted_solution.png  used on input line 906.
 (pdftex.def)             Requested size: 339.29898pt x 212.05882pt.
- [31 <./Images_DHO/demo_backward_model_overdamped/predicted_solution.png> <./Images_DHO/demo_backward_model_overdamped/parameter_convergence.png>]
-<Images_DHO/demo_backward_model_criticallydamped/parameter_convergence.png, id=464, 722.7pt x 361.35pt>
-File: Images_DHO/demo_backward_model_criticallydamped/parameter_convergence.png Graphic file (type png)
-<use Images_DHO/demo_backward_model_criticallydamped/parameter_convergence.png>
-Package pdftex.def Info: Images_DHO/demo_backward_model_criticallydamped/parameter_convergence.png  used on input line 913.
+ [31 <./Images_DHO/inversepinn_overdamped/predicted_solution.png> <./Images_DHO/inversepinn_overdamped/parameter_convergence.png>]
+<Images_DHO/inversepinn_criticallydamped/parameter_convergence.png, id=464, 722.7pt x 361.35pt>
+File: Images_DHO/inversepinn_criticallydamped/parameter_convergence.png Graphic file (type png)
+<use Images_DHO/inversepinn_criticallydamped/parameter_convergence.png>
+Package pdftex.def Info: Images_DHO/inversepinn_criticallydamped/parameter_convergence.png  used on input line 913.
 (pdftex.def)             Requested size: 339.29898pt x 169.64705pt.
-<Images_DHO/demo_backward_model_underdamped/predicted_solution.png, id=467, 578.16pt x 361.35pt>
-File: Images_DHO/demo_backward_model_underdamped/predicted_solution.png Graphic file (type png)
-<use Images_DHO/demo_backward_model_underdamped/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/demo_backward_model_underdamped/predicted_solution.png  used on input line 938.
+<Images_DHO/inversepinn_underdamped/predicted_solution.png, id=467, 578.16pt x 361.35pt>
+File: Images_DHO/inversepinn_underdamped/predicted_solution.png Graphic file (type png)
+<use Images_DHO/inversepinn_underdamped/predicted_solution.png>
+Package pdftex.def Info: Images_DHO/inversepinn_underdamped/predicted_solution.png  used on input line 938.
 (pdftex.def)             Requested size: 339.29898pt x 212.05882pt.
- [32 <./Images_DHO/demo_backward_model_criticallydamped/predicted_solution.png> <./Images_DHO/demo_backward_model_criticallydamped/parameter_convergence.png>]
-<Images_DHO/demo_backward_model_underdamped/parameter_convergence.png, id=477, 722.7pt x 361.35pt>
-File: Images_DHO/demo_backward_model_underdamped/parameter_convergence.png Graphic file (type png)
-<use Images_DHO/demo_backward_model_underdamped/parameter_convergence.png>
-Package pdftex.def Info: Images_DHO/demo_backward_model_underdamped/parameter_convergence.png  used on input line 945.
+ [32 <./Images_DHO/inversepinn_criticallydamped/predicted_solution.png> <./Images_DHO/inversepinn_criticallydamped/parameter_convergence.png>]
+<Images_DHO/inversepinn_underdamped/parameter_convergence.png, id=477, 722.7pt x 361.35pt>
+File: Images_DHO/inversepinn_underdamped/parameter_convergence.png Graphic file (type png)
+<use Images_DHO/inversepinn_underdamped/parameter_convergence.png>
+Package pdftex.def Info: Images_DHO/inversepinn_underdamped/parameter_convergence.png  used on input line 945.
 (pdftex.def)             Requested size: 339.29898pt x 169.64705pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 952--953
@@ -1475,30 +1475,30 @@ Underfull \hbox (badness 10000) in paragraph at lines 954--955
 
  []
 
-[33 <./Images_DHO/demo_backward_model_underdamped/predicted_solution.png> <./Images_DHO/demo_backward_model_underdamped/parameter_convergence.png>]
-<Images_DHO/parameter_estimation_4/scatter_zeta_full.png, id=489, 578.16pt x 578.16pt>
-File: Images_DHO/parameter_estimation_4/scatter_zeta_full.png Graphic file (type png)
-<use Images_DHO/parameter_estimation_4/scatter_zeta_full.png>
-Package pdftex.def Info: Images_DHO/parameter_estimation_4/scatter_zeta_full.png  used on input line 962.
+[33 <./Images_DHO/inversepinn_underdamped/predicted_solution.png> <./Images_DHO/inversepinn_underdamped/parameter_convergence.png>]
+<Images_DHO/parameter_estimation/scatter_zeta_full.png, id=489, 578.16pt x 578.16pt>
+File: Images_DHO/parameter_estimation/scatter_zeta_full.png Graphic file (type png)
+<use Images_DHO/parameter_estimation/scatter_zeta_full.png>
+Package pdftex.def Info: Images_DHO/parameter_estimation/scatter_zeta_full.png  used on input line 962.
 (pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 963.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 963.
-<Images_DHO/parameter_estimation_4/scatter_omega_0_full.png, id=490, 578.16pt x 578.16pt>
-File: Images_DHO/parameter_estimation_4/scatter_omega_0_full.png Graphic file (type png)
-<use Images_DHO/parameter_estimation_4/scatter_omega_0_full.png>
-Package pdftex.def Info: Images_DHO/parameter_estimation_4/scatter_omega_0_full.png  used on input line 969.
+<Images_DHO/parameter_estimation/scatter_omega_0_full.png, id=490, 578.16pt x 578.16pt>
+File: Images_DHO/parameter_estimation/scatter_omega_0_full.png Graphic file (type png)
+<use Images_DHO/parameter_estimation/scatter_omega_0_full.png>
+Package pdftex.def Info: Images_DHO/parameter_estimation/scatter_omega_0_full.png  used on input line 969.
 (pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
-<Images_DHO/parameter_estimation_4/parameter_space_rmse_full.png, id=492, 578.16pt x 505.89pt>
-File: Images_DHO/parameter_estimation_4/parameter_space_rmse_full.png Graphic file (type png)
-<use Images_DHO/parameter_estimation_4/parameter_space_rmse_full.png>
-Package pdftex.def Info: Images_DHO/parameter_estimation_4/parameter_space_rmse_full.png  used on input line 998.
+<Images_DHO/parameter_estimation/parameter_space_rmse_full.png, id=492, 578.16pt x 505.89pt>
+File: Images_DHO/parameter_estimation/parameter_space_rmse_full.png Graphic file (type png)
+<use Images_DHO/parameter_estimation/parameter_space_rmse_full.png>
+Package pdftex.def Info: Images_DHO/parameter_estimation/parameter_space_rmse_full.png  used on input line 998.
 (pdftex.def)             Requested size: 294.05635pt x 257.29802pt.
 
 Underfull \vbox (badness 4608) has occurred while \output is active []
 
- [34 <./Images_DHO/parameter_estimation_4/scatter_zeta_full.png> <./Images_DHO/parameter_estimation_4/scatter_omega_0_full.png>]
+ [34 <./Images_DHO/parameter_estimation/scatter_zeta_full.png> <./Images_DHO/parameter_estimation/scatter_omega_0_full.png>]
 <Images_DHO/analytic_solutions_zeta_underdamped.png, id=502, 722.7pt x 433.62pt>
 File: Images_DHO/analytic_solutions_zeta_underdamped.png Graphic file (type png)
 <use Images_DHO/analytic_solutions_zeta_underdamped.png>
@@ -1524,7 +1524,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1041--1042
 
  []
 
-[35 <./Images_DHO/parameter_estimation_4/parameter_space_rmse_full.png> <./Images_DHO/analytic_solutions_zeta_underdamped.png> <./Images_DHO/analytic_solutions_zeta_overdamped.png> <./Images_DHO/analytic_solutions_omega_underdamped.png> <./Images_DHO/analytic_solutions_omega_overdamped.png>] [36]
+[35 <./Images_DHO/parameter_estimation/parameter_space_rmse_full.png> <./Images_DHO/analytic_solutions_zeta_underdamped.png> <./Images_DHO/analytic_solutions_zeta_overdamped.png> <./Images_DHO/analytic_solutions_omega_underdamped.png> <./Images_DHO/analytic_solutions_omega_overdamped.png>] [36]
 chapter 3.
 
 Underfull \hbox (badness 10000) in paragraph at lines 1053--1055
@@ -1984,7 +1984,7 @@ Package rerunfilecheck Info: File `Exam_Programming.brf' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  32663 strings out of 475247
- 669715 string characters out of 5757792
+ 667437 string characters out of 5757792
  1938785 words of memory out of 5000000
  53264 multiletter control sequences out of 15000+600000
  617957 words of font info for 155 fonts, out of 8000000 for 9000

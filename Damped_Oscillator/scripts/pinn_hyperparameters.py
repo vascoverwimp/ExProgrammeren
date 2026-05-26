@@ -21,7 +21,7 @@ from utils import get_device, save_model
 from plot import save_plots_from_file
 
 SCRIPT_DIR = Path(__file__).resolve().parent.parent
-OUTPUT_PATH = SCRIPT_DIR / "outputs/demo_forward_model_hyperparameters/"
+OUTPUT_PATH = SCRIPT_DIR / "outputs/pinn_hyperparameters/"
 
 
 def train_model(cfg, label, device):

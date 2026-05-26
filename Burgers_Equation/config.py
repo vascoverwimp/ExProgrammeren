@@ -72,15 +72,15 @@ class Config:
 
     # Hyperparameters
     n_epochs: int = 30000               # Number of epochs
-    lr: float = 1.5e-3                  # Starting learning rate
+    lr: float = 2e-3                    # Starting learning rate
     lr_inverse: float = 5e-3            # Learning rate for inverse problem; parameter estimation  # noqa: E501
-    patience: int = 2000                # Patience for model stop
+    patience: int = 5000                # Patience for model stop
     patience_threshold: float = 2e-6    # Patience threshold for new best model
     dropout_rate: float = 0.0           # Dropout rate for every layer
     adam_beta1: float = 0.9             # Adam optimiser: moment hyperparameter
     adam_beta2: float = 0.999           # Adam optimiser: RMSprop hyperparameter  # noqa: E501
     scheduler_gamma: float = 0.5        # StepRL: scheduler decay factor
-    scheduler_step: int = 6000          # StepRL: decay after this many epochs
+    scheduler_step: int = 300           # StepRL: decay after this many epochs
 
     # Epoch snapshots
     snapshot_epochs: tuple = (1, 50, 300, 1000, 2000, 4000, 10000, 20000)

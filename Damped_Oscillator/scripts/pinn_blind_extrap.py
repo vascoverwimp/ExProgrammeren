@@ -28,7 +28,7 @@ def main():
     print(f"Device : {device}")
 
     # -- Underdamped ------------------------------------------------
-    output_path = SCRIPT_DIR / "outputs/demo_forward_model_underdamped_extrapblind"  # noqa: E501
+    output_path = SCRIPT_DIR / "outputs/pinn_blindextrap"  # noqa: E501
     output_path.mkdir(exist_ok=True)
     cfg = Config(
         m=1.0,

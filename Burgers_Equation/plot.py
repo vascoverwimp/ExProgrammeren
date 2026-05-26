@@ -786,7 +786,7 @@ def plot_summary_2D(
     final_epoch = max(epochs)
     if final_epoch < cfg.n_epochs:
         ax5.axvline(final_epoch, color=RED, lw=1.2, ls="--", zorder=1)
-        ax5.annotate(f"Stopped\n@ {int(final_epoch)}",
+        ax5.annotate(f"Stopped\n@ {final_epoch:.0f}",
                      xy=(final_epoch, 1),
                      xycoords=("data", "axes fraction"),
                      xytext=(-28, -20), textcoords="offset points",

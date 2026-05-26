@@ -63,7 +63,7 @@ def parse_args():
 
 
 def resolve_parameters(args):
-    """Resolve zeta and omega_0 from CLI args, with randomised fallbacks."""
+    """Resolve zeta and omega_0 from CLI args."""
 
     # -- Resolve zeta --------------------------------------------------
     if args.zeta is not None:

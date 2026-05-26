@@ -32,7 +32,7 @@ from utils import convert_to_mck, get_device
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent.parent
-OUTPUT_PATH = SCRIPT_DIR / "outputs/parameter_estimation_4"
+OUTPUT_PATH = SCRIPT_DIR / "outputs/parameter_estimation"
 OUTPUT_PATH.mkdir(parents=True, exist_ok=True)
 
 CSV_PATH = OUTPUT_PATH / "parameter_pairs.csv"

@@ -51,7 +51,7 @@ class Config:
     use_ic: bool = True             # Use initial condition terms
     lambda_ic: float = 1e1          # Initial condition loss weight
     train_extrap: bool = True       # Generate collocation points in the extrapolated domain  # noqa: E501
-    use_data: bool = False          # Generate training observation points
+    use_data: bool = True           # Generate training observation points
 
     # Data generation parameters
     n_obs: float = 15                   # Noisy observation points

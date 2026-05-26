@@ -24,7 +24,7 @@ from plot import style_ax
 from utils import save_show
 
 SCRIPT_DIR = Path(__file__).resolve().parent.parent
-OUTPUT_PATH = SCRIPT_DIR / "outputs/parameter_estimation_4"
+OUTPUT_PATH = SCRIPT_DIR / "outputs/parameter_estimation"
 
 # -- LaTeX font ------------------------------------------------------------
 plt.rcParams.update({

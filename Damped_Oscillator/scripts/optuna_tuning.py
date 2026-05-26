@@ -31,8 +31,8 @@ from utils import convert_to_mck, get_device
 SEED = 42
 N_TRIALS = 1000
 
-OUTPUT_PATH = Path.cwd() / "Damped_Oscillator/outputs/optuna_tuning_4"
-OUTPUT_PATH.mkdir(parents=True, exist_ok=True)
+SCRIPT_DIR = Path(__file__).resolve().parent.parent
+OUTPUT_PATH = SCRIPT_DIR / "outputs/optuna_tuning"
 
 CSV_PATH = OUTPUT_PATH / "optuna_results.csv"
 

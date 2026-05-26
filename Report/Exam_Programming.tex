@@ -583,13 +583,13 @@ For the overdamped case, I chose the following parameters:
 \bottomrule
 \end{tabular}
 \end{table}
-The training was stopped early after $\sim1600$ epochs and the final prediction yields $RMSE=0.00485$. The results of the training are shown on Figure \ref{fig:demo_forward_model_overdamped/summary}.
+The training was stopped early after $\sim1600$ epochs and the final prediction yields $RMSE=0.00485$. The results of the training are shown on Figure \ref{fig:pinn_overdamped/summary}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images_DHO/demo_forward_model_overdamped/summary.png}
+    \includegraphics[width=0.75\textwidth]{Images_DHO/pinn_overdamped/summary.png}
     \caption{Summary plot for the overdamped case.}
-    \label{fig:demo_forward_model_overdamped/summary}
+    \label{fig:pinn_overdamped/summary}
 \end{figure}
 
 We can see that the model can predict the solution of the ODE very accurately after a relatively small number of epochs. As a reminder, the provided code ran the training for a set number of $8000$ epochs. However, the overdamped case is a relative simple solution, so it is not surprising that the model is able to predict the solution.\\
@@ -612,16 +612,16 @@ For the critically damped case, I chose the following parameters:
 \bottomrule
 \end{tabular}
 \end{table}
-The training was stopped early after $\sim1400$ epochs and the final prediction yields $RMSE=0.00480$. The results of the training are shown on Figure \ref{fig:demo_forward_model_criticallydamped/summary}.
+The training was stopped early after $\sim1400$ epochs and the final prediction yields $RMSE=0.00480$. The results of the training are shown on Figure \ref{fig:pinn_criticallydamped/summary}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images_DHO/demo_forward_model_criticallydamped/summary.png}
+    \includegraphics[width=0.75\textwidth]{Images_DHO/pinn_criticallydamped/summary.png}
     \caption{Summary plot for the critically damped case.}
-    \label{fig:demo_forward_model_criticallydamped/summary}
+    \label{fig:pinn_criticallydamped/summary}
 \end{figure}
 
-The critically damped case is very similar to the overdamped case, as it can be seen as a limit case of the overdamped solution. The $RMSE$ and number of epochs to reach a solution are very similar indeed. The validation MSE and the physics residual plots also look very simular to those shown on Figure \ref{fig:demo_forward_model_overdamped/summary}. Again, the extrapolation is very good, but trivial at $y=0$.
+The critically damped case is very similar to the overdamped case, as it can be seen as a limit case of the overdamped solution. The $RMSE$ and number of epochs to reach a solution are very similar indeed. The validation MSE and the physics residual plots also look very simular to those shown on Figure \ref{fig:pinn_overdamped/summary}. Again, the extrapolation is very good, but trivial at $y=0$.
 
 \subsection{Underdamped}\label{ch:underdamped}
 For the overdamped case, I chose the following parameters:
@@ -637,68 +637,68 @@ For the overdamped case, I chose the following parameters:
 \bottomrule
 \end{tabular}
 \end{table}
-The training was stopped early after $\sim4700$ epochs and the final prediction yields $RMSE=0.00562$. The results of the training are shown on Figure \ref{fig:demo_forward_model_underdamped/summary}.
+The training was stopped early after $\sim4700$ epochs and the final prediction yields $RMSE=0.00562$. The results of the training are shown on Figure \ref{fig:pinn_underdamped/summary}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images_DHO/demo_forward_model_underdamped/summary.png}
+    \includegraphics[width=0.75\textwidth]{Images_DHO/pinn_underdamped/summary.png}
     \caption{Summary plot for the underdamped case.}
-    \label{fig:demo_forward_model_underdamped/summary}
+    \label{fig:pinn_underdamped/summary}
 \end{figure}
 
 The underdamped case is the most interesting case of the three, and also the case in the provided code. First of all, the number of epochs until the optimisation stalls is a factor $\sim3$ greater than the other two cases. This makes sense as the oscillatory behavior of this solution is more complex than the converging behavior of the other cases, which takes more time for the model to understand.\\
 
 Here, the extrapolating capabilities become clearer. The model is not capable of extrapolating the exponentially suppressed oscillaion, but flattens out to a straight line at $y(t)=0$. This is the most trivial solution of the ODE, and the actual analytic solution for $t\rightarrow \infty$, so it is not surprising that the predicted solution converges to zero in the extrapolated domain. It seems that the model has not yet learned to continue the oscillation in the extrapolated domain. These results are however very promising, and can be improved with proper hyperparameter tuning (see section \ref{ch:hyperparameters_DHO}).\\
 
-Since the underdamped regime is the most interesting, I will show the rest of the generated plots for this case as well as a demonstration of all plotting methods. The plotting methods are shown on Figures \ref{fig:demo_forward_model_underdamped/analytic_solution} to \ref{fig:demo_forward_model_underdamped/losses}.
+Since the underdamped regime is the most interesting, I will show the rest of the generated plots for this case as well as a demonstration of all plotting methods. The plotting methods are shown on Figures \ref{fig:pinn_underdamped/analytic_solution} to \ref{fig:pinn_underdamped/losses}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{Images_DHO/demo_forward_model_underdamped/analytic_solution.png}
+    \includegraphics[width=0.6\textwidth]{Images_DHO/pinn_underdamped/analytic_solution.png}
     \caption{Predicted solution for the underdamped case.}
-    \label{fig:demo_forward_model_underdamped/analytic_solution}
+    \label{fig:pinn_underdamped/analytic_solution}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{Images_DHO/demo_forward_model_underdamped/predicted_solution.png}
+    \includegraphics[width=0.6\textwidth]{Images_DHO/pinn_underdamped/predicted_solution.png}
     \caption{Predicted solution for the underdamped case.}
-    \label{fig:demo_forward_model_underdamped/predicted_solution}
+    \label{fig:pinn_underdamped/predicted_solution}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{Images_DHO/demo_forward_model_underdamped/epoch_snapshots.png}
+    \includegraphics[width=0.8\textwidth]{Images_DHO/pinn_underdamped/epoch_snapshots.png}
     \caption{Epoch snapshots for the underdamped case.}
-    \label{fig:demo_forward_model_underdamped/epoch_snapshots}
+    \label{fig:pinn_underdamped/epoch_snapshots}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images_DHO/demo_forward_model_underdamped/losses.png}
+    \includegraphics[width=0.75\textwidth]{Images_DHO/pinn_underdamped/losses.png}
     \caption{Loss convergence plot for the underdamped case.}
-    \label{fig:demo_forward_model_underdamped/losses}
+    \label{fig:pinn_underdamped/losses}
 \end{figure}
 
-These plots give us some useful insights. The epoch plot (Figure \ref{fig:demo_forward_model_underdamped/epoch_snapshots}) shows how the model learns the equation behavior, starting at low $t$ and working its way through the entire domain. The loss plot (Figure \ref{fig:demo_forward_model_underdamped/losses}) is also very interesting. We can see that the $\mathcal{L}_{i.c.}$ is minimised the fastest, as it is the largest contribution to the total loss function. At that point, the largest contribution to the total is form the data, and the $\mathcal{L}_{data}$ and $\mathcal{L}_{total}$ curves match each other quite well.  In this case $\mathcal{L}_{val}$ stays lower than $\mathcal{L}_{data}$, since the observation points have data applied to them but the validation points do not. Over time, the other loss terms also converge, and at some point the validation loss $\mathcal{L}_{val}$ stops decreasing; this is the point where the model starts overfitting. Since no more significant optimisations are made, the training is stopped.
+These plots give us some useful insights. The epoch plot (Figure \ref{fig:pinn_underdamped/epoch_snapshots}) shows how the model learns the equation behavior, starting at low $t$ and working its way through the entire domain. The loss plot (Figure \ref{fig:pinn_underdamped/losses}) is also very interesting. We can see that the $\mathcal{L}_{i.c.}$ is minimised the fastest, as it is the largest contribution to the total loss function. At that point, the largest contribution to the total is form the data, and the $\mathcal{L}_{data}$ and $\mathcal{L}_{total}$ curves match each other quite well.  In this case $\mathcal{L}_{val}$ stays lower than $\mathcal{L}_{data}$, since the observation points have data applied to them but the validation points do not. Over time, the other loss terms also converge, and at some point the validation loss $\mathcal{L}_{val}$ stops decreasing; this is the point where the model starts overfitting. Since no more significant optimisations are made, the training is stopped.
 
 \subsection{Comparison between blind and physics informed extrapolation}\label{ch:extrap_DHO}
-Before tuning the hyperparameters or attempting to solve the inverse problem, I want to study the effect of some of the loss terms. Firstly, in all previous simulations, the collocation points were allowed to be chosen in the extrapolated domain. This makes the extrapolation not fully blind, but physics-informed. In this experiment, the collocation points will only be chosen in the training domain, and no other hyperparameters will be changed.. This results in an actually blind test, as shown in Fugure \ref{fig:demo_forward_model_underdamped_extrapblind/summary}
+Before tuning the hyperparameters or attempting to solve the inverse problem, I want to study the effect of some of the loss terms. Firstly, in all previous simulations, the collocation points were allowed to be chosen in the extrapolated domain. This makes the extrapolation not fully blind, but physics-informed. In this experiment, the collocation points will only be chosen in the training domain, and no other hyperparameters will be changed.. This results in an actually blind test, as shown in Fugure \ref{fig:pinn_blindextrap/summary}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images_DHO/demo_forward_model_underdamped_extrapblind/summary.png}
+    \includegraphics[width=0.75\textwidth]{Images_DHO/pinn_blindextrap/summary.png}
     \caption{Summary plot for a PINN whithout collocation points in the extrapolated domain. This leads to a fully blind predicition for $t>t_{dom}$.}
-    \label{fig:demo_forward_model_underdamped_extrapblind/summary}
+    \label{fig:pinn_blindextrap/summary}
 \end{figure}
-In the training domain, the predicted solution is virtually the same as in the previous example (Figure \ref{fig:demo_forward_model_underdamped/summary}). In the extrapolated domain however, the results are different. the solution also plateaus, but now stays constant at around $y=0.4$ instead of $y=0$. This is unphysical, but since the physics loss is not calculated in the extrapolated domain, the model is not punished for this. The model has not generalised, and since there are no loss terms dependent on the predicted solution in the extrapolated area, the predicted solution simply remains constant.
+In the training domain, the predicted solution is virtually the same as in the previous example (Figure \ref{fig:pinn_underdamped/summary}). In the extrapolated domain however, the results are different. the solution also plateaus, but now stays constant at around $y=0.4$ instead of $y=0$. This is unphysical, but since the physics loss is not calculated in the extrapolated domain, the model is not punished for this. The model has not generalised, and since there are no loss terms dependent on the predicted solution in the extrapolated area, the predicted solution simply remains constant.
 
 \subsection{Comparison with traditional ML model}
 Another interesting experiment is to compare the results to a non-physics informed neural network, as was done in the provided code. For this, the physics terms $\mathcal{L}_{phys}$ and $\mathcal{L}_{i.c.}$ are dropped from the loss function, and the model is retrained with the same hyperparameters. This gives the following results:
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images_DHO/demo_forward_model_underdamped_ML/summary.png}
+    \includegraphics[width=0.75\textwidth]{Images_DHO/pinn_nophys/summary.png}
     \caption{Summary plot for a non-physics informed neural network.}
-    \label{fig:demo_forward_model_underdamped_ML/summary}
+    \label{fig:pinn_nophys/summary}
 \end{figure}
 Visually, the solution does not look all to different from the PINN prediction. However, when looking at the physics residual plot, we can see that $r(t)$ is very large when compared to the PINN. This is precisely the strength of PINNs; while standard neural networks can fit to the data and interpolate between observation points, they can overfit and/or lead to unphysical predictions, while a PINN both fits the data and complies to the ODE.\\
 
@@ -707,11 +707,11 @@ In the extrapolated domain, the results are very similar to the blind test PINN 
 \subsection{Hyperparameter optimisation}\label{ch:hyperparameters_DHO}
 Instead of choosing the hyperparameters through trail-and-error, it is good practise to do a structured hyperparameter optimisation to understand the effect of the most important parameters and find the optimal configuration for eficcient model training. In this section, we will investigate the effect of some of the hyperparameters, and then use the \verb|optuna| library to employ a \textit{Tree-Structured Parzen Estimator}, which can tune the hyperparameters in an automised way. Bayesian optimisation is a widely used technique to efficiently find an optimised set of hyperparameters \cite{watanabe2025treestructuredparzenestimatorunderstanding}.\\
 
-I have chosen to focus on the underdamped case, as it has the most interesting dynamics of the three cases. The bayesian optimisation will howveer be performed on all three cases. As a reminder, Figure \ref{fig:demo_forward_model_underdamped/predicted_solution} shows the predicted solution using the hyperparameters shown in Table \ref{tab:standard_parameters_DHO}.
+I have chosen to focus on the underdamped case, as it has the most interesting dynamics of the three cases. The bayesian optimisation will howveer be performed on all three cases. As a reminder, Figure \ref{fig:pinn_underdamped/predicted_solution} shows the predicted solution using the hyperparameters shown in Table \ref{tab:standard_parameters_DHO}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{Images_DHO/demo_forward_model_underdamped/predicted_solution.png}
+    \includegraphics[width=0.7\textwidth]{Images_DHO/pinn_underdamped/predicted_solution.png}
     \caption{Predicted solution with standard hyperparameters shown in Table \ref{tab:standard_parameters_DHO}}
 \end{figure}
 
@@ -719,9 +719,9 @@ I have chosen to focus on the underdamped case, as it has the most interesting d
 The first two parameters we will investigate determine the \textit{model complexity}, in other words the number of parameters to be optimised. To investiugate this, we will train a model with a very low complexity, more specifically $\verb|n_layers|=2$ and $\verb|hidden|=4$. This model thus only has 8 nodes, divided between two layers. This ersults in the following fit:
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{Images_DHO/demo_forward_model_hyperparameters/low_complexity/predicted_solution.png}
+    \includegraphics[width=0.7\textwidth]{Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png}
     \caption{Predicted solution from a model with a very low complexity.}
-    \label{fig:demo_forward_model_hyperparameters/low_complexity/predicted_solution}
+    \label{fig:pinn_hyperparameters/low_complexity/predicted_solution}
 \end{figure}
 This model is not able to fit the analytic solution over the entire training domain. The complexity is too low for the model to fit to multiple oscillations, so the improvements stall after the prediction has fitted to the first oscillation of the analytic solution. As explained before, it is important to tune the model complexity s that the model is complex enough for the given task, but not overly complex to avoid overfitting or conputationally model heavy training.
 
@@ -729,9 +729,9 @@ This model is not able to fit the analytic solution over the entire training dom
 Another cricual parameter is the learning rate of the model. I will study two cases; one where the learning rate is chosen too high and one where the learning rate is chosen too low. When the learning rate is set very high, say $\verb|lr|=0.05$, we get the following results:
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{Images_DHO/demo_forward_model_hyperparameters/high_lr/predicted_solution.png}
+    \includegraphics[width=0.7\textwidth]{Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png}
     \caption{Predicted solution with $lr=0.05$.}
-    \label{fig:demo_forward_model_hyperparameters/high_lr/predicted_solution}
+    \label{fig:pinn_hyperparameters/high_lr/predicted_solution}
 \end{figure}
 
 The learning rate is chosen so high that the model does not converge to an optimal solution at all. Rather, $\hat y(t)$ remains constant over the entire interval. When running this training, the early stopping mechanism triggered after $1014$ epochs, which is a little over the patience limit. This indicated that the model was never really optimising.\\
@@ -739,9 +739,9 @@ The learning rate is chosen so high that the model does not converge to an optim
 When the learning rate is set very high, say $\verb|lr|=0.001$, we get the following results:
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{Images_DHO/demo_forward_model_hyperparameters/low_lr/predicted_solution.png}
+    \includegraphics[width=0.7\textwidth]{Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png}
     \caption{Predicted solution with $lr=0.05$.}
-    \label{fig:demo_forward_model_hyperparameters/low_lr/predicted_solution}
+    \label{fig:pinn_hyperparameters/low_lr/predicted_solution}
 \end{figure}
 The model has not fully fitted to the analytic solution. This is the case because the early stopping mechanism has triggered too early; the small learning rate leads to very gradual improvements, which leads to the patience limit being reached since no significant improvement has been made. From these results, it can be conlcuded that the learning rate has to be tuned very precisely to get an efficient training loop. 
 
@@ -749,28 +749,28 @@ The model has not fully fitted to the analytic solution. This is the case becaus
 We have already investigated what happend when $\lambda_{phys}$ is set to zero. Let us now choose a very high value, say $\lambda_{phys}=100$. This results in the following solution:
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{Images_DHO/demo_forward_model_hyperparameters/large_phys/predicted_solution.png}
+    \includegraphics[width=0.7\textwidth]{Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png}
     \caption{Predicted solution with $\lambda_{phys}=100$.}
-    \label{fig:demo_forward_model_hyperparameters/large_phys/predicted_solution}
+    \label{fig:pinn_hyperparameters/large_phys/predicted_solution}
 \end{figure}
 
 Surprisingly, the model can suddenly pake an almost perfect prediction about the extrapolated domain. The large contribution of the physics term in the loss function seems to have forced the model to learn the solution of the ODE even without observation points. This reposes the question if a fully blind generalisation is possible. If we do not privide collocation points in the extrapolated domain, but keep $\lambda_{phys}=100$, we get:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{Images_DHO/demo_forward_model_hyperparameters/large_phys_no_extrap/predicted_solution.png}
+    \includegraphics[width=0.7\textwidth]{Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png}
     \caption{Predicted solution with $\lambda_{phys}=100$ and no collocation points in the extrapolated domain.}
-    \label{fig:demo_forward_model_hyperparameters/large_phys_no_extrap/predicted_solution}
+    \label{fig:pinn_hyperparameters/large_phys_no_extrap/predicted_solution}
 \end{figure}
 
-The model does not seem to fit to the oscillatory behavior, but it does decrease exponentially, which means it at least has some notions of what the solution would look like. This was not the case in the previous blind test, where the solution evened out at a constant value (see Figure \ref{fig:demo_forward_model_underdamped_extrapblind/summary}).\\
+The model does not seem to fit to the oscillatory behavior, but it does decrease exponentially, which means it at least has some notions of what the solution would look like. This was not the case in the previous blind test, where the solution evened out at a constant value (see Figure \ref{fig:pinn_blindextrap/summary}).\\
 
 Finally, I want to see if the model can fit to the solution without any observation points. This results in the following prediction:
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{Images_DHO/demo_forward_model_hyperparameters/large_phys_no_data/predicted_solution.png}
+    \includegraphics[width=0.7\textwidth]{Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png}
     \caption{Predicted solution with $\lambda_{phys}=100$ and no noisy observation points for training.}
-    \label{fig:demo_forward_model_hyperparameters/large_phys_no_data/predicted_solution}
+    \label{fig:pinn_hyperparameters/large_phys_no_data/predicted_solution}
 \end{figure}
 The model is in fact able to reconstruct the analytic solution without any data points being provided. This Is however not the best way to use the neural network. Since we have the option to input data, PINNs are more applicable to backwards problems, where we need to extract the (unknown) physical parameters from observational data. This means that we need to balance the loss terms so that both the observation points and the physics of the system are taken into account in the training loop. 
 
@@ -869,19 +869,19 @@ For the overdamped demonstration example, the randomised and predicted parameter
 \end{tabular}
 \end{table}
 
-Figures \ref{fig:demo_backward_model_overdamped/predicted_solution} and \ref{fig:demo_backward_model_overdamped/parameter_convergence} show the predicted solution and parameter convergence to the true values.
+Figures \ref{fig:inversepinn_overdamped/predicted_solution} and \ref{fig:inversepinn_overdamped/parameter_convergence} show the predicted solution and parameter convergence to the true values.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images_DHO/demo_backward_model_overdamped/predicted_solution.png}
+    \includegraphics[width=0.75\textwidth]{Images_DHO/inversepinn_overdamped/predicted_solution.png}
     \caption{Predicted solution and parameters for an overdamped harmonic oscillator with randomised parameters.}
-    \label{fig:demo_backward_model_overdamped/predicted_solution}
+    \label{fig:inversepinn_overdamped/predicted_solution}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images_DHO/demo_backward_model_overdamped/parameter_convergence.png}
+    \includegraphics[width=0.75\textwidth]{Images_DHO/inversepinn_overdamped/parameter_convergence.png}
     \caption{Parameter convergence to true values for an overdamped harmonic oscillator with randomised parameters.}
-    \label{fig:demo_backward_model_overdamped/parameter_convergence}
+    \label{fig:inversepinn_overdamped/parameter_convergence}
 \end{figure}
 We can see that the model is able to recover the equation parameters with great acuraccy for the overdamped case. This is quite impressive given that the analytic solutions are not very different for varying values of $\zeta$ and $\omega_0$ for the overdamped case. This will be discussed in more detail in section \ref{ch:stat_DHO}.
 
@@ -900,19 +900,19 @@ For the critically damped demonstration example, $\zeta$ can obviously not be ra
 \end{tabular}
 \end{table}
 
-Figures \ref{fig:demo_backward_model_criticallydamped/predicted_solution} and \ref{fig:demo_backward_model_criticallydamped/parameter_convergence} show the predicted solution and parameter convergence to the true values.
+Figures \ref{fig:inversepinn_criticallydamped/predicted_solution} and \ref{fig:inversepinn_criticallydamped/parameter_convergence} show the predicted solution and parameter convergence to the true values.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images_DHO/demo_backward_model_criticallydamped/predicted_solution.png}
+    \includegraphics[width=0.75\textwidth]{Images_DHO/inversepinn_criticallydamped/predicted_solution.png}
     \caption{Predicted solution and parameters for a critically damped harmonic oscillator with randomised parameters.}
-    \label{fig:demo_backward_model_criticallydamped/predicted_solution}
+    \label{fig:inversepinn_criticallydamped/predicted_solution}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images_DHO/demo_backward_model_criticallydamped/parameter_convergence.png}
+    \includegraphics[width=0.75\textwidth]{Images_DHO/inversepinn_criticallydamped/parameter_convergence.png}
     \caption{Parameter convergence to true values for a critically damped harmonic oscillator with randomised parameters.}
-    \label{fig:demo_backward_model_criticallydamped/parameter_convergence}
+    \label{fig:inversepinn_criticallydamped/parameter_convergence}
 \end{figure}
 We can see that the model is able to recover the equation parameters with relatively good acuraccy for the critically damped case. Again, this case is very similar to the overdamped case so comparable results are expected.
 
@@ -931,20 +931,20 @@ For the overdamped demonstration example, the randomised and predicted parameter
 \end{tabular}
 \end{table}
 
-Figures \ref{fig:demo_backward_model_underdamped/predicted_solution} and \ref{fig:demo_backward_model_underdamped/parameter_convergence} show the predicted solution and parameter convergence to the true values.
+Figures \ref{fig:inversepinn_underdamped/predicted_solution} and \ref{fig:inversepinn_underdamped/parameter_convergence} show the predicted solution and parameter convergence to the true values.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images_DHO/demo_backward_model_underdamped/predicted_solution.png}
+    \includegraphics[width=0.75\textwidth]{Images_DHO/inversepinn_underdamped/predicted_solution.png}
     \caption{Predicted solution and parameters for an underdamped harmonic oscillator with randomised parameters.}
-    \label{fig:demo_backward_model_underdamped/predicted_solution}
+    \label{fig:inversepinn_underdamped/predicted_solution}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images_DHO/demo_backward_model_underdamped/parameter_convergence.png}
+    \includegraphics[width=0.75\textwidth]{Images_DHO/inversepinn_underdamped/parameter_convergence.png}
     \caption{Parameter convergence to true values for an underdamped harmonic oscillator with randomised parameters.}
-    \label{fig:demo_backward_model_underdamped/parameter_convergence}
+    \label{fig:inversepinn_underdamped/parameter_convergence}
 \end{figure}
 We can see that the model is able to recover the equation parameters with great acuraccy for the underdamped case. The analytic solutions for this case are more dependent on the equation parameters than the previous two cases, so it is to be expected that the model can extract the parameters with the same or better acuraccy.
 
@@ -953,25 +953,25 @@ The previous three demonstration examples are a good illustration of the capabil
 
 One of the sources of uncertainty when estimating the parameters is the noise applied to the training observation points. The training points are randomised every epoch and should, in principle, not have much influence on the exact prediction, but it makes the process non-deterministic nonetheless. Furthermore, up until now we have only tested the parameter extraction on 3 $(\zeta,\ \omega_0)$ pairs. This is not yet representative for the model performance over a wide range of valeus for these parameters.\\
 
-In order to account for both of these effects, we can run a large amount of parameter estimations with randomised equation parameters for every different model. This will both give an idea of the variance of the estimations due to the noisy training data, and generalise the three demonstration examples to a larger domain of $(\zeta,\ \omega_0)$ values. I have chosen to first randomize the damped case, with a $45\%$ chance of under- or overdamped and a $10\%$ chance of critically damped. Then, $(\zeta,\ \omega_0)$ is randomised and the inverse model is trained to estimate the parameters. In the end, $304$ total estimations were performed. Figures \ref{fig:parameter_estimation_2/scatter_zeta_full} and \ref{fig:parameter_estimation_2/scatter_omega_0_full} show the true-predicted parameter values.
+In order to account for both of these effects, we can run a large amount of parameter estimations with randomised equation parameters for every different model. This will both give an idea of the variance of the estimations due to the noisy training data, and generalise the three demonstration examples to a larger domain of $(\zeta,\ \omega_0)$ values. I have chosen to first randomize the damped case, with a $45\%$ chance of under- or overdamped and a $10\%$ chance of critically damped. Then, $(\zeta,\ \omega_0)$ is randomised and the inverse model is trained to estimate the parameters. In the end, $304$ total estimations were performed. Figures \ref{fig:parameter_estimation/scatter_zeta_full} and \ref{fig:parameter_estimation/scatter_omega_0_full} show the true-predicted parameter values.
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Images_DHO/parameter_estimation_4/scatter_zeta_full.png}
+        \includegraphics[width=\textwidth]{Images_DHO/parameter_estimation/scatter_zeta_full.png}
         \caption{Scatter plot of 304 true and predicted $\zeta$ pairs.}
-        \label{fig:parameter_estimation_2/scatter_zeta_full}
+        \label{fig:parameter_estimation/scatter_zeta_full}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Images_DHO/parameter_estimation_4/scatter_omega_0_full.png}
+        \includegraphics[width=\textwidth]{Images_DHO/parameter_estimation/scatter_omega_0_full.png}
         \caption{Scatter plot of 304 true and predicted $\omega_0$ pairs.}
-        \label{fig:parameter_estimation_2/scatter_omega_0_full}
+        \label{fig:parameter_estimation/scatter_omega_0_full}
     \end{subfigure}
     \caption{Scatter plots of true and predicted physical parameters for the damped harmonic oscillator.}
-    \label{fig:parameter_estimation_2/scatter_full}
+    \label{fig:parameter_estimation/scatter_full}
 \end{figure}
 
 AS we can see, the estimations are quite good in general. For small parameter values, the model is very good at precisely extracting the true values. For larger values however, the model seems to underestimate the parameter values. To quantify this further, we can calulate the $RMSE$ of the two parameters in the three different cases. This leads to the following results:
@@ -991,13 +991,13 @@ Overdamped          & $0.2649$ & $0.6415$ \\
 \end{tabular}
 \end{table}
 
-The $RSME$ indeed increases for the critically and overdamped cases. In order to also take the effect of $\omega_0$ into account, we can plot the \textit{parameter space}, where the axes represent $\zeta$ and $\omega_0$. Figure \ref{fig:parameter_estimation_2/scatter_omega_0_full} shows the $(\zeta,\ \omega_0)$ in the parameter space, color coded by the $RMSE$ of the predicted values.
+The $RSME$ indeed increases for the critically and overdamped cases. In order to also take the effect of $\omega_0$ into account, we can plot the \textit{parameter space}, where the axes represent $\zeta$ and $\omega_0$. Figure \ref{fig:parameter_estimation/scatter_omega_0_full} shows the $(\zeta,\ \omega_0)$ in the parameter space, color coded by the $RMSE$ of the predicted values.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.65\textwidth]{Images_DHO/parameter_estimation_4/parameter_space_rmse_full.png}
+    \includegraphics[width=0.65\textwidth]{Images_DHO/parameter_estimation/parameter_space_rmse_full.png}
     \caption{Parameter space of 304 true $(\zeta, \omega_0)$ pairs and the $RMSE$ compared to the predicted values.}
-    \label{fig:parameter_estimation_2/parameter_space_rmse_full}
+    \label{fig:parameter_estimation/parameter_space_rmse_full}
 \end{figure}
 
 Again, we can see that large parameter values generally lead to a larger $RMSE$. One possible explanation is that the parameters become harder to extract because the soltuions to the ODE becone less and less dependent on the parameters. This is illustrated in the Figure \ref{fig:grid_zeta_omega}, where the solutions to the ODE are plotted for different values of $\zeta$ and $\omega_0$ in the underdamped and overdamped regime.

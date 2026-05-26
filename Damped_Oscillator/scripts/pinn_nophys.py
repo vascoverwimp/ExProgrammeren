@@ -38,7 +38,7 @@ def main():
     data = generate_data(cfg)
 
     # -- train standard model ------------------------------------------------
-    output_path = SCRIPT_DIR / "outputs/demo_forward_model_underdamped_ML"
+    output_path = SCRIPT_DIR / "outputs/pinn_nophys"
     output_path.mkdir(exist_ok=True)
     model = FCNet(cfg)
     history, snapshots, _ = train(
