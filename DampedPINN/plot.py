@@ -49,15 +49,15 @@ from model import DamperConfig, Predictor
 # COLOUR PALETTE
 # =============================================================================
 
-BLUE      = "#378ADD"   # train observations / data loss
-RED       = "#E24B4A"   # standard ML
-GREEN     = "#1D9E75"   # PINN ext. physics
-AMBER     = "#D4820A"   # PINN blind
-PURPLE    = "#7F77DD"   # initial condition marker
-GRAY      = "#888780"   # true solution / neutral
-LGRAY     = "#D3D1C7"   # spine colour
-BG        = "#FAFAF8"   # figure background
-PANEL     = "#F1EFE8"   # axes background
+BLUE = "#378ADD"   # train observations / data loss
+RED = "#E24B4A"   # standard ML
+GREEN = "#1D9E75"   # PINN ext. physics
+AMBER = "#D4820A"   # PINN blind
+PURPLE = "#7F77DD"   # initial condition marker
+GRAY = "#888780"   # true solution / neutral
+LGRAY = "#D3D1C7"   # spine colour
+BG = "#FAFAF8"   # figure background
+PANEL = "#F1EFE8"   # axes background
 
 
 # =============================================================================
@@ -80,8 +80,8 @@ def shade_extrap(ax: plt.Axes, cfg: DamperConfig) -> None:
 # =============================================================================
 
 def pointwise_residual(y: np.ndarray, t: np.ndarray,
-                        cfg: DamperConfig) -> np.ndarray:
-    dy  = np.gradient(y, t)
+                       cfg: DamperConfig) -> np.ndarray:
+    dy = np.gradient(y, t)
     d2y = np.gradient(dy, t)
     return np.abs(cfg.mass * d2y + cfg.damping * dy + cfg.stiffness * y)
 
@@ -101,10 +101,10 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
 
     ML only plots data + val (no physics or IC loss).
     """
-    cfg      = bundle["cfg"]
-    h_ml     = bundle["hist_ml"]
-    h_ext    = bundle["hist_pinn_ext_phys"]
-    h_bl     = bundle["hist_pinn_blind"]
+    cfg = bundle["cfg"]
+    h_ml = bundle["hist_ml"]
+    h_ext = bundle["hist_pinn_ext_phys"]
+    h_bl = bundle["hist_pinn_blind"]
 
     COLORS = {
         "loss_data":    "#2271B2",   # blue
@@ -125,7 +125,8 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
         "loss_ic":      "v",
     }
     # (linestyle, linewidth, alpha) per model
-    MODEL_LS    = {"ml": ("-", 2.0, 1.0), "ext": ("--", 1.8, 0.9), "bl": ("-.", 1.6, 0.8)}
+    MODEL_LS = {"ml": ("-", 2.0, 1.0), "ext": ("--",
+                                               1.8, 0.9), "bl": ("-.", 1.6, 0.8)}
     MODEL_LABEL = {"ml": "ML", "ext": "ext_phys", "bl": "blind"}
 
     fig, ax = plt.subplots(figsize=(11, 5))
@@ -186,24 +187,24 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
 #  └──────────────────────────────┴──────────────────┴───────────────────┘
 
 def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
-    cfg        = bundle["cfg"]
-    data       = bundle["data"]
-    m          = bundle["metrics"]
+    cfg = bundle["cfg"]
+    data = bundle["data"]
+    m = bundle["metrics"]
     device_str = bundle["device_str"]
 
-    t_obs_train  = data["t_obs_train"]
-    y_obs_train  = data["y_obs_train"]
+    t_obs_train = data["t_obs_train"]
+    y_obs_train = data["y_obs_train"]
     t_plot_train = data["t_plot_train"]
-    t_plot_full  = data["t_plot_full"]
+    t_plot_full = data["t_plot_full"]
     y_true_train = data["y_true_train"]
-    y_true_full  = data["y_true_full"]
+    y_true_full = data["y_true_full"]
 
-    y_ml    = bundle["y_ml_full"]
-    y_ext   = bundle["y_pinn_ext_phys_full"]
+    y_ml = bundle["y_ml_full"]
+    y_ext = bundle["y_pinn_ext_phys_full"]
     y_blind = bundle["y_pinn_blind_full"]
 
-    mask_train  = t_plot_full <= cfg.t_train
-    mask_extrap = t_plot_full >  cfg.t_train
+    mask_train = t_plot_full <= cfg.t_train
+    mask_extrap = t_plot_full > cfg.t_train
 
     fig = plt.figure(figsize=(16, 11))
     fig.patch.set_facecolor(BG)
@@ -212,10 +213,10 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
         hspace=0.45, wspace=0.35,
         left=0.07, right=0.97, top=0.91, bottom=0.08,
     )
-    ax_full   = fig.add_subplot(gs[0, :])       # P1: full domain, all models
-    ax_train  = fig.add_subplot(gs[1, 0])       # P2: training window zoom
-    ax_ic     = fig.add_subplot(gs[1, 1])       # P3: IC enforcement detail
-    ax_phys   = fig.add_subplot(gs[1, 2])       # P4: ODE residual
+    ax_full = fig.add_subplot(gs[0, :])       # P1: full domain, all models
+    ax_train = fig.add_subplot(gs[1, 0])       # P2: training window zoom
+    ax_ic = fig.add_subplot(gs[1, 1])       # P3: IC enforcement detail
+    ax_phys = fig.add_subplot(gs[1, 2])       # P4: ODE residual
 
     for ax in (ax_full, ax_train, ax_ic, ax_phys):
         style_ax(ax)
@@ -227,15 +228,15 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
     ax_full.plot(t_plot_full, np.clip(y_ml, -3, 3),
                  color=RED,   lw=2.0, ls="--", zorder=3,
                  label=f"Std ML          train RMSE={m['rmse_ml_train']:.4f}  "
-                       f"extrap={m['rmse_ml_extrap']:.4f}")
+                 f"extrap={m['rmse_ml_extrap']:.4f}")
     ax_full.plot(t_plot_full, y_ext,
                  color=GREEN, lw=2.0, zorder=3,
                  label=f"PINN ext.       train RMSE={m['rmse_pinn_ext_phys_train']:.4f}  "
-                       f"extrap={m['rmse_pinn_ext_phys_extrap']:.4f}")
+                 f"extrap={m['rmse_pinn_ext_phys_extrap']:.4f}")
     ax_full.plot(t_plot_full, y_blind,
                  color=AMBER, lw=2.0, ls="-.", zorder=3,
                  label=f"PINN blind      train RMSE={m['rmse_pinn_blind_train']:.4f}  "
-                       f"extrap={m['rmse_pinn_blind_extrap']:.4f}")
+                 f"extrap={m['rmse_pinn_blind_extrap']:.4f}")
     # Observations and IC — shown prominently
     ax_full.scatter(t_obs_train, y_obs_train,
                     color=BLUE, s=35, zorder=6, alpha=0.75,
@@ -289,7 +290,7 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
     # ── P3: Initial condition enforcement detail ───────────────────────────────
     # Zoom into t ≈ 0 so the IC star and early-time divergence are visible.
     ic_window = min(cfg.t_train * 0.25, 1.0)
-    mask_ic   = t_plot_full <= ic_window
+    mask_ic = t_plot_full <= ic_window
     ax_ic.plot(t_plot_full[mask_ic], y_true_full[mask_ic],
                color=GRAY,  lw=1.8, label="True")
     ax_ic.plot(t_plot_full[mask_ic], y_ml[mask_ic],
@@ -325,8 +326,8 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
 
     # ── P4: ODE residual ──────────────────────────────────────────────────────
     shade_extrap(ax_phys, cfg)
-    r_ml    = pointwise_residual(y_ml,    t_plot_full, cfg)
-    r_ext   = pointwise_residual(y_ext,   t_plot_full, cfg)
+    r_ml = pointwise_residual(y_ml,    t_plot_full, cfg)
+    r_ext = pointwise_residual(y_ext,   t_plot_full, cfg)
     r_blind = pointwise_residual(y_blind, t_plot_full, cfg)
     ax_phys.plot(t_plot_full, r_ml,    color=RED,   lw=1.8, ls="--",
                  label=f"ML          ({m['phys_ml']:.4f})")
@@ -370,7 +371,7 @@ def make_epoch_figure(
     fig_title:   str,
     out_path:    Path,
     clip_y:      bool = False,
-    fig_num:     int  = 3,
+    fig_num:     int = 3,
 ) -> plt.Figure:
     """
     2-column grid of panels, one per snapshot epoch.
@@ -382,10 +383,10 @@ def make_epoch_figure(
     t_plot_full = data["t_plot_full"]
     y_true_full = data["y_true_full"]
 
-    epochs   = sorted(snapshots.keys())
-    n_snap   = len(epochs)
-    n_cols   = 2
-    n_rows   = (n_snap + 1) // n_cols
+    epochs = sorted(snapshots.keys())
+    n_snap = len(epochs)
+    n_cols = 2
+    n_rows = (n_snap + 1) // n_cols
 
     fig, axes = plt.subplots(
         n_rows, n_cols,
@@ -413,7 +414,8 @@ def make_epoch_figure(
         ax.plot(t_plot_full, y_pred,      color=model_color, lw=2.0,
                 label=f"{model_label}  RMSE={err:.4f}")
         ax.axvspan(cfg.t_train, cfg.t_extrap, color=GRAY, alpha=0.10, zorder=0)
-        ax.axvline(cfg.t_train,               color=GRAY, lw=0.8, ls="--", alpha=0.5)
+        ax.axvline(cfg.t_train,               color=GRAY,
+                   lw=0.8, ls="--", alpha=0.5)
 
         # Train observations (noisy measurements only — val grid not plotted)
         ax.scatter(t_obs_train, y_obs_train,
@@ -528,7 +530,7 @@ def main() -> None:
     raw = torch.load(results_path, map_location="cpu", weights_only=False)
 
     cfg: DamperConfig = raw["config"]
-    data              = raw["data"]
+    data = raw["data"]
 
     print(f"  Config   : m={cfg.mass}  c={cfg.damping}  k={cfg.stiffness}  "
           f"ζ={cfg.zeta:.4f}  ω₀={cfg.omega_0:.4f}  ωd={cfg.omega_d:.4f}")
@@ -536,8 +538,10 @@ def main() -> None:
           f"Val grid : N={len(data['t_obs_val'])} "
           f"(dense, noiseless — early-stopping only, not plotted)")
     print(f"  Snapshots ML        : {sorted(raw['snaps_ml'].keys())}")
-    print(f"  Snapshots PINN ext  : {sorted(raw['snaps_pinn_ext_phys'].keys())}")
-    print(f"  Snapshots PINN blind: {sorted(raw['snaps_pinn_blind'].keys())}\n")
+    print(
+        f"  Snapshots PINN ext  : {sorted(raw['snaps_pinn_ext_phys'].keys())}")
+    print(
+        f"  Snapshots PINN blind: {sorted(raw['snaps_pinn_blind'].keys())}\n")
 
     bundle = {
         "cfg":                  cfg,
@@ -556,8 +560,8 @@ def main() -> None:
     }
 
     # Predictors — weights loaded per-snapshot inside make_epoch_figure
-    pred_ml    = Predictor(cfg)
-    pred_ext   = Predictor(cfg)
+    pred_ml = Predictor(cfg)
+    pred_ext = Predictor(cfg)
     pred_blind = Predictor(cfg)
 
     tag = f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}"
@@ -570,59 +574,59 @@ def main() -> None:
 
     print("Generating Figure 3 — Standard ML epoch snapshots …")
     make_epoch_figure(
-        snapshots   = bundle["snaps_ml"],
-        cfg         = cfg,
-        data        = data,
-        pred        = pred_ml,
-        model_color = RED,
-        model_label = "Std ML",
-        fig_title   = (
+        snapshots=bundle["snaps_ml"],
+        cfg=cfg,
+        data=data,
+        pred=pred_ml,
+        model_color=RED,
+        model_label="Std ML",
+        fig_title=(
             f"Standard ML — trajectory evolution across epochs  "
             f"[device={bundle['device_str']}]\n"
             f"m={cfg.mass}  c={cfg.damping}  k={cfg.stiffness}  |  "
             "Data loss only — no physics enforcement, no IC constraint"
         ),
-        out_path    = out_dir / f"{tag}_fig3_ml_epochs.png",
-        clip_y      = True,
-        fig_num     = 3,
+        out_path=out_dir / f"{tag}_fig3_ml_epochs.png",
+        clip_y=True,
+        fig_num=3,
     )
 
     print("Generating Figure 4 — PINN (ext. physics) epoch snapshots …")
     make_epoch_figure(
-        snapshots   = bundle["snaps_pinn_ext_phys"],
-        cfg         = cfg,
-        data        = data,
-        pred        = pred_ext,
-        model_color = GREEN,
-        model_label = "PINN ext.",
-        fig_title   = (
+        snapshots=bundle["snaps_pinn_ext_phys"],
+        cfg=cfg,
+        data=data,
+        pred=pred_ext,
+        model_color=GREEN,
+        model_label="PINN ext.",
+        fig_title=(
             f"PINN (ext. physics) — trajectory evolution across epochs  "
             f"[device={bundle['device_str']}]\n"
             f"m={cfg.mass}  c={cfg.damping}  k={cfg.stiffness}  |  "
             f"Collocation extends to t_extrap={cfg.t_extrap}"
         ),
-        out_path    = out_dir / f"{tag}_fig4_pinn_ext_epochs.png",
-        clip_y      = False,
-        fig_num     = 4,
+        out_path=out_dir / f"{tag}_fig4_pinn_ext_epochs.png",
+        clip_y=False,
+        fig_num=4,
     )
 
     print("Generating Figure 5 — PINN (blind) epoch snapshots …")
     make_epoch_figure(
-        snapshots   = bundle["snaps_pinn_blind"],
-        cfg         = cfg,
-        data        = data,
-        pred        = pred_blind,
-        model_color = AMBER,
-        model_label = "PINN blind",
-        fig_title   = (
+        snapshots=bundle["snaps_pinn_blind"],
+        cfg=cfg,
+        data=data,
+        pred=pred_blind,
+        model_color=AMBER,
+        model_label="PINN blind",
+        fig_title=(
             f"PINN (blind) — trajectory evolution across epochs  "
             f"[device={bundle['device_str']}]\n"
             f"m={cfg.mass}  c={cfg.damping}  k={cfg.stiffness}  |  "
             f"Collocation only in training window [0, {cfg.t_train}]"
         ),
-        out_path    = out_dir / f"{tag}_fig5_pinn_blind_epochs.png",
-        clip_y      = False,
-        fig_num     = 5,
+        out_path=out_dir / f"{tag}_fig5_pinn_blind_epochs.png",
+        clip_y=False,
+        fig_num=5,
     )
 
     print(f"\n  All figures written to  {out_dir}/")

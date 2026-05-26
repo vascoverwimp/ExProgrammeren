@@ -8,34 +8,37 @@ import numpy as np
 def search_learning_rate():
     # Define a range of learning rates to search over
     # learning_rates = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e-0]  # Search over a range of learning rates
-    learning_rates =10**np.linspace(-3.9, -2.1, num=15) # Search over a range of learning rates from 10^-3.5 to 10^-1.5: [3.16e-4, 5.62e-4, 1e-3, 1.78e-3, 3.16e-3, 5.62e-3, 1e-2, 1.78e-2, 3.16e-2]
+    # Search over a range of learning rates from 10^-3.5 to 10^-1.5: [3.16e-4, 5.62e-4, 1e-3, 1.78e-3, 3.16e-3, 5.62e-3, 1e-2, 1.78e-2, 3.16e-2]
+    learning_rates = 10**np.linspace(-3.9, -2.1, num=15)
     plot_RMSE = []  # To store RMSE values for plotting later
     device = get_device()
-    data = generate_data(BurgerConfig(), device=device)  # Generate data once, can be reused for all learning rates
+    # Generate data once, can be reused for all learning rates
+    data = generate_data(BurgerConfig(), device=device)
     default_cfg = BurgerConfig()
     out_dir = Path(default_cfg.out_dir)
-    ckpt_pinn_blind = out_dir / f"{default_cfg.situation}_{default_cfg.v:.1e}_{default_cfg.suffix_ckpt_pinn_blind}"
+    ckpt_pinn_blind = out_dir / \
+        f"{default_cfg.situation}_{default_cfg.v:.1e}_{default_cfg.suffix_ckpt_pinn_blind}"
     best_rmse = float('inf')
     best_lr = None
     for lr in learning_rates:
-        cfg = BurgerConfig(lr = lr)
-        
+        cfg = BurgerConfig(lr=lr)
 
         print(f"Testing learning rate: {lr}")
         model_pinn_blind = FCNet.from_config(cfg)
-        train_model(model_pinn_blind, data=data, cfg=cfg, device=device, use_physics=True, extrapolated_physics=False,         label       = "PINN (blind)",
-        ckpt_path   = ckpt_pinn_blind)
+        train_model(model_pinn_blind, data=data, cfg=cfg, device=device, use_physics=True, extrapolated_physics=False,         label="PINN (blind)",
+                    ckpt_path=ckpt_pinn_blind)
         rmse = evaluate_blind(cfg.situation, cfg.v)
         print(f"RMSE for learning rate {lr}: {rmse:.4f}")
         plot_RMSE.append((lr, rmse))
         if rmse < best_rmse:
             best_rmse = rmse
             best_lr = lr
-            
+
     print(f"Best learning rate: {best_lr} with RMSE: {best_rmse}")
     # Plot the results
     plt.figure(figsize=(8, 5))
-    plt.plot([lr for lr, rmse in plot_RMSE], [rmse for lr, rmse in plot_RMSE], marker='o')
+    plt.plot([lr for lr, rmse in plot_RMSE], [
+             rmse for lr, rmse in plot_RMSE], marker='o')
     plt.xscale('log')
     plt.xlabel('Learning Rate')
     plt.ylabel('RMSE')
@@ -43,37 +46,43 @@ def search_learning_rate():
     plt.grid(True)
     plt.savefig(out_dir / f"learning_rate_search.png")
 
+
 def search_weights():
-    ic_weights = 10**np.linspace(0.1, 0.9, num=4)  
+    ic_weights = 10**np.linspace(0.1, 0.9, num=4)
     phys_weights = 10**np.linspace(-0.9, -0.1, num=4)
     plot_RMSE = []  # To store RMSE values for plotting later
     device = get_device()
     default_cfg = BurgerConfig()
-    data = generate_data(default_cfg, device=device)  # Generate data once, can be reused for all weight combinations
+    # Generate data once, can be reused for all weight combinations
+    data = generate_data(default_cfg, device=device)
     out_dir = Path(default_cfg.out_dir)
-    ckpt_pinn_blind = out_dir / f"{default_cfg.situation}_{default_cfg.v:.1e}_{default_cfg.suffix_ckpt_pinn_blind}"
+    ckpt_pinn_blind = out_dir / \
+        f"{default_cfg.situation}_{default_cfg.v:.1e}_{default_cfg.suffix_ckpt_pinn_blind}"
     best_rmse = float('inf')
 
     for ic_weight in ic_weights:
         for phys_weight in phys_weights:
             cfg = BurgerConfig(lambda_ic=ic_weight, lambda_phys=phys_weight)
-            print(f"Testing initial condition weight: {ic_weight}, physics weight: {phys_weight}")
+            print(
+                f"Testing initial condition weight: {ic_weight}, physics weight: {phys_weight}")
             model_pinn_blind = FCNet.from_config(cfg)
-            train_model(model_pinn_blind, data=data, cfg=cfg, device=device, use_physics=True, extrapolated_physics=False,         label       = "PINN (blind)",
-            ckpt_path   = ckpt_pinn_blind)
+            train_model(model_pinn_blind, data=data, cfg=cfg, device=device, use_physics=True, extrapolated_physics=False,         label="PINN (blind)",
+                        ckpt_path=ckpt_pinn_blind)
             rmse = evaluate_blind(cfg.situation, cfg.v)
-            print(f"RMSE for ic_weight {ic_weight}, phys_weight {phys_weight}: {rmse:.4f}")
+            print(
+                f"RMSE for ic_weight {ic_weight}, phys_weight {phys_weight}: {rmse:.4f}")
             plot_RMSE.append((ic_weight, phys_weight, rmse))
             if rmse < best_rmse:
                 best_rmse = rmse
                 best_ic = ic_weight
                 best_phys = phys_weight
-    print(f"Best initial condition weight: {best_ic}, Best physics weight: {best_phys} with RMSE: {best_rmse}")
+    print(
+        f"Best initial condition weight: {best_ic}, Best physics weight: {best_phys} with RMSE: {best_rmse}")
     # Plot the results
     plt.figure(figsize=(8, 5))
-    plt.scatter([ic_weight for ic_weight, phys_weight, rmse in plot_RMSE], 
-                [phys_weight for ic_weight, phys_weight, rmse in plot_RMSE], 
-                c=[rmse for ic_weight, phys_weight, rmse in plot_RMSE], 
+    plt.scatter([ic_weight for ic_weight, phys_weight, rmse in plot_RMSE],
+                [phys_weight for ic_weight, phys_weight, rmse in plot_RMSE],
+                c=[rmse for ic_weight, phys_weight, rmse in plot_RMSE],
                 cmap='viridis', marker='o')
     plt.xscale('log')
     plt.yscale('log')
@@ -85,36 +94,41 @@ def search_weights():
     plt.savefig(out_dir / f"weight_search.png")
     plt.show()
 
+
 def search_num_collocations():
     # num_collocations = [10, 20, 50, 100, 200, 300, 400, 500]
-    num_collocations = np.linspace(210, 490, 15, dtype=int)   # Search over a range of numbers of collocation points
+    # Search over a range of numbers of collocation points
+    num_collocations = np.linspace(210, 490, 15, dtype=int)
     plot_RMSE = []  # To store RMSE values for plotting later
     device = get_device()
     default_cfg = BurgerConfig()
 
     out_dir = Path(default_cfg.out_dir)
-    ckpt_pinn_blind = out_dir / f"{default_cfg.situation}_{default_cfg.v:.1e}_{default_cfg.suffix_ckpt_pinn_blind}"
+    ckpt_pinn_blind = out_dir / \
+        f"{default_cfg.situation}_{default_cfg.v:.1e}_{default_cfg.suffix_ckpt_pinn_blind}"
     best_rmse = float('inf')
     best_num_col = None
     for num_col in num_collocations:
         cfg = BurgerConfig(n_col=num_col)
-        data = generate_data(cfg, device=device) 
+        data = generate_data(cfg, device=device)
 
         print(f"Testing number of collocation points: {num_col}")
         model_pinn_blind = FCNet.from_config(cfg)
-        train_model(model_pinn_blind, data=data, cfg=cfg, device=device, use_physics=True, extrapolated_physics=False,         label       = "PINN (blind)",
-        ckpt_path   = ckpt_pinn_blind)
+        train_model(model_pinn_blind, data=data, cfg=cfg, device=device, use_physics=True, extrapolated_physics=False,         label="PINN (blind)",
+                    ckpt_path=ckpt_pinn_blind)
         rmse = evaluate_blind(cfg.situation, cfg.v)
         print(f"RMSE for number of collocation points {num_col}: {rmse:.4f}")
         plot_RMSE.append((num_col, rmse))
         if rmse < best_rmse:
             best_rmse = rmse
             best_num_col = num_col
-            
-    print(f"Best number of collocation points: {best_num_col} with RMSE: {best_rmse}")
+
+    print(
+        f"Best number of collocation points: {best_num_col} with RMSE: {best_rmse}")
     # Plot the results
     plt.figure(figsize=(8, 5))
-    plt.plot([num_col for num_col, rmse in plot_RMSE], [rmse for num_col, rmse in plot_RMSE], marker='o')
+    plt.plot([num_col for num_col, rmse in plot_RMSE], [
+             rmse for num_col, rmse in plot_RMSE], marker='o')
     plt.xlabel('Number of Collocation Points')
     plt.ylabel('RMSE')
     plt.title('Number of Collocation Points vs RMSE for PINN (blind)')

@@ -64,22 +64,28 @@ class DamperConfig:
     t_extrap: float = 10.0   # end of extrapolation window [s]
 
     # ── Data ─────────────────────────────────────────────────────────────────
-    n_obs:       int   = 30    # total noisy observations (before split)
-    n_bins:      int   = 5    # bins for stratisfying validation split along time axis (unused)
-    n_obs_per_epoch: int = 10  # number of training observations to use per epoch (for stochasticity, unused)
-    n_val:       int   = 200     # number of observations in the validation set, >> n_obs(for early stopping)
-    val_fraction: float = 0.2  # fraction of observations held out for val (unused, we use n_val instead)
+    n_obs:       int = 30    # total noisy observations (before split)
+    # bins for stratisfying validation split along time axis (unused)
+    n_bins:      int = 5
+    # number of training observations to use per epoch (for stochasticity, unused)
+    n_obs_per_epoch: int = 10
+    # number of observations in the validation set, >> n_obs(for early stopping)
+    n_val:       int = 200
+    # fraction of observations held out for val (unused, we use n_val instead)
+    val_fraction: float = 0.2
     sigma:       float = 0.05  # measurement noise std dev
-    n_col:       int   = 80   # collocation points (physics residual)
-    n_col_pool:  int   = 10000 # pool of collocation points to sample from each epoch
-    seed:        int   = 42    # global RNG seed
+    n_col:       int = 80   # collocation points (physics residual)
+    n_col_pool:  int = 10000  # pool of collocation points to sample from each epoch
+    seed:        int = 42    # global RNG seed
 
     # ── Plotting sampling ───────────────────────────────────────────────────────────────
-    n_plot_t: int = 500  # temporal resolution for all plots (including snapshots)
+    # temporal resolution for all plots (including snapshots)
+    n_plot_t: int = 500
 
     # ── PINN loss weights ─────────────────────────────────────────────────────
     lambda_phys: float = 1.0  # physics-residual weight
-    lambda_ic:   float = 13.33521432163324  # initial-condition weight (>> lambda_phys)
+    # initial-condition weight (>> lambda_phys)
+    lambda_ic:   float = 13.33521432163324
 
     # ── Network architecture ──────────────────────────────────────────────────
     hidden:   int = 32   # neurons per hidden layer
@@ -89,8 +95,9 @@ class DamperConfig:
     beta1:    float = 0.9    # Adam beta1
     beta2:    float = 0.999  # Adam beta2
     lr:       float = 0.00316   # initial Adam learning rate
-    lr_param: float = 0.00630957344480193   # learning rate for physical parameters (zeta_hat, w0_hat)
-    lr_step:  int   = 3000   # StepLR: decay every this many epochs
+    # learning rate for physical parameters (zeta_hat, w0_hat)
+    lr_param: float = 0.00630957344480193
+    lr_step:  int = 3000   # StepLR: decay every this many epochs
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
 
     # ── Training loop ─────────────────────────────────────────────────────────
@@ -99,7 +106,7 @@ class DamperConfig:
     log_every:   int = 100     # history-dict write frequency (epochs)
 
     # ── Early stopping ────────────────────────────────────────────────────────
-    patience:  int   = 30     # patience in units of log_every
+    patience:  int = 30     # patience in units of log_every
     min_delta: float = 1e-6   # minimum improvement to reset the counter
 
     # ── Snapshot epochs for trajectory plots ─────────────────────────────────
@@ -108,13 +115,16 @@ class DamperConfig:
     )
 
     # ── Output paths ──────────────────────────────────────────────────────────
-    out_dir:    str = "./DampedReversePINN/Output"                  # directory for all saved files
-    suffix_results_pt: str = "training_results.pt"  # torch.save bundle 
-    suffix_ckpt_pinn_ext_phys:  str = "best_pinn_ext_phys.pt"         # best-so-far extended physics PINN checkpoint
-    suffix_ckpt_pinn_blind:    str = "best_pinn_blind.pt"           # best-so-far blind PINN checkpoint
-
+    # directory for all saved files
+    out_dir:    str = "./DampedReversePINN/Output"
+    suffix_results_pt: str = "training_results.pt"  # torch.save bundle
+    # best-so-far extended physics PINN checkpoint
+    suffix_ckpt_pinn_ext_phys:  str = "best_pinn_ext_phys.pt"
+    # best-so-far blind PINN checkpoint
+    suffix_ckpt_pinn_blind:    str = "best_pinn_blind.pt"
 
     # ── Derived quantities (read-only) ────────────────────────────────────────
+
     @property
     def omega_0(self) -> float:
         return float(np.sqrt(self.stiffness / self.mass))
@@ -155,8 +165,10 @@ class FCNet(nn.Module):
             layers += [nn.Linear(hidden, hidden), nn.Tanh()]
         layers += [nn.Linear(hidden, 1)]
         self.net = nn.Sequential(*layers)
-        self.log_zeta_hat = nn.Parameter(torch.tensor([np.log10(ini_guess_zeta)], requires_grad=True))
-        self.log_w0_hat = nn.Parameter(torch.tensor([np.log10(ini_guess_w0)], requires_grad=True))
+        self.log_zeta_hat = nn.Parameter(torch.tensor(
+            [np.log10(ini_guess_zeta)], requires_grad=True))
+        self.log_w0_hat = nn.Parameter(torch.tensor(
+            [np.log10(ini_guess_w0)], requires_grad=True))
 
     def forward(self, t: torch.Tensor) -> torch.Tensor:
         return self.net(t)
@@ -260,7 +272,7 @@ class Predictor:
         Approximate ODE residual via numpy central finite differences.
         Trims 5 boundary points on each side where finite-diff is inaccurate.
         """
-        dy  = np.gradient(y, t)
+        dy = np.gradient(y, t)
         d2y = np.gradient(dy, t)
-        r   = cfg.mass * d2y + cfg.damping * dy + cfg.stiffness * y
+        r = cfg.mass * d2y + cfg.damping * dy + cfg.stiffness * y
         return float(np.sqrt(np.mean(r[5:-5] ** 2)))

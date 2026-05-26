@@ -40,15 +40,15 @@ from model import BurgerConfig, Predictor
 # COLOUR PALETTE
 # =============================================================================
 
-BLUE   = "#378ADD"   # Std ML
-TEAL   = "#1D9E75"   # PINN ext. physics
-RED    = "#FF2D2D"   # PINN blind
+BLUE = "#378ADD"   # Std ML
+TEAL = "#1D9E75"   # PINN ext. physics
+RED = "#FF2D2D"   # PINN blind
 ORANGE = "#EF9F27"   # extrapolation region highlight
-GRAY   = "#888780"   # true solution / neutral
-LGRAY  = "#D3D1C7"   # spines
-BG     = "#FAFAF8"   # figure background
-PANEL  = "#F1EFE8"   # axes background
-SHOCK  = "#FF4C4C"   # shockwave marker
+GRAY = "#888780"   # true solution / neutral
+LGRAY = "#D3D1C7"   # spines
+BG = "#FAFAF8"   # figure background
+PANEL = "#F1EFE8"   # axes background
+SHOCK = "#FF4C4C"   # shockwave marker
 
 CMAP_FIELD = "RdBu_r"
 CMAP_ERROR = "Oranges"
@@ -103,7 +103,7 @@ def _heatmap(
     _colorbar(ax, im, label=cbar_label)
 
     t_span = t_vals[-1] - t_vals[0]
-    x_lo   = x_vals[int(len(x_vals) * 0.02)]
+    x_lo = x_vals[int(len(x_vals) * 0.02)]
 
     ax.axhline(cfg.t_train, color="white", lw=1.2, ls="--", alpha=0.9)
     ax.text(x_lo, cfg.t_train + 0.02 * t_span,
@@ -138,10 +138,10 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
 
     ML has no physics or IC loss, so those lines only appear for the two PINNs.
     """
-    cfg  = bundle["cfg"]
+    cfg = bundle["cfg"]
     h_ml = bundle["hist_ml"]
     h_ext = bundle["hist_pinn_ext_phys"]
-    h_bl  = bundle["hist_pinn_blind"]
+    h_bl = bundle["hist_pinn_blind"]
 
     # One colour per loss category
     COLORS = {
@@ -228,14 +228,14 @@ def make_slice_figure(bundle: dict, out_path: Path,
     Laid out in 3 columns so the grid is compact.  Panels in the
     extrapolation window get a warm background; the shock panel gets red.
     """
-    cfg            = bundle["cfg"]
-    data           = bundle["data"]
+    cfg = bundle["cfg"]
+    data = bundle["data"]
     time_shockwave = bundle.get("time_shockwave")
 
     t_vals, x_vals, grid_true = _to_grid(data["u_true_full"],           data)
-    _, _,           grid_ext  = _to_grid(bundle["u_pinn_ext_phys_full"], data)
-    _, _,           grid_bl   = _to_grid(bundle["u_pinn_blind_full"],    data)
-    _, _,           grid_ml   = _to_grid(bundle["u_ml_full"],            data)
+    _, _,           grid_ext = _to_grid(bundle["u_pinn_ext_phys_full"], data)
+    _, _,           grid_bl = _to_grid(bundle["u_pinn_blind_full"],    data)
+    _, _,           grid_ml = _to_grid(bundle["u_ml_full"],            data)
 
     slice_times = np.linspace(t_vals[1], t_vals[-1], n_slices)
     n_tr = int(np.sum(slice_times <= cfg.t_train))
@@ -243,7 +243,7 @@ def make_slice_figure(bundle: dict, out_path: Path,
     # Ensure the shock time is always shown as one of the slices
     if time_shockwave is not None and not np.isinf(time_shockwave):
         i_shock = int(np.argmin(np.abs(t_vals - time_shockwave)))
-        t_snap  = t_vals[i_shock]
+        t_snap = t_vals[i_shock]
         if not np.any(np.isclose(slice_times, t_snap)):
             diffs = np.abs(slice_times[:max(n_tr, 1)] - t_snap)
             slice_times[int(np.argmin(diffs))] = t_snap
@@ -257,10 +257,10 @@ def make_slice_figure(bundle: dict, out_path: Path,
     axes_flat = axes.flatten()
 
     for idx, t_target in enumerate(slice_times):
-        ax     = axes_flat[idx]
+        ax = axes_flat[idx]
         style_ax(ax)
-        i_t    = int(np.argmin(np.abs(t_vals - t_target)))
-        t_act  = t_vals[i_t]
+        i_t = int(np.argmin(np.abs(t_vals - t_target)))
+        t_act = t_vals[i_t]
         in_ext = t_act > cfg.t_train
         is_shock = (time_shockwave is not None and not np.isinf(time_shockwave)
                     and np.isclose(t_act, time_shockwave,
@@ -275,17 +275,21 @@ def make_slice_figure(bundle: dict, out_path: Path,
         rmse_b = float(np.sqrt(np.mean((u_bp - u_tr) ** 2)))
         rmse_m = float(np.sqrt(np.mean((u_mp - u_tr) ** 2)))
 
-        ax.plot(x_vals, u_tr, color=GRAY, lw=2.2, label="True",                                    zorder=5)
-        ax.plot(x_vals, u_ep, color=TEAL, lw=1.8, label=f"PINN ext.   RMSE={rmse_e:.4f}",         zorder=4)
-        ax.plot(x_vals, u_bp, color=RED,  lw=1.8, ls="--", label=f"PINN blind  RMSE={rmse_b:.4f}", zorder=3)
-        ax.plot(x_vals, u_mp, color=BLUE, lw=1.5, ls=":",  label=f"Std ML      RMSE={rmse_m:.4f}", zorder=2)
+        ax.plot(x_vals, u_tr, color=GRAY, lw=2.2,
+                label="True",                                    zorder=5)
+        ax.plot(x_vals, u_ep, color=TEAL, lw=1.8,
+                label=f"PINN ext.   RMSE={rmse_e:.4f}",         zorder=4)
+        ax.plot(x_vals, u_bp, color=RED,  lw=1.8, ls="--",
+                label=f"PINN blind  RMSE={rmse_b:.4f}", zorder=3)
+        ax.plot(x_vals, u_mp, color=BLUE, lw=1.5, ls=":",
+                label=f"Std ML      RMSE={rmse_m:.4f}", zorder=2)
 
         if is_shock:
             i_steep = int(np.argmax(np.abs(np.gradient(u_tr, x_vals))))
             ax.axvline(x_vals[i_steep], color=SHOCK, lw=1.2, ls="--",
                        alpha=0.8, label="shock front (inviscid)")
 
-        region    = "extrap" if in_ext else "train"
+        region = "extrap" if in_ext else "train"
         col_title = SHOCK if is_shock else (ORANGE if in_ext else TEAL)
         ax.set_title(f"t = {t_act:.3f} s  [{region}]",
                      fontsize=9, loc="left", pad=4, color=col_title)
@@ -325,34 +329,34 @@ def make_slice_figure(bundle: dict, out_path: Path,
 #  Row 1:  ext err |  blind err       |  ML err            |  (empty)
 
 def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
-    cfg            = bundle["cfg"]
-    data           = bundle["data"]
-    m              = bundle["metrics"]
+    cfg = bundle["cfg"]
+    data = bundle["data"]
+    m = bundle["metrics"]
     time_shockwave = bundle.get("time_shockwave")
 
     t_vals, x_vals, grid_true = _to_grid(data["u_true_full"],           data)
-    _, _, grid_ext             = _to_grid(bundle["u_pinn_ext_phys_full"], data)
-    _, _, grid_bl              = _to_grid(bundle["u_pinn_blind_full"],    data)
-    _, _, grid_ml              = _to_grid(bundle["u_ml_full"],            data)
+    _, _, grid_ext = _to_grid(bundle["u_pinn_ext_phys_full"], data)
+    _, _, grid_bl = _to_grid(bundle["u_pinn_blind_full"],    data)
+    _, _, grid_ml = _to_grid(bundle["u_ml_full"],            data)
 
     err_ext = np.abs(grid_ext - grid_true)
-    err_bl  = np.abs(grid_bl  - grid_true)
-    err_ml  = np.abs(grid_ml  - grid_true)
+    err_bl = np.abs(grid_bl - grid_true)
+    err_ml = np.abs(grid_ml - grid_true)
 
-    u_abs          = np.nanmax(np.abs(grid_true))
+    u_abs = np.nanmax(np.abs(grid_true))
     vmin_u, vmax_u = -u_abs, u_abs
-    vmax_err       = max(err_ext.max(), err_bl.max(), err_ml.max())
+    vmax_err = max(err_ext.max(), err_bl.max(), err_ml.max())
 
     fig = plt.figure(figsize=(20, 10))
     fig.patch.set_facecolor(BG)
-    gs  = gridspec.GridSpec(2, 4, figure=fig,
-                            hspace=0.55, wspace=0.3,
-                            left=0.06, right=0.97, top=0.91, bottom=0.07)
+    gs = gridspec.GridSpec(2, 4, figure=fig,
+                           hspace=0.55, wspace=0.3,
+                           left=0.06, right=0.97, top=0.91, bottom=0.07)
 
     ax_true = fig.add_subplot(gs[0, 0])
-    ax_ext  = fig.add_subplot(gs[0, 3])
-    ax_bl   = fig.add_subplot(gs[0, 2])
-    ax_ml   = fig.add_subplot(gs[0, 1])
+    ax_ext = fig.add_subplot(gs[0, 3])
+    ax_bl = fig.add_subplot(gs[0, 2])
+    ax_ml = fig.add_subplot(gs[0, 1])
     ax_eerr = fig.add_subplot(gs[1, 3])
     ax_berr = fig.add_subplot(gs[1, 2])
     ax_merr = fig.add_subplot(gs[1, 1])
@@ -402,20 +406,20 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
 #    [PINN ext field] [PINN ext |err|] [PINN blind field] [PINN blind |err|]
 
 def make_epoch_figure(bundle: dict, out_path: Path) -> plt.Figure:
-    cfg            = bundle["cfg"]
-    data           = bundle["data"]
-    pred_ext       = bundle["pred_ext"]
-    pred_bl        = bundle["pred_bl"]
-    snaps_ext      = bundle["snaps_pinn_ext_phys"]
-    snaps_bl       = bundle["snaps_pinn_blind"]
+    cfg = bundle["cfg"]
+    data = bundle["data"]
+    pred_ext = bundle["pred_ext"]
+    pred_bl = bundle["pred_bl"]
+    snaps_ext = bundle["snaps_pinn_ext_phys"]
+    snaps_bl = bundle["snaps_pinn_blind"]
     time_shockwave = bundle.get("time_shockwave")
 
     t_vals, x_vals, grid_true = _to_grid(data["u_true_full"], data)
-    x_flat      = data["x_flattened_full"]
-    t_flat      = data["t_flattened_full"]
+    x_flat = data["x_flattened_full"]
+    t_flat = data["t_flattened_full"]
     u_true_flat = data["u_true_full"]
 
-    u_abs          = np.nanmax(np.abs(grid_true))
+    u_abs = np.nanmax(np.abs(grid_true))
     vmin_u, vmax_u = -u_abs, u_abs
 
     epochs = sorted(set(snaps_ext.keys()) | set(snaps_bl.keys()))
@@ -429,7 +433,8 @@ def make_epoch_figure(bundle: dict, out_path: Path) -> plt.Figure:
             if ep in snaps:
                 pred.load_state_dict(snaps[ep])
                 u_ep = pred.predict(x_flat, t_flat)
-                vmax_err = max(vmax_err, float(np.abs(u_ep - u_true_flat).max()))
+                vmax_err = max(vmax_err, float(
+                    np.abs(u_ep - u_true_flat).max()))
 
     fig, axes = plt.subplots(n_snap, 4, figsize=(22, n_snap * 3.2))
     fig.patch.set_facecolor(BG)
@@ -438,8 +443,8 @@ def make_epoch_figure(bundle: dict, out_path: Path) -> plt.Figure:
 
     field_kw = dict(cfg=cfg, vmin=vmin_u, vmax=vmax_u,
                     time_shockwave=time_shockwave)
-    err_kw   = dict(cfg=cfg, vmin=0, vmax=vmax_err, cmap=CMAP_ERROR,
-                    cbar_label="|error|", time_shockwave=time_shockwave)
+    err_kw = dict(cfg=cfg, vmin=0, vmax=vmax_err, cmap=CMAP_ERROR,
+                  cbar_label="|error|", time_shockwave=time_shockwave)
 
     for row, epoch in enumerate(epochs):
         ax_ep, ax_ee, ax_bp, ax_be = axes[row]
@@ -450,7 +455,7 @@ def make_epoch_figure(bundle: dict, out_path: Path) -> plt.Figure:
             u_ep_flat = pred_ext.predict(x_flat, t_flat)
             _, _, g_ep = _to_grid(u_ep_flat,                      data)
             _, _, g_ee = _to_grid(np.abs(u_ep_flat - u_true_flat), data)
-            rmse_ep    = Predictor.rmse(u_ep_flat, u_true_flat)
+            rmse_ep = Predictor.rmse(u_ep_flat, u_true_flat)
             _heatmap(ax_ep, t_vals, x_vals, g_ep,
                      f"PINN ext. — epoch {epoch}  RMSE={rmse_ep:.4f}", **field_kw)
             _heatmap(ax_ee, t_vals, x_vals, g_ee,
@@ -465,7 +470,7 @@ def make_epoch_figure(bundle: dict, out_path: Path) -> plt.Figure:
             u_bp_flat = pred_bl.predict(x_flat, t_flat)
             _, _, g_bp = _to_grid(u_bp_flat,                      data)
             _, _, g_be = _to_grid(np.abs(u_bp_flat - u_true_flat), data)
-            rmse_bp    = Predictor.rmse(u_bp_flat, u_true_flat)
+            rmse_bp = Predictor.rmse(u_bp_flat, u_true_flat)
             _heatmap(ax_bp, t_vals, x_vals, g_bp,
                      f"PINN blind — epoch {epoch}  RMSE={rmse_bp:.4f}", **field_kw)
             _heatmap(ax_be, t_vals, x_vals, g_be,
@@ -546,14 +551,15 @@ def main() -> None:
     raw = torch.load(results_path, map_location="cpu", weights_only=False)
 
     cfg: BurgerConfig = raw["config"]
-    time_shockwave    = raw.get("time_shockwave")
-    data              = raw["data"]
-    t_flat            = data["t_flattened_full"]
-    x_flat            = data["x_flattened_full"]
+    time_shockwave = raw.get("time_shockwave")
+    data = raw["data"]
+    t_flat = data["t_flattened_full"]
+    x_flat = data["x_flattened_full"]
 
     print(f"  Config  : ν={cfg.v}  situation={cfg.situation}  "
           f"x∈[{cfg.x_begin},{cfg.x_end}]  t∈[{cfg.t0},{cfg.t_extrap}]")
-    print(f"  Grid    : {len(np.unique(t_flat))} t-pts × {len(np.unique(x_flat))} x-pts")
+    print(
+        f"  Grid    : {len(np.unique(t_flat))} t-pts × {len(np.unique(x_flat))} x-pts")
     print(f"  Snaps   : ext={sorted(raw['snaps_pinn_ext_phys'].keys())}  "
           f"blind={sorted(raw['snaps_pinn_blind'].keys())}")
     if time_shockwave is not None:
@@ -562,7 +568,7 @@ def main() -> None:
 
     pred_ext = Predictor(cfg, checkpoint_path=str(
         Path(cfg.out_dir) / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_ckpt_pinn_ext_phys}"))
-    pred_bl  = Predictor(cfg, checkpoint_path=str(
+    pred_bl = Predictor(cfg, checkpoint_path=str(
         Path(cfg.out_dir) / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_ckpt_pinn_blind}"))
 
     bundle = {
@@ -589,7 +595,8 @@ def main() -> None:
     print("Generating Figure 1 — loss progression …")
     make_loss_figure(bundle, out_dir / f"{tag}_fig1_loss.png")
 
-    print(f"Generating Figure 2 — time-slice profiles ({args.n_slices} slices) …")
+    print(
+        f"Generating Figure 2 — time-slice profiles ({args.n_slices} slices) …")
     make_slice_figure(bundle, out_dir / f"{tag}_fig2_slices.png",
                       n_slices=args.n_slices)
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.15)  23 MAY 2026 17:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.15)  26 MAY 2026 11:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1726,7 +1726,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 <figures/viscosity_predictions_Step.png, id=600, 578.16pt x 361.35pt>
 File: figures/viscosity_predictions_Step.png Graphic file (type png)
 <use figures/viscosity_predictions_Step.png>
-Package pdftex.def Info: figures/viscosity_predictions_Step.png  used on input line 1089.
+Package pdftex.def Info: figures/viscosity_predictions_Step.png  used on input line 1090.
 (pdftex.def)             Requested size: 448.4407pt x 280.27493pt.
 
 
@@ -1740,12 +1740,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 <figures/viscosity_predictions_Gaussian.png, id=609, 578.16pt x 361.35pt>
 File: figures/viscosity_predictions_Gaussian.png Graphic file (type png)
 <use figures/viscosity_predictions_Gaussian.png>
-Package pdftex.def Info: figures/viscosity_predictions_Gaussian.png  used on input line 1097.
+Package pdftex.def Info: figures/viscosity_predictions_Gaussian.png  used on input line 1098.
 (pdftex.def)             Requested size: 448.4407pt x 280.27493pt.
 <figures/viscosity_predictions_N-wave.png, id=610, 578.16pt x 361.35pt>
 File: figures/viscosity_predictions_N-wave.png Graphic file (type png)
 <use figures/viscosity_predictions_N-wave.png>
-Package pdftex.def Info: figures/viscosity_predictions_N-wave.png  used on input line 1105.
+Package pdftex.def Info: figures/viscosity_predictions_N-wave.png  used on input line 1106.
 (pdftex.def)             Requested size: 448.4407pt x 280.27493pt.
 
 
@@ -1787,7 +1787,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  83i,12n,87p,1438b,1828s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\vasco\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on Exam_VascoVerwimp_Report.pdf (56 pages, 8375551 bytes).
+Output written on Exam_VascoVerwimp_Report.pdf (56 pages, 8379471 bytes).
 PDF statistics:
  721 PDF objects out of 1000 (max. 8388607)
  151 named destinations out of 1000 (max. 500000)

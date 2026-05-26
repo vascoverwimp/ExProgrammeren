@@ -47,13 +47,13 @@ from model import BurgerConfig, Predictor
 # COLOUR PALETTE
 # =============================================================================
 
-TEAL_BLIND  = "#1D9E75"   # PINN blind prediction
-ORANGE_EXT  = "#EF9F27"   # PINN ext_phys prediction
-GRAY_TRUE   = "#888780"   # true solution / neutral lines
-PURPLE_IC   = "#7F77DD"   # initial conditions
-LGRAY       = "#D3D1C7"   # spines
-BG          = "#FAFAF8"   # figure background
-PANEL       = "#F1EFE8"   # axes background
+TEAL_BLIND = "#1D9E75"   # PINN blind prediction
+ORANGE_EXT = "#EF9F27"   # PINN ext_phys prediction
+GRAY_TRUE = "#888780"   # true solution / neutral lines
+PURPLE_IC = "#7F77DD"   # initial conditions
+LGRAY = "#D3D1C7"   # spines
+BG = "#FAFAF8"   # figure background
+PANEL = "#F1EFE8"   # axes background
 
 CMAP_FIELD = "RdBu_r"    # diverging — for signed velocity field u
 CMAP_ERROR = "Oranges"   # sequential — for |error|
@@ -132,7 +132,8 @@ def _heatmap(
     # Training boundary
     ax.axhline(cfg.t_train, color="white", lw=1.2, ls="--", alpha=0.9)
     ax.text(
-        x_vals[int(len(x_vals) * 0.02)], cfg.t_train + 0.02 * (t_vals[-1] - t_vals[0]),
+        x_vals[int(len(x_vals) * 0.02)], cfg.t_train +
+        0.02 * (t_vals[-1] - t_vals[0]),
         "extrap ↑", color="white", fontsize=7, va="bottom",
     )
 
@@ -142,7 +143,8 @@ def _heatmap(
         if not np.isinf(t_shock) and t_vals[0] <= t_shock <= t_vals[-1]:
             ax.axhline(t_shock, color="#FF6B6B", lw=1.0, ls=":", alpha=0.8)
             ax.text(
-                x_vals[int(len(x_vals) * 0.98)], t_shock + 0.01 * (t_vals[-1] - t_vals[0]),
+                x_vals[int(len(x_vals) * 0.98)], t_shock +
+                0.01 * (t_vals[-1] - t_vals[0]),
                 f"shock→", color="#FF6B6B", fontsize=7, va="bottom", ha="right", fontweight="bold"
             )
 
@@ -163,9 +165,9 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
     log-scale plot.  Each (model, loss-type) combination gets its own colour;
     line style distinguishes the two models (solid = blind, dashed = ext_phys).
     """
-    cfg     = bundle["cfg"]
+    cfg = bundle["cfg"]
     h_blind = bundle["hist_pinn_blind"]
-    h_ext   = bundle["hist_pinn_ext_phys"]
+    h_ext = bundle["hist_pinn_ext_phys"]
 
     # One colour per loss category, shared across both models
     COLORS = {
@@ -192,7 +194,7 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
     style_ax(ax)
 
     for key in ("loss_data", "loss_val", "loss_physics", "loss_ic"):
-        c  = COLORS[key]
+        c = COLORS[key]
         mk = MARKERS[key]
         lbl = LABELS[key]
         ax.semilogy(h_blind["epoch"], h_blind[key],
@@ -235,20 +237,20 @@ def make_nu_evolution_figure(bundle: dict, out_path: Path) -> plt.Figure:
     for both PINN_blind and PINN_ext_phys models.
     """
     cfg: BurgerConfig = bundle["cfg"]
-    snaps_blind    = bundle["snaps_pinn_blind"]
+    snaps_blind = bundle["snaps_pinn_blind"]
     snaps_ext_phys = bundle["snaps_pinn_ext_phys"]
 
     fig, ax = plt.subplots(figsize=(5, 5))
     fig.patch.set_facecolor(BG)
     style_ax(ax)
 
-    epochs_blind    = sorted(snaps_blind.keys())
+    epochs_blind = sorted(snaps_blind.keys())
     epochs_ext_phys = sorted(snaps_ext_phys.keys())
 
-    v_hat_blind    = []
+    v_hat_blind = []
     v_hat_ext_phys = []
 
-    pred_blind    = Predictor(cfg)
+    pred_blind = Predictor(cfg)
     pred_ext_phys = Predictor(cfg)
 
     for ep in epochs_blind:
@@ -269,7 +271,8 @@ def make_nu_evolution_figure(bundle: dict, out_path: Path) -> plt.Figure:
 
     ax.set_xlabel("epoch  (log scale)", fontsize=10)
     ax.set_ylabel("learned ν (v_hat)", fontsize=10)
-    ax.set_title("Viscosity Parameter Evolution", fontsize=11, loc="left", pad=8, color="#444441")
+    ax.set_title("Viscosity Parameter Evolution", fontsize=11,
+                 loc="left", pad=8, color="#444441")
     ax.grid(True, alpha=0.2)
     ax.legend(fontsize=9, framealpha=0.7)
 
@@ -295,20 +298,20 @@ def make_slice_figure(bundle: dict, out_path: Path,
     Show u(x) profiles at *n_slices* fixed times spanning [t0, t_extrap].
     Compares true vs PINN_blind vs PINN_ext_phys.
     """
-    cfg: BurgerConfig  = bundle["cfg"]
-    data               = bundle["data"]
-    u_blind_flat       = bundle["u_pinn_blind_full"]
-    u_ext_phys_flat    = bundle["u_pinn_ext_phys_full"]
+    cfg: BurgerConfig = bundle["cfg"]
+    data = bundle["data"]
+    u_blind_flat = bundle["u_pinn_blind_full"]
+    u_ext_phys_flat = bundle["u_pinn_ext_phys_full"]
 
     u_true_flat = data["u_true_full"]
 
-    t_vals, x_vals, grid_true      = _to_grid(u_true_flat,    data, "full")
-    _,      _,      grid_blind     = _to_grid(u_blind_flat,   data, "full")
-    _,      _,      grid_ext_phys  = _to_grid(u_ext_phys_flat, data, "full")
+    t_vals, x_vals, grid_true = _to_grid(u_true_flat,    data, "full")
+    _,      _,      grid_blind = _to_grid(u_blind_flat,   data, "full")
+    _,      _,      grid_ext_phys = _to_grid(u_ext_phys_flat, data, "full")
 
-    t_train_vals  = t_vals[t_vals <= cfg.t_train]
-    t_extrap_vals = t_vals[t_vals >  cfg.t_train]
-    slice_times   = np.linspace(t_train_vals[1], t_extrap_vals[-1], n_slices)
+    t_train_vals = t_vals[t_vals <= cfg.t_train]
+    t_extrap_vals = t_vals[t_vals > cfg.t_train]
+    slice_times = np.linspace(t_train_vals[1], t_extrap_vals[-1], n_slices)
 
     n_cols = 3
     n_rows = (n_slices + n_cols - 1) // n_cols
@@ -322,26 +325,28 @@ def make_slice_figure(bundle: dict, out_path: Path,
         ax = axes_flat[idx]
         style_ax(ax)
 
-        i_t      = int(np.argmin(np.abs(t_vals - t_target)))
+        i_t = int(np.argmin(np.abs(t_vals - t_target)))
         t_actual = t_vals[i_t]
-        in_extrap     = t_actual > cfg.t_train
+        in_extrap = t_actual > cfg.t_train
         near_shockwave = (not np.isinf(cfg.inviscid_shockwave_time) and
                           abs(t_actual - cfg.inviscid_shockwave_time) < 0.2)
 
-        u_true_s     = grid_true[i_t, :]
-        u_blind_s    = grid_blind[i_t, :]
+        u_true_s = grid_true[i_t, :]
+        u_blind_s = grid_blind[i_t, :]
         u_ext_phys_s = grid_ext_phys[i_t, :]
 
-        rmse_b = float(np.sqrt(np.mean((u_blind_s    - u_true_s) ** 2)))
+        rmse_b = float(np.sqrt(np.mean((u_blind_s - u_true_s) ** 2)))
         rmse_e = float(np.sqrt(np.mean((u_ext_phys_s - u_true_s) ** 2)))
 
-        ax.plot(x_vals, u_true_s,     color=GRAY_TRUE,  lw=1.8, label="True",                                  zorder=5)
-        ax.plot(x_vals, u_blind_s,    color=TEAL_BLIND, lw=2.0, label=f"PINN blind  (RMSE={rmse_b:.4f})",      zorder=4)
+        ax.plot(x_vals, u_true_s,     color=GRAY_TRUE,  lw=1.8,
+                label="True",                                  zorder=5)
+        ax.plot(x_vals, u_blind_s,    color=TEAL_BLIND, lw=2.0,
+                label=f"PINN blind  (RMSE={rmse_b:.4f})",      zorder=4)
         ax.plot(x_vals, u_ext_phys_s, color=ORANGE_EXT, lw=1.6, ls="--",
                 label=f"PINN ext_phys  (RMSE={rmse_e:.4f})", zorder=3)
 
         region_tag = "extrap" if in_extrap else "train"
-        color_tag  = ORANGE_EXT if in_extrap else TEAL_BLIND
+        color_tag = ORANGE_EXT if in_extrap else TEAL_BLIND
         shock_marker = "  ⚡ near shockwave" if near_shockwave else ""
         ax.set_title(
             f"t = {t_actual:.3f} s  [{region_tag}]{shock_marker}",
@@ -386,20 +391,20 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
       Row 1: PINN_blind error | PINN_ext_phys error | (empty)
     """
     cfg: BurgerConfig = bundle["cfg"]
-    data              = bundle["data"]
+    data = bundle["data"]
 
     # FIX: u_true lives inside data, not at the top level of the bundle
-    u_true_flat      = data["u_true_full"]
-    u_blind_flat     = bundle["u_pinn_blind_full"]
-    u_ext_phys_flat  = bundle["u_pinn_ext_phys_full"]
+    u_true_flat = data["u_true_full"]
+    u_blind_flat = bundle["u_pinn_blind_full"]
+    u_ext_phys_flat = bundle["u_pinn_ext_phys_full"]
 
     # FIX: reshape flat arrays to 2-D grids for _heatmap
-    t_vals, x_vals, grid_true     = _to_grid(u_true_flat,     data, "full")
-    _,      _,      grid_blind    = _to_grid(u_blind_flat,    data, "full")
+    t_vals, x_vals, grid_true = _to_grid(u_true_flat,     data, "full")
+    _,      _,      grid_blind = _to_grid(u_blind_flat,    data, "full")
     _,      _,      grid_ext_phys = _to_grid(u_ext_phys_flat, data, "full")
 
-    err_blind     = grid_blind    - grid_true
-    err_ext_phys  = grid_ext_phys - grid_true
+    err_blind = grid_blind - grid_true
+    err_ext_phys = grid_ext_phys - grid_true
 
     fig = plt.figure(figsize=(16, 8))
     fig.patch.set_facecolor(BG)
@@ -407,19 +412,19 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
     gs = gridspec.GridSpec(2, 3, figure=fig, hspace=0.35, wspace=0.25,
                            left=0.06, right=0.96, top=0.92, bottom=0.08)
 
-    ax_true        = fig.add_subplot(gs[0, 0])
-    ax_blind       = fig.add_subplot(gs[0, 1])
-    ax_ext_phys    = fig.add_subplot(gs[0, 2])
-    ax_err_blind   = fig.add_subplot(gs[1, 1])
-    ax_err_ext_phys= fig.add_subplot(gs[1, 2])
-    ax_empty       = fig.add_subplot(gs[1, 0])
+    ax_true = fig.add_subplot(gs[0, 0])
+    ax_blind = fig.add_subplot(gs[0, 1])
+    ax_ext_phys = fig.add_subplot(gs[0, 2])
+    ax_err_blind = fig.add_subplot(gs[1, 1])
+    ax_err_ext_phys = fig.add_subplot(gs[1, 2])
+    ax_empty = fig.add_subplot(gs[1, 0])
     ax_empty.set_visible(False)
 
     vmin_pred = min(grid_true.min(), grid_blind.min(), grid_ext_phys.min())
     vmax_pred = max(grid_true.max(), grid_blind.max(), grid_ext_phys.max())
 
-    vmax_err  = max(np.abs(err_blind).max(), np.abs(err_ext_phys).max())
-    vmin_err  = -vmax_err
+    vmax_err = max(np.abs(err_blind).max(), np.abs(err_ext_phys).max())
+    vmin_err = -vmax_err
 
     # FIX: _heatmap signature is (ax, t_vals, x_vals, grid, title, cfg, ...)
     # and it already draws its own colorbar internally — no return value needed.
@@ -428,8 +433,8 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
              vmin=vmin_pred, vmax=vmax_pred, cmap="RdBu_r")
 
     # FIX: metrics key is nu_hat_blind, not v_hat_blind (matches train.py)
-    nu_blind   = bundle["metrics"].get("nu_hat_blind",    0.0)
-    nu_ext     = bundle["metrics"].get("nu_hat_ext_phys", 0.0)
+    nu_blind = bundle["metrics"].get("nu_hat_blind",    0.0)
+    nu_ext = bundle["metrics"].get("nu_hat_ext_phys", 0.0)
 
     _heatmap(ax_blind, t_vals, x_vals, grid_blind,
              f"PINN blind  (ν̂={nu_blind:.3e})", cfg,
@@ -474,9 +479,9 @@ def make_epoch_figure_blind(bundle: dict, out_path: Path) -> plt.Figure:
     Two heatmaps per snapshot epoch for PINN_blind: the predicted field and its error map.
     """
     cfg: BurgerConfig = bundle["cfg"]
-    snaps             = bundle["snaps_pinn_blind"]
-    data              = bundle["data"]
-    pred: Predictor   = bundle["pred_blind"]
+    snaps = bundle["snaps_pinn_blind"]
+    data = bundle["data"]
+    pred: Predictor = bundle["pred_blind"]
 
     u_true_flat = data["u_true_full"]
     t_vals, x_vals, grid_true = _to_grid(u_true_flat, data, "full")
@@ -504,7 +509,7 @@ def make_epoch_figure_blind(bundle: dict, out_path: Path) -> plt.Figure:
 
     for row, epoch in enumerate(epochs_sorted):
         ax_pred = axes[row, 0]
-        ax_err  = axes[row, 1]
+        ax_err = axes[row, 1]
 
         pred.load_state_dict(snaps[epoch])
         u_ep_flat = pred.predict(x_flat, t_flat)
@@ -547,9 +552,9 @@ def make_epoch_figure_ext_phys(bundle: dict, out_path: Path) -> plt.Figure:
     Two heatmaps per snapshot epoch for PINN_ext_phys: the predicted field and its error map.
     """
     cfg: BurgerConfig = bundle["cfg"]
-    snaps             = bundle["snaps_pinn_ext_phys"]
-    data              = bundle["data"]
-    pred: Predictor   = bundle["pred_ext_phys"]
+    snaps = bundle["snaps_pinn_ext_phys"]
+    data = bundle["data"]
+    pred: Predictor = bundle["pred_ext_phys"]
 
     u_true_flat = data["u_true_full"]
     t_vals, x_vals, grid_true = _to_grid(u_true_flat, data, "full")
@@ -577,7 +582,7 @@ def make_epoch_figure_ext_phys(bundle: dict, out_path: Path) -> plt.Figure:
 
     for row, epoch in enumerate(epochs_sorted):
         ax_pred = axes[row, 0]
-        ax_err  = axes[row, 1]
+        ax_err = axes[row, 1]
 
         pred.load_state_dict(snaps[epoch])
         u_ep_flat = pred.predict(x_flat, t_flat)
@@ -677,7 +682,7 @@ def main() -> None:
     raw = torch.load(results_path, map_location="cpu", weights_only=False)
 
     cfg: BurgerConfig = raw["config"]
-    snaps_blind    = raw.get("snaps_pinn_blind",    {})
+    snaps_blind = raw.get("snaps_pinn_blind",    {})
     snaps_ext_phys = raw.get("snaps_pinn_ext_phys", {})
 
     t_flat = raw["data"]["t_flattened_full"]
@@ -691,13 +696,14 @@ def main() -> None:
     print(f"  Snapshots (blind):     {sorted(snaps_blind.keys())}")
     print(f"  Snapshots (ext_phys):  {sorted(snaps_ext_phys.keys())}\n")
 
-    pred_blind    = Predictor(cfg)
+    pred_blind = Predictor(cfg)
     pred_ext_phys = Predictor(cfg)
 
     bundle = {
         "cfg":        cfg,
         "device_str": raw["device_str"],
-        "data":       raw["data"],                          # numpy arrays from generate_data
+        # numpy arrays from generate_data
+        "data":       raw["data"],
         "hist_pinn_blind":     raw.get("hist_pinn_blind",    {}),
         "hist_pinn_ext_phys":  raw.get("hist_pinn_ext_phys", {}),
         "snaps_pinn_blind":    snaps_blind,
@@ -713,23 +719,29 @@ def main() -> None:
     }
 
     print("Generating Figure 1 — loss evolution …")
-    make_loss_figure(bundle, out_path=out_dir / f"burger_{cfg.situation}_{cfg.v:.1e}_fig1_loss.png")
+    make_loss_figure(bundle, out_path=out_dir /
+                     f"burger_{cfg.situation}_{cfg.v:.1e}_fig1_loss.png")
 
     print("Generating Figure 2 — ν parameter evolution …")
-    make_nu_evolution_figure(bundle, out_path=out_dir / f"burger_{cfg.situation}_{cfg.v:.1e}_fig2_nu_evolution.png")
+    make_nu_evolution_figure(bundle, out_path=out_dir /
+                             f"burger_{cfg.situation}_{cfg.v:.1e}_fig2_nu_evolution.png")
 
-    print(f"Generating Figure 3 — time-slice profiles ({args.n_slices} slices) …")
+    print(
+        f"Generating Figure 3 — time-slice profiles ({args.n_slices} slices) …")
     make_slice_figure(bundle, out_path=out_dir / f"burger_{cfg.situation}_{cfg.v:.1e}_fig3_slices.png",
                       n_slices=args.n_slices)
 
     print("Generating Figure 4 — final predictions (heatmaps) …")
-    make_summary_figure(bundle, out_path=out_dir / f"burger_{cfg.situation}_{cfg.v:.1e}_fig4_heatmaps.png")
+    make_summary_figure(bundle, out_path=out_dir /
+                        f"burger_{cfg.situation}_{cfg.v:.1e}_fig4_heatmaps.png")
 
     print("Generating Figure 5 — PINN_blind epoch snapshots …")
-    make_epoch_figure_blind(bundle, out_path=out_dir / f"burger_{cfg.situation}_{cfg.v:.1e}_fig5_blind_epochs.png")
+    make_epoch_figure_blind(bundle, out_path=out_dir /
+                            f"burger_{cfg.situation}_{cfg.v:.1e}_fig5_blind_epochs.png")
 
     print("Generating Figure 6 — PINN_ext_phys epoch snapshots …")
-    make_epoch_figure_ext_phys(bundle, out_path=out_dir / f"burger_{cfg.situation}_{cfg.v:.1e}_fig6_ext_phys_epochs.png")
+    make_epoch_figure_ext_phys(
+        bundle, out_path=out_dir / f"burger_{cfg.situation}_{cfg.v:.1e}_fig6_ext_phys_epochs.png")
 
     print(f"\n  All figures written to  {out_dir}/")
 

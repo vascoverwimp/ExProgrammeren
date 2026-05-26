@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber Exam_VascoVerwimp_Report"] 0 "Exam_VascoVerwimp_Report.bcf" "Exam_VascoVerwimp_Report.bbl" "Exam_VascoVerwimp_Report" 1779548852.98221 -1
-  "Exam_VascoVerwimp_Report.bcf" 1779548852 107353 5126ec284b7cb1b18cd2d41da2972233 "pdflatex"
+["biber Exam_VascoVerwimp_Report"] 0 "Exam_VascoVerwimp_Report.bcf" "Exam_VascoVerwimp_Report.bbl" "Exam_VascoVerwimp_Report" 1779787164.0055 -1
+  "Exam_VascoVerwimp_Report.bcf" 1779787163 107353 5126ec284b7cb1b18cd2d41da2972233 "pdflatex"
   "bibliography.bib" 1779281867 0 d41d8cd98f00b204e9800998ecf8427e ""
   (generated)
   "Exam_VascoVerwimp_Report.bbl"
   "Exam_VascoVerwimp_Report.blg"
   (rewritten before read)
-["pdflatex"] 1779548839.12174 "c:/Users/vasco/Desktop/ExProgrammeren/Report/Exam_VascoVerwimp_Report.tex" "Exam_VascoVerwimp_Report.pdf" "Exam_VascoVerwimp_Report" 1779548852.98322 0
+["pdflatex"] 1779787147.0396 "c:/Users/vasco/Desktop/ExProgrammeren/Report/Exam_VascoVerwimp_Report.tex" "Exam_VascoVerwimp_Report.pdf" "Exam_VascoVerwimp_Report" 1779787164.0068 0
   "C:/Users/vasco/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1779281824 82686 2381c3433487640bf26aa76a10db7eb2 ""
   "C:/Users/vasco/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1200.pk" 1779281873 14064 b94ce3d406d11e80dc5158aa16c7a992 ""
   "C:/Users/vasco/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1702674902 24213232 39d45e5c003962287c84928246815fe8 ""
@@ -190,13 +190,13 @@
   "C:/Users/vasco/AppData/Local/Programs/MiKTeX/tex/latex/trimspaces/trimspaces.sty" 1253169183 1380 971a51b00a14503ddf754cab24c3f209 ""
   "C:/Users/vasco/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/vasco/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
-  "Exam_VascoVerwimp_Report.aux" 1779548852 27396 d6053be608e059b701bdbc92b6b44f96 "pdflatex"
+  "Exam_VascoVerwimp_Report.aux" 1779787163 27396 d6053be608e059b701bdbc92b6b44f96 "pdflatex"
   "Exam_VascoVerwimp_Report.bbl" 1779528558 486 ee04f40f768daeed26442158e95aba61 "biber Exam_VascoVerwimp_Report"
-  "Exam_VascoVerwimp_Report.out" 1779548852 5666 aa13503e2f5eb7869ac304797263ecd0 "pdflatex"
-  "Exam_VascoVerwimp_Report.run.xml" 1779548852 2447 fc0fdb269cd35a73e06dbb9dc92cdb69 "pdflatex"
-  "Exam_VascoVerwimp_Report.tex" 1779548838 102832 387340d092978791cfa65461a87a7511 ""
-  "Exam_VascoVerwimp_Report.toc" 1779548852 3005 c25fd5306a8c0a64a1c6d266f4319d28 "pdflatex"
-  "c:/Users/vasco/Desktop/ExProgrammeren/Report/Exam_VascoVerwimp_Report.tex" 1779548838 102832 387340d092978791cfa65461a87a7511 ""
+  "Exam_VascoVerwimp_Report.out" 1779787163 5666 aa13503e2f5eb7869ac304797263ecd0 "pdflatex"
+  "Exam_VascoVerwimp_Report.run.xml" 1779787163 2447 fc0fdb269cd35a73e06dbb9dc92cdb69 "pdflatex"
+  "Exam_VascoVerwimp_Report.tex" 1779787145 103418 c3c00354bea5a966eb8c8118e9ccf6e6 ""
+  "Exam_VascoVerwimp_Report.toc" 1779787163 3005 c25fd5306a8c0a64a1c6d266f4319d28 "pdflatex"
+  "c:/Users/vasco/Desktop/ExProgrammeren/Report/Exam_VascoVerwimp_Report.tex" 1779787145 103418 c3c00354bea5a966eb8c8118e9ccf6e6 ""
   "figures/Lr_rough.png" 1779037072 29760 7e757d7f56e66af4f4451393d3499c1e ""
   "figures/Lr_smooth.png" 1779038033 32616 d26e019d55584c9636d4624c76880644 ""
   "figures/REVburger_N-wave_1.0e-01_fig2_slices.png" 1779547842 264041 eae8a74eee5aa8019b03a728c1b626a5 ""
@@ -244,9 +244,9 @@
   "figures/damped_lrparam_vs_zeta_diff_zoomed.png" 1779358238 30730 c8e06d8c619e88cfee74a7c62efcbc38 ""
   "figures/omega0_2d.png" 1779358238 38920 9dd085879c8ba8036e0c0b06718a2bd7 ""
   "figures/omega0_predictions.png" 1779358238 44297 e0328162a33d9750876548b2ad12448c ""
-  "figures/viscosity_predictions_Gaussian.png" 1779358238 38553 b9ab4d9923447ab121db4e5371025884 ""
-  "figures/viscosity_predictions_N-wave.png" 1779358238 36429 337b8cf5efaef295bff393818030b354 ""
-  "figures/viscosity_predictions_Step.png" 1779358238 37570 60b1ea47d6aff8c58a0d8d2a9446ff59 ""
+  "figures/viscosity_predictions_Gaussian.png" 1779786971 37908 077ee5ac2759038ad366d965b1db428f ""
+  "figures/viscosity_predictions_N-wave.png" 1779786971 40111 c4a957df8dc3b3aae81ab28f51adfe84 ""
+  "figures/viscosity_predictions_Step.png" 1779786971 38879 b1b559257ad1771e835dc2acbb077854 ""
   "figures/w02.0e+00_zeta1.0e+00_fig2_summary.png" 1779531813 303829 8b2f71856710e9b013c5f15509825c22 ""
   "figures/w02.0e+00_zeta1.2e-01_fig2_summary.png" 1779531503 358635 7afc911f1c0467bf4d3146af3b6ee4e9 ""
   "figures/w02.0e+00_zeta1.2e-01_fig3_param_conv.png" 1779538087 211638 503b067565ed8313f9d319a345013e9c ""

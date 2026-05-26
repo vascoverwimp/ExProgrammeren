@@ -49,7 +49,8 @@ def get_device() -> torch.device:
         return torch.device("mps")
     return torch.device("cpu")
 
-def stratified_time_split(t,t_begin,t_end, p_val, n_bins, seed):
+
+def stratified_time_split(t, t_begin, t_end, p_val, n_bins, seed):
     rng = np.random.default_rng(seed)
     # 1. Sort by time
     idx = np.argsort(t)
@@ -67,7 +68,7 @@ def stratified_time_split(t,t_begin,t_end, p_val, n_bins, seed):
         rng.shuffle(in_bin)
 
         n = len(in_bin)
-        n_val   = int(p_val   * n)
+        n_val = int(p_val * n)
 
         val_idx.extend(in_bin[:n_val])
         train_idx.extend(in_bin[n_val:])
@@ -78,18 +79,19 @@ def stratified_time_split(t,t_begin,t_end, p_val, n_bins, seed):
 # 1.  ANALYTIC GROUND TRUTH
 # =============================================================================
 
+
 def analytic(t: np.ndarray, cfg: DamperConfig) -> np.ndarray:
     zeta, w0, wd, y0, dy0 = cfg.zeta, cfg.omega_0, cfg.omega_d, cfg.y0, cfg.dy0
     t = np.asarray(t)
-    
+
     if zeta < 1:  # Underdamped
         return np.exp(-zeta * w0 * t) * (
             y0 * np.cos(wd * t) + (dy0 + zeta * w0 * y0) / wd * np.sin(wd * t)
         )
-    
+
     elif zeta == 1:  # Critically damped
         return (y0 + (dy0 + w0 * y0) * t) * np.exp(-w0 * t)
-    
+
     else:  # Overdamped
         r1 = -w0 * (zeta - np.sqrt(zeta**2 - 1))
         r2 = -w0 * (zeta + np.sqrt(zeta**2 - 1))
@@ -132,7 +134,8 @@ def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
 
     # ── All M observations ────────────────────────────────────────────────────
     t_obs_train = np.random.uniform(0, cfg.t_train, cfg.n_obs)
-    y_obs_train = analytic(t_obs_train, cfg) + np.random.normal(0.0, cfg.sigma, cfg.n_obs)
+    y_obs_train = analytic(t_obs_train, cfg) + \
+        np.random.normal(0.0, cfg.sigma, cfg.n_obs)
 
     # ── Train / validation split  (stratified) ────── We found were told to use the ground truth,
     # instead of stratified time split, but this is more realistic, so we will keep it in the code.
@@ -149,9 +152,9 @@ def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
 
     # ── Dense grids for post-hoc evaluation and plotting (CPU numpy only) ────
     t_plot_full = np.linspace(0.0, cfg.t_extrap,  cfg.n_plot_t)
-    t_plot_train  = t_plot_full[t_plot_full <= cfg.t_train]
+    t_plot_train = t_plot_full[t_plot_full <= cfg.t_train]
     y_true_train = analytic(t_plot_train, cfg)
-    y_true_full  = analytic(t_plot_full,  cfg)
+    y_true_full = analytic(t_plot_full,  cfg)
 
     return {
         # numpy — train split
@@ -208,7 +211,8 @@ def loss_physics(
         create_graph=True,
     )[0]
 
-    residual = d2y + 2* 10**model.log_zeta_hat * 10**model.log_w0_hat * dy + 10**(2*model.log_w0_hat) * y_hat
+    residual = d2y + 2 * 10**model.log_zeta_hat * \
+        10**model.log_w0_hat * dy + 10**(2*model.log_w0_hat) * y_hat
     return torch.mean(residual ** 2)
 
 
@@ -278,7 +282,8 @@ def train_model(
     model.to(device)
     torch.manual_seed(cfg.seed)
 
-    optimiser = torch.optim.Adam([{'params': model.net.parameters(), 'lr': cfg.lr, 'betas': (cfg.beta1, cfg.beta2)}, {'params': [model.log_zeta_hat, model.log_w0_hat], 'lr': cfg.lr_param}])
+    optimiser = torch.optim.Adam([{'params': model.net.parameters(), 'lr': cfg.lr, 'betas': (
+        cfg.beta1, cfg.beta2)}, {'params': [model.log_zeta_hat, model.log_w0_hat], 'lr': cfg.lr_param}])
     scheduler = torch.optim.lr_scheduler.StepLR(
         optimiser, step_size=cfg.lr_step, gamma=cfg.lr_gamma
     )
@@ -288,9 +293,9 @@ def train_model(
 
     t_obs_train_t = data["t_obs_train_t"]
     y_obs_train_t = data["y_obs_train_t"]
-    t_obs_val_t   = data["t_obs_val_t"]
-    y_obs_val_t   = data["y_obs_val_t"]
-    t_ic_t        = data["t_ic_t"]
+    t_obs_val_t = data["t_obs_val_t"]
+    y_obs_val_t = data["y_obs_val_t"]
+    t_ic_t = data["t_ic_t"]
 
     history: dict[str, list] = {
         "epoch":         [],
@@ -301,55 +306,55 @@ def train_model(
         "loss_val":      [],
     }
     snapshots:    dict[int, dict] = {}
-    snapshot_set: set[int]        = set(cfg.snapshot_epochs)
+    snapshot_set: set[int] = set(cfg.snapshot_epochs)
 
     # ── Early stopping state ──────────────────────────────────────────────────
-    best_val_loss   = float("inf")
+    best_val_loss = float("inf")
     patience_counter = 0
-    stopped_early   = False
+    stopped_early = False
 
     t0_wall = time.perf_counter()
 
-
-    t_col_pool_extrap = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.t_extrap - 0.0) + 0.0
-    t_col_pool_train  = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.t_train - 0.0) + 0.0
+    t_col_pool_extrap = torch.rand(
+        cfg.n_col_pool, 1, device=device)*(cfg.t_extrap - 0.0) + 0.0
+    t_col_pool_train = torch.rand(
+        cfg.n_col_pool, 1, device=device)*(cfg.t_train - 0.0) + 0.0
 
     t_selected_epoch = t_obs_train_t
     y_selected_epoch = y_obs_train_t
-    
+
     for epoch in range(1, cfg.n_epochs + 1):
         model.train()
         optimiser.zero_grad()
-        
+
         # # Randomly select a subset of the training observations for this epoch to speed up training and add noise robustness.  This is a form of stochastic mini-batching.
         # epoch_random_selection = torch.randperm(t_obs_train_t.shape[0])[:cfg.n_obs_per_epoch]
         # t_selected_epoch = t_obs_train_t[epoch_random_selection]
         # y_selected_epoch = y_obs_train_t[epoch_random_selection]
         # We found that mini batching is worse than full batching
 
-
         # Data loss — MSE on training observations only (not validation)
-        y_pred   = model(t_selected_epoch)
-        l_data   = torch.mean((y_pred - y_selected_epoch) ** 2)
-        l_phys  = torch.zeros(1, device=device)
-        l_ic    = torch.zeros(1, device=device)
+        y_pred = model(t_selected_epoch)
+        l_data = torch.mean((y_pred - y_selected_epoch) ** 2)
+        l_phys = torch.zeros(1, device=device)
+        l_ic = torch.zeros(1, device=device)
         if use_physics:
             idx = torch.randint(0, cfg.n_col_pool, (cfg.n_col,))
             if extrapolated_physics:
-                t_col = t_col_pool_extrap[idx].clone().detach().requires_grad_(True)
+                t_col = t_col_pool_extrap[idx].clone(
+                ).detach().requires_grad_(True)
 
             else:
-                t_col = t_col_pool_train[idx].clone().detach().requires_grad_(True)
-                
+                t_col = t_col_pool_train[idx].clone(
+                ).detach().requires_grad_(True)
+
             l_phys = loss_physics(model, t_col, cfg)
 
-        
         if use_ic:
 
-            l_ic   = loss_ic(model, t_ic_t, cfg)
+            l_ic = loss_ic(model, t_ic_t, cfg)
 
-
-        l_total  = l_data + cfg.lambda_phys * l_phys + cfg.lambda_ic * l_ic
+        l_total = l_data + cfg.lambda_phys * l_phys + cfg.lambda_ic * l_ic
         l_total.backward()
         optimiser.step()
         scheduler.step()
@@ -377,7 +382,7 @@ def train_model(
 
             # ── Save best checkpoint ──────────────────────────────────────────
             if l_val < best_val_loss - cfg.min_delta:
-                best_val_loss    = l_val
+                best_val_loss = l_val
                 patience_counter = 0
                 cpu_state = {k: v.cpu() for k, v in model.state_dict().items()}
                 torch.save(
@@ -439,66 +444,94 @@ def parse_args() -> argparse.Namespace:
 
     # Physical parameters
     g = p.add_argument_group("Physical parameters")
-    g.add_argument("--mass",      type=float, default=DamperConfig.mass,  help="Mass m [kg]")
-    g.add_argument("--damping",   type=float, default=DamperConfig.damping,  help="Damping coefficient c")
-    g.add_argument("--stiffness", type=float, default=DamperConfig.stiffness,  help="Spring stiffness k [N/m]")
-    g.add_argument("--y0",        type=float, default=DamperConfig.y0,  help="Initial displacement y(0)")
-    g.add_argument("--dy0",       type=float, default=DamperConfig.dy0,  help="Initial velocity y'(0)")
+    g.add_argument("--mass",      type=float,
+                   default=DamperConfig.mass,  help="Mass m [kg]")
+    g.add_argument("--damping",   type=float,
+                   default=DamperConfig.damping,  help="Damping coefficient c")
+    g.add_argument("--stiffness", type=float,
+                   default=DamperConfig.stiffness,  help="Spring stiffness k [N/m]")
+    g.add_argument("--y0",        type=float,
+                   default=DamperConfig.y0,  help="Initial displacement y(0)")
+    g.add_argument("--dy0",       type=float,
+                   default=DamperConfig.dy0,  help="Initial velocity y'(0)")
 
     # Time domain
     g = p.add_argument_group("Time domain")
-    g.add_argument("--t_train",  type=float, default=DamperConfig.t_train,  help="End of training window [s]")
-    g.add_argument("--t_extrap", type=float, default=DamperConfig.t_extrap, help="End of extrapolation window [s]")
+    g.add_argument("--t_train",  type=float,
+                   default=DamperConfig.t_train,  help="End of training window [s]")
+    g.add_argument("--t_extrap", type=float, default=DamperConfig.t_extrap,
+                   help="End of extrapolation window [s]")
 
     # Data
     g = p.add_argument_group("Data")
-    g.add_argument("--n_obs",        type=int,   default=DamperConfig.n_obs,   help="Total noisy observations")
-    g.add_argument("--sigma",        type=float, default=DamperConfig.sigma, help="Measurement noise std dev")
-    g.add_argument("--n_col",        type=int,   default=DamperConfig.n_col,  help="Collocation points")
-    g.add_argument("--seed",         type=int,   default=DamperConfig.seed,   help="RNG seed")
+    g.add_argument("--n_obs",        type=int,
+                   default=DamperConfig.n_obs,   help="Total noisy observations")
+    g.add_argument("--sigma",        type=float,
+                   default=DamperConfig.sigma, help="Measurement noise std dev")
+    g.add_argument("--n_col",        type=int,
+                   default=DamperConfig.n_col,  help="Collocation points")
+    g.add_argument("--seed",         type=int,
+                   default=DamperConfig.seed,   help="RNG seed")
 
     # Initial guess for physical parameters
     g = p.add_argument_group("Initial guesses")
-    g.add_argument("--w0_init",   type=float, default=DamperConfig.ini_guess_w0, help="Initial guess for omega_0")
-    g.add_argument("--zeta_init",  type=float, default=DamperConfig.ini_guess_zeta, help="Initial guess for zeta")
+    g.add_argument("--w0_init",   type=float,
+                   default=DamperConfig.ini_guess_w0, help="Initial guess for omega_0")
+    g.add_argument("--zeta_init",  type=float,
+                   default=DamperConfig.ini_guess_zeta, help="Initial guess for zeta")
 
     # Loss weights
     g = p.add_argument_group("PINN loss weights")
-    g.add_argument("--lambda_phys", type=float, default=DamperConfig.lambda_phys, help="Physics residual weight")
-    g.add_argument("--lambda_ic",   type=float, default=DamperConfig.lambda_ic, help="Initial-condition weight")
+    g.add_argument("--lambda_phys", type=float,
+                   default=DamperConfig.lambda_phys, help="Physics residual weight")
+    g.add_argument("--lambda_ic",   type=float,
+                   default=DamperConfig.lambda_ic, help="Initial-condition weight")
 
     # Architecture
     g = p.add_argument_group("Architecture")
-    g.add_argument("--hidden",   type=int, default=DamperConfig.hidden, help="Neurons per hidden layer")
-    g.add_argument("--n_layers", type=int, default=DamperConfig.n_layers,  help="Number of hidden layers")
+    g.add_argument("--hidden",   type=int,
+                   default=DamperConfig.hidden, help="Neurons per hidden layer")
+    g.add_argument("--n_layers", type=int,
+                   default=DamperConfig.n_layers,  help="Number of hidden layers")
 
     # Optimiser
     g = p.add_argument_group("Optimiser")
-    g.add_argument("--lr",       type=float, default=DamperConfig.lr, help="Initial Adam learning rate")
-    g.add_argument("--lr_param", type=float, default=DamperConfig.lr_param, help="Learning rate for physical parameters (zeta_hat, w0_hat)")
-    g.add_argument("--lr_step",  type=int,   default=DamperConfig.lr_step, help="StepLR decay interval [epochs]")
-    g.add_argument("--lr_gamma", type=float, default=DamperConfig.lr_gamma,  help="StepLR decay factor")
+    g.add_argument("--lr",       type=float,
+                   default=DamperConfig.lr, help="Initial Adam learning rate")
+    g.add_argument("--lr_param", type=float, default=DamperConfig.lr_param,
+                   help="Learning rate for physical parameters (zeta_hat, w0_hat)")
+    g.add_argument("--lr_step",  type=int,   default=DamperConfig.lr_step,
+                   help="StepLR decay interval [epochs]")
+    g.add_argument("--lr_gamma", type=float,
+                   default=DamperConfig.lr_gamma,  help="StepLR decay factor")
 
     # Training loop
     g = p.add_argument_group("Training loop")
-    g.add_argument("--n_epochs",    type=int, default=DamperConfig.n_epochs, help="Maximum training epochs")
-    g.add_argument("--print_every", type=int, default=DamperConfig.print_every, help="Console log interval [epochs]")
-    g.add_argument("--log_every",   type=int, default=DamperConfig.log_every,   help="History log interval [epochs]")
+    g.add_argument("--n_epochs",    type=int,
+                   default=DamperConfig.n_epochs, help="Maximum training epochs")
+    g.add_argument("--print_every", type=int, default=DamperConfig.print_every,
+                   help="Console log interval [epochs]")
+    g.add_argument("--log_every",   type=int, default=DamperConfig.log_every,
+                   help="History log interval [epochs]")
 
     # Early stopping
     g = p.add_argument_group("Early stopping")
-    g.add_argument("--patience",  type=int,   default=DamperConfig.patience,   help="Patience in log_every units")
-    g.add_argument("--min_delta", type=float, default=DamperConfig.min_delta, help="Min improvement to reset counter")
+    g.add_argument("--patience",  type=int,   default=DamperConfig.patience,
+                   help="Patience in log_every units")
+    g.add_argument("--min_delta", type=float, default=DamperConfig.min_delta,
+                   help="Min improvement to reset counter")
 
     # Output
     g = p.add_argument_group("Output")
-    g.add_argument("--out_dir", type=str, default=DamperConfig.out_dir, help="Output directory for all saved files")
+    g.add_argument("--out_dir", type=str, default=DamperConfig.out_dir,
+                   help="Output directory for all saved files")
 
     return p.parse_args()
 
 # =============================================================================
 # 6.  MAIN
 # =============================================================================
+
 
 def main() -> None:
     args = parse_args()
@@ -542,23 +575,27 @@ def main() -> None:
         print(f"  GPU    : {torch.cuda.get_device_name(0)}")
         vram_gb = torch.cuda.get_device_properties(0).total_memory / 1e9
         print(f"  VRAM   : {vram_gb:.1f} GB")
-    print(f"  ζ      : {cfg.zeta:.4f}   ω₀ = {cfg.omega_0:.4f}   ωd = {cfg.omega_d:.4f}")
-    print(f"Initial guess: ζ₀ = {cfg.ini_guess_zeta:.4f}   ω₀₀ = {cfg.ini_guess_w0:.4f}")
+    print(
+        f"  ζ      : {cfg.zeta:.4f}   ω₀ = {cfg.omega_0:.4f}   ωd = {cfg.omega_d:.4f}")
+    print(
+        f"Initial guess: ζ₀ = {cfg.ini_guess_zeta:.4f}   ω₀₀ = {cfg.ini_guess_w0:.4f}")
     print("=" * 70)
     # ── Data ──────────────────────────────────────────────────────────────────
-    print(f"\n  Noisy observations: {cfg.n_obs} to train") 
-    print(f"  Collocation : random {cfg.n_col} pts over [0, {cfg.t_extrap} (phys. ext.)/ {cfg.t_train} (blind)]")
+    print(f"\n  Noisy observations: {cfg.n_obs} to train")
+    print(
+        f"  Collocation : random {cfg.n_col} pts over [0, {cfg.t_extrap} (phys. ext.)/ {cfg.t_train} (blind)]")
     print(f"  IC enforced at t=0 via L_ic (not in observations)\n")
 
     train_and_save_both(**kwargs)
     evaluate_model(cfg.omega_0, cfg.zeta)
-    print(f"Run DampedReversePINN/plot.py --w0 {cfg.omega_0} --zeta {cfg.zeta} to generate plots")
+    print(
+        f"Run DampedReversePINN/plot.py --w0 {cfg.omega_0} --zeta {cfg.zeta} to generate plots")
 
 
 def train_and_save_both(**kwargs) -> None:
     """
     Train both PINN models (extended physics and blind) with provided config kwargs.
-    
+
     Accepts keyword arguments matching DamperConfig fields:
       mass, damping, stiffness, t_train, t_extrap, y0, dy0,
       n_obs, sigma, n_col, seed, lambda_phys, lambda_ic, hidden,
@@ -603,14 +640,16 @@ def train_and_save_both(**kwargs) -> None:
     # ── Device ────────────────────────────────────────────────────────────────
     device = get_device()
 
-
     # ── Output directory ──────────────────────────────────────────────────────
     out_dir = Path(cfg.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    ckpt_pinn_ext_phys = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_ext_phys}"
-    ckpt_pinn_blind = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_blind}"
-    results_path = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_results_pt}"
+    ckpt_pinn_ext_phys = out_dir / \
+        f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_ext_phys}"
+    ckpt_pinn_blind = out_dir / \
+        f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_blind}"
+    results_path = out_dir / \
+        f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_results_pt}"
 
     # ── Data ──────────────────────────────────────────────────────────────────
     data = generate_data(cfg, device)
@@ -624,10 +663,11 @@ def train_and_save_both(**kwargs) -> None:
     print(f"  Parameters: {model_pinn.param_count()}")
     hist_pinn_ext_phys, snaps_pinn_ext_phys = train_model(
         model_pinn, data, cfg, device,
-        use_physics = True,
-        extrapolated_physics=True,  # physics loss on collocation points in extrapolation region
-        label       = "PINN (phys. ext.)",
-        ckpt_path   = ckpt_pinn_ext_phys,
+        use_physics=True,
+        # physics loss on collocation points in extrapolation region
+        extrapolated_physics=True,
+        label="PINN (phys. ext.)",
+        ckpt_path=ckpt_pinn_ext_phys,
     )
     # ── PINN model (blind) ───────────────────────────────────────────────────
     print()
@@ -638,35 +678,43 @@ def train_and_save_both(**kwargs) -> None:
     print(f"  Parameters: {model_pinn.param_count()}")
     hist_pinn_blind, snaps_pinn_blind = train_model(
         model_pinn, data, cfg, device,
-        use_physics = True,
-        extrapolated_physics=False,  # physics loss on collocation points in extrapolation region
-        label       = "PINN (blind)",
-        ckpt_path   = ckpt_pinn_blind,
+        use_physics=True,
+        # physics loss on collocation points in extrapolation region
+        extrapolated_physics=False,
+        label="PINN (blind)",
+        ckpt_path=ckpt_pinn_blind,
     )
 
     # ── Load best checkpoints for final evaluation ────────────────────────────
     # Using best-val checkpoints rather than last-epoch weights ensures
     # the saved result reflects the model at its generalisation peak.
-    pred_pinn_ext_phys = Predictor(cfg, checkpoint_path=str(ckpt_pinn_ext_phys))
+    pred_pinn_ext_phys = Predictor(
+        cfg, checkpoint_path=str(ckpt_pinn_ext_phys))
     pred_pinn_blind = Predictor(cfg, checkpoint_path=str(ckpt_pinn_blind))
 
-    t_plot_full  = data["t_plot_full"]
-    y_true_full  = data["y_true_full"]
+    t_plot_full = data["t_plot_full"]
+    y_true_full = data["y_true_full"]
 
     y_pinn_ext_phys_full = pred_pinn_ext_phys.predict(t_plot_full)
     y_pinn_blind_full = pred_pinn_blind.predict(t_plot_full)
 
-    mask_train  = t_plot_full <= cfg.t_train
-    mask_extrap = t_plot_full >  cfg.t_train
+    mask_train = t_plot_full <= cfg.t_train
+    mask_extrap = t_plot_full > cfg.t_train
 
-    rmse_pinn_ext_phys_train = Predictor.rmse(y_pinn_ext_phys_full[mask_train],  y_true_full[mask_train])
-    rmse_pinn_blind_train = Predictor.rmse(y_pinn_blind_full[mask_train],  y_true_full[mask_train])
-    rmse_pinn_ext_phys_extrap   = Predictor.rmse(y_pinn_ext_phys_full[mask_extrap], y_true_full[mask_extrap])
-    rmse_pinn_blind_extrap   = Predictor.rmse(y_pinn_blind_full[mask_extrap], y_true_full[mask_extrap])
-    phys_pinn_ext_phys       = Predictor.physics_residual(y_pinn_ext_phys_full, t_plot_full, cfg)
-    phys_pinn_blind          = Predictor.physics_residual(y_pinn_blind_full, t_plot_full, cfg)
-    y0_pinn_ext_phys         = float(pred_pinn_ext_phys.predict(np.array([0.0])))
-    y0_pinn_blind            = float(pred_pinn_blind.predict(np.array([0.0])))
+    rmse_pinn_ext_phys_train = Predictor.rmse(
+        y_pinn_ext_phys_full[mask_train],  y_true_full[mask_train])
+    rmse_pinn_blind_train = Predictor.rmse(
+        y_pinn_blind_full[mask_train],  y_true_full[mask_train])
+    rmse_pinn_ext_phys_extrap = Predictor.rmse(
+        y_pinn_ext_phys_full[mask_extrap], y_true_full[mask_extrap])
+    rmse_pinn_blind_extrap = Predictor.rmse(
+        y_pinn_blind_full[mask_extrap], y_true_full[mask_extrap])
+    phys_pinn_ext_phys = Predictor.physics_residual(
+        y_pinn_ext_phys_full, t_plot_full, cfg)
+    phys_pinn_blind = Predictor.physics_residual(
+        y_pinn_blind_full, t_plot_full, cfg)
+    y0_pinn_ext_phys = float(pred_pinn_ext_phys.predict(np.array([0.0])))
+    y0_pinn_blind = float(pred_pinn_blind.predict(np.array([0.0])))
 
     # ── Save results bundle for plot.py ───────────────────────────────────────
     metrics = {
@@ -697,9 +745,11 @@ def train_and_save_both(**kwargs) -> None:
         results_path,
     )
 
+
 def evaluate_model(w0: float, zeta: float, suffix_results_pt=DamperConfig.suffix_results_pt) -> tuple[float, float, float, float]:
 
-    results_path = Path(f"{DamperConfig.out_dir}/w0{w0:.1e}_zeta{zeta:.1e}_{suffix_results_pt}")
+    results_path = Path(
+        f"{DamperConfig.out_dir}/w0{w0:.1e}_zeta{zeta:.1e}_{suffix_results_pt}")
 
     raw = torch.load(results_path, map_location="cpu", weights_only=False)
 
@@ -710,37 +760,45 @@ def evaluate_model(w0: float, zeta: float, suffix_results_pt=DamperConfig.suffix
     out_dir = Path(cfg.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-
-    ckpt_pinn_ext_phys = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_ext_phys}"
-    ckpt_pinn_blind = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_blind}"
+    ckpt_pinn_ext_phys = out_dir / \
+        f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_ext_phys}"
+    ckpt_pinn_blind = out_dir / \
+        f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_blind}"
 
     # ── Load best checkpoints for final evaluation ────────────────────────────
     # Using best-val checkpoints rather than last-epoch weights ensures
     # the saved result reflects the model at its generalisation peak.
-    pred_pinn_ext_phys = Predictor(cfg, checkpoint_path=str(ckpt_pinn_ext_phys))
+    pred_pinn_ext_phys = Predictor(
+        cfg, checkpoint_path=str(ckpt_pinn_ext_phys))
     pred_pinn_blind = Predictor(cfg, checkpoint_path=str(ckpt_pinn_blind))
 
-    t_plot_full  = data["t_plot_full"]
-    y_true_full  = data["y_true_full"]
+    t_plot_full = data["t_plot_full"]
+    y_true_full = data["y_true_full"]
 
     y_pinn_ext_phys_full = pred_pinn_ext_phys.predict(t_plot_full)
     y_pinn_blind_full = pred_pinn_blind.predict(t_plot_full)
 
-    mask_train  = t_plot_full <= cfg.t_train
-    mask_extrap = t_plot_full >  cfg.t_train
+    mask_train = t_plot_full <= cfg.t_train
+    mask_extrap = t_plot_full > cfg.t_train
 
-    rmse_pinn_ext_phys_train = Predictor.rmse(y_pinn_ext_phys_full[mask_train],  y_true_full[mask_train])
-    rmse_pinn_blind_train = Predictor.rmse(y_pinn_blind_full[mask_train],  y_true_full[mask_train])
-    rmse_pinn_ext_phys_extrap   = Predictor.rmse(y_pinn_ext_phys_full[mask_extrap], y_true_full[mask_extrap])
-    rmse_pinn_blind_extrap   = Predictor.rmse(y_pinn_blind_full[mask_extrap], y_true_full[mask_extrap])
-    phys_pinn_ext_phys       = Predictor.physics_residual(y_pinn_ext_phys_full, t_plot_full, cfg)
-    phys_pinn_blind          = Predictor.physics_residual(y_pinn_blind_full, t_plot_full, cfg)
-    y0_pinn_ext_phys         = float(pred_pinn_ext_phys.predict(np.array([0.0])))
-    y0_pinn_blind            = float(pred_pinn_blind.predict(np.array([0.0])))
-    w0_hat_ext_phys          = pred_pinn_ext_phys.predict_params()["w0_hat"]
-    w0_hat_blind             = pred_pinn_blind.predict_params()["w0_hat"]
-    zeta_hat_ext_phys        = pred_pinn_ext_phys.predict_params()["zeta_hat"]
-    zeta_hat_blind           = pred_pinn_blind.predict_params()["zeta_hat"]
+    rmse_pinn_ext_phys_train = Predictor.rmse(
+        y_pinn_ext_phys_full[mask_train],  y_true_full[mask_train])
+    rmse_pinn_blind_train = Predictor.rmse(
+        y_pinn_blind_full[mask_train],  y_true_full[mask_train])
+    rmse_pinn_ext_phys_extrap = Predictor.rmse(
+        y_pinn_ext_phys_full[mask_extrap], y_true_full[mask_extrap])
+    rmse_pinn_blind_extrap = Predictor.rmse(
+        y_pinn_blind_full[mask_extrap], y_true_full[mask_extrap])
+    phys_pinn_ext_phys = Predictor.physics_residual(
+        y_pinn_ext_phys_full, t_plot_full, cfg)
+    phys_pinn_blind = Predictor.physics_residual(
+        y_pinn_blind_full, t_plot_full, cfg)
+    y0_pinn_ext_phys = float(pred_pinn_ext_phys.predict(np.array([0.0])))
+    y0_pinn_blind = float(pred_pinn_blind.predict(np.array([0.0])))
+    w0_hat_ext_phys = pred_pinn_ext_phys.predict_params()["w0_hat"]
+    w0_hat_blind = pred_pinn_blind.predict_params()["w0_hat"]
+    zeta_hat_ext_phys = pred_pinn_ext_phys.predict_params()["zeta_hat"]
+    zeta_hat_blind = pred_pinn_blind.predict_params()["zeta_hat"]
 
     # ── Console summary ───────────────────────────────────────────────────────
     print()
@@ -760,9 +818,11 @@ def evaluate_model(w0: float, zeta: float, suffix_results_pt=DamperConfig.suffix
 
     return w0_hat_blind, zeta_hat_blind, w0_hat_ext_phys, zeta_hat_ext_phys
 
+
 def evaluate_blind(w0: float, zeta: float, suffix_results_pt=DamperConfig.suffix_results_pt) -> tuple[float, float, float]:
 
-    results_path = Path(f"{DamperConfig.out_dir}/w0{w0:.1e}_zeta{zeta:.1e}_{suffix_results_pt}")
+    results_path = Path(
+        f"{DamperConfig.out_dir}/w0{w0:.1e}_zeta{zeta:.1e}_{suffix_results_pt}")
 
     raw = torch.load(results_path, map_location="cpu", weights_only=False)
 
@@ -770,26 +830,28 @@ def evaluate_blind(w0: float, zeta: float, suffix_results_pt=DamperConfig.suffix
     data = raw["data"]
 
     out_dir = Path(cfg.out_dir)
-    ckpt_pinn_blind = out_dir / f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_blind}"
+    ckpt_pinn_blind = out_dir / \
+        f"w0{cfg.omega_0:.1e}_zeta{cfg.zeta:.1e}_{cfg.suffix_ckpt_pinn_blind}"
 
     pred_pinn_blind = Predictor(cfg, checkpoint_path=str(ckpt_pinn_blind))
 
-
-
-    t_plot_full  = data["t_plot_full"]
-    y_true_full  = data["y_true_full"]
+    t_plot_full = data["t_plot_full"]
+    y_true_full = data["y_true_full"]
 
     y_pinn_blind_full = pred_pinn_blind.predict(t_plot_full)
-    w0_hat_blind             = pred_pinn_blind.predict_params()["w0_hat"]
-    zeta_hat_blind           = pred_pinn_blind.predict_params()["zeta_hat"]
-                                                                
-    mask_train  = t_plot_full <= cfg.t_train
-    mask_extrap = t_plot_full >  cfg.t_train
+    w0_hat_blind = pred_pinn_blind.predict_params()["w0_hat"]
+    zeta_hat_blind = pred_pinn_blind.predict_params()["zeta_hat"]
 
-    rmse_pinn_blind_train = Predictor.rmse(y_pinn_blind_full[mask_train],  y_true_full[mask_train])
-    rmse_pinn_blind_extrap   = Predictor.rmse(y_pinn_blind_full[mask_extrap], y_true_full[mask_extrap])
-    phys_pinn_blind          = Predictor.physics_residual(y_pinn_blind_full, t_plot_full, cfg)
-    y0_pinn_blind            = float(pred_pinn_blind.predict(np.array([0.0])))
+    mask_train = t_plot_full <= cfg.t_train
+    mask_extrap = t_plot_full > cfg.t_train
+
+    rmse_pinn_blind_train = Predictor.rmse(
+        y_pinn_blind_full[mask_train],  y_true_full[mask_train])
+    rmse_pinn_blind_extrap = Predictor.rmse(
+        y_pinn_blind_full[mask_extrap], y_true_full[mask_extrap])
+    phys_pinn_blind = Predictor.physics_residual(
+        y_pinn_blind_full, t_plot_full, cfg)
+    y0_pinn_blind = float(pred_pinn_blind.predict(np.array([0.0])))
 
     # ── Console summary ───────────────────────────────────────────────────────
     print()
@@ -808,6 +870,7 @@ def evaluate_blind(w0: float, zeta: float, suffix_results_pt=DamperConfig.suffix
     print(f"  {'zeta_hat':38}  {zeta_hat_blind:>10.4f}")
 
     return rmse_pinn_blind_train, w0_hat_blind, zeta_hat_blind
+
 
 if __name__ == "__main__":
     main()

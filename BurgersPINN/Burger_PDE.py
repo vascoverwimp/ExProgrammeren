@@ -80,7 +80,7 @@ class BurgersSolver:
     viscosity:       float
 
     newton_tol:      float = 1e-10
-    newton_max_iter: int   = 50
+    newton_max_iter: int = 50
 
     x:            np.ndarray = field(init=False, repr=False)
     t:            np.ndarray = field(init=False, repr=False)
@@ -93,7 +93,8 @@ class BurgersSolver:
         if self.t_end <= self.t_start:
             raise ValueError("t_end must be strictly greater than t_start.")
         if self.x_bounds[1] <= self.x_bounds[0]:
-            raise ValueError("x_bounds[1] must be strictly greater than x_bounds[0].")
+            raise ValueError(
+                "x_bounds[1] must be strictly greater than x_bounds[0].")
         if self.u0.ndim != 1 or len(self.u0) < 3:
             raise ValueError("u0 must be a 1-D array with at least 3 points.")
         if self.dt <= 0:
@@ -121,7 +122,7 @@ class BurgersSolver:
         # Upwind advection
         du_bwd = np.diff(u, prepend=u[0]) / dx
         du_fwd = np.diff(u, append=u[-1]) / dx
-        adv    = np.where(u >= 0, u * du_bwd, u * du_fwd)
+        adv = np.where(u >= 0, u * du_bwd, u * du_fwd)
 
         # Central diffusion
         d2u = np.diff(u, n=2, prepend=u[0], append=u[-1]) / dx**2
@@ -161,24 +162,27 @@ class BurgersSolver:
 
         Boundary rows are zeroed (Dirichlet tendency is identically 0).
         """
-        N  = len(v)
+        N = len(v)
         dx = self._dx()
-        r  = self.viscosity / dx**2
+        r = self.viscosity / dx**2
 
         # ---- diffusion Jacobian ----
         J = (np.diag(np.full(N, -2.0 * r))
-           + np.diag(np.full(N - 1,  r), k= 1)
-           + np.diag(np.full(N - 1,  r), k=-1))
+             + np.diag(np.full(N - 1,  r), k=1)
+             + np.diag(np.full(N - 1,  r), k=-1))
 
         # ---- advection Jacobian ----
-        pos = v >= 0                                      # bool mask, shape (N,)
+        # bool mask, shape (N,)
+        pos = v >= 0
 
-        v_left  = np.concatenate([[v[0]],  v[:-1]])      # v_{i-1}, ghost at left
-        v_right = np.concatenate([v[1:],  [v[-1]]])      # v_{i+1}, ghost at right
+        # v_{i-1}, ghost at left
+        v_left = np.concatenate([[v[0]],  v[:-1]])
+        # v_{i+1}, ghost at right
+        v_right = np.concatenate([v[1:],  [v[-1]]])
 
         # Main diagonal: combines both cases via np.where
         main_adv = np.where(pos,
-                            -(2.0 * v - v_left)  / dx,   # pos branch
+                            -(2.0 * v - v_left) / dx,   # pos branch
                              (2.0 * v - v_right) / dx)   # neg branch
         J += np.diag(main_adv)
 
@@ -204,12 +208,14 @@ class BurgersSolver:
 
         Boundary rows → identity (from the Dirichlet constraint v_i − u_n_i = 0).
         """
-        N   = len(v)
+        N = len(v)
         J_F = np.eye(N) - (dt / 2.0) * self._build_jac_rhs(v)
 
         # Enforce Dirichlet rows: ∂(v_i − u_n_i)/∂v_j = δ_{ij}
-        J_F[0,  :] = 0.0;  J_F[0,  0]  = 1.0
-        J_F[-1, :] = 0.0;  J_F[-1, -1] = 1.0
+        J_F[0, :] = 0.0
+        J_F[0,  0] = 1.0
+        J_F[-1, :] = 0.0
+        J_F[-1, -1] = 1.0
         return J_F
 
     def _newton_solve(self, u_n: np.ndarray, dt: float) -> Tuple[np.ndarray, int]:
@@ -221,7 +227,7 @@ class BurgersSolver:
         v : np.ndarray   Converged solution u^{n+1}.
         k : int          Number of iterations taken.
         """
-        v  = u_n.copy()
+        v = u_n.copy()
         rn = self._rhs(u_n)   # R(u^n) is constant throughout the Newton loop
 
         for k in range(1, self.newton_max_iter + 1):
@@ -230,9 +236,9 @@ class BurgersSolver:
             if np.linalg.norm(F, np.inf) < self.newton_tol:
                 return v, k
 
-            J   = self._build_jac_F(v, dt)
-            dv  = np.linalg.solve(J, -F)
-            v   = np.add(v, dv)
+            J = self._build_jac_F(v, dt)
+            dv = np.linalg.solve(J, -F)
+            v = np.add(v, dv)
 
         raise RuntimeError(
             f"Newton failed to converge in {self.newton_max_iter} iterations "
@@ -259,7 +265,7 @@ class BurgersSolver:
 
         snapshots_u = [u.copy()]
         snapshots_t = [t]
-        iters       = []
+        iters = []
 
         while t < self.t_end:
             dt_step = float(np.minimum(self.dt, self.t_end - t))
@@ -271,8 +277,8 @@ class BurgersSolver:
             snapshots_u.append(u.copy())
             snapshots_t.append(t)
 
-        self.u            = np.array(snapshots_u)
-        self.t            = np.array(snapshots_t)
+        self.u = np.array(snapshots_u)
+        self.t = np.array(snapshots_t)
         self.newton_iters = np.array(iters)
         return self
 
@@ -292,18 +298,22 @@ class BurgersSolver:
         if not hasattr(self, "u"):
             raise RuntimeError("Call solve() before querying the solution.")
         if not (self.t[0] <= t_query <= self.t[-1]):
-            raise ValueError(f"t_query={t_query} outside [{self.t[0]}, {self.t[-1]}].")
+            raise ValueError(
+                f"t_query={t_query} outside [{self.t[0]}, {self.t[-1]}].")
         if not (self.x_bounds[0] <= x_query <= self.x_bounds[1]):
             raise ValueError(f"x_query={x_query} outside {self.x_bounds}.")
 
         # --- interpolate in time ---
-        idx_t  = np.clip(np.searchsorted(self.t, t_query), 1, len(self.t) - 1)
-        alpha  = float(np.interp(t_query, self.t[idx_t - 1 : idx_t + 1], [0.0, 1.0]))
-        u_snap = np.add((1.0 - alpha) * self.u[idx_t - 1], alpha * self.u[idx_t])
+        idx_t = np.clip(np.searchsorted(self.t, t_query), 1, len(self.t) - 1)
+        alpha = float(
+            np.interp(t_query, self.t[idx_t - 1: idx_t + 1], [0.0, 1.0]))
+        u_snap = np.add(
+            (1.0 - alpha) * self.u[idx_t - 1], alpha * self.u[idx_t])
 
         # --- interpolate in space ---
         idx_x = np.clip(np.searchsorted(self.x, x_query), 1, len(self.x) - 1)
-        beta  = float(np.interp(x_query, self.x[idx_x - 1 : idx_x + 1], [0.0, 1.0]))
+        beta = float(
+            np.interp(x_query, self.x[idx_x - 1: idx_x + 1], [0.0, 1.0]))
         return float(np.add((1.0 - beta) * u_snap[idx_x - 1], beta * u_snap[idx_x]))
 
     def save(self, filepath: str) -> None:
@@ -326,19 +336,19 @@ class BurgersSolver:
         np.savez_compressed(
             filepath,
             # --- constructor args ---
-            u0              = self.u0,
-            t_start         = self.t_start,
-            t_end           = self.t_end,
-            dt              = self.dt,
-            x_bounds        = self.x_bounds,
-            viscosity       = self.viscosity,
-            newton_tol      = self.newton_tol,
-            newton_max_iter = self.newton_max_iter,
+            u0=self.u0,
+            t_start=self.t_start,
+            t_end=self.t_end,
+            dt=self.dt,
+            x_bounds=self.x_bounds,
+            viscosity=self.viscosity,
+            newton_tol=self.newton_tol,
+            newton_max_iter=self.newton_max_iter,
             # --- computed fields ---
-            x            = self.x,
-            t            = self.t,
-            u            = self.u,
-            newton_iters = self.newton_iters,
+            x=self.x,
+            t=self.t,
+            u=self.u,
+            newton_iters=self.newton_iters,
         )
 
     @classmethod
@@ -356,23 +366,22 @@ class BurgersSolver:
         BurgersSolver with all fields restored — ready to call solution_at()
         without needing to re-run solve().
         """
-        data = np.load(filepath if filepath.endswith(".npz") else filepath + ".npz")
+        data = np.load(filepath if filepath.endswith(
+            ".npz") else filepath + ".npz")
 
         obj = cls(
-            u0              = data["u0"],
-            t_start         = float(data["t_start"]),
-            t_end           = float(data["t_end"]),
-            dt              = float(data["dt"]),
-            x_bounds        = tuple(data["x_bounds"]),
-            viscosity       = float(data["viscosity"]),
-            newton_tol      = float(data["newton_tol"]),
-            newton_max_iter = int(data["newton_max_iter"]),
+            u0=data["u0"],
+            t_start=float(data["t_start"]),
+            t_end=float(data["t_end"]),
+            dt=float(data["dt"]),
+            x_bounds=tuple(data["x_bounds"]),
+            viscosity=float(data["viscosity"]),
+            newton_tol=float(data["newton_tol"]),
+            newton_max_iter=int(data["newton_max_iter"]),
         )
 
-        obj.x            = data["x"]
-        obj.t            = data["t"]
-        obj.u            = data["u"]
+        obj.x = data["x"]
+        obj.t = data["t"]
+        obj.u = data["u"]
         obj.newton_iters = data["newton_iters"]
         return obj
-
-

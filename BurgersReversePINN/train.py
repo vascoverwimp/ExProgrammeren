@@ -42,6 +42,7 @@ from Burger_PDE import BurgersSolver
 # 0.  DEVICE SELECTION
 # =============================================================================
 
+
 def get_device() -> torch.device:
     """Priority: CUDA → Apple MPS → CPU."""
     if torch.cuda.is_available():
@@ -65,11 +66,11 @@ def analytic(x: np.ndarray, t: np.ndarray, cfg: BurgerConfig, solver: BurgersSol
     # shifted_t = t - cfg.t0
     # mask = shifted_t > 1e-10  # Only apply the viscous formula where time has actually progressed beyond t0
     # if cfg.situation == "Step":
-        
+
     #     # Initialize output array with the initial condition (t <= t0)
     #     # Defaulting to the step function logic
     #     u = np.where(x > 0, 1.0, 0.0)
-        
+
     #     # Only calculate the complex viscous formula where time has actually progressed
     #     if np.any(mask):
     #         # Extract only the points that need the viscous calculation
@@ -77,27 +78,27 @@ def analytic(x: np.ndarray, t: np.ndarray, cfg: BurgerConfig, solver: BurgersSol
     #         xm = x[mask]
 
     #         sqrt_4nut = np.sqrt(4 * cfg.v * tm)
-            
+
     #         # Term A: erfc(-x / sqrt)
     #         term_a = erfc(-xm / sqrt_4nut)
-            
+
     #         # Term B: exp(exponent) * erfc((t-x)/sqrt)
     #         exponent = (xm - 0.5 * tm) / (2 * cfg.v)
-    #         # Standard float64 max exponent is ~709. 
+    #         # Standard float64 max exponent is ~709.
     #         # Clipping at 500 is safe and effectively "infinite" for a ratio.
     #         exponent = np.clip(exponent, -1e7, 1e7)
-            
+
     #         term_b = np.exp(exponent) * erfc((tm - xm) / sqrt_4nut)
-            
+
     #         u_viscous = term_b / (term_a + term_b)
-            
+
     #         # Place the calculated values back into the main array
     #         u_viscous_nan = np.isnan(u_viscous)
     #         u_viscous[u_viscous_nan] = 0.0  # Assign a default value (e.g., 0) to NaNs resulting from 0/0
     #         u[mask] = u_viscous
 
     #     return u
-    
+
     # elif cfg.situation == "N-wave":
     #     u = np.where(np.abs(x) < 1.0, -x, 0.0) # Defaulting to the N-wave logic (negative Gaussian) for the Gaussian situation
     #     # Only calculate the complex viscous formula where time has actually progressed
@@ -105,18 +106,18 @@ def analytic(x: np.ndarray, t: np.ndarray, cfg: BurgerConfig, solver: BurgersSol
     #         # Extract only the points that need the viscous calculation
     #         tm = shifted_t[mask]
     #         xm = x[mask]
-            
+
     #         x_integrating = np.linspace(0, np.max(np.abs([cfg.x_end,cfg.x_begin])), 1000)
     #         ic_func = lambda x: np.where(np.abs(x) < 1.0, -x, 0.0)
     #         area_pos = np.trapz(ic_func(x_integrating), x_integrating)
     #         Re0 = area_pos / (2*cfg.v)
     #         denominator = 1 + np.exp(xm**2/(4*cfg.v*tm) - Re0)
     #         u_viscous = xm/(tm+1e-14) * 1/(denominator+1e-14)
-            
+
     #         # Place the calculated values back into the main array
     #         u[mask] = u_viscous
     #     return u
-    
+
     # elif cfg.situation == "N-wave2":
     #     u = np.where(np.abs(x) < 1.0, -x, 0.0) # Defaulting to the N-wave logic (negative Gaussian) for the Gaussian situation
     #     # Only calculate the complex viscous formula where time has actually progressed
@@ -124,7 +125,7 @@ def analytic(x: np.ndarray, t: np.ndarray, cfg: BurgerConfig, solver: BurgersSol
     #         # Extract only the points that need the viscous calculation
     #         tm = shifted_t[mask]
     #         xm = x[mask]
-            
+
     #         x_integrating = np.linspace(0, np.max(np.abs([cfg.x_end,cfg.x_begin])), 1000)
     #         ic_func = lambda x: np.where(np.abs(x) < 1.0, -x, 0.0)
     #         area_pos = np.trapz(ic_func(x_integrating), x_integrating)
@@ -133,17 +134,17 @@ def analytic(x: np.ndarray, t: np.ndarray, cfg: BurgerConfig, solver: BurgersSol
     #         Re = np.log(1 + np.sqrt(tau/tm))
     #         denominator = (1+1/(np.exp(Re0-1))*np.sqrt(tm/tau)*np.exp(-Re*xm**2/(4*cfg.v*tm*Re0)))
     #         u_viscous = xm/(tm+1e-14) * 1/(denominator+1e-14)
-            
+
     #         # Place the calculated values back into the main array
     #         u[mask] = u_viscous
     #     return u
-    
+
     # return x*t
 
 
 # Stratified time split to ensure validation points are spread across the time axis rather than clustered at one end.
 
-def stratified_time_split(t,t_begin,t_end, p_val, n_bins, seed):
+def stratified_time_split(t, t_begin, t_end, p_val, n_bins, seed):
     rng = np.random.default_rng(seed)
     # 1. Sort by time
     idx = np.argsort(t)
@@ -161,7 +162,7 @@ def stratified_time_split(t,t_begin,t_end, p_val, n_bins, seed):
         rng.shuffle(in_bin)
 
         n = len(in_bin)
-        n_val   = int(p_val   * n)
+        n_val = int(p_val * n)
 
         val_idx.extend(in_bin[:n_val])
         train_idx.extend(in_bin[n_val:])
@@ -201,42 +202,52 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
         if requires_grad:
             t.requires_grad_(True)
         return t
-    
-    x_solver = np.linspace(2*cfg.x_begin, 2*cfg.x_end, 4*cfg.n_plot_x)  # Spatial grid for the solver (double as the dense grid for plotting)
-    u_ic_true = cfg.ic_func(to_tensor(x_solver)).cpu().numpy().reshape(-1)  # Initial condition values at t0 (for IC loss)
-    dt = (cfg.t_extrap - cfg.t0) / (cfg.n_plot_t * 2)  # Time step for the solver, half as big as the plotting time step for accuracy
+
+    # Spatial grid for the solver (double as the dense grid for plotting)
+    x_solver = np.linspace(2*cfg.x_begin, 2*cfg.x_end, 4*cfg.n_plot_x)
+    # Initial condition values at t0 (for IC loss)
+    u_ic_true = cfg.ic_func(to_tensor(x_solver)).cpu().numpy().reshape(-1)
+    # Time step for the solver, half as big as the plotting time step for accuracy
+    dt = (cfg.t_extrap - cfg.t0) / (cfg.n_plot_t * 2)
 
     analytical_path_str = f"{cfg.dir_analytic}/{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_analytic_pt}"
     analytical_path = Path(analytical_path_str)
-
 
     solver = BurgersSolver(
         u0=u_ic_true,
         t_start=cfg.t0,
         t_end=cfg.t_extrap,
-        dt = dt,
+        dt=dt,
         x_bounds=(2*cfg.x_begin, 2*cfg.x_end),
         viscosity=cfg.v
     )
-    Path(cfg.dir_analytic).mkdir(parents=True, exist_ok=True)  # Ensure the directory exists for saving/loading the analytic solution snapshots
+    # Ensure the directory exists for saving/loading the analytic solution snapshots
+    Path(cfg.dir_analytic).mkdir(parents=True, exist_ok=True)
 
     if analytical_path.exists():
-        print(f"Loading precomputed analytic solution snapshots from {analytical_path_str}...")
+        print(
+            f"Loading precomputed analytic solution snapshots from {analytical_path_str}...")
         solver = solver.load(analytical_path_str)
     else:
-        print(f"\nSolving the Burgers equation with the {cfg.situation} initial condition to generate the analytic solution snapshots for interpolation...")
+        print(
+            f"\nSolving the Burgers equation with the {cfg.situation} initial condition to generate the analytic solution snapshots for interpolation...")
         solver.solve()  # Precompute the solution snapshots for interpolation in the analytic function
-        solver.save(analytical_path_str)  # Save the precomputed solution for future runs
+        # Save the precomputed solution for future runs
+        solver.save(analytical_path_str)
 
     # ── Initial condition point ───────────────────────────────────────────────
     x_samples_ic = np.linspace(cfg.x_begin, cfg.x_end, cfg.n_ic_samples_x)
     t_ic = np.full_like(x_samples_ic, cfg.t0)
     u_ic_true = analytic(x_samples_ic, t_ic, cfg, solver)
 
-    print(f"\nGenerating observation data for the {cfg.situation} initial condition...")
+    print(
+        f"\nGenerating observation data for the {cfg.situation} initial condition...")
     # ── All M observations ────────────────────────────────────────────────────
-    x_obs_train, t_obs_train = np.random.uniform(cfg.x_begin, cfg.x_end, cfg.n_obs_total), np.random.uniform(cfg.t0, cfg.t_train, cfg.n_obs_total)  # spatial and temporal locations for observations
-    u_obs_train = analytic(x_obs_train, t_obs_train, cfg, solver) + np.random.normal(0.0, cfg.sigma, cfg.n_obs_total)
+    x_obs_train, t_obs_train = np.random.uniform(cfg.x_begin, cfg.x_end, cfg.n_obs_total), np.random.uniform(
+        # spatial and temporal locations for observations
+        cfg.t0, cfg.t_train, cfg.n_obs_total)
+    u_obs_train = analytic(x_obs_train, t_obs_train, cfg, solver) + \
+        np.random.normal(0.0, cfg.sigma, cfg.n_obs_total)
 
     # ── Train / validation split  (stratified) ────── We found were told to use the ground truth,
     # instead of stratified time split, but this is more realistic, so we will keep it in the code.
@@ -248,25 +259,29 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
     x_obs_vec = np.linspace(cfg.x_begin, cfg.x_end, cfg.n_val_x)
     t_obs_vec = np.linspace(cfg.t0, cfg.t_train, cfg.n_val_t)
 
-    t_obs_val_mat, x_obs_val_mat = np.meshgrid(t_obs_vec, x_obs_vec, indexing="ij")
+    t_obs_val_mat, x_obs_val_mat = np.meshgrid(
+        t_obs_vec, x_obs_vec, indexing="ij")
     t_obs_val = t_obs_val_mat.reshape(-1)
     x_obs_val = x_obs_val_mat.reshape(-1)
     u_obs_val = analytic(x_obs_val, t_obs_val, cfg, solver)
 
     # ── Dense grids for post-hoc evaluation and plotting (CPU numpy only) ────
-    t_plot_train = np.linspace(cfg.t0, cfg.t_train,  np.round(cfg.n_plot_t * (cfg.t_train - cfg.t0) / (cfg.t_extrap - cfg.t0)).astype(int))
-    t_plot_full  = np.linspace(cfg.t0, cfg.t_extrap, cfg.n_plot_t)
+    t_plot_train = np.linspace(cfg.t0, cfg.t_train,  np.round(
+        cfg.n_plot_t * (cfg.t_train - cfg.t0) / (cfg.t_extrap - cfg.t0)).astype(int))
+    t_plot_full = np.linspace(cfg.t0, cfg.t_extrap, cfg.n_plot_t)
     x_plot_full = np.linspace(cfg.x_begin, cfg.x_end, cfg.n_plot_x)
 
-    t_plotmat_train, x_plotmat_train = np.meshgrid(t_plot_train, x_plot_full, indexing="ij")
-    t_plotmat_full,  x_plotmat_full  = np.meshgrid(t_plot_full,  x_plot_full,  indexing="ij")
+    t_plotmat_train, x_plotmat_train = np.meshgrid(
+        t_plot_train, x_plot_full, indexing="ij")
+    t_plotmat_full,  x_plotmat_full = np.meshgrid(
+        t_plot_full,  x_plot_full,  indexing="ij")
     t_flattened_train = t_plotmat_train.reshape(-1)
     x_flattened_train = x_plotmat_train.reshape(-1)
-    t_flattened_full  = t_plotmat_full.reshape(-1)
-    x_flattened_full  = x_plotmat_full.reshape(-1)
+    t_flattened_full = t_plotmat_full.reshape(-1)
+    x_flattened_full = x_plotmat_full.reshape(-1)
 
     u_true_train = analytic(x_flattened_train, t_flattened_train, cfg, solver)
-    u_true_full  = analytic(x_flattened_full, t_flattened_full,  cfg, solver)
+    u_true_full = analytic(x_flattened_full, t_flattened_full,  cfg, solver)
 
     return {
         # numpy — train split
@@ -313,7 +328,7 @@ def loss_physics(
     create_graph=True on the first grad call keeps the computation graph
     alive so the backward pass through the second derivative works.
     """
-    u_hat = model(x,t)
+    u_hat = model(x, t)
 
     du, dotu = torch.autograd.grad(
         u_hat, (x, t),
@@ -395,7 +410,8 @@ def train_model(
     """
     model.to(device)
     model.log_v_hat.data = model.log_v_hat.data.to(device)
-    optimiser = torch.optim.Adam([{'params': model.net.parameters(), 'lr': cfg.lr, 'betas': (cfg.beta1, cfg.beta2)}, {'params': [model.log_v_hat], 'lr': cfg.lr_param}])
+    optimiser = torch.optim.Adam([{'params': model.net.parameters(), 'lr': cfg.lr, 'betas': (
+        cfg.beta1, cfg.beta2)}, {'params': [model.log_v_hat], 'lr': cfg.lr_param}])
     scheduler = torch.optim.lr_scheduler.StepLR(
         optimiser, step_size=cfg.lr_step, gamma=cfg.lr_gamma
     )
@@ -403,12 +419,11 @@ def train_model(
     t_obs_train_t = data["t_obs_train_t"]
     x_obs_train_t = data["x_obs_train_t"]
     u_obs_train_t = data["u_obs_train_t"]
-    x_obs_val_t   = data["x_obs_val_t"]
-    t_obs_val_t   = data["t_obs_val_t"]
-    u_obs_val_t   = data["u_obs_val_t"]
-    t_ic_t        = data["t_ic_t"]
+    x_obs_val_t = data["x_obs_val_t"]
+    t_obs_val_t = data["t_obs_val_t"]
+    u_obs_val_t = data["u_obs_val_t"]
+    t_ic_t = data["t_ic_t"]
     x_samples_ic_t = data["x_samples_ic_t"]
-
 
     history: dict[str, list] = {
         "epoch":         [],
@@ -419,12 +434,12 @@ def train_model(
         "loss_val":      [],
     }
     snapshots:    dict[int, dict] = {}
-    snapshot_set: set[int]        = set(cfg.snapshot_epochs)
+    snapshot_set: set[int] = set(cfg.snapshot_epochs)
 
     # ── Early stopping state ──────────────────────────────────────────────────
-    best_val_loss   = float("inf")
+    best_val_loss = float("inf")
     patience_counter = 0
-    stopped_early   = False
+    stopped_early = False
 
     t0_wall = time.perf_counter()
 
@@ -432,11 +447,14 @@ def train_model(
     t_selected_epoch = t_obs_train_t
     u_selected_epoch = u_obs_train_t
 
-    x_pool = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.x_end - cfg.x_begin) + cfg.x_begin
+    x_pool = torch.rand(cfg.n_col_pool, 1, device=device) * \
+        (cfg.x_end - cfg.x_begin) + cfg.x_begin
 
-    t_pool_ext_physics = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.t_extrap - cfg.t0) + cfg.t0
+    t_pool_ext_physics = torch.rand(
+        cfg.n_col_pool, 1, device=device)*(cfg.t_extrap - cfg.t0) + cfg.t0
 
-    t_pool_blind = torch.rand(cfg.n_col_pool, 1, device=device)*(cfg.t_train - cfg.t0) + cfg.t0
+    t_pool_blind = torch.rand(
+        cfg.n_col_pool, 1, device=device)*(cfg.t_train - cfg.t0) + cfg.t0
 
     for epoch in range(1, cfg.n_epochs + 1):
         model.train()
@@ -449,27 +467,29 @@ def train_model(
         # t_selected_epoch = t_obs_train_t[epoch_random_selection]
         # u_selected_epoch = u_obs_train_t[epoch_random_selection]
         # We found that mini batching is worse than full batching
-        
-        u_pred   = model(x_selected_epoch, t_selected_epoch)
-        l_data   = torch.mean((u_pred - u_selected_epoch) ** 2)
-        l_phys  = torch.zeros(1, device=device)
-        l_ic    = torch.zeros(1, device=device)
+
+        u_pred = model(x_selected_epoch, t_selected_epoch)
+        l_data = torch.mean((u_pred - u_selected_epoch) ** 2)
+        l_phys = torch.zeros(1, device=device)
+        l_ic = torch.zeros(1, device=device)
 
         if use_physics:
             idx = torch.randint(0, cfg.n_col_pool, (cfg.n_col,))
             x_col_t = x_pool[idx].clone().detach().requires_grad_(True)
 
             if extrapolated_physics:
-            # ── Collocation points (randomly chosen) ───────────────────────────────────
-                t_col_t = t_pool_ext_physics[idx].clone().detach().requires_grad_(True)
+                # ── Collocation points (randomly chosen) ───────────────────────────────────
+                t_col_t = t_pool_ext_physics[idx].clone(
+                ).detach().requires_grad_(True)
 
             else:
-                t_col_t = t_pool_blind[idx].clone().detach().requires_grad_(True)
+                t_col_t = t_pool_blind[idx].clone(
+                ).detach().requires_grad_(True)
 
             l_phys = loss_physics(model, x_col_t, t_col_t, cfg)
 
         if use_ic:
-            l_ic   = loss_ic(model, x_samples_ic_t, t_ic_t, cfg)
+            l_ic = loss_ic(model, x_samples_ic_t, t_ic_t, cfg)
 
         l_total = l_data + cfg.lambda_phys * l_phys + cfg.lambda_ic * l_ic
         l_total.backward()
@@ -499,7 +519,7 @@ def train_model(
 
             # ── Save best checkpoint ──────────────────────────────────────────
             if l_val < best_val_loss - cfg.min_delta:
-                best_val_loss    = l_val
+                best_val_loss = l_val
                 patience_counter = 0
                 cpu_state = {k: v.cpu() for k, v in model.state_dict().items()}
                 torch.save(
@@ -561,64 +581,90 @@ def parse_args() -> argparse.Namespace:
 
     # Physical parameters
     g = p.add_argument_group("Physical parameters")
-    g.add_argument("--viscosity", type=float, default=BurgerConfig.v, help="Viscosity coefficient")
+    g.add_argument("--viscosity", type=float,
+                   default=BurgerConfig.v, help="Viscosity coefficient")
 
     # Initial conditions
     g = p.add_argument_group("Initial conditions")
-    g.add_argument("--situation", type=str, default=BurgerConfig.situation, help="Initial condition scenario: 'N-wave', 'Gaussian', or 'Step'")
+    g.add_argument("--situation", type=str, default=BurgerConfig.situation,
+                   help="Initial condition scenario: 'N-wave', 'Gaussian', or 'Step'")
 
     # Time domain
     g = p.add_argument_group("Time domain")
-    g.add_argument("--t0",      type=float, default=BurgerConfig.t0, help="Initial time [s]")
-    g.add_argument("--t_train",  type=float, default=BurgerConfig.t_train,  help="End of training window [s]")
-    g.add_argument("--t_extrap", type=float, default=BurgerConfig.t_extrap, help="End of extrapolation window [s]")
+    g.add_argument("--t0",      type=float,
+                   default=BurgerConfig.t0, help="Initial time [s]")
+    g.add_argument("--t_train",  type=float,
+                   default=BurgerConfig.t_train,  help="End of training window [s]")
+    g.add_argument("--t_extrap", type=float, default=BurgerConfig.t_extrap,
+                   help="End of extrapolation window [s]")
 
     # Space domain
-    g=p.add_argument_group("Space domain")
-    g.add_argument("--x_begin",  type=float, default=BurgerConfig.x_begin,  help="End of training window [m]")
-    g.add_argument("--x_end", type=float, default=BurgerConfig.x_end, help="End of extrapolation window [m]")
+    g = p.add_argument_group("Space domain")
+    g.add_argument("--x_begin",  type=float,
+                   default=BurgerConfig.x_begin,  help="End of training window [m]")
+    g.add_argument("--x_end", type=float, default=BurgerConfig.x_end,
+                   help="End of extrapolation window [m]")
 
     # Data
     g = p.add_argument_group("Data")
-    g.add_argument("--n_obs",        type=int,   default=BurgerConfig.n_obs_total,   help="Total noisy observations")
-    g.add_argument("--sigma",        type=float, default=BurgerConfig.sigma, help="Measurement noise std dev")
-    g.add_argument("--n_col",      type=int,   default=BurgerConfig.n_col,  help="Collocation points for physics loss")
-    g.add_argument("--seed",         type=int,   default=BurgerConfig.seed,   help="RNG seed")
+    g.add_argument("--n_obs",        type=int,
+                   default=BurgerConfig.n_obs_total,   help="Total noisy observations")
+    g.add_argument("--sigma",        type=float,
+                   default=BurgerConfig.sigma, help="Measurement noise std dev")
+    g.add_argument("--n_col",      type=int,   default=BurgerConfig.n_col,
+                   help="Collocation points for physics loss")
+    g.add_argument("--seed",         type=int,
+                   default=BurgerConfig.seed,   help="RNG seed")
 
     # Initial guess viscosity
-    g.add_argument("--v_init", type=float, default=BurgerConfig.ini_guess_v, help="Initial guess for viscosity (for PINN training only, not data generation)")
+    g.add_argument("--v_init", type=float, default=BurgerConfig.ini_guess_v,
+                   help="Initial guess for viscosity (for PINN training only, not data generation)")
 
     # Loss weights
     g = p.add_argument_group("PINN loss weights")
-    g.add_argument("--lambda_phys", type=float, default=BurgerConfig.lambda_phys, help="Physics residual weight")
-    g.add_argument("--lambda_ic",   type=float, default=BurgerConfig.lambda_ic, help="Initial-condition weight")
+    g.add_argument("--lambda_phys", type=float,
+                   default=BurgerConfig.lambda_phys, help="Physics residual weight")
+    g.add_argument("--lambda_ic",   type=float,
+                   default=BurgerConfig.lambda_ic, help="Initial-condition weight")
 
     # Architecture
     g = p.add_argument_group("Architecture")
-    g.add_argument("--hidden",   type=int, default=BurgerConfig.hidden, help="Neurons per hidden layer")
-    g.add_argument("--n_layers", type=int, default=BurgerConfig.n_layers,  help="Number of hidden layers")
+    g.add_argument("--hidden",   type=int,
+                   default=BurgerConfig.hidden, help="Neurons per hidden layer")
+    g.add_argument("--n_layers", type=int,
+                   default=BurgerConfig.n_layers,  help="Number of hidden layers")
 
     # Optimiser
     g = p.add_argument_group("Optimiser")
-    g.add_argument("--lr",       type=float, default=BurgerConfig.lr, help="Initial Adam learning rate")
-    g.add_argument("--lr_step",  type=int,   default=BurgerConfig.lr_step, help="StepLR decay interval [epochs]")
-    g.add_argument("--lr_gamma", type=float, default=BurgerConfig.lr_gamma,  help="StepLR decay factor")
-    g.add_argument("--lr_param", type=float, default=BurgerConfig.lr_param, help="Adam learning rate for learned physical parameters")
+    g.add_argument("--lr",       type=float,
+                   default=BurgerConfig.lr, help="Initial Adam learning rate")
+    g.add_argument("--lr_step",  type=int,   default=BurgerConfig.lr_step,
+                   help="StepLR decay interval [epochs]")
+    g.add_argument("--lr_gamma", type=float,
+                   default=BurgerConfig.lr_gamma,  help="StepLR decay factor")
+    g.add_argument("--lr_param", type=float, default=BurgerConfig.lr_param,
+                   help="Adam learning rate for learned physical parameters")
 
     # Training loop
     g = p.add_argument_group("Training loop")
-    g.add_argument("--n_epochs",    type=int, default=BurgerConfig.n_epochs, help="Maximum training epochs")
-    g.add_argument("--print_every", type=int, default=BurgerConfig.print_every, help="Console log interval [epochs]")
-    g.add_argument("--log_every",   type=int, default=BurgerConfig.log_every,   help="History log interval [epochs]")
+    g.add_argument("--n_epochs",    type=int,
+                   default=BurgerConfig.n_epochs, help="Maximum training epochs")
+    g.add_argument("--print_every", type=int, default=BurgerConfig.print_every,
+                   help="Console log interval [epochs]")
+    g.add_argument("--log_every",   type=int, default=BurgerConfig.log_every,
+                   help="History log interval [epochs]")
 
     # Early stopping
     g = p.add_argument_group("Early stopping")
-    g.add_argument("--patience",  type=int,   default=BurgerConfig.patience,   help="Patience in log_every units")
-    g.add_argument("--min_delta", type=float, default=BurgerConfig.min_delta, help="Min improvement to reset counter")
+    g.add_argument("--patience",  type=int,   default=BurgerConfig.patience,
+                   help="Patience in log_every units")
+    g.add_argument("--min_delta", type=float, default=BurgerConfig.min_delta,
+                   help="Min improvement to reset counter")
 
     # Output
     g = p.add_argument_group("Output")
-    g.add_argument("--out_dir", type=str, default=BurgerConfig.out_dir, help="Output directory for all saved files")
+    g.add_argument("--out_dir", type=str, default=BurgerConfig.out_dir,
+                   help="Output directory for all saved files")
 
     return p.parse_args()
 
@@ -670,19 +716,22 @@ def main() -> None:
     print(f"  ν    : {args.viscosity:.4f}    Situation : {args.situation}")
     print(f"  ν_init : {args.v_init:.4f}")
     print("=" * 70)
-    print(f"\n  Observations: {args.n_obs} for training (with noise σ={args.sigma})")
-    print(f"  Collocation : {args.n_col} pts over [{args.x_begin}, {args.x_end}] × [{args.t0}, {args.t_extrap} (phys. ext.) / {args.t_train} (blind)]")
+    print(
+        f"\n  Observations: {args.n_obs} for training (with noise σ={args.sigma})")
+    print(
+        f"  Collocation : {args.n_col} pts over [{args.x_begin}, {args.x_end}] × [{args.t0}, {args.t_extrap} (phys. ext.) / {args.t_train} (blind)]")
     print(f"  IC enforced at t={args.t0} via L_ic (not in observations)\n")
 
     train_and_save_both(**kwargs)
-    evaluate_model(situation=args.situation,v=args.viscosity)
-    print(f"Run BurgersReversePINN/plot.py --situation {args.situation} --viscosity {args.viscosity} to generate plots")
+    evaluate_model(situation=args.situation, v=args.viscosity)
+    print(
+        f"Run BurgersReversePINN/plot.py --situation {args.situation} --viscosity {args.viscosity} to generate plots")
 
 
 def train_and_save_both(**kwargs) -> None:
     """
     Train both PINN models (extended physics and blind) with provided config kwargs.
-    
+
     Accepts keyword arguments matching BurgerConfig fields:
       situation, viscosity (v), x_begin, x_end, t0, t_train, t_extrap,
       n_obs_total, sigma, n_col, seed, lambda_phys, lambda_ic, hidden,
@@ -727,18 +776,19 @@ def train_and_save_both(**kwargs) -> None:
     # ── Device ────────────────────────────────────────────────────────────────
     device = get_device()
 
-
     # ── Output directory ──────────────────────────────────────────────────────
     out_dir = Path(cfg.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    ckpt_pinn_ext_phys = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_ckpt_pinn_ext_phys}"
-    ckpt_pinn_blind    = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_ckpt_pinn_blind}"
-    results_path = out_dir / f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_results_pt}"
+    ckpt_pinn_ext_phys = out_dir / \
+        f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_ckpt_pinn_ext_phys}"
+    ckpt_pinn_blind = out_dir / \
+        f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_ckpt_pinn_blind}"
+    results_path = out_dir / \
+        f"{cfg.situation}_{cfg.v:.1e}_{cfg.suffix_results_pt}"
 
     # ── Data ──────────────────────────────────────────────────────────────────
     data = generate_data(cfg, device)
-
 
     # ── PINN model (extended physics) ─────────────────────────────────────────────
     print()
@@ -749,12 +799,12 @@ def train_and_save_both(**kwargs) -> None:
     print(f"  Parameters: {model_pinn.param_count()}")
     hist_pinn_ext_phys, snaps_pinn_ext_phys = train_model(
         model_pinn, data, cfg, device,
-        use_physics = True,
-        extrapolated_physics = True,
-        label       = "PINN (ext. phy.)",
-        ckpt_path   = ckpt_pinn_ext_phys,
+        use_physics=True,
+        extrapolated_physics=True,
+        label="PINN (ext. phy.)",
+        ckpt_path=ckpt_pinn_ext_phys,
     )
-        # ── PINN model (blind) ─────────────────────────────────────────────
+    # ── PINN model (blind) ─────────────────────────────────────────────
     print()
     print("=" * 70)
     print("Training PINN  (data + physics (only normal region) + IC loss)")
@@ -763,34 +813,43 @@ def train_and_save_both(**kwargs) -> None:
     print(f"  Parameters: {model_pinn.param_count()}")
     hist_pinn_blind, snaps_pinn_blind = train_model(
         model_pinn, data, cfg, device,
-        use_physics = True,
-        extrapolated_physics = False,
-        label       = "PINN (blind)",
-        ckpt_path   = ckpt_pinn_blind,
+        use_physics=True,
+        extrapolated_physics=False,
+        label="PINN (blind)",
+        ckpt_path=ckpt_pinn_blind,
     )
 
-    pred_pinn_ext_phys = Predictor(cfg, checkpoint_path=str(ckpt_pinn_ext_phys))
+    pred_pinn_ext_phys = Predictor(
+        cfg, checkpoint_path=str(ckpt_pinn_ext_phys))
     pred_pinn_blind = Predictor(cfg, checkpoint_path=str(ckpt_pinn_blind))
 
-    t_flattened_full  = data["t_flattened_full"]
-    x_flattened_full  = data["x_flattened_full"]
-    u_true_full  = data["u_true_full"]
+    t_flattened_full = data["t_flattened_full"]
+    x_flattened_full = data["x_flattened_full"]
+    u_true_full = data["u_true_full"]
 
-    u_pinn_ext_phys_full = pred_pinn_ext_phys.predict(x_flattened_full, t_flattened_full)
-    u_pinn_blind_full = pred_pinn_blind.predict(x_flattened_full, t_flattened_full)
+    u_pinn_ext_phys_full = pred_pinn_ext_phys.predict(
+        x_flattened_full, t_flattened_full)
+    u_pinn_blind_full = pred_pinn_blind.predict(
+        x_flattened_full, t_flattened_full)
 
     nu_hat_ext_phys = pred_pinn_ext_phys.predict_params()["v_hat"]
     nu_hat_blind = pred_pinn_blind.predict_params()["v_hat"]
-    mask_train  = t_flattened_full <= cfg.t_train
+    mask_train = t_flattened_full <= cfg.t_train
 
-    mask_extrap = t_flattened_full >  cfg.t_train
+    mask_extrap = t_flattened_full > cfg.t_train
 
-    rmse_pinn_ext_phys_train = Predictor.rmse(u_pinn_ext_phys_full[mask_train],  u_true_full[mask_train])
-    rmse_pinn_blind_train = Predictor.rmse(u_pinn_blind_full[mask_train],  u_true_full[mask_train])
-    rmse_pinn_ext_phys_extrap   = Predictor.rmse(u_pinn_ext_phys_full[mask_extrap], u_true_full[mask_extrap])
-    rmse_pinn_blind_extrap = Predictor.rmse(u_pinn_blind_full[mask_extrap], u_true_full[mask_extrap])
-    phys_pinn_ext_phys       = Predictor.physics_residual(u_pinn_ext_phys_full, x_flattened_full, t_flattened_full, cfg)
-    phys_pinn_blind       = Predictor.physics_residual(u_pinn_blind_full, x_flattened_full, t_flattened_full, cfg)
+    rmse_pinn_ext_phys_train = Predictor.rmse(
+        u_pinn_ext_phys_full[mask_train],  u_true_full[mask_train])
+    rmse_pinn_blind_train = Predictor.rmse(
+        u_pinn_blind_full[mask_train],  u_true_full[mask_train])
+    rmse_pinn_ext_phys_extrap = Predictor.rmse(
+        u_pinn_ext_phys_full[mask_extrap], u_true_full[mask_extrap])
+    rmse_pinn_blind_extrap = Predictor.rmse(
+        u_pinn_blind_full[mask_extrap], u_true_full[mask_extrap])
+    phys_pinn_ext_phys = Predictor.physics_residual(
+        u_pinn_ext_phys_full, x_flattened_full, t_flattened_full, cfg)
+    phys_pinn_blind = Predictor.physics_residual(
+        u_pinn_blind_full, x_flattened_full, t_flattened_full, cfg)
 
     # ── Save results bundle for plot.py ───────────────────────────────────────
     metrics = {
@@ -822,43 +881,56 @@ def train_and_save_both(**kwargs) -> None:
         results_path,
     )
 
+
 def evaluate_model(situation: str = BurgerConfig.situation, v: float = BurgerConfig.v) -> tuple[float, float]:
-    
+
     # ── Load best checkpoints for final evaluation ────────────────────────────
     # Using best-val checkpoints rather than last-epoch weights ensures
     # the saved result reflects the model at its generalisation peak.
 
     out_dir = Path(BurgerConfig.out_dir)
-    results_path = out_dir / f"{situation}_{v:.1e}_{BurgerConfig.suffix_results_pt}"
+    results_path = out_dir / \
+        f"{situation}_{v:.1e}_{BurgerConfig.suffix_results_pt}"
     raw = torch.load(results_path, map_location="cpu", weights_only=False)
     config = raw["config"]
     data = raw["data"]
-    ckpt_pinn_ext_phys = out_dir / f"{config.situation}_{config.v:.1e}_{config.suffix_ckpt_pinn_ext_phys}"
-    ckpt_pinn_blind    = out_dir / f"{config.situation}_{config.v:.1e}_{config.suffix_ckpt_pinn_blind}"
+    ckpt_pinn_ext_phys = out_dir / \
+        f"{config.situation}_{config.v:.1e}_{config.suffix_ckpt_pinn_ext_phys}"
+    ckpt_pinn_blind = out_dir / \
+        f"{config.situation}_{config.v:.1e}_{config.suffix_ckpt_pinn_blind}"
 
-    pred_pinn_ext_phys = Predictor(config, checkpoint_path=str(ckpt_pinn_ext_phys))
-    pred_pinn_blind    = Predictor(config, checkpoint_path=str(ckpt_pinn_blind))
+    pred_pinn_ext_phys = Predictor(
+        config, checkpoint_path=str(ckpt_pinn_ext_phys))
+    pred_pinn_blind = Predictor(config, checkpoint_path=str(ckpt_pinn_blind))
 
-    t_flattened_full  = data["t_flattened_full"]
-    x_flattened_full  = data["x_flattened_full"]
-    u_true_full  = data["u_true_full"]
+    t_flattened_full = data["t_flattened_full"]
+    x_flattened_full = data["x_flattened_full"]
+    u_true_full = data["u_true_full"]
 
-    u_pinn_ext_phys_full = pred_pinn_ext_phys.predict(x_flattened_full, t_flattened_full)
-    u_pinn_blind_full    = pred_pinn_blind.predict(x_flattened_full, t_flattened_full)
+    u_pinn_ext_phys_full = pred_pinn_ext_phys.predict(
+        x_flattened_full, t_flattened_full)
+    u_pinn_blind_full = pred_pinn_blind.predict(
+        x_flattened_full, t_flattened_full)
 
     nu_hat_ext_phys = pred_pinn_ext_phys.predict_params()["v_hat"]
     nu_hat_blind = pred_pinn_blind.predict_params()["v_hat"]
 
-    mask_train  = t_flattened_full <= config.t_train
+    mask_train = t_flattened_full <= config.t_train
 
-    mask_extrap = t_flattened_full >  config.t_train
+    mask_extrap = t_flattened_full > config.t_train
 
-    rmse_pinn_ext_phys_train = Predictor.rmse(u_pinn_ext_phys_full[mask_train],  u_true_full[mask_train])
-    rmse_pinn_blind_train = Predictor.rmse(u_pinn_blind_full[mask_train],  u_true_full[mask_train])
-    rmse_pinn_ext_phys_extrap   = Predictor.rmse(u_pinn_ext_phys_full[mask_extrap], u_true_full[mask_extrap])
-    rmse_pinn_blind_extrap = Predictor.rmse(u_pinn_blind_full[mask_extrap], u_true_full[mask_extrap])
-    phys_pinn_ext_phys       = Predictor.physics_residual(u_pinn_ext_phys_full, x_flattened_full, t_flattened_full, config)
-    phys_pinn_blind       = Predictor.physics_residual(u_pinn_blind_full, x_flattened_full, t_flattened_full, config)
+    rmse_pinn_ext_phys_train = Predictor.rmse(
+        u_pinn_ext_phys_full[mask_train],  u_true_full[mask_train])
+    rmse_pinn_blind_train = Predictor.rmse(
+        u_pinn_blind_full[mask_train],  u_true_full[mask_train])
+    rmse_pinn_ext_phys_extrap = Predictor.rmse(
+        u_pinn_ext_phys_full[mask_extrap], u_true_full[mask_extrap])
+    rmse_pinn_blind_extrap = Predictor.rmse(
+        u_pinn_blind_full[mask_extrap], u_true_full[mask_extrap])
+    phys_pinn_ext_phys = Predictor.physics_residual(
+        u_pinn_ext_phys_full, x_flattened_full, t_flattened_full, config)
+    phys_pinn_blind = Predictor.physics_residual(
+        u_pinn_blind_full, x_flattened_full, t_flattened_full, config)
     # ── Console summary ───────────────────────────────────────────────────────
     print()
     print("=" * 70)
@@ -867,38 +939,46 @@ def evaluate_model(situation: str = BurgerConfig.situation, v: float = BurgerCon
     print(f"  {'Metric':<38} {'PINN (extended physics)':>10} {'PINN (blind)':>10}")
     print(f"  {'RMSE  (training interval)':38}   {rmse_pinn_ext_phys_train:>10.4f}  {rmse_pinn_blind_train:>10.4f}")
     print(f"  {'RMSE  (extrapolation)':38}   {rmse_pinn_ext_phys_extrap:>10.4f}  {rmse_pinn_blind_extrap:>10.4f}")
-    print(f"  {'Physics Residual':38}   {phys_pinn_ext_phys:>10.4f}  {phys_pinn_blind:>10.4f}")
+    print(
+        f"  {'Physics Residual':38}   {phys_pinn_ext_phys:>10.4f}  {phys_pinn_blind:>10.4f}")
     print(f"  {'True nu':38}  {config.v:>10.4f}")
     print(f"  {'nu_hat':38}  {nu_hat_ext_phys:>10.4f} {nu_hat_blind:>10.4f}")
     print("  " + "-" * 62)
 
     return nu_hat_blind, nu_hat_ext_phys
 
+
 def evaluate_blind(situation: str = BurgerConfig.situation, v: float = BurgerConfig.v) -> tuple[float, float]:
 
     out_dir = Path(BurgerConfig.out_dir)
-    results_path = out_dir / f"{situation}_{v:.1e}_{BurgerConfig.suffix_results_pt}"
+    results_path = out_dir / \
+        f"{situation}_{v:.1e}_{BurgerConfig.suffix_results_pt}"
     raw = torch.load(results_path, map_location="cpu", weights_only=False)
     config: BurgerConfig = raw["config"]
     data = raw["data"]
-    ckpt_pinn_blind    = out_dir / f"{config.situation}_{config.v:.1e}_{config.suffix_ckpt_pinn_blind}"
-    pred_pinn_blind    = Predictor(config, checkpoint_path=str(ckpt_pinn_blind))
+    ckpt_pinn_blind = out_dir / \
+        f"{config.situation}_{config.v:.1e}_{config.suffix_ckpt_pinn_blind}"
+    pred_pinn_blind = Predictor(config, checkpoint_path=str(ckpt_pinn_blind))
 
-    t_flattened_full  = data["t_flattened_full"]
-    x_flattened_full  = data["x_flattened_full"]
-    u_true_full  = data["u_true_full"]
+    t_flattened_full = data["t_flattened_full"]
+    x_flattened_full = data["x_flattened_full"]
+    u_true_full = data["u_true_full"]
 
-    u_pinn_blind_full    = pred_pinn_blind.predict(x_flattened_full, t_flattened_full)
+    u_pinn_blind_full = pred_pinn_blind.predict(
+        x_flattened_full, t_flattened_full)
 
-    mask_train  = t_flattened_full <= config.t_train
+    mask_train = t_flattened_full <= config.t_train
 
-    mask_extrap = t_flattened_full >  config.t_train
+    mask_extrap = t_flattened_full > config.t_train
 
-    rmse_pinn_blind_train = Predictor.rmse(u_pinn_blind_full[mask_train],  u_true_full[mask_train])
+    rmse_pinn_blind_train = Predictor.rmse(
+        u_pinn_blind_full[mask_train],  u_true_full[mask_train])
 
-    rmse_pinn_blind_extrap = Predictor.rmse(u_pinn_blind_full[mask_extrap], u_true_full[mask_extrap])
+    rmse_pinn_blind_extrap = Predictor.rmse(
+        u_pinn_blind_full[mask_extrap], u_true_full[mask_extrap])
 
-    phys_pinn_blind       = Predictor.physics_residual(u_pinn_blind_full, x_flattened_full, t_flattened_full, config)
+    phys_pinn_blind = Predictor.physics_residual(
+        u_pinn_blind_full, x_flattened_full, t_flattened_full, config)
 
     nu_hat_blind = pred_pinn_blind.predict_params()["v_hat"]
     # ── Console summary ───────────────────────────────────────────────────────
@@ -915,6 +995,7 @@ def evaluate_blind(situation: str = BurgerConfig.situation, v: float = BurgerCon
     print(f"  {'nu_hat':38}  {nu_hat_blind:>10.4f}")
 
     return rmse_pinn_blind_train, nu_hat_blind
+
 
 if __name__ == "__main__":
     main()

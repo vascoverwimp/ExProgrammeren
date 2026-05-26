@@ -45,7 +45,7 @@ class BurgerConfig:
       Gaussian: y0 = exp(-x**2/2)
     """
     # ── Time domain ───────────────────────────────────────────────────────────
-    t0 :            float = 0    # start of observation window [s]
+    t0:            float = 0    # start of observation window [s]
     t_train:        float = 2.0    # end of observation window   [s]
     t_extrap:       float = 3.0   # end of extrapolation window [s]
 
@@ -59,26 +59,33 @@ class BurgerConfig:
     # ── Initial conditions ───────────────────────────────────────────────────
     situation: str = "N-wave"  # "N-wave","Gaussian", or "Step"
     # ── Data ─────────────────────────────────────────────────────────────────
-    n_obs_total:       int    = 1000   # total noisy observations (before split)
-    n_bins:            int    = 20    # bins for stratisfying validation split along time axis (unused)
-    val_fraction: float = 0.2  # fraction of observations held out for val (unused)
-    n_obs_per_epoch: int = 250  # number of training observations to use per epoch (for stochasticity, unused)
-    n_val: int = 200  # number of validation observations 
+    n_obs_total:       int = 1000   # total noisy observations (before split)
+    # bins for stratisfying validation split along time axis (unused)
+    n_bins:            int = 20
+    # fraction of observations held out for val (unused)
+    val_fraction: float = 0.2
+    # number of training observations to use per epoch (for stochasticity, unused)
+    n_obs_per_epoch: int = 250
+    n_val: int = 200  # number of validation observations
     n_val_t: int = 100  # number of validation observations along time axis
     n_val_x: int = 200  # number of validation observations along space axis
-    sigma:       float  = 0.05  # measurement noise std dev
-    n_ic_samples_x: int = 200  # initial condition samples in x dimension (for IC loss)
-    n_col:       int  = 250   # collocation points (physics residual)
-    n_col_pool:  int  = 10000 # pool of collocation points to sample from each epoch
-    seed:        int    = 42    # global RNG seed
+    sigma:       float = 0.05  # measurement noise std dev
+    # initial condition samples in x dimension (for IC loss)
+    n_ic_samples_x: int = 200
+    n_col:       int = 250   # collocation points (physics residual)
+    n_col_pool:  int = 10000  # pool of collocation points to sample from each epoch
+    seed:        int = 42    # global RNG seed
 
     # ── Plotting sampling ───────────────────────────────────────────────────────────────
-    n_plot_x: int = 500  # spatial resolution for all plots (including snapshots)
-    n_plot_t: int = 200  # temporal resolution for all plots (including snapshots)
+    # spatial resolution for all plots (including snapshots)
+    n_plot_x: int = 500
+    # temporal resolution for all plots (including snapshots)
+    n_plot_t: int = 200
 
     # ── PINN loss weights ─────────────────────────────────────────────────────
     lambda_phys: float = 0.7943282347242815  # physics-residual weight
-    lambda_ic:   float = 1.2589254117941673  # initial-condition weight (>> lambda_phys)
+    # initial-condition weight (>> lambda_phys)
+    lambda_ic:   float = 1.2589254117941673
 
     # ── Network architecture ──────────────────────────────────────────────────
     hidden:   int = 48   # neurons per hidden layer
@@ -88,7 +95,7 @@ class BurgerConfig:
     beta1:    float = 0.9    # Adam beta1
     beta2:    float = 0.999  # Adam beta2
     lr:       float = 0.0018077686769634343   # initial Adam learning rate
-    lr_step:  int   = 3000   # StepLR: decay every this many epochs
+    lr_step:  int = 3000   # StepLR: decay every this many epochs
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
 
     # ── Training loop ─────────────────────────────────────────────────────────
@@ -97,7 +104,7 @@ class BurgerConfig:
     log_every:   int = 100     # history-dict write frequency (epochs)
 
     # ── Early stopping ────────────────────────────────────────────────────────
-    patience:  int   = 30     # patience in units of log_every
+    patience:  int = 30     # patience in units of log_every
     min_delta: float = 1e-6   # minimum improvement to reset the counter
 
     # ── Snapshot epochs for trajectory plots ─────────────────────────────────
@@ -106,13 +113,18 @@ class BurgerConfig:
     )
 
     # ── Output paths ──────────────────────────────────────────────────────────
-    dir_analytic: str = "./AnalyticBurger"                # directory for analytic solution data
-    suffix_analytic_pt: str = "analytic_solution.npz"  # numpy bundle 
-    out_dir:    str = "./BurgersPINN/Output"                  # directory for all saved files
-    suffix_results_pt: str = "training_results.pt"  # torch.save bundle 
-    suffix_ckpt_pinn_ext_phys:  str = "best_pinn_ext_phys.pt"         # best-so-far extended physics PINN checkpoint
-    suffix_ckpt_pinn_blind:    str = "best_pinn_blind.pt"           # best-so-far blind PINN checkpoint
-    suffix_ckpt_ml:    str = "best_ml.pt"           # best-so-far standard ML checkpoint
+    # directory for analytic solution data
+    dir_analytic: str = "./AnalyticBurger"
+    suffix_analytic_pt: str = "analytic_solution.npz"  # numpy bundle
+    # directory for all saved files
+    out_dir:    str = "./BurgersPINN/Output"
+    suffix_results_pt: str = "training_results.pt"  # torch.save bundle
+    # best-so-far extended physics PINN checkpoint
+    suffix_ckpt_pinn_ext_phys:  str = "best_pinn_ext_phys.pt"
+    # best-so-far blind PINN checkpoint
+    suffix_ckpt_pinn_blind:    str = "best_pinn_blind.pt"
+    # best-so-far standard ML checkpoint
+    suffix_ckpt_ml:    str = "best_ml.pt"
 
     # ── Derived quantities (read-only) ────────────────────────────────────────
     @property
@@ -130,7 +142,7 @@ class BurgerConfig:
 
         elif self.situation == "Step":
             return lambda x: torch.where(
-                x > 0,  
+                x > 0,
                 torch.ones_like(x),
                 torch.zeros_like(x)
             )
@@ -150,9 +162,11 @@ class BurgerConfig:
             return 1.0  # Shockwave forms at t=1 for the N-wave initial condition
         elif self.situation == "Gaussian":
             # 1/min(-x exp(x**2/2)) = 1/min(-x exp(-x**2/2)) = 1/max(x exp(-x**2/2)) = 1/(1 * exp(-1/2)) = e^(1/2)
-            return float(np.exp(0.5))  # Shockwave forms at t=e^(1/2) for the Gaussian initial condition
+            # Shockwave forms at t=e^(1/2) for the Gaussian initial condition
+            return float(np.exp(0.5))
         elif self.situation == "Step":
-            return float('inf') # No shockwave forms if the initial condition is non-decreasing
+            # No shockwave forms if the initial condition is non-decreasing
+            return float('inf')
         else:
             raise ValueError(f"Unknown situation: {self.situation}")
 
@@ -252,7 +266,7 @@ class Predictor:
             return self.model(x_t, t_t).squeeze().numpy()
 
     def predict_from_state(
-        self, state_dict: dict, x:np.ndarray, t: np.ndarray
+        self, state_dict: dict, x: np.ndarray, t: np.ndarray
     ) -> np.ndarray:
         """
         Temporarily load a snapshot state_dict and predict, then restore
@@ -262,7 +276,7 @@ class Predictor:
         original = copy.deepcopy(self.model.state_dict())
         try:
             self.load_state_dict(state_dict)
-            return self.predict(x,t)
+            return self.predict(x, t)
         finally:
             self.model.load_state_dict(original)
             self.model.eval()
@@ -275,7 +289,7 @@ class Predictor:
 
     @staticmethod
     def physics_residual(
-        u: np.ndarray, x:np.ndarray, t: np.ndarray, cfg: BurgerConfig
+        u: np.ndarray, x: np.ndarray, t: np.ndarray, cfg: BurgerConfig
     ) -> float:
         """
         Approximate ODE residual via numpy central finite differences.
@@ -287,12 +301,12 @@ class Predictor:
         x_vec = np.unique(x)
 
         n_t = len(t_vec)
-        
+
         n_x = len(x_vec)
         u_grid = u.reshape(n_t, n_x)
-        du  = np.gradient(u_grid, x_vec,axis=1)
-        d2u = np.gradient(du, x_vec,axis=1)
-        dotu = np.gradient(u_grid, t_vec,axis=0)
-        
-        r   = dotu + u_grid * du - cfg.v * d2u
-        return float(np.sqrt(np.mean(r[5:-5,5:-5] ** 2)))
+        du = np.gradient(u_grid, x_vec, axis=1)
+        d2u = np.gradient(du, x_vec, axis=1)
+        dotu = np.gradient(u_grid, t_vec, axis=0)
+
+        r = dotu + u_grid * du - cfg.v * d2u
+        return float(np.sqrt(np.mean(r[5:-5, 5:-5] ** 2)))

@@ -59,22 +59,28 @@ class DamperConfig:
     t_extrap: float = 10.0   # end of extrapolation window [s]
 
     # ── Data ─────────────────────────────────────────────────────────────────
-    n_obs:       int   = 30    # total noisy observations (before split)
-    n_bins:      int   = 5    # bins for stratisfying validation split along time axis (unused)
-    n_obs_per_epoch: int = 10  # number of training observations to use per epoch (for stochasticity, unused)
-    n_val:       int   = 200     # number of observations in the validation set, >> n_obs(for early stopping)
-    val_fraction: float = 0.2  # fraction of observations held out for val (unused, we use n_val instead)
+    n_obs:       int = 30    # total noisy observations (before split)
+    # bins for stratisfying validation split along time axis (unused)
+    n_bins:      int = 5
+    # number of training observations to use per epoch (for stochasticity, unused)
+    n_obs_per_epoch: int = 10
+    # number of observations in the validation set, >> n_obs(for early stopping)
+    n_val:       int = 200
+    # fraction of observations held out for val (unused, we use n_val instead)
+    val_fraction: float = 0.2
     sigma:       float = 0.05  # measurement noise std dev
-    n_col:       int   = 80   # collocation points (physics residual)
-    n_col_pool:  int   = 10000 # pool of collocation points to sample from each epoch
-    seed:        int   = 42    # global RNG seed
+    n_col:       int = 80   # collocation points (physics residual)
+    n_col_pool:  int = 10000  # pool of collocation points to sample from each epoch
+    seed:        int = 42    # global RNG seed
 
     # ── Plotting sampling ───────────────────────────────────────────────────────────────
-    n_plot_t: int = 500  # temporal resolution for all plots (including snapshots)
+    # temporal resolution for all plots (including snapshots)
+    n_plot_t: int = 500
 
     # ── PINN loss weights ─────────────────────────────────────────────────────
     lambda_phys: float = 1.0  # physics-residual weight
-    lambda_ic:   float = 13.33521432163324  # initial-condition weight (>> lambda_phys)
+    # initial-condition weight (>> lambda_phys)
+    lambda_ic:   float = 13.33521432163324
 
     # ── Network architecture ──────────────────────────────────────────────────
     hidden:   int = 32   # neurons per hidden layer
@@ -84,7 +90,7 @@ class DamperConfig:
     beta1:    float = 0.9    # Adam beta1
     beta2:    float = 0.999  # Adam beta2
     lr:       float = 0.00316   # initial Adam learning rate
-    lr_step:  int   = 3000   # StepLR: decay every this many epochs
+    lr_step:  int = 3000   # StepLR: decay every this many epochs
     lr_gamma: float = 0.5    # StepLR: multiplicative factor
 
     # ── Training loop ─────────────────────────────────────────────────────────
@@ -93,7 +99,7 @@ class DamperConfig:
     log_every:   int = 100     # history-dict write frequency (epochs)
 
     # ── Early stopping ────────────────────────────────────────────────────────
-    patience:  int   = 30     # patience in units of log_every
+    patience:  int = 30     # patience in units of log_every
     min_delta: float = 1e-6   # minimum improvement to reset the counter
 
     # ── Snapshot epochs for trajectory plots ─────────────────────────────────
@@ -102,11 +108,15 @@ class DamperConfig:
     )
 
     # ── Output paths ──────────────────────────────────────────────────────────
-    out_dir:    str = "./DampedPINN/Output"                  # directory for all saved files
-    suffix_results_pt: str = "training_results.pt"  # torch.save bundle 
-    suffix_ckpt_pinn_ext_phys:  str = "best_pinn_ext_phys.pt"         # best-so-far extended physics PINN checkpoint
-    suffix_ckpt_pinn_blind:    str = "best_pinn_blind.pt"           # best-so-far blind PINN checkpoint
-    suffix_ckpt_ml:    str = "best_ml.pt"           # best-so-far standard ML checkpoint
+    # directory for all saved files
+    out_dir:    str = "./DampedPINN/Output"
+    suffix_results_pt: str = "training_results.pt"  # torch.save bundle
+    # best-so-far extended physics PINN checkpoint
+    suffix_ckpt_pinn_ext_phys:  str = "best_pinn_ext_phys.pt"
+    # best-so-far blind PINN checkpoint
+    suffix_ckpt_pinn_blind:    str = "best_pinn_blind.pt"
+    # best-so-far standard ML checkpoint
+    suffix_ckpt_ml:    str = "best_ml.pt"
 
     # ── Derived quantities (read-only) ────────────────────────────────────────
     @property
@@ -246,7 +256,7 @@ class Predictor:
         Approximate ODE residual via numpy central finite differences.
         Trims 5 boundary points on each side where finite-diff is inaccurate.
         """
-        dy  = np.gradient(y, t)
+        dy = np.gradient(y, t)
         d2y = np.gradient(dy, t)
-        r   = cfg.mass * d2y + cfg.damping * dy + cfg.stiffness * y
+        r = cfg.mass * d2y + cfg.damping * dy + cfg.stiffness * y
         return float(np.sqrt(np.mean(r[5:-5] ** 2)))

@@ -44,16 +44,16 @@ from model import DamperConfig, Predictor
 # COLOUR PALETTE
 # =============================================================================
 
-TEAL   = "#1D9E75"   # PINN ext. physics
-AMBER  = "#D4820A"   # PINN blind
-BLUE   = "#378ADD"   # train observations
+TEAL = "#1D9E75"   # PINN ext. physics
+AMBER = "#D4820A"   # PINN blind
+BLUE = "#378ADD"   # train observations
 PURPLE = "#7F77DD"   # IC marker
-RED    = "#E24B4A"   # ω₀ parameter traces
-GREEN  = "#3AAA5E"   # ζ parameter traces
-GRAY   = "#888780"   # true solution / neutral
-LGRAY  = "#D3D1C7"   # spine colour
-BG     = "#FAFAF8"   # figure background
-PANEL  = "#F1EFE8"   # axes background
+RED = "#E24B4A"   # ω₀ parameter traces
+GREEN = "#3AAA5E"   # ζ parameter traces
+GRAY = "#888780"   # true solution / neutral
+LGRAY = "#D3D1C7"   # spine colour
+BG = "#FAFAF8"   # figure background
+PANEL = "#F1EFE8"   # axes background
 
 
 # =============================================================================
@@ -72,8 +72,8 @@ def shade_extrap(ax: plt.Axes, cfg: DamperConfig) -> None:
 
 
 def pointwise_residual(y: np.ndarray, t: np.ndarray,
-                        cfg: DamperConfig) -> np.ndarray:
-    dy  = np.gradient(y, t)
+                       cfg: DamperConfig) -> np.ndarray:
+    dy = np.gradient(y, t)
     d2y = np.gradient(dy, t)
     return np.abs(cfg.mass * d2y + cfg.damping * dy + cfg.stiffness * y)
 
@@ -96,8 +96,8 @@ def extract_params(snapshots: dict) -> tuple[np.ndarray, np.ndarray, np.ndarray]
     zeta_vals : ζ_hat  at each snapshot (linear scale)
     """
     epochs_sorted = sorted(snapshots.keys())
-    w0_vals   = np.array([10 ** snapshots[e]["log_w0_hat"].item()
-                          for e in epochs_sorted])
+    w0_vals = np.array([10 ** snapshots[e]["log_w0_hat"].item()
+                        for e in epochs_sorted])
     zeta_vals = np.array([10 ** snapshots[e]["log_zeta_hat"].item()
                           for e in epochs_sorted])
     return np.array(epochs_sorted), w0_vals, zeta_vals
@@ -116,9 +116,9 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
       linestyle = model          (solid = ext_phys, dashed = blind)
       marker    = loss category
     """
-    cfg   = bundle["cfg"]
+    cfg = bundle["cfg"]
     h_ext = bundle["hist_pinn_ext_phys"]
-    h_bl  = bundle["hist_pinn_blind"]
+    h_bl = bundle["hist_pinn_blind"]
 
     COLORS = {
         "loss_data":    "#2271B2",
@@ -126,11 +126,11 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
         "loss_physics": "#3DAA6A",
         "loss_ic":      "#9B5EBF",
     }
-    LABELS  = {"loss_data": "data", "loss_val": "val",
-               "loss_physics": "physics", "loss_ic": "IC"}
+    LABELS = {"loss_data": "data", "loss_val": "val",
+              "loss_physics": "physics", "loss_ic": "IC"}
     MARKERS = {"loss_data": "o", "loss_val": "s",
                "loss_physics": "^", "loss_ic": "v"}
-    MODEL_LS    = {"ext": ("-", 2.0, 1.0), "bl": ("--", 1.6, 0.8)}
+    MODEL_LS = {"ext": ("-", 2.0, 1.0), "bl": ("--", 1.6, 0.8)}
     MODEL_LABEL = {"ext": "ext_phys", "bl": "blind"}
 
     fig, ax = plt.subplots(figsize=(11, 5))
@@ -181,19 +181,19 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
 #  └─────────────────────────┴───────────────────┴────────────────────────┘
 
 def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
-    cfg        = bundle["cfg"]
-    data       = bundle["data"]
-    m          = bundle["metrics"]
+    cfg = bundle["cfg"]
+    data = bundle["data"]
+    m = bundle["metrics"]
     device_str = bundle["device_str"]
 
-    t_obs_train  = data["t_obs_train"]
-    y_obs_train  = data["y_obs_train"]
+    t_obs_train = data["t_obs_train"]
+    y_obs_train = data["y_obs_train"]
     t_plot_train = data["t_plot_train"]
-    t_plot_full  = data["t_plot_full"]
+    t_plot_full = data["t_plot_full"]
     y_true_train = data["y_true_train"]
-    y_true_full  = data["y_true_full"]
+    y_true_full = data["y_true_full"]
 
-    y_ext   = bundle["y_pinn_ext_phys_full"]
+    y_ext = bundle["y_pinn_ext_phys_full"]
     y_blind = bundle["y_pinn_blind_full"]
 
     mask_train = t_plot_full <= cfg.t_train
@@ -205,10 +205,10 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
         hspace=0.45, wspace=0.35,
         left=0.07, right=0.97, top=0.91, bottom=0.08,
     )
-    ax_full  = fig.add_subplot(gs[0, :])
+    ax_full = fig.add_subplot(gs[0, :])
     ax_train = fig.add_subplot(gs[1, 0])
-    ax_ic    = fig.add_subplot(gs[1, 1])
-    ax_phys  = fig.add_subplot(gs[1, 2])
+    ax_ic = fig.add_subplot(gs[1, 1])
+    ax_phys = fig.add_subplot(gs[1, 2])
 
     for ax in (ax_full, ax_train, ax_ic, ax_phys):
         style_ax(ax)
@@ -220,11 +220,11 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
     ax_full.plot(t_plot_full, y_ext,
                  color=TEAL,  lw=2.0, zorder=3,
                  label=f"PINN ext.   train RMSE={m['rmse_pinn_ext_phys_train']:.4f}  "
-                       f"extrap={m['rmse_pinn_ext_phys_extrap']:.4f}")
+                 f"extrap={m['rmse_pinn_ext_phys_extrap']:.4f}")
     ax_full.plot(t_plot_full, y_blind,
                  color=AMBER, lw=2.0, ls="--", zorder=3,
                  label=f"PINN blind  train RMSE={m['rmse_pinn_blind_train']:.4f}  "
-                       f"extrap={m['rmse_pinn_blind_extrap']:.4f}")
+                 f"extrap={m['rmse_pinn_blind_extrap']:.4f}")
     ax_full.scatter(t_obs_train, y_obs_train,
                     color=BLUE,   s=35, zorder=6, alpha=0.75,
                     label=f"Train obs  (N={len(t_obs_train)}, σ={cfg.sigma})")
@@ -278,7 +278,7 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
 
     # ── P3: IC enforcement detail ──────────────────────────────────────────────
     ic_window = min(cfg.t_train * 0.25, 1.0)
-    mask_ic   = t_plot_full <= ic_window
+    mask_ic = t_plot_full <= ic_window
     ax_ic.plot(t_plot_full[mask_ic], y_true_full[mask_ic],
                color=GRAY,  lw=1.8, label="True")
     ax_ic.plot(t_plot_full[mask_ic], y_ext[mask_ic],
@@ -308,7 +308,7 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
 
     # ── P4: ODE residual ──────────────────────────────────────────────────────
     shade_extrap(ax_phys, cfg)
-    r_ext   = pointwise_residual(y_ext,   t_plot_full, cfg)
+    r_ext = pointwise_residual(y_ext,   t_plot_full, cfg)
     r_blind = pointwise_residual(y_blind, t_plot_full, cfg)
     ax_phys.plot(t_plot_full, r_ext,
                  color=TEAL,  lw=1.8,
@@ -354,16 +354,17 @@ def make_param_convergence_figure(bundle: dict, out_path: Path) -> plt.Figure:
     """
     cfg = bundle["cfg"]
 
-    epochs_ext,  w0_ext,  z_ext  = extract_params(bundle["snaps_pinn_ext_phys"])
-    epochs_blind, w0_blind, z_blind = extract_params(bundle["snaps_pinn_blind"])
+    epochs_ext,  w0_ext,  z_ext = extract_params(bundle["snaps_pinn_ext_phys"])
+    epochs_blind, w0_blind, z_blind = extract_params(
+        bundle["snaps_pinn_blind"])
 
-    true_w0   = cfg.omega_0
+    true_w0 = cfg.omega_0
     true_zeta = cfg.zeta
 
-    rel_w0_ext    = np.abs(w0_ext   - true_w0)   / true_w0
-    rel_w0_blind  = np.abs(w0_blind - true_w0)   / true_w0
-    rel_z_ext     = np.abs(z_ext    - true_zeta) / true_zeta
-    rel_z_blind   = np.abs(z_blind  - true_zeta) / true_zeta
+    rel_w0_ext = np.abs(w0_ext - true_w0) / true_w0
+    rel_w0_blind = np.abs(w0_blind - true_w0) / true_w0
+    rel_z_ext = np.abs(z_ext - true_zeta) / true_zeta
+    rel_z_blind = np.abs(z_blind - true_zeta) / true_zeta
 
     fig, axes = plt.subplots(2, 2, figsize=(13, 9),
                              gridspec_kw={"height_ratios": [1.6, 1]})
@@ -385,7 +386,7 @@ def make_param_convergence_figure(bundle: dict, out_path: Path) -> plt.Figure:
     ax_w0.axhline(true_w0, color=GRAY, lw=1.2, ls="--",
                   label=f"True ω₀ = {true_w0:.4f} rad/s")
     ax_w0.fill_between([e_lo, e_hi], true_w0 * 0.95, true_w0 * 1.05,
-                        color=GRAY, alpha=0.08, label="±5 % band")
+                       color=GRAY, alpha=0.08, label="±5 % band")
     ax_w0.plot(epochs_ext,   w0_ext,   color=TEAL,  lw=2, marker="o", ms=ms,
                label=f"ext_phys  (final={w0_ext[-1]:.4f})")
     ax_w0.plot(epochs_blind, w0_blind, color=AMBER, lw=2, marker="s", ms=ms,
@@ -401,7 +402,7 @@ def make_param_convergence_figure(bundle: dict, out_path: Path) -> plt.Figure:
     ax_zeta.axhline(true_zeta, color=GRAY, lw=1.2, ls="--",
                     label=f"True ζ = {true_zeta:.4f}")
     ax_zeta.fill_between([e_lo, e_hi], true_zeta * 0.95, true_zeta * 1.05,
-                          color=GRAY, alpha=0.08, label="±5 % band")
+                         color=GRAY, alpha=0.08, label="±5 % band")
     ax_zeta.plot(epochs_ext,   z_ext,   color=TEAL,  lw=2, marker="o", ms=ms,
                  label=f"ext_phys  (final={z_ext[-1]:.4f})")
     ax_zeta.plot(epochs_blind, z_blind, color=AMBER, lw=2, marker="s", ms=ms,
@@ -484,10 +485,10 @@ def make_epoch_figure(
     param_at = {ep: (w0_vals[i], z_vals[i])
                 for i, ep in enumerate(snap_epochs)}
 
-    epochs   = sorted(snapshots.keys())
-    n_snap   = len(epochs)
-    n_cols   = 2
-    n_rows   = (n_snap + 1) // n_cols
+    epochs = sorted(snapshots.keys())
+    n_snap = len(epochs)
+    n_cols = 2
+    n_rows = (n_snap + 1) // n_cols
 
     fig, axes = plt.subplots(n_rows, n_cols,
                              figsize=(14, n_rows * 3.4),
@@ -504,13 +505,14 @@ def make_epoch_figure(
         # FIX: predict_from_state does not exist; use load_state_dict + predict
         pred.load_state_dict(snapshots[epoch])
         y_pred = pred.predict(t_plot_full)
-        err    = Predictor.rmse(y_pred, y_true_full)
+        err = Predictor.rmse(y_pred, y_true_full)
         w0_h, z_h = param_at.get(epoch, (float("nan"), float("nan")))
 
         ax.plot(t_plot_full, y_true_full, color=GRAY,        lw=1.4, alpha=0.9)
         ax.plot(t_plot_full, y_pred,      color=model_color, lw=2.0)
         ax.axvspan(cfg.t_train, cfg.t_extrap, color=GRAY, alpha=0.10, zorder=0)
-        ax.axvline(cfg.t_train,               color=GRAY, lw=0.8, ls="--", alpha=0.5)
+        ax.axvline(cfg.t_train,               color=GRAY,
+                   lw=0.8, ls="--", alpha=0.5)
 
         ax.scatter(t_obs_train, y_obs_train,
                    color=BLUE,   s=28, zorder=5, alpha=0.85)
@@ -611,22 +613,23 @@ def main() -> None:
     raw = torch.load(results_path, map_location="cpu", weights_only=False)
 
     cfg: DamperConfig = raw["config"]
-    snaps_ext   = raw["snaps_pinn_ext_phys"]
+    snaps_ext = raw["snaps_pinn_ext_phys"]
     snaps_blind = raw["snaps_pinn_blind"]
 
     # Report recovered parameters
     def _final_params(snaps):
         ep = max(snaps.keys())
-        w0   = 10 ** snaps[ep]["log_w0_hat"].item()
+        w0 = 10 ** snaps[ep]["log_w0_hat"].item()
         zeta = 10 ** snaps[ep]["log_zeta_hat"].item()
         return w0, zeta
 
-    w0_ext,   z_ext   = _final_params(snaps_ext)
+    w0_ext,   z_ext = _final_params(snaps_ext)
     w0_blind, z_blind = _final_params(snaps_blind)
 
     print(f"  Config  : m={cfg.mass}  c={cfg.damping}  k={cfg.stiffness}  "
           f"ζ_true={cfg.zeta:.4f}  ω₀_true={cfg.omega_0:.4f}")
-    print(f"  Ini guess: ω₀={cfg.ini_guess_w0:.4f}  ζ={cfg.ini_guess_zeta:.4f}")
+    print(
+        f"  Ini guess: ω₀={cfg.ini_guess_w0:.4f}  ζ={cfg.ini_guess_zeta:.4f}")
     print(f"  Snapshots ext  : {sorted(snaps_ext.keys())}")
     print(f"  Snapshots blind: {sorted(snaps_blind.keys())}")
     print(f"  Final ω₀_hat : ext={w0_ext:.4f}  blind={w0_blind:.4f}  "
@@ -635,7 +638,7 @@ def main() -> None:
           f"(true {cfg.zeta:.4f})\n")
 
     # Predictors — weights loaded per-snapshot inside make_epoch_figure
-    pred_ext   = Predictor(cfg)
+    pred_ext = Predictor(cfg)
     pred_blind = Predictor(cfg)
 
     # Augment metrics with final parameter values so the summary panel can
@@ -670,44 +673,45 @@ def main() -> None:
     make_summary_figure(bundle, out_dir / f"{tag}_fig2_summary.png")
 
     print("Generating Figure 3 — parameter convergence (both models) …")
-    make_param_convergence_figure(bundle, out_dir / f"{tag}_fig3_param_conv.png")
+    make_param_convergence_figure(
+        bundle, out_dir / f"{tag}_fig3_param_conv.png")
 
     print("Generating Figure 4 — PINN (ext. physics) epoch snapshots …")
     make_epoch_figure(
-        snapshots   = snaps_ext,
-        cfg         = cfg,
-        data        = raw["data"],
-        pred        = pred_ext,
-        model_color = TEAL,
-        model_label = "PINN ext.",
-        fig_title   = (
+        snapshots=snaps_ext,
+        cfg=cfg,
+        data=raw["data"],
+        pred=pred_ext,
+        model_color=TEAL,
+        model_label="PINN ext.",
+        fig_title=(
             f"PINN (ext. physics) — trajectory evolution across epochs  "
             f"[device={bundle['device_str']}]\n"
             f"m={cfg.mass}  c={cfg.damping}  k={cfg.stiffness}  |  "
             f"Collocation extends to t_extrap={cfg.t_extrap}  |  "
             f"learning ω₀ and ζ simultaneously"
         ),
-        out_path    = out_dir / f"{tag}_fig4_pinn_ext_epochs.png",
-        fig_num     = 4,
+        out_path=out_dir / f"{tag}_fig4_pinn_ext_epochs.png",
+        fig_num=4,
     )
 
     print("Generating Figure 5 — PINN (blind) epoch snapshots …")
     make_epoch_figure(
-        snapshots   = snaps_blind,
-        cfg         = cfg,
-        data        = raw["data"],
-        pred        = pred_blind,
-        model_color = AMBER,
-        model_label = "PINN blind",
-        fig_title   = (
+        snapshots=snaps_blind,
+        cfg=cfg,
+        data=raw["data"],
+        pred=pred_blind,
+        model_color=AMBER,
+        model_label="PINN blind",
+        fig_title=(
             f"PINN (blind) — trajectory evolution across epochs  "
             f"[device={bundle['device_str']}]\n"
             f"m={cfg.mass}  c={cfg.damping}  k={cfg.stiffness}  |  "
             f"Collocation only in training window [0, {cfg.t_train}]  |  "
             f"learning ω₀ and ζ simultaneously"
         ),
-        out_path    = out_dir / f"{tag}_fig5_pinn_blind_epochs.png",
-        fig_num     = 5,
+        out_path=out_dir / f"{tag}_fig5_pinn_blind_epochs.png",
+        fig_num=5,
     )
 
     print(f"\n  All figures written to  {out_dir}/")
