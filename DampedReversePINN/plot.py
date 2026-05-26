@@ -33,11 +33,11 @@ from pathlib import Path
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
+from matplotlib import gridspec
 from matplotlib.lines import Line2D
 import torch
 
-from model import DamperConfig, Predictor
+from DampedReversePINN.model import DamperConfig, Predictor
 
 
 # =============================================================================
@@ -117,21 +117,19 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
       marker    = loss category
     """
     cfg = bundle["cfg"]
-    h_ext = bundle["hist_pinn_ext_phys"]
-    h_bl = bundle["hist_pinn_blind"]
 
-    COLORS = {
+    color_dict = {
         "loss_data":    "#2271B2",
         "loss_val":     "#E6533C",
         "loss_physics": "#3DAA6A",
         "loss_ic":      "#9B5EBF",
     }
-    LABELS = {"loss_data": "data", "loss_val": "val",
-              "loss_physics": "physics", "loss_ic": "IC"}
-    MARKERS = {"loss_data": "o", "loss_val": "s",
-               "loss_physics": "^", "loss_ic": "v"}
-    MODEL_LS = {"ext": ("-", 2.0, 1.0), "bl": ("--", 1.6, 0.8)}
-    MODEL_LABEL = {"ext": "ext_phys", "bl": "blind"}
+    label_dict = {"loss_data": "data", "loss_val": "val",
+                  "loss_physics": "physics", "loss_ic": "IC"}
+    marker_dict = {"loss_data": "o", "loss_val": "s",
+                   "loss_physics": "^", "loss_ic": "v"}
+    linestyle_dict = {"ext": ("-", 2.0, 1.0), "bl": ("--", 1.6, 0.8)}
+    name_dict = {"ext": "ext_phys", "bl": "blind"}
 
     fig, ax = plt.subplots(figsize=(11, 5))
     fig.patch.set_facecolor(BG)
@@ -140,13 +138,13 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
     for hist_key, model_key in (("hist_pinn_ext_phys", "ext"),
                                 ("hist_pinn_blind",    "bl")):
         h = bundle[hist_key]
-        ls, lw, alpha = MODEL_LS[model_key]
-        mlbl = MODEL_LABEL[model_key]
+        ls, lw, alpha = linestyle_dict[model_key]
+        mlbl = name_dict[model_key]
         for key in ("loss_data", "loss_val", "loss_physics", "loss_ic"):
             ax.semilogy(h["epoch"], h[key],
-                        color=COLORS[key], lw=lw, ls=ls, alpha=alpha,
-                        marker=MARKERS[key], markersize=3, markevery=5,
-                        label=f"{mlbl} — {LABELS[key]}")
+                        color=color_dict[key], lw=lw, ls=ls, alpha=alpha,
+                        marker=marker_dict[key], markersize=3, markevery=5,
+                        label=f"{mlbl} — {label_dict[key]}")
 
     for ep in cfg.snapshot_epochs[:-1]:
         ax.axvline(ep, color=GRAY, lw=0.6, ls=":", alpha=0.35, zorder=0)
@@ -188,9 +186,7 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
 
     t_obs_train = data["t_obs_train"]
     y_obs_train = data["y_obs_train"]
-    t_plot_train = data["t_plot_train"]
     t_plot_full = data["t_plot_full"]
-    y_true_train = data["y_true_train"]
     y_true_full = data["y_true_full"]
 
     y_ext = bundle["y_pinn_ext_phys_full"]
@@ -567,6 +563,18 @@ def make_epoch_figure(
 # =============================================================================
 
 def parse_args() -> argparse.Namespace:
+    """Parse command-line arguments for the reverse damped oscillator plot script.
+
+    Accepts an explicit path to a ``training_results.pt`` bundle via
+    ``--results``, or reconstructs it from ``--input_dir``, ``--w0``,
+    and ``--zeta``. Also controls the output directory and whether to
+    call ``plt.show()``.
+
+    Returns:
+        argparse.Namespace: Parsed arguments, including ``results``,
+            ``input_dir``, ``w0``, ``zeta``, ``out_dir``,
+            and ``no_show``.
+    """
     p = argparse.ArgumentParser(
         description="Plot reverse-PINN damped-oscillator results from training_results.pt.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

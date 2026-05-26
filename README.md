@@ -42,7 +42,7 @@ ExProgrammeren/
 │   ├── model.py                 # PINN architecture, BurgerConfig, predictor
 │   ├── train.py                 # Training loop with both PINN modes, argument parsing if run
 │   ├── Burger_PDE.py            # Crank-Nicolson solver for synthetic data
-│   ├── findParams.py            # Evaluation of the retrieval of the viscosity parameter
+│   ├── find_params.py           # Evaluation of the retrieval of the viscosity parameter
 │   ├── hyperparam_search.py     # Search for optimal hyperparameters
 │   ├── plot.py                  # Plot over the epochs, comparison for several time slices and evolution of losses
 │   └── Output/                  # Training results and saved models
@@ -52,13 +52,12 @@ ExProgrammeren/
 │   ├── train.py                 # Training loop with both PINN modes and standard neural network, argument parsing if run
 │   ├── plot.py                  # Plot over the epochs, comparison for several time slices and evolution of losses
 │   ├── hyperparam_search.py     # Search for optimal hyperparameters
-│   ├── Hyperparam_optim/        # Hyperparameter optimization results
 │   └── Output/
 │
 ├── DampedReversePINN/           # Solving the reverse problem for the damped harmonic oscillator
 │   ├── model.py                 # PINN architecture, DamperConfig, predictor
 │   ├── train.py                 # Training loop with both PINN modes, argument parsing if run
-│   ├── findParams.py            # Evaluation of the retrieval of the natural frequency and damping ratio parameters
+│   ├── find_params.py           # Evaluation of the retrieval of the natural frequency and damping ratio parameters
 │   ├── hyperparam_search.py     # Search for optimal hyperparameters
 │   ├── plot.py                  # Plot over the epochs, comparison for several time slices and evolution of losses
 │   └── Output/                  # Training results and saved models

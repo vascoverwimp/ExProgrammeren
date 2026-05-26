@@ -12,13 +12,12 @@ from __future__ import annotations
 
 import copy
 from dataclasses import dataclass, field
-from importlib.metadata import requires
 from pathlib import Path
 from typing import Optional
 
 import numpy as np
 import torch
-import torch.nn as nn
+from torch import nn
 
 
 # =============================================================================
@@ -127,14 +126,17 @@ class DamperConfig:
 
     @property
     def omega_0(self) -> float:
+        """Undamped natural frequency sqrt(k / m) in rad/s."""
         return float(np.sqrt(self.stiffness / self.mass))
 
     @property
     def zeta(self) -> float:
+        """Damping ratio c / (2 * sqrt(m * k)), dimensionless."""
         return float(self.damping / (2.0 * np.sqrt(self.mass * self.stiffness)))
 
     @property
     def omega_d(self) -> float:
+        """Damped natural frequency omega_0 * sqrt(1 - zeta²) in rad/s."""
         return float(self.omega_0 * np.sqrt(max(0.0, 1.0 - self.zeta ** 2)))
 
     def abs_path(self, filename: str) -> Path:
@@ -158,7 +160,10 @@ class FCNet(nn.Module):
     with .to(device) in the training script.
     """
 
-    def __init__(self, hidden: int = 32, n_layers: int = 4, ini_guess_zeta: float = 0.01, ini_guess_w0: float = 1.0) -> None:
+    def __init__(self, hidden: int = 32,
+                 n_layers: int = 4,
+                 ini_guess_zeta: float = 0.01,
+                 ini_guess_w0: float = 1.0) -> None:
         super().__init__()
         layers: list[nn.Module] = [nn.Linear(1, hidden), nn.Tanh()]
         for _ in range(n_layers - 1):
@@ -171,15 +176,28 @@ class FCNet(nn.Module):
             [np.log10(ini_guess_w0)], requires_grad=True))
 
     def forward(self, t: torch.Tensor) -> torch.Tensor:
+        """Run a forward pass through the network.
+
+        Args:
+            t: Input tensor of shape ``(N, 1)`` containing time values.
+
+        Returns:
+            Output tensor of shape ``(N, 1)`` containing predicted
+            displacements.
+        """
         return self.net(t)
 
     def param_count(self) -> int:
+        """Return the total number of trainable parameters in the network."""
         return sum(p.numel() for p in self.parameters())
 
     @classmethod
     def from_config(cls, cfg: DamperConfig) -> "FCNet":
         """Convenience constructor that reads architecture from a config."""
-        return cls(hidden=cfg.hidden, n_layers=cfg.n_layers, ini_guess_zeta=cfg.ini_guess_zeta, ini_guess_w0=cfg.ini_guess_w0)
+        return cls(hidden=cfg.hidden,
+                   n_layers=cfg.n_layers,
+                   ini_guess_zeta=cfg.ini_guess_zeta,
+                   ini_guess_w0=cfg.ini_guess_w0)
 
 
 # =============================================================================
@@ -262,6 +280,15 @@ class Predictor:
 
     @staticmethod
     def rmse(pred: np.ndarray, true: np.ndarray) -> float:
+        """Compute root-mean-square error between two arrays.
+
+        Args:
+            pred: Predicted values.
+            true: Ground-truth values of the same shape.
+
+        Returns:
+            Scalar RMSE value.
+        """
         return float(np.sqrt(np.mean((pred - true) ** 2)))
 
     @staticmethod

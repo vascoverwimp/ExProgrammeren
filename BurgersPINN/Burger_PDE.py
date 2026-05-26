@@ -11,20 +11,20 @@ Time discretisation: Crank-Nicolson applied to BOTH terms simultaneously.
     ─────────────── = ─ [─────────────────────── ]
            dt         2
 
-where R(u) = −u ∂u/∂x + ν ∂²u/∂x²
+where R(u) = -u ∂u/∂x + ν ∂²u/∂x²
 
 This gives the nonlinear residual at each step:
 
-    F(v) = v − u^n − (dt/2) · [R(v) + R(u^n)] = 0,   v ≡ u^{n+1}
+    F(v) = v - u^n - (dt/2) · [R(v) + R(u^n)] = 0,   v ≡ u^{n+1}
 
 which is solved with Newton's method:
 
-    J_F(v^k) · δ = −F(v^k)
+    J_F(v^k) · δ = -F(v^k)
     v^{k+1}       = v^k + δ
 
 where the analytical Jacobian is:
 
-    J_F = I − (dt/2) · J_R(v)
+    J_F = I - (dt/2) · J_R(v)
 
 and J_R is built from the exact derivatives of the upwind advection stencil
 and the diffusion stencil (see _build_jac_rhs for details).
@@ -34,9 +34,9 @@ Boundary conditions: Dirichlet — endpoints held at their initial values.
 
 from __future__ import annotations
 
-import numpy as np
 from dataclasses import dataclass, field
 from typing import Tuple
+import numpy as np
 
 
 @dataclass
@@ -60,7 +60,7 @@ class BurgersSolver:
     viscosity : float
         Kinematic viscosity ν ≥ 0.  Default 0.01.
     newton_tol : float
-        Infinity-norm convergence tolerance for Newton iterations.  Default 1e-10.
+        Inf-norm convergence tolerance for Newton iterations.  Default 1e-10.
     newton_max_iter : int
         Maximum Newton iterations per time step.  Default 50.
 
@@ -111,7 +111,7 @@ class BurgersSolver:
 
     def _rhs(self, u: np.ndarray) -> np.ndarray:
         """
-        Full spatial RHS:  R(u) = −u ∂u/∂x  +  ν ∂²u/∂x²
+        Full spatial RHS:  R(u) = -u ∂u/∂x  +  ν ∂²u/∂x²
 
         Advection : upwind (1st-order), direction set by local sign of u.
         Diffusion : 2nd-order central via np.diff(n=2).
@@ -127,18 +127,18 @@ class BurgersSolver:
         # Central diffusion
         d2u = np.diff(u, n=2, prepend=u[0], append=u[-1]) / dx**2
 
-        R = -adv + self.viscosity * d2u
-        R[np.array([0, -1])] = 0.0
-        return R
+        rhs = -adv + self.viscosity * d2u
+        rhs[np.array([0, -1])] = 0.0
+        return rhs
 
     def _residual(self, v: np.ndarray, u_n: np.ndarray,
                   rn: np.ndarray, dt: float) -> np.ndarray:
         """
         Crank-Nicolson residual:
 
-            F(v) = v − u_n − (dt/2) · [R(v) + R(u_n)]
+            F(v) = v - u_n - (dt/2) · [R(v) + R(u_n)]
 
-        Boundary rows reduce to the Dirichlet constraint  v_i − u_n_i = 0
+        Boundary rows reduce to the Dirichlet constraint  v_i - u_n_i = 0
         (which is automatically satisfied since R zeroes its boundary entries,
         but is stated explicitly for clarity).
         """
@@ -149,27 +149,27 @@ class BurgersSolver:
         Analytical Jacobian of R(v) w.r.t. v,  J_R = ∂R/∂v.
 
         Diffusion block (tridiagonal, independent of v):
-            ∂(ν d²u/dx²)_i / ∂v_j  =  ν/dx² · [δ_{j,i-1} − 2δ_{ji} + δ_{j,i+1}]
+            ∂(ν d²u/dx²)_i / ∂v_j  =  ν/dx² · [δ_{j,i-1} - 2δ_{ji} + δ_{j,i+1}]
 
         Advection block (also tridiagonal, depends on v via upwind direction):
-            v_i ≥ 0  →  A_i = −v_i(v_i − v_{i-1})/dx
-                ∂A_i/∂v_i   = −(2v_i − v_{i-1})/dx    (main diagonal)
+            v_i ≥ 0  →  A_i = -v_i(v_i - v_{i-1})/dx
+                ∂A_i/∂v_i   = -(2v_i - v_{i-1})/dx    (main diagonal)
                 ∂A_i/∂v_{i-1} =  v_i/dx                (sub-diagonal)
 
-            v_i < 0  →  A_i = −v_i(v_{i+1} − v_i)/dx
-                ∂A_i/∂v_i   = (2v_i − v_{i+1})/dx     (main diagonal)
-                ∂A_i/∂v_{i+1} = −v_i/dx               (super-diagonal)
+            v_i < 0  →  A_i = -v_i(v_{i+1} - v_i)/dx
+                ∂A_i/∂v_i   = (2v_i - v_{i+1})/dx     (main diagonal)
+                ∂A_i/∂v_{i+1} = -v_i/dx               (super-diagonal)
 
         Boundary rows are zeroed (Dirichlet tendency is identically 0).
         """
-        N = len(v)
+        gridnum_x = len(v)
         dx = self._dx()
         r = self.viscosity / dx**2
 
         # ---- diffusion Jacobian ----
-        J = (np.diag(np.full(N, -2.0 * r))
-             + np.diag(np.full(N - 1,  r), k=1)
-             + np.diag(np.full(N - 1,  r), k=-1))
+        jac_rhs = (np.diag(np.full(gridnum_x, -2.0 * r))
+                   + np.diag(np.full(gridnum_x - 1,  r), k=1)
+                   + np.diag(np.full(gridnum_x - 1,  r), k=-1))
 
         # ---- advection Jacobian ----
         # bool mask, shape (N,)
@@ -184,41 +184,42 @@ class BurgersSolver:
         main_adv = np.where(pos,
                             -(2.0 * v - v_left) / dx,   # pos branch
                              (2.0 * v - v_right) / dx)   # neg branch
-        J += np.diag(main_adv)
+        jac_rhs += np.diag(main_adv)
 
         # Sub-diagonal (row i, col i-1): non-zero only when v_i >= 0
-        # np.diag(arr, k=-1)[i] = arr[i] placed at J[i+1, i], so arr[j] = ∂A_{j+1}/∂v_j
+        # np.diag(arr, k=-1)[i] = arr[i] at J[i+1, i] so arr[j] = ∂A_{j+1}/∂v_j
         sub_adv = np.where(pos[1:],   v[1:] / dx,  0.0)
-        J += np.diag(sub_adv, k=-1)
+        jac_rhs += np.diag(sub_adv, k=-1)
 
         # Super-diagonal (row i, col i+1): non-zero only when v_i < 0
         # np.diag(arr, k=+1)[i] = arr[i] placed at J[i, i+1]
         sup_adv = np.where(~pos[:-1], -v[:-1] / dx, 0.0)
-        J += np.diag(sup_adv, k=1)
+        jac_rhs += np.diag(sup_adv, k=1)
 
         # Dirichlet: zero out boundary rows (tendency is always 0 there)
-        J[np.array([0, -1]), :] = 0.0
-        return J
+        jac_rhs[np.array([0, -1]), :] = 0.0
+        return jac_rhs
 
     def _build_jac_F(self, v: np.ndarray, dt: float) -> np.ndarray:
         """
         Jacobian of the CN residual F:
 
-            J_F = I − (dt/2) · J_R(v)
+            J_F = I - (dt/2) · J_R(v)
 
-        Boundary rows → identity (from the Dirichlet constraint v_i − u_n_i = 0).
+        Boundary rows → identity (from Dirichlet constraint v_i - u_n_i = 0).
         """
-        N = len(v)
-        J_F = np.eye(N) - (dt / 2.0) * self._build_jac_rhs(v)
+        jac_F = np.eye(len(v)) - (dt / 2.0) * self._build_jac_rhs(v)
 
-        # Enforce Dirichlet rows: ∂(v_i − u_n_i)/∂v_j = δ_{ij}
-        J_F[0, :] = 0.0
-        J_F[0,  0] = 1.0
-        J_F[-1, :] = 0.0
-        J_F[-1, -1] = 1.0
-        return J_F
+        # Enforce Dirichlet rows: ∂(v_i - u_n_i)/∂v_j = δ_{ij}
+        jac_F[0, :] = 0.0
+        jac_F[0,  0] = 1.0
+        jac_F[-1, :] = 0.0
+        jac_F[-1, -1] = 1.0
+        return jac_F
 
-    def _newton_solve(self, u_n: np.ndarray, dt: float) -> Tuple[np.ndarray, int]:
+    def _newton_solve(self,
+                      u_n: np.ndarray,
+                      dt: float) -> Tuple[np.ndarray, int]:
         """
         Solve F(v) = 0 by Newton's method, starting from v⁰ = u_n.
 
@@ -236,8 +237,8 @@ class BurgersSolver:
             if np.linalg.norm(F, np.inf) < self.newton_tol:
                 return v, k
 
-            J = self._build_jac_F(v, dt)
-            dv = np.linalg.solve(J, -F)
+            jac = self._build_jac_F(v, dt)
+            dv = np.linalg.solve(jac, -F)
             v = np.add(v, dv)
 
         raise RuntimeError(
@@ -314,7 +315,8 @@ class BurgersSolver:
         idx_x = np.clip(np.searchsorted(self.x, x_query), 1, len(self.x) - 1)
         beta = float(
             np.interp(x_query, self.x[idx_x - 1: idx_x + 1], [0.0, 1.0]))
-        return float(np.add((1.0 - beta) * u_snap[idx_x - 1], beta * u_snap[idx_x]))
+        return float(
+            np.add((1.0 - beta) * u_snap[idx_x - 1], beta * u_snap[idx_x]))
 
     def save(self, filepath: str) -> None:
         """

@@ -1,25 +1,25 @@
 """
 train.py
 ========
-Training script for the PINN damped-spring-mass system.
+Training script for the PINN Burgers' equation.
 
 Every tunable value is exposed as a CLI argument and collected into a
 BurgerConfig before anything else runs.  The script:
 
   1. Resolves the compute device (CUDA > MPS > CPU).
-  2. Generates synthetic observations with a train / validation split.
+  2. Generates synthetic observations.
   3. Trains a Standard-ML model (data loss only).
   4. Trains a PINN model       (data + physics + IC loss).
-  5. Saves the best checkpoint after every improvement (best_ml.pt /
-     best_pinn.pt) so a crash never loses more than one log_every interval.
+  5. Saves the best checkpoint after every improvement
+    so a crash never loses more than one log_every interval.
   6. Applies early stopping based on validation MSE.
-  7. Serialises everything needed by plot.py into training_results.pt.
+  7. Serialises everything needed by plot.py into an output file.
 
 Usage examples
 --------------
   python train.py                          # all defaults
   python train.py --n_epochs 4000 --lr 5e-4
-  python train.py --mass 2.0 --damping 0.8 --stiffness 6.0
+  python train.py --situation "Gaussian" --viscosity 1 
   python train.py --out_dir ./run_01 --patience 50
 """
 
@@ -27,17 +27,15 @@ from __future__ import annotations
 
 import argparse
 import copy
-import os
-import sys
 import time
 from pathlib import Path
 
 import numpy as np
 import torch
-import torch.nn as nn
-from scipy.special import erfc
-from model import BurgerConfig, FCNet, Predictor
-from Burger_PDE import BurgersSolver
+from torch import nn
+
+from BurgersPINN.model import BurgerConfig, FCNet, Predictor
+from BurgersPINN.Burger_PDE import BurgersSolver
 
 # =============================================================================
 # 0.  DEVICE SELECTION
@@ -45,7 +43,14 @@ from Burger_PDE import BurgersSolver
 
 
 def get_device() -> torch.device:
-    """Priority: CUDA → Apple MPS → CPU."""
+    """Resolve compute device with priority order.
+
+    Returns the first available device from the priority order:
+    CUDA (NVIDIA GPU) → Apple MPS (Metal Performance Shaders) → CPU.
+
+    Returns:
+        torch.device: The selected device for training and inference.
+    """
     if torch.cuda.is_available():
         return torch.device("cuda")
     if torch.backends.mps.is_available():
@@ -57,95 +62,46 @@ def get_device() -> torch.device:
 # 1.  ANALYTIC GROUND TRUTH
 # =============================================================================
 
-def analytic(x: np.ndarray, t: np.ndarray, cfg: BurgerConfig, solver: BurgersSolver) -> np.ndarray:
-    """
-    Analytic solution of the Burger's equation for three different regimes:
-    N-wave: starting with u(x,t0) = exp(-(x-1)**2/2) - exp(-(x+1)**2/2) the solution evolves into a characteristic N-wave shape.   
+def analytic(x: np.ndarray, t: np.ndarray, solver: BurgersSolver) -> np.ndarray:
+    """Compute analytic solution of the Burgers equation at given points.
+
+    Queries the BurgersSolver for solution values at each (x, t) pair.
+    Supports three initial conditions: N-wave, Gaussian, and Step.
+
+    Args:
+        x: Spatial coordinates array of shape (N,).
+        t: Temporal coordinates array of shape (N,).
+        solver: BurgersSolver instance for evaluating the analytic solution.
+
+    Returns:
+        Array of solution values at the requested points of shape (N,).
     """
 
     return np.array([solver.solution_at(x_query=x_i, t_query=t_i) for x_i, t_i in zip(x, t)])
-    # shifted_t = t - cfg.t0
-    # mask = shifted_t > 1e-10  # Only apply the viscous formula where time has actually progressed beyond t0
-    # if cfg.situation == "Step":
-
-    #     # Initialize output array with the initial condition (t <= t0)
-    #     # Defaulting to the step function logic
-    #     u = np.where(x > 0, 1.0, 0.0)
-
-    #     # Only calculate the complex viscous formula where time has actually progressed
-    #     if np.any(mask):
-    #         # Extract only the points that need the viscous calculation
-    #         tm = shifted_t[mask]
-    #         xm = x[mask]
-
-    #         sqrt_4nut = np.sqrt(4 * cfg.v * tm)
-
-    #         # Term A: erfc(-x / sqrt)
-    #         term_a = erfc(-xm / sqrt_4nut)
-
-    #         # Term B: exp(exponent) * erfc((t-x)/sqrt)
-    #         exponent = (xm - 0.5 * tm) / (2 * cfg.v)
-    #         # Standard float64 max exponent is ~709.
-    #         # Clipping at 500 is safe and effectively "infinite" for a ratio.
-    #         exponent = np.clip(exponent, -1e7, 1e7)
-
-    #         term_b = np.exp(exponent) * erfc((tm - xm) / sqrt_4nut)
-
-    #         u_viscous = term_b / (term_a + term_b)
-
-    #         # Place the calculated values back into the main array
-    #         u_viscous_nan = np.isnan(u_viscous)
-    #         u_viscous[u_viscous_nan] = 0.0  # Assign a default value (e.g., 0) to NaNs resulting from 0/0
-    #         u[mask] = u_viscous
-
-    #     return u
-
-    # elif cfg.situation == "N-wave":
-    #     u = np.where(np.abs(x) < 1.0, -x, 0.0) # Defaulting to the N-wave logic (negative Gaussian) for the Gaussian situation
-    #     # Only calculate the complex viscous formula where time has actually progressed
-    #     if np.any(mask):
-    #         # Extract only the points that need the viscous calculation
-    #         tm = shifted_t[mask]
-    #         xm = x[mask]
-
-    #         x_integrating = np.linspace(0, np.max(np.abs([cfg.x_end,cfg.x_begin])), 1000)
-    #         ic_func = lambda x: np.where(np.abs(x) < 1.0, -x, 0.0)
-    #         area_pos = np.trapz(ic_func(x_integrating), x_integrating)
-    #         Re0 = area_pos / (2*cfg.v)
-    #         denominator = 1 + np.exp(xm**2/(4*cfg.v*tm) - Re0)
-    #         u_viscous = xm/(tm+1e-14) * 1/(denominator+1e-14)
-
-    #         # Place the calculated values back into the main array
-    #         u[mask] = u_viscous
-    #     return u
-
-    # elif cfg.situation == "N-wave2":
-    #     u = np.where(np.abs(x) < 1.0, -x, 0.0) # Defaulting to the N-wave logic (negative Gaussian) for the Gaussian situation
-    #     # Only calculate the complex viscous formula where time has actually progressed
-    #     if np.any(mask):
-    #         # Extract only the points that need the viscous calculation
-    #         tm = shifted_t[mask]
-    #         xm = x[mask]
-
-    #         x_integrating = np.linspace(0, np.max(np.abs([cfg.x_end,cfg.x_begin])), 1000)
-    #         ic_func = lambda x: np.where(np.abs(x) < 1.0, -x, 0.0)
-    #         area_pos = np.trapz(ic_func(x_integrating), x_integrating)
-    #         Re0 = area_pos / (2*cfg.v)
-    #         tau = cfg.t0*(np.exp(Re0) - 1)**2
-    #         Re = np.log(1 + np.sqrt(tau/tm))
-    #         denominator = (1+1/(np.exp(Re0-1))*np.sqrt(tm/tau)*np.exp(-Re*xm**2/(4*cfg.v*tm*Re0)))
-    #         u_viscous = xm/(tm+1e-14) * 1/(denominator+1e-14)
-
-    #         # Place the calculated values back into the main array
-    #         u[mask] = u_viscous
-    #     return u
-
-    # return x*t
 
 
-# Stratified time split to ensure validation points are spread across the time axis rather than clustered at one end.
+# =============================================================================
+# 2.  DATA GENERATION
+# =============================================================================
+
 
 def stratified_time_split(t, t_begin, t_end, p_val, n_bins, seed):
+    """Stratified train/validation split along time axis.
+
+    Ensures validation points are spread across time bins to prevent clustering
+    at one end. Divides the time interval into n_bins and samples from each bin.
+
+    Args:
+        t: Array of time values to split.
+        t_begin: Start of time interval.
+        t_end: End of time interval.
+        p_val: Fraction of data to hold for validation.
+        n_bins: Number of time bins for stratification.
+        seed: Random seed for reproducibility.
+
+    Returns:
+        Tuple of (train_indices, val_indices) for the stratified split.
+    """
     rng = np.random.default_rng(seed)
     # 1. Sort by time
     idx = np.argsort(t)
@@ -172,30 +128,27 @@ def stratified_time_split(t, t_begin, t_end, p_val, n_bins, seed):
     return idx[train_idx], idx[val_idx]
 
 
-# =============================================================================
-# 2.  DATA GENERATION  (consistent with real-world analysis)
-# =============================================================================
-
 def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
-    """
-    Build all data arrays and tensors needed for training and plotting.
+    """Build all data arrays and tensors needed for training and plotting.
 
-    Real-world workflow followed here
-    ----------------------------------
-    * Observations are randomly drawn from (t0, t_train] so t0 is never
-      in the observation set — its initial condition is enforced via L_ic.
-    * Observations are split into a TRAINING set and a VALIDATION set
-      (val_fraction controls the size).  Training loss sees only the
-      training observations; the validation loss drives early stopping.
-    * Collocation points are placed uniformly over the FULL domain
-      [0, t_extrap], extending into the extrapolation region.  No
-      measurement is required at collocation points — only the ODE
-      residual is evaluated there.
-    * Dense evaluation grids (t_plot_*) are CPU-only; they are never used
-      during training, only during post-hoc evaluation and plotting.
+    Generates observations for train, perfect validation points, collocation
+    points for physics loss, and dense evaluation grids. Returns both numpy
+    arrays (for plotting) and device tensors (for training).
 
-    Returns a dict with both numpy arrays (for plotting) and device tensors
-    (for training).  All tensors that need autograd have requires_grad=True.
+    * Observations (training) randomly drawn from (t0, t_train]
+    * Initial condition enforced via IC loss
+    * Validation chosen as a large number of random points without noise
+    * Collocation points placed randomly over FULL domain [t0, t_extrap] (ext. phys.)
+    or over the training domain [t0,t_train] (blind)
+    * Dense evaluation grids (CPU-only) for post-hoc evaluation and plotting
+
+    Args:
+        cfg: BurgerConfig instance with all data generation parameters.
+        device: Torch device for placing tensors (CPU or GPU).
+
+    Returns:
+        Dictionary containing observation arrays, validation arrays, plotting grids,
+        and device tensors for training.
     """
 
     def to_tensor(arr: np.ndarray, requires_grad: bool = False) -> torch.Tensor:
@@ -230,29 +183,30 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
             f"Loading precomputed analytic solution snapshots from {analytical_path_str}...")
         solver = solver.load(analytical_path_str)
     else:
-        print(
-            f"\nSolving the Burgers equation with the {cfg.situation} initial condition to generate the analytic solution snapshots for interpolation...")
-        solver.solve()  # Precompute the solution snapshots for interpolation in the analytic function
+        print(f"\nSolving the Burgers equation with the {cfg.situation} initial condition"
+              f"to generate the analytic solution snapshots for interpolation...")
+        # Precompute the solution snapshots for interpolation in the analytic function
+        solver.solve()
         # Save the precomputed solution for future runs
         solver.save(analytical_path_str)
 
     # ── Initial condition point ───────────────────────────────────────────────
     x_samples_ic = np.linspace(cfg.x_begin, cfg.x_end, cfg.n_ic_samples_x)
     t_ic = np.full_like(x_samples_ic, cfg.t0)
-    u_ic_true = analytic(x_samples_ic, t_ic, cfg, solver)
+    u_ic_true = analytic(x_samples_ic, t_ic, solver)
 
     print(
         f"\nGenerating observation data for the {cfg.situation} initial condition...")
     # ── All M observations ────────────────────────────────────────────────────
-    x_obs_train, t_obs_train = np.random.uniform(cfg.x_begin, cfg.x_end, cfg.n_obs_total), np.random.uniform(
-        # spatial and temporal locations for observations
-        cfg.t0, cfg.t_train, cfg.n_obs_total)
-    u_obs_train = analytic(x_obs_train, t_obs_train, cfg, solver) + \
+    x_obs_train = np.random.uniform(cfg.x_begin, cfg.x_end, cfg.n_obs_total)
+    t_obs_train = np.random.uniform(cfg.t0, cfg.t_train, cfg.n_obs_total)
+    u_obs_train = analytic(x_obs_train, t_obs_train, solver) + \
         np.random.normal(0.0, cfg.sigma, cfg.n_obs_total)
 
-    # ── Train / validation split  (stratified) ────── We found were told to use the ground truth,
+    # ── Train / validation split  (stratified) ────── We were told to use the ground truth,
     # instead of stratified time split, but this is more realistic, so we will keep it in the code.
-    # train_idx, val_idx = stratified_time_split(t_all, cfg.t0, cfg.t_train, cfg.val_fraction, cfg.n_bins, seed=cfg.seed)
+    # train_idx, val_idx = stratified_time_split(t_all, cfg.t0, cfg.t_train,
+    #                                            cfg.val_fraction, cfg.n_bins, seed=cfg.seed)
 
     # t_obs_train, u_obs_train, x_obs_train = t_all[train_idx], u_all[train_idx], x_full[train_idx]
     # t_obs_val,   u_obs_val,   x_obs_val   = t_all[val_idx],   u_all[val_idx],   x_full[val_idx]
@@ -264,7 +218,7 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
         t_obs_vec, x_obs_vec, indexing="ij")
     t_obs_val = t_obs_val_mat.reshape(-1)
     x_obs_val = x_obs_val_mat.reshape(-1)
-    u_obs_val = analytic(x_obs_val, t_obs_val, cfg, solver)
+    u_obs_val = analytic(x_obs_val, t_obs_val, solver)
 
     # ── Dense grids for post-hoc evaluation and plotting (CPU numpy only) ────
 
@@ -281,8 +235,8 @@ def generate_data(cfg: BurgerConfig, device: torch.device) -> dict:
     t_flattened_full = t_plotmat_full.reshape(-1)
     x_flattened_full = x_plotmat_full.reshape(-1)
 
-    u_true_train = analytic(x_flattened_train, t_flattened_train, cfg, solver)
-    u_true_full = analytic(x_flattened_full, t_flattened_full,  cfg, solver)
+    u_true_train = analytic(x_flattened_train, t_flattened_train, solver)
+    u_true_full = analytic(x_flattened_full, t_flattened_full, solver)
 
     return {
         # numpy — train split
@@ -322,12 +276,22 @@ def loss_physics(
     t: torch.Tensor,
     cfg: BurgerConfig,
 ) -> torch.Tensor:
-    """
-    L_physics = mean( r(tᵢ)² )  over all collocation points.
+    """Compute physics residual loss for the Burgers equation.
 
-    Both derivatives are computed via automatic differentiation.
-    create_graph=True on the first grad call keeps the computation graph
-    alive so the backward pass through the second derivative works.
+    L_physics = mean(r(x,t)²) over collocation points, where r is the residual
+    of the PDE: ∂u/∂t + u·∂u/∂x - ν·∂²u/∂x² = 0.
+
+    Both spatial and temporal derivatives computed via automatic differentiation.
+    Uses create_graph=True to preserve computation graph for second derivatives.
+
+    Args:
+        model: Neural network model u_hat(x, t).
+        x: Spatial coordinates of collocation points, shape (n_col, 1).
+        t: Temporal coordinates of collocation points, shape (n_col, 1).
+        cfg: BurgerConfig with viscosity parameter ν.
+
+    Returns:
+        Physics residual loss as a scalar tensor.
     """
     u_hat = model(x, t)
 
@@ -355,11 +319,20 @@ def loss_ic(
     t: torch.Tensor,
     cfg: BurgerConfig,
 ) -> torch.Tensor:
-    """
-    L_ic = ( ŷ(0) - y0 )² + ( ŷ'(0) - dy0 )²
+    """Compute initial condition loss at t=t0.
 
-    λ_ic >> λ_phys because an error at t=0 propagates and distorts the
-    entire downstream trajectory.
+    L_ic = mean((ŷ(x, t0) - y0(x))²) enforces the initial condition.
+    Weighted heavily (λ_ic >> λ_phys) because errors at t=0 propagate
+    and distort the entire downstream trajectory.
+
+    Args:
+        model: Neural network model u_hat(x, t).
+        x: Spatial coordinates where IC is enforced, shape (n_ic, 1).
+        t: Time coordinates all equal to t0, shape (n_ic, 1).
+        cfg: BurgerConfig with initial condition function.
+
+    Returns:
+        Initial condition loss as a scalar tensor.
     """
     u_hat_0 = model(x, t)
 
@@ -461,12 +434,13 @@ def train_model(
         optimiser.zero_grad()
 
         # Data loss — MSE on training observations only (not validation)
-        # Randomly select a subset of the training observations for this epoch to speed up training and add noise robustness.  This is a form of stochastic mini-batching.
+        # Randomly select a subset of the training observations for this epoch to
+        # speed up training and add noise robustness.  This is a form of stochastic mini-batching.
         # epoch_random_selection = torch.randperm(t_obs_train_t.shape[0])[:cfg.n_obs_per_epoch]
         # x_selected_epoch = x_obs_train_t[epoch_random_selection]
         # t_selected_epoch = t_obs_train_t[epoch_random_selection]
         # u_selected_epoch = u_obs_train_t[epoch_random_selection]
-        # We found that mini batching is worse than full batching
+        # We found that mini batching is worse than full batching (optimal n per batch = all)
 
         u_pred = model(x_selected_epoch, t_selected_epoch)
         l_data = torch.mean((u_pred - u_selected_epoch) ** 2)
@@ -574,8 +548,21 @@ def train_model(
 # =============================================================================
 
 def parse_args() -> argparse.Namespace:
+    """
+    Parse command-line arguments for training the Burgers equation PINN.
+
+    Defines arguments across eight groups — physical parameters, initial
+    conditions, time domain, space domain, data, PINN loss weights,
+    architecture, optimiser, training loop, early stopping, and output —
+    with defaults drawn from ``BurgerConfig``.
+
+    Returns:
+        argparse.Namespace: Parsed arguments, with one attribute per flag
+            (e.g. ``args.viscosity``, ``args.situation``, ``args.n_epochs``).
+    """
     p = argparse.ArgumentParser(
-        description="Train PINN model for a damped spring-mass system with the constants as unknowns.",
+        description="Train PINN model for a damped"
+        "spring-mass system with the constants as unknowns.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
@@ -668,6 +655,25 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    """
+    Entry point for training and evaluating the Burgers equation PINN models.
+
+    Orchestrates the full pipeline:
+
+    1. Parses CLI arguments via :func:`parse_args`.
+    2. Detects and reports the available compute device (CPU / CUDA), printing
+       GPU name and VRAM if applicable.
+    3. Summarises the run configuration (viscosity, scenario, observation
+       count, noise level, collocation grid) to stdout.
+    4. Trains all three models (standard ML, PINN with extended physics,
+       PINN blind) by delegating to :func:`train_and_save_three`.
+    5. Evaluates and compares all three models via :func:`evaluate_model`.
+    6. Prints the command needed to generate plots for the completed run.
+
+    Side effects:
+        - Writes model checkpoints and result files to ``args.out_dir``.
+        - Prints a structured run summary and results table to stdout.
+    """
     args = parse_args()
 
     # ── Convert CLI arguments to kwargs for train_and_save_both ───────────────
@@ -710,13 +716,14 @@ def main() -> None:
     print(
         f"\n  Observations: {args.n_obs} for training (with noise σ={args.sigma})")
     print(
-        f"  Collocation : {args.n_col} pts over [{args.x_begin}, {args.x_end}] × [{args.t0}, {args.t_extrap} (phys. ext.) / {args.t_train} (blind)]")
+        f"  Collocation : {args.n_col} pts over [{args.x_begin}, {args.x_end}] x"
+        f" [{args.t0}, {args.t_extrap} (phys. ext.) / {args.t_train} (blind)]")
     print(f"  IC enforced at t={args.t0} via L_ic (not in observations)\n")
 
     train_and_save_three(**kwargs)
     evaluate_model(situation=args.situation, v=args.viscosity)
-    print(
-        f"Run BurgersPINN/plot.py --situation {args.situation} --viscosity {args.viscosity} to generate plots")
+    print(f"Run BurgersPINN/plot.py --situation {args.situation}"
+          f"--viscosity {args.viscosity} to generate plots")
 
 
 def train_and_save_three(**kwargs) -> None:
@@ -896,12 +903,34 @@ def train_and_save_three(**kwargs) -> None:
     )
 
 
-def evaluate_model(situation: str = BurgerConfig.situation, v: float = BurgerConfig.v) -> tuple[float, float, float]:
+def evaluate_model(situation: str = BurgerConfig.situation,
+                   v: float = BurgerConfig.v) -> tuple[float, float, float]:
+    """
+    Evaluate and compare all three models — standard ML, PINN (extended
+    physics), and PINN (blind) — against ground-truth data, then print a
+    side-by-side results summary.
 
-    # ── Load best checkpoints for final evaluation ────────────────────────────
-    # Using best-val checkpoints rather than last-epoch weights ensures
-    # the saved result reflects the model at its generalisation peak.
+    Loads the best-validation checkpoints for all three models from disk, runs
+    inference over the full spatiotemporal grid, and computes RMSE on the
+    training interval, RMSE on the extrapolation interval, and physics residual
+    for each model.
 
+    Args:
+        situation (str): Identifier for the physical scenario to evaluate
+            (e.g. ``"shock"``). Defaults to ``BurgerConfig.situation``.
+        v (float): True kinematic viscosity used when locating the saved
+            results and checkpoint files. Defaults to ``BurgerConfig.v``.
+
+    Returns:
+        tuple[float, float, float]: A
+            ``(rmse_ml_train, rmse_pinn_blind_train, rmse_pinn_ext_phys_train)``
+            triple containing the training-interval RMSE for the standard ML
+            model, blind PINN, and extended-physics PINN, respectively.
+
+    Side effects:
+        Prints a formatted results table to stdout comparing all three models
+        across all metrics.
+    """
     out_dir = Path(BurgerConfig.out_dir)
     results_path = out_dir / \
         f"{situation}_{v:.1e}_{BurgerConfig.suffix_results_pt}"
@@ -967,8 +996,29 @@ def evaluate_model(situation: str = BurgerConfig.situation, v: float = BurgerCon
     return rmse_ml_train, rmse_pinn_blind_train, rmse_pinn_ext_phys_train
 
 
-def evaluate_blind(situation: str = BurgerConfig.situation, v: float = BurgerConfig.v) -> float:
+def evaluate_blind(situation: str = BurgerConfig.situation,
+                   v: float = BurgerConfig.v) -> float:
+    """
+    Evaluate only the PINN (blind) model against ground-truth data and print
+    a single-model results summary.
 
+    Loads the best-validation checkpoint for the blind PINN from disk, runs
+    inference over the full spatiotemporal grid, and computes RMSE on the
+    training interval, RMSE on the extrapolation interval, and physics residual.
+
+    Args:
+        situation (str): Identifier for the physical scenario to evaluate
+            (e.g. ``"shock"``). Defaults to ``BurgerConfig.situation``.
+        v (float): True kinematic viscosity used when locating the saved
+            results and checkpoint files. Defaults to ``BurgerConfig.v``.
+
+    Returns:
+        float: Training-interval RMSE of the blind PINN against the
+            ground-truth solution.
+
+    Side effects:
+        Prints a formatted results table to stdout for the blind model.
+    """
     out_dir = Path(BurgerConfig.out_dir)
     results_path = out_dir / \
         f"{situation}_{v:.1e}_{BurgerConfig.suffix_results_pt}"

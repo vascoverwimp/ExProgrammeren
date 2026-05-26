@@ -1,8 +1,8 @@
-import matplotlib.pyplot as plt
 from pathlib import Path
-from model import DamperConfig, FCNet
-from train import evaluate_blind, train_model, generate_data, get_device
+import matplotlib.pyplot as plt
 import numpy as np
+from DampedReversePINN.model import DamperConfig, FCNet
+from DampedReversePINN.train import evaluate_blind, train_model, generate_data, get_device
 
 
 def search_learning_rate_param():
@@ -11,7 +11,7 @@ def search_learning_rate_param():
     # Search over a range of learning rates
     learning_rates = np.logspace(-3.5, -0.5, num=31)
 
-    plot_RMSE = []  # To store RMSE values for plotting later
+    plotting_list = []  # To store RMSE values for plotting later
     plot_w0_diff = []  # To store w0 differences for plotting later
     plot_zeta_diff = []  # To store zeta differences for plotting later
     device = get_device()
@@ -19,8 +19,8 @@ def search_learning_rate_param():
     data = generate_data(DamperConfig(), device=device)
     default_cfg = DamperConfig()
     out_dir = Path(default_cfg.out_dir)
-    ckpt_pinn_blind = out_dir / \
-        f"w0{default_cfg.omega_0:.1e}_zeta{default_cfg.zeta:.1e}_{default_cfg.suffix_ckpt_pinn_blind}"
+    ckpt_pinn_blind = out_dir / (f"w0{default_cfg.omega_0:.1e}_zeta{default_cfg.zeta:.1e}"
+                                 f"_{default_cfg.suffix_ckpt_pinn_blind}")
     best_rmse = float('inf')
     best_w0_diff = float('inf')
     best_zeta_diff = float('inf')
@@ -35,11 +35,13 @@ def search_learning_rate_param():
 
         print(f"Testing learning rate: {lr_param}")
         model_pinn_blind = FCNet.from_config(cfg)
-        train_model(model_pinn_blind, data=data, cfg=cfg, device=device, use_physics=True, extrapolated_physics=False,         label="PINN (blind)",
+        train_model(model_pinn_blind, data=data,
+                    cfg=cfg, device=device, use_physics=True,
+                    extrapolated_physics=False, label="PINN (blind)",
                     ckpt_path=ckpt_pinn_blind)
         rmse, w0_hat, zeta_hat = evaluate_blind(cfg.omega_0, cfg.zeta)
         print(f"RMSE for learning rate {lr_param}: {rmse:.4f}\n")
-        plot_RMSE.append((lr_param, rmse))
+        plotting_list.append((lr_param, rmse))
         plot_w0_diff.append((lr_param, abs(w0_hat - cfg.omega_0)))
         plot_zeta_diff.append((lr_param, abs(zeta_hat - cfg.zeta)))
         if rmse < best_rmse:
@@ -56,13 +58,15 @@ def search_learning_rate_param():
 
     print(f"Best learning rate RMSE: {best_lr_rmse} with RMSE: {best_rmse}")
     print(
-        f"Best learning rate w0: {best_lr_w0} with difference: {best_w0_diff} (from w0_hat: {best_w0_hat})")
+        f"Best learning rate w0: {best_lr_w0} with difference:"
+        f"{best_w0_diff} (from w0_hat: {best_w0_hat})")
     print(
-        f"Best learning rate zeta: {best_lr_zeta} with difference: {best_zeta_diff} (from zeta_hat: {best_zeta_hat})")
+        f"Best learning rate zeta: {best_lr_zeta} with difference:"
+        f"{best_zeta_diff} (from zeta_hat: {best_zeta_hat})")
     # Plot the results
     plt.figure(figsize=(8, 5))
-    plt.plot([lr for lr, rmse in plot_RMSE], [
-             rmse for lr, rmse in plot_RMSE], marker='o')
+    plt.plot([lr for lr, rmse in plotting_list], [
+             rmse for lr, rmse in plotting_list], marker='o')
     plt.xscale('log')
     plt.xlabel('Learning Rate')
     plt.ylabel('RMSE')

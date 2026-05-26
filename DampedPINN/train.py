@@ -7,13 +7,13 @@ Every tunable value is exposed as a CLI argument and collected into a
 DamperConfig before anything else runs.  The script:
 
   1. Resolves the compute device (CUDA > MPS > CPU).
-  2. Generates synthetic observations with a train / validation split.
+  2. Generates synthetic observations.
   3. Trains a Standard-ML model (data loss only).
   4. Trains a PINN model       (data + physics + IC loss).
-  5. Saves the best checkpoint after every improvement (best_ml.pt /
-     best_pinn.pt) so a crash never loses more than one log_every interval.
+  5. Saves the best checkpoint after every improvement so a crash
+  never loses more than one log_every interval.
   6. Applies early stopping based on validation MSE.
-  7. Serialises everything needed by plot.py into training_results.pt.
+  7. Serialises everything needed by plot.py into an output file.
 
 Usage examples
 --------------
@@ -27,16 +27,14 @@ from __future__ import annotations
 
 import argparse
 import copy
-import os
-import sys
 import time
 from pathlib import Path
 
 import numpy as np
 import torch
-import torch.nn as nn
+from torch import nn
 
-from model import DamperConfig, FCNet, Predictor
+from DampedPINN.model import DamperConfig, FCNet, Predictor
 
 
 # =============================================================================
@@ -65,18 +63,39 @@ def analytic(t: np.ndarray, cfg: DamperConfig) -> np.ndarray:
             y0 * np.cos(wd * t) + (dy0 + zeta * w0 * y0) / wd * np.sin(wd * t)
         )
 
-    elif zeta == 1:  # Critically damped
+    if zeta == 1:  # Critically damped
         return (y0 + (dy0 + w0 * y0) * t) * np.exp(-w0 * t)
 
-    else:  # Overdamped
-        r1 = -w0 * (zeta - np.sqrt(zeta**2 - 1))
-        r2 = -w0 * (zeta + np.sqrt(zeta**2 - 1))
-        C1 = (dy0 - r2 * y0) / (r1 - r2)
-        C2 = y0 - C1
-        return C1 * np.exp(r1 * t) + C2 * np.exp(r2 * t)
+    # Overdamped if not the other cases
+    r1 = -w0 * (zeta - np.sqrt(zeta**2 - 1))
+    r2 = -w0 * (zeta + np.sqrt(zeta**2 - 1))
+    c1 = (dy0 - r2 * y0) / (r1 - r2)
+    c2 = y0 - c1
+    return c1 * np.exp(r1 * t) + c2 * np.exp(r2 * t)
+
+
+# =============================================================================
+# 2.  DATA GENERATION
+# =============================================================================
 
 
 def stratified_time_split(t, t_begin, t_end, p_val, n_bins, seed):
+    """Stratified train/validation split along time axis.
+
+    Ensures validation points are spread across time bins to prevent clustering
+    at one end. Divides the time interval into n_bins and samples from each bin.
+
+    Args:
+        t: Array of time values to split.
+        t_begin: Start of time interval.
+        t_end: End of time interval.
+        p_val: Fraction of data to hold for validation.
+        n_bins: Number of time bins for stratification.
+        seed: Random seed for reproducibility.
+
+    Returns:
+        Tuple of (train_indices, val_indices) for the stratified split.
+    """
     rng = np.random.default_rng(seed)
     # 1. Sort by time
     idx = np.argsort(t)
@@ -101,9 +120,6 @@ def stratified_time_split(t, t_begin, t_end, p_val, n_bins, seed):
 
     # 4. Map back to original indices
     return idx[train_idx], idx[val_idx]
-# =============================================================================
-# 2.  DATA GENERATION  (consistent with real-world analysis)
-# =============================================================================
 
 
 def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
@@ -114,13 +130,10 @@ def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
     ----------------------------------
     * Observations are randomly drawn from (0, t_train] so t=0 is never
       in the observation set — its initial condition is enforced via L_ic.
-    * Observations are split into a TRAINING set and a VALIDATION set
-      (val_fraction controls the size).  Training loss sees only the
-      training observations; the validation loss drives early stopping.
-    * Collocation points are placed uniformly over the FULL domain
-      [0, t_extrap], extending into the extrapolation region.  No
-      measurement is required at collocation points — only the ODE
-      residual is evaluated there.
+    * Validation chosen as a large number of random points without noise
+    * Collocation points are placed randomly over the FULL domain
+      [0, t_extrap] for ext. phys. or over the training domain [0, t_train]
+      for the blind PINN.
     * Dense evaluation grids (t_plot_*) are CPU-only; they are never used
       during training, only during post-hoc evaluation and plotting.
 
@@ -139,10 +152,10 @@ def generate_data(cfg: DamperConfig, device: torch.device) -> dict:
     y_obs_train = analytic(t_obs_train, cfg) + \
         np.random.normal(0.0, cfg.sigma, cfg.n_obs)
 
-    # ── Train / validation split  (stratified) ────── We found were told to use the ground truth,
+    # ── Train / validation split  (stratified) ────── We were told to use the ground truth,
     # instead of stratified time split, but this is more realistic, so we will keep it in the code.
-    # train_idx, val_idx = stratified_time_split(t_all, 0, cfg.t_train, cfg.val_fraction, cfg.n_bins, cfg.seed)
-
+    # train_idx, val_idx = stratified_time_split(t_all, 0, cfg.t_train,
+    #                                            cfg.val_fraction, cfg.n_bins, seed=cfg.seed)
     # t_obs_train, y_obs_train = t_all[train_idx], y_all[train_idx]
     # t_obs_val,   y_obs_val   = t_all[val_idx],   y_all[val_idx]
 
@@ -324,7 +337,8 @@ def train_model(
         model.train()
         optimiser.zero_grad()
 
-        # # Randomly select a subset of the training observations for this epoch to speed up training and add noise robustness.  This is a form of stochastic mini-batching.
+        # Randomly select a subset of the training observations for this epoch to
+        # speed up training and add noise robustness. This is a form of stochastic mini-batching.
         # epoch_random_selection = torch.randperm(t_obs_train_t.shape[0])[:cfg.n_obs_per_epoch]
         # t_selected_epoch = t_obs_train_t[epoch_random_selection]
         # y_selected_epoch = y_obs_train_t[epoch_random_selection]
@@ -433,7 +447,7 @@ def train_model(
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(
-        description="Train PINN model for a damped spring-mass system with the constants as unknowns.",
+        description="Train PINN model for a damped spring-mass system.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
@@ -563,9 +577,9 @@ def main() -> None:
     print("=" * 70)
     # ── Data ──────────────────────────────────────────────────────────────────
     print(f"\n  Noisy observations: {cfg.n_obs} to train")
-    print(
-        f"  Collocation : random {cfg.n_col} pts over [0, {cfg.t_extrap} (phys. ext.)/ {cfg.t_train} (blind)]")
-    print(f"  IC enforced at t=0 via L_ic (not in observations)\n")
+    print(f"  Collocation : random {cfg.n_col} pts over"
+          f"[0, {cfg.t_extrap} (phys. ext.) / {cfg.t_train} (blind)]")
+    print("  IC enforced at t=0 via L_ic (not in observations)\n")
 
     train_and_save_three(**kwargs)
     evaluate_model(cfg.omega_0, cfg.zeta)
@@ -754,7 +768,9 @@ def train_and_save_three(**kwargs) -> None:
     )
 
 
-def evaluate_model(w0: float, zeta: float, suffix_results_pt=DamperConfig.suffix_results_pt) -> tuple[float, float, float]:
+def evaluate_model(w0: float,
+                   zeta: float,
+                   suffix_results_pt=DamperConfig.suffix_results_pt) -> tuple[float, float, float]:
 
     results_path = Path(
         f"{DamperConfig.out_dir}/w0{w0:.1e}_zeta{zeta:.1e}_{suffix_results_pt}")
@@ -831,7 +847,9 @@ def evaluate_model(w0: float, zeta: float, suffix_results_pt=DamperConfig.suffix
     return rmse_ml_train, rmse_pinn_blind_train, rmse_pinn_ext_phys_train
 
 
-def evaluate_blind(w0: float, zeta: float, suffix_results_pt=DamperConfig.suffix_results_pt) -> float:
+def evaluate_blind(w0: float,
+                   zeta: float,
+                   suffix_results_pt=DamperConfig.suffix_results_pt) -> float:
 
     results_path = Path(
         f"{DamperConfig.out_dir}/w0{w0:.1e}_zeta{zeta:.1e}_{suffix_results_pt}")

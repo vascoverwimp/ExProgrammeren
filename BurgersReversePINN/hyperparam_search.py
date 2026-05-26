@@ -1,15 +1,31 @@
-import matplotlib.pyplot as plt
+"""Hyperparameter search utilities for reverse PINN model training.
+
+This module provides functions to search for optimal hyperparameters (learning rate)
+for training reverse Physics-Informed Neural Networks (PINNs) that learn the 
+viscosity parameter along with solving the Burgers equation.
+"""
 from pathlib import Path
-from model import BurgerConfig, FCNet
-from train import evaluate_blind, train_model, generate_data, get_device
+import matplotlib.pyplot as plt
+from BurgersReversePINN.model import BurgerConfig, FCNet
+from BurgersReversePINN.train import evaluate_blind, train_model, generate_data, get_device
 import numpy as np
 
 
 def search_learning_rate_param():
+    """Search for optimal learning rate for reverse PINN training.
+
+    Systematically tests a range of learning rates and evaluates model performance
+    using both RMSE and viscosity estimation error (|v_hat - v_true|). Generates
+    plots comparing learning rates against both metrics.
+
+    Returns:
+        None. Prints best learning rates for RMSE and viscosity accuracy, and
+        saves two plots to the output directory showing the trade-offs.
+    """
     # Define a range of learning rates to search over
     # learning_rates = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e-0]  # Search over a range of learning rates
     learning_rates = np.logspace(-1.8, -4.2, num=25)
-    plot_RMSE = []  # To store RMSE values for plotting later
+    plotting_list = []  # To store RMSE values for plotting later
     plot_v_diff = []  # To store nu differences for plotting later
     device = get_device()
     # Generate data once, can be reused for all learning rates
@@ -28,11 +44,12 @@ def search_learning_rate_param():
         cfg = BurgerConfig(lr_param=lr_param)
         print(f"Testing learning rate: {lr_param}")
         model_pinn_blind = FCNet.from_config(cfg)
-        train_model(model_pinn_blind, data=data, cfg=cfg, device=device, use_physics=True, extrapolated_physics=False,         label="PINN (blind)",
-                    ckpt_path=ckpt_pinn_blind)
+        train_model(model_pinn_blind, data=data, cfg=cfg,
+                    device=device, use_physics=True, extrapolated_physics=False,
+                    label="PINN (blind)", ckpt_path=ckpt_pinn_blind)
         rmse, v_hat = evaluate_blind(cfg.situation, cfg.v)
         print(f"RMSE for learning rate {lr_param}: {rmse:.4f}")
-        plot_RMSE.append((lr_param, rmse))
+        plotting_list.append((lr_param, rmse))
         plot_v_diff.append((lr_param, abs(v_hat - cfg.v)))
         if rmse < best_rmse:
             best_rmse = rmse
@@ -43,12 +60,12 @@ def search_learning_rate_param():
             best_lr_v = lr_param
 
     print(f"Best learning rate RMSE: {best_lr_rmse} with RMSE: {best_rmse}")
-    print(
-        f"Best learning rate v: {best_lr_v} with difference: {best_v_diff} (from v_hat: {best_v_hat})")
+    print(f"Best learning rate v: {best_lr_v} with difference:"
+          f"{best_v_diff} (from v_hat: {best_v_hat})")
     # Plot the results
     plt.figure(figsize=(8, 5))
-    plt.plot([lr for lr, rmse in plot_RMSE], [
-             rmse for lr, rmse in plot_RMSE], marker='o')
+    plt.plot([lr for lr, rmse in plotting_list], [
+             rmse for lr, rmse in plotting_list], marker='o')
     plt.xscale('log')
     plt.xlabel('Learning Rate')
     plt.ylabel('RMSE')

@@ -1,8 +1,8 @@
 from pathlib import Path
-from model import DamperConfig
-from train import train_and_save_both, evaluate_model
 import matplotlib.pyplot as plt
 import numpy as np
+from DampedReversePINN.model import DamperConfig
+from DampedReversePINN.train import train_and_save_both, evaluate_model
 
 
 def damper_predictions():
@@ -32,15 +32,18 @@ def damper_predictions():
             plotting.append((damping, stiffness, true_w0, true_zeta, w0_hat_blind,
                             zeta_hat_blind, w0_hat_ext_phys, zeta_hat_ext_phys))
             print(
-                f"Damping: {damping:.1e}, Stiffness: {stiffness:.1e}, Omega0 (true): {true_w0:.4f}, Zeta (true): {true_zeta:.4f}")
+                f"Damping: {damping:.1e}, Stiffness: {stiffness:.1e},"
+                f"Omega0 (true): {true_w0:.4f}, Zeta (true): {true_zeta:.4f}")
             print(
                 f"  Omega0 Hat (blind): {w0_hat_blind:.4f}, Zeta Hat (blind): {zeta_hat_blind:.4f}")
             print(
-                f"  Omega0 Hat (ext phys): {w0_hat_ext_phys:.4f}, Zeta Hat (ext phys): {zeta_hat_ext_phys:.4f}")
+                f"  Omega0 Hat (ext phys): {w0_hat_ext_phys:.4f},"
+                f"Zeta Hat (ext phys): {zeta_hat_ext_phys:.4f}")
     # Plot the results (omega0)
     plt.figure(figsize=(8, 5))
     plt.scatter([omega0 for _, _, omega0, _, _, _, _, _ in plotting], [
-                w0_hat_blind for _, _, _, _, w0_hat_blind, _, _, _ in plotting], marker='o', label='PINN (blind)')
+                w0_hat_blind for _, _, _, _, w0_hat_blind, _, _, _ in plotting],
+                marker='o', label='PINN (blind)')
     plt.scatter([omega0 for _, _, omega0, _, _, _, _, _ in plotting], [w0_hat_ext_phys for _,
                 _, _, _, _, _, w0_hat_ext_phys, _ in plotting], marker='o', label='PINN (ext phys)')
     # add a reference line for the true viscosity
@@ -48,23 +51,27 @@ def damper_predictions():
                linestyle='--', label='True Omega0')
     plt.xlabel('Omega0 (True)')
     plt.ylabel('Estimated Omega0')
-    plt.title(f'Omega0 Estimation vs True Omega0')
+    plt.title('Omega0 Estimation vs True Omega0')
     plt.grid(True)
     plt.legend()
     plt.savefig(f"{cfg.out_dir}/omega0_predictions.png")
 
     # Plot the results (zeta)
     plt.figure(figsize=(8, 5))
-    plt.scatter([zeta for _, _, _, zeta, _, _, _, _ in plotting], [zeta_hat_blind for _,
-                _, _, _, _, zeta_hat_blind, _, _ in plotting], marker='o', label='PINN (blind)')
-    plt.scatter([zeta for _, _, _, zeta, _, _, _, _ in plotting], [zeta_hat_ext_phys for _,
-                _, _, _, _, _, _, zeta_hat_ext_phys in plotting], marker='o', label='PINN (ext phys)')
+    plt.scatter([zeta for _, _, _, zeta, _, _, _, _ in plotting],
+                [zeta_hat_blind for _, _, _, _, _,
+                    zeta_hat_blind, _, _ in plotting],
+                marker='o', label='PINN (blind)')
+    plt.scatter([zeta for _, _, _, zeta, _, _, _, _ in plotting],
+                [zeta_hat_ext_phys for _, _, _, _, _, _,
+                    _, zeta_hat_ext_phys in plotting],
+                marker='o', label='PINN (ext phys)')
     # add a reference line for the true viscosity
     plt.axline((0, 0), slope=1, color='gray',
                linestyle='--', label='True Zeta')
     plt.xlabel('Zeta (True)')
     plt.ylabel('Estimated Zeta')
-    plt.title(f'Zeta Estimation vs True Zeta')
+    plt.title('Zeta Estimation vs True Zeta')
     plt.grid(True)
     plt.legend()
     plt.savefig(f"{cfg.out_dir}/zeta_predictions.png")
@@ -74,14 +81,14 @@ def damper_predictions():
                          _, _ in plotting]).reshape(len(dampings), len(stiffnesses))
     zeta_blind = np.array([zeta_hat_blind for _, _, _, _, _, zeta_hat_blind,
                           _, _ in plotting]).reshape(len(dampings), len(stiffnesses))
-    zeta_ext_phys = np.array([zeta_hat_ext_phys for _, _, _, _, _, _, _,
-                             zeta_hat_ext_phys in plotting]).reshape(len(dampings), len(stiffnesses))
+    zeta_ext_phys = np.array([zeta_hat_ext_phys for *_, zeta_hat_ext_phys in plotting]
+                             ).reshape(len(dampings), len(stiffnesses))
 
     # Use same scale for all colorbars
     vmin = min(zeta_true.min(), zeta_blind.min(), zeta_ext_phys.min())
     vmax = max(zeta_true.max(), zeta_blind.max(), zeta_ext_phys.max())
 
-    fig, axes = plt.subplots(1, 3, figsize=(16, 4))
+    _, axes = plt.subplots(1, 3, figsize=(16, 4))
 
     im0 = axes[0].imshow(zeta_true, cmap='viridis',
                          aspect='auto', origin='lower', vmin=vmin, vmax=vmax)
@@ -125,13 +132,14 @@ def damper_predictions():
     omega0_blind = np.array([w0_hat_blind for _, _, _, _, w0_hat_blind,
                             _, _, _ in plotting]).reshape(len(dampings), len(stiffnesses))
     omega0_ext_phys = np.array([w0_hat_ext_phys for _, _, _, _, _, _,
-                               w0_hat_ext_phys, _ in plotting]).reshape(len(dampings), len(stiffnesses))
+                               w0_hat_ext_phys, _ in plotting]
+                               ).reshape(len(dampings), len(stiffnesses))
 
     # Use same scale for all colorbars
     vmin_w = min(omega0_true.min(), omega0_blind.min(), omega0_ext_phys.min())
     vmax_w = max(omega0_true.max(), omega0_blind.max(), omega0_ext_phys.max())
 
-    fig, axes = plt.subplots(1, 3, figsize=(16, 4))
+    _, axes = plt.subplots(1, 3, figsize=(16, 4))
 
     im0 = axes[0].imshow(omega0_true, cmap='viridis',
                          aspect='auto', origin='lower', vmin=vmin_w, vmax=vmax_w)

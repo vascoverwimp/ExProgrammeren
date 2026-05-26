@@ -38,11 +38,11 @@ from pathlib import Path
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
+from matplotlib import gridspec
 from matplotlib.lines import Line2D
 import torch
 
-from model import DamperConfig, Predictor
+from DampedPINN.model import DamperConfig, Predictor
 
 
 # =============================================================================
@@ -65,12 +65,23 @@ PANEL = "#F1EFE8"   # axes background
 # =============================================================================
 
 def style_ax(ax: plt.Axes) -> None:
+    """Style axes with custom background color and spine styling.
+
+    Args:
+        ax: Matplotlib axes object to style.
+    """
     ax.set_facecolor(PANEL)
     for spine in ax.spines.values():
         spine.set_edgecolor(LGRAY)
 
 
 def shade_extrap(ax: plt.Axes, cfg: DamperConfig) -> None:
+    """Shade the extrapolation region and mark the training boundary.
+
+    Args:
+        ax: Matplotlib axes to shade.
+        cfg: DamperConfig with training time boundary.
+    """
     ax.axvspan(cfg.t_train, cfg.t_extrap, color=GRAY, alpha=0.12)
     ax.axvline(cfg.t_train, color=GRAY, lw=0.8, ls="--", alpha=0.6)
 
@@ -81,6 +92,18 @@ def shade_extrap(ax: plt.Axes, cfg: DamperConfig) -> None:
 
 def pointwise_residual(y: np.ndarray, t: np.ndarray,
                        cfg: DamperConfig) -> np.ndarray:
+    """Compute pointwise ODE residual for the damped oscillator.
+
+    Evaluates |m·y'' + c·y' + k·y| at each point using numerical differentiation.
+
+    Args:
+        y: Solution values array.
+        t: Time values array.
+        cfg: DamperConfig with mass, damping, stiffness parameters.
+
+    Returns:
+        Array of residual magnitudes at each point.
+    """
     dy = np.gradient(y, t)
     d2y = np.gradient(dy, t)
     return np.abs(cfg.mass * d2y + cfg.damping * dy + cfg.stiffness * y)
@@ -91,43 +114,43 @@ def pointwise_residual(y: np.ndarray, t: np.ndarray,
 # =============================================================================
 
 def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
-    """
-    Single-axes figure showing all loss types for all three models.
+    """Create loss progression figure for all models and loss types.
 
-    Encoding:
-      colour   = loss category  (same hue across models for easy cross-model tracking)
-      linestyle = model          (solid = ML, dashed = ext_phys, dash-dot = blind)
-      marker   = loss category
+    Single-axes plot showing training, validation, physics, and IC losses
+    for all three models. Line style distinguishes models, color distinguishes loss types.
 
-    ML only plots data + val (no physics or IC loss).
+    Args:
+        bundle: Dictionary containing training results and histories.
+        out_path: Path where the figure is saved.
+
+    Returns:
+        The created matplotlib Figure object.
     """
     cfg = bundle["cfg"]
     h_ml = bundle["hist_ml"]
-    h_ext = bundle["hist_pinn_ext_phys"]
-    h_bl = bundle["hist_pinn_blind"]
 
-    COLORS = {
+    color_dict = {
         "loss_data":    "#2271B2",   # blue
         "loss_val":     "#E6533C",   # red
         "loss_physics": "#3DAA6A",   # green
         "loss_ic":      "#9B5EBF",   # purple
     }
-    LABELS = {
+    label_dict = {
         "loss_data":    "data",
         "loss_val":     "val",
         "loss_physics": "physics",
         "loss_ic":      "IC",
     }
-    MARKERS = {
+    marker_dict = {
         "loss_data":    "o",
         "loss_val":     "s",
         "loss_physics": "^",
         "loss_ic":      "v",
     }
     # (linestyle, linewidth, alpha) per model
-    MODEL_LS = {"ml": ("-", 2.0, 1.0), "ext": ("--",
-                                               1.8, 0.9), "bl": ("-.", 1.6, 0.8)}
-    MODEL_LABEL = {"ml": "ML", "ext": "ext_phys", "bl": "blind"}
+    linestyle_dict = {"ml": ("-", 2.0, 1.0), "ext": ("--",
+                                                     1.8, 0.9), "bl": ("-.", 1.6, 0.8)}
+    name_dict = {"ml": "ML", "ext": "ext_phys", "bl": "blind"}
 
     fig, ax = plt.subplots(figsize=(11, 5))
     fig.patch.set_facecolor(BG)
@@ -135,23 +158,23 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
 
     # ML: only data + val
     for key in ("loss_data", "loss_val"):
-        ls, lw, alpha = MODEL_LS["ml"]
+        ls, lw, alpha = linestyle_dict["ml"]
         ax.semilogy(h_ml["epoch"], h_ml[key],
-                    color=COLORS[key], lw=lw, ls=ls, alpha=alpha,
-                    marker=MARKERS[key], markersize=3, markevery=5,
-                    label=f"ML — {LABELS[key]}")
+                    color=color_dict[key], lw=lw, ls=ls, alpha=alpha,
+                    marker=marker_dict[key], markersize=3, markevery=5,
+                    label=f"ML — {label_dict[key]}")
 
     # PINNs: all four loss types
     for hist_key, model_key in (("hist_pinn_ext_phys", "ext"),
                                 ("hist_pinn_blind",    "bl")):
         h = bundle[hist_key]
-        ls, lw, alpha = MODEL_LS[model_key]
-        mlbl = MODEL_LABEL[model_key]
+        ls, lw, alpha = linestyle_dict[model_key]
+        mlbl = name_dict[model_key]
         for key in ("loss_data", "loss_val", "loss_physics", "loss_ic"):
             ax.semilogy(h["epoch"], h[key],
-                        color=COLORS[key], lw=lw, ls=ls, alpha=alpha,
-                        marker=MARKERS[key], markersize=3, markevery=5,
-                        label=f"{mlbl} — {LABELS[key]}")
+                        color=color_dict[key], lw=lw, ls=ls, alpha=alpha,
+                        marker=marker_dict[key], markersize=3, markevery=5,
+                        label=f"{mlbl} — {label_dict[key]}")
 
     for ep in cfg.snapshot_epochs[:-1]:
         ax.axvline(ep, color=GRAY, lw=0.6, ls=":", alpha=0.35, zorder=0)
@@ -187,6 +210,29 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
 #  └──────────────────────────────┴──────────────────┴───────────────────┘
 
 def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
+    """Create a four-panel summary figure comparing all three models.
+
+    Layout::
+
+        P1 (full width): All predictions on [0, t_extrap] with
+                         observations, IC star, and extrap shading
+        P2: Training window zoom [0, t_train]
+        P3: IC enforcement detail near t = 0
+        P4: Pointwise ODE residual |m·y'' + c·y' + k·y|
+
+    Args:
+        bundle: Dictionary containing ``cfg``, ``data``, ``metrics``,
+            ``device_str``, and the three ``y_*_full`` prediction
+            arrays.
+        out_path: Path where the figure is saved.
+
+    Returns:
+        The created matplotlib Figure object.
+
+    Side effects:
+        Saves the figure to ``out_path`` and prints the save path
+        to stdout.
+    """
     cfg = bundle["cfg"]
     data = bundle["data"]
     m = bundle["metrics"]
@@ -194,9 +240,7 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
 
     t_obs_train = data["t_obs_train"]
     y_obs_train = data["y_obs_train"]
-    t_plot_train = data["t_plot_train"]
     t_plot_full = data["t_plot_full"]
-    y_true_train = data["y_true_train"]
     y_true_full = data["y_true_full"]
 
     y_ml = bundle["y_ml_full"]
@@ -204,7 +248,6 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
     y_blind = bundle["y_pinn_blind_full"]
 
     mask_train = t_plot_full <= cfg.t_train
-    mask_extrap = t_plot_full > cfg.t_train
 
     fig = plt.figure(figsize=(16, 11))
     fig.patch.set_facecolor(BG)
@@ -373,10 +416,34 @@ def make_epoch_figure(
     clip_y:      bool = False,
     fig_num:     int = 3,
 ) -> plt.Figure:
-    """
-    2-column grid of panels, one per snapshot epoch.
-    Shows true solution, model prediction, train obs, IC star,
-    extrapolation shading, and RMSE per epoch.
+    """Create a per-epoch trajectory snapshot figure for a single model.
+
+    Produces a two-column grid with one panel per snapshot epoch, each
+    showing the true solution, model prediction, training observations,
+    IC star, and extrapolation shading.
+
+    Args:
+        snapshots: Mapping of epoch number to model state dict.
+        cfg: DamperConfig with domain bounds and IC parameters.
+        data: Dictionary containing ``t_plot_full``, ``y_true_full``,
+            ``t_obs_train``, and ``y_obs_train``.
+        pred: Predictor instance whose weights are updated in place
+            for each snapshot via ``load_state_dict``.
+        model_color: Hex colour string for the model prediction line.
+        model_label: Short label used in the legend and title.
+        fig_title: Full suptitle string for the figure.
+        out_path: Path where the figure is saved.
+        clip_y: If ``True``, clip predictions to ``[-3, 3]`` before
+            plotting (useful for early Std ML divergence).
+        fig_num: Figure number printed in the save confirmation message.
+
+    Returns:
+        The created matplotlib Figure object.
+
+    Side effects:
+        Mutates ``pred`` by calling ``load_state_dict`` on each
+        snapshot in turn. Saves the figure to ``out_path`` and
+        prints the save path to stdout.
     """
     t_obs_train = data["t_obs_train"]
     y_obs_train = data["y_obs_train"]
@@ -471,6 +538,18 @@ def make_epoch_figure(
 # =============================================================================
 
 def parse_args() -> argparse.Namespace:
+    """Parse command-line arguments for the damped oscillator plot script.
+
+    Accepts an explicit path to a ``training_results.pt`` bundle via
+    ``--results``, or reconstructs it from ``--input_dir``, ``--w0``,
+    and ``--zeta``. Also controls the output directory and whether to
+    call ``plt.show()``.
+
+    Returns:
+        argparse.Namespace: Parsed arguments, including ``results``,
+            ``input_dir``, ``w0``, ``zeta``, ``out_dir``,
+            and ``no_show``.
+    """
     p = argparse.ArgumentParser(
         description="Generate plots from a training_results.pt bundle.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -508,6 +587,31 @@ def parse_args() -> argparse.Namespace:
 # =============================================================================
 
 def main() -> None:
+    """Entry point for generating all five damped oscillator PINN figures.
+
+    Orchestrates the full plotting pipeline:
+
+    1. Parses CLI arguments via :func:`parse_args` and resolves the
+       path to the ``training_results.pt`` bundle, exiting with an
+       error if not found.
+    2. Loads the bundle and prints a summary of the config, training
+       and validation set sizes, and available snapshot epochs.
+    3. Instantiates ``Predictor`` objects for all three models.
+    4. Assembles a ``bundle`` dict and calls each figure function:
+
+       - :func:`make_loss_figure`    → ``*_fig1_loss.png``
+       - :func:`make_summary_figure` → ``*_fig2_summary.png``
+       - :func:`make_epoch_figure`   → ``*_fig3_ml_epochs.png``
+       - :func:`make_epoch_figure`   → ``*_fig4_pinn_ext_epochs.png``
+       - :func:`make_epoch_figure`   → ``*_fig5_pinn_blind_epochs.png``
+
+    5. Optionally displays all figures via ``plt.show()`` unless
+       ``--no_show`` is set.
+
+    Side effects:
+        Writes five PNG files to ``out_dir`` and prints progress
+        messages to stdout.
+    """
     args = parse_args()
 
     if args.results is not None:
@@ -569,7 +673,7 @@ def main() -> None:
     print("Generating Figure 1 — loss progression …")
     make_loss_figure(bundle, out_dir / f"{tag}_fig1_loss.png")
 
-    print("Generating Figure 2 — summary (full domain + training zoom + IC detail + ODE residual) …")
+    print("Generating Figure 2 — summary (full domain + training zoom + IC detail + ODE residual)")
     make_summary_figure(bundle, out_dir / f"{tag}_fig2_summary.png")
 
     print("Generating Figure 3 — Standard ML epoch snapshots …")

@@ -29,11 +29,11 @@ from pathlib import Path
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
+from matplotlib import gridspec
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import torch
 
-from model import BurgerConfig, Predictor
+from BurgersPINN.model import BurgerConfig, Predictor
 
 
 # =============================================================================
@@ -59,6 +59,11 @@ CMAP_ERROR = "Oranges"
 # =============================================================================
 
 def style_ax(ax: plt.Axes) -> None:
+    """Style axes with custom background color and spine styling.
+
+    Args:
+        ax: Matplotlib axes object to style.
+    """
     ax.set_facecolor(PANEL)
     for spine in ax.spines.values():
         spine.set_edgecolor(LGRAY)
@@ -66,7 +71,22 @@ def style_ax(ax: plt.Axes) -> None:
 
 def _to_grid(flat: np.ndarray, data: dict,
              which: str = "full") -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Reshape a flat (n_t*n_x,) array back to (n_t, n_x) using stored grids."""
+    """Reshape a flat prediction array to a 2-D grid.
+
+    Converts flat (n_t*n_x,) arrays back to (n_t, n_x) grids using stored
+    coordinate arrays. Layout assumes row-major order over (t, x) from meshgrid.
+
+    Args:
+        flat: Flattened array of shape (n_t*n_x,).
+        data: Dictionary containing t_flattened_* and x_flattened_* keys.
+        which: Grid type ('full' for entire domain or 'train' for training window).
+
+    Returns:
+        Tuple of (t_vals, x_vals, grid) where:
+        - t_vals: Unique time values
+        - x_vals: Unique spatial values
+        - grid: Reshaped 2D array of shape (n_t, n_x)
+    """
     t_flat = data[f"t_flattened_{which}"]
     x_flat = data[f"x_flattened_{which}"]
     t_vals = np.unique(t_flat)
@@ -75,6 +95,13 @@ def _to_grid(flat: np.ndarray, data: dict,
 
 
 def _colorbar(ax: plt.Axes, im, label: str = "") -> None:
+    """Attach a slim colorbar to axes without resizing them.
+
+    Args:
+        ax: Matplotlib axes object to attach colorbar to.
+        im: Image/collection object from pcolormesh or similar.
+        label: Optional label text for the colorbar.
+    """
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("right", size="4%", pad=0.06)
     plt.colorbar(im, cax=cax, label=label)
@@ -92,10 +119,20 @@ def _heatmap(
     cbar_label: str = "u(x, t)",
     time_shockwave: float | None = None,
 ) -> None:
-    """
-    pcolormesh heatmap with x on horizontal axis and t on vertical axis.
-    Draws a white dashed line at t_train and, if provided, a red dashed
-    line at time_shockwave.
+    """Plot a pcolormesh heatmap with training boundary and shockwave marker.
+
+    Args:
+        ax: Matplotlib axes to plot on.
+        t_vals: 1-D array of unique time values.
+        x_vals: 1-D array of unique spatial values.
+        grid: 2-D array of shape (n_t, n_x) to visualize.
+        title: Title for the axes.
+        cfg: BurgerConfig with training time and domain bounds.
+        vmin: Minimum value for colormap scaling.
+        vmax: Maximum value for colormap scaling.
+        cmap: Matplotlib colormap name.
+        cbar_label: Label for the colorbar.
+        time_shockwave: Time of shockwave formation, if any.
     """
     style_ax(ax)
     im = ax.pcolormesh(x_vals, t_vals, grid, cmap=cmap,
@@ -114,7 +151,7 @@ def _heatmap(
             and t_vals[0] <= time_shockwave <= t_vals[-1]):
         ax.axhline(time_shockwave, color=SHOCK, lw=1.2, ls="--", alpha=0.9)
         ax.text(x_lo, time_shockwave + 0.02 * t_span,
-                "shock", color=SHOCK, fontsize=7, va="bottom")
+                r"\lightning", color=SHOCK, fontsize=7, va="bottom")
 
     ax.set_xlabel("x  [m]", fontsize=8)
     ax.set_ylabel("t  [s]", fontsize=8)
@@ -128,47 +165,48 @@ def _heatmap(
 # =============================================================================
 
 def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
-    """
-    Single-axes figure showing all loss types for all three models.
+    """Create loss progression figure for all models and loss types.
 
-    Encoding:
-      colour   = loss category  (shared across models for easy cross-model comparison)
-      line style = model         (solid = ML, dashed = ext_phys, dash-dot = blind)
-      marker   = loss category
+    Single-axes plot showing training, validation, physics, and IC losses
+    for standard ML and both PINN variants. Line style distinguishes models,
+    color distinguishes loss types.
 
-    ML has no physics or IC loss, so those lines only appear for the two PINNs.
+    Args:
+        bundle: Dictionary containing training results and histories.
+        out_path: Path where the figure is saved.
+
+    Returns:
+        The created matplotlib Figure object.
     """
     cfg = bundle["cfg"]
     h_ml = bundle["hist_ml"]
-    h_ext = bundle["hist_pinn_ext_phys"]
-    h_bl = bundle["hist_pinn_blind"]
 
     # One colour per loss category
-    COLORS = {
+    color_dict = {
         "loss_data":    "#2271B2",   # blue
         "loss_val":     "#E6533C",   # red
         "loss_physics": "#3DAA6A",   # green
         "loss_ic":      "#9B5EBF",   # purple
     }
-    LABELS = {
+    label_dict = {
         "loss_data":    "data",
         "loss_val":     "val",
         "loss_physics": "physics",
         "loss_ic":      "IC",
     }
-    MARKERS = {
+    marker_dict = {
         "loss_data":    "o",
         "loss_val":     "s",
         "loss_physics": "^",
         "loss_ic":      "v",
     }
     # (linestyle, linewidth, alpha) per model
-    MODEL_LS = {
+    linestyle_dict = {
         "ml":  ("-",    2.0, 1.0),
         "ext": ("--",   1.8, 0.9),
         "bl":  ("-.",   1.6, 0.8),
     }
-    MODEL_LABEL = {"ml": "ML", "ext": "ext_phys", "bl": "blind"}
+    name_dict = {"ml": "ML", "ext": "ext_phys", "bl": "blind"}
 
     fig, ax = plt.subplots(figsize=(11, 5))
     fig.patch.set_facecolor(BG)
@@ -176,23 +214,23 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
 
     # ML: only data + val
     for key in ("loss_data", "loss_val"):
-        ls, lw, alpha = MODEL_LS["ml"]
+        ls, lw, alpha = linestyle_dict["ml"]
         ax.semilogy(h_ml["epoch"], h_ml[key],
-                    color=COLORS[key], lw=lw, ls=ls, alpha=alpha,
-                    marker=MARKERS[key], markersize=3, markevery=5,
-                    label=f"ML — {LABELS[key]}")
+                    color=color_dict[key], lw=lw, ls=ls, alpha=alpha,
+                    marker=marker_dict[key], markersize=3, markevery=5,
+                    label=f"ML — {label_dict[key]}")
 
     # PINNs: all four loss types
     for hist_key, model_key in (("hist_pinn_ext_phys", "ext"),
                                 ("hist_pinn_blind",    "bl")):
         h = bundle[hist_key]
-        ls, lw, alpha = MODEL_LS[model_key]
-        mlbl = MODEL_LABEL[model_key]
+        ls, lw, alpha = linestyle_dict[model_key]
+        mlbl = name_dict[model_key]
         for key in ("loss_data", "loss_val", "loss_physics", "loss_ic"):
             ax.semilogy(h["epoch"], h[key],
-                        color=COLORS[key], lw=lw, ls=ls, alpha=alpha,
-                        marker=MARKERS[key], markersize=3, markevery=5,
-                        label=f"{mlbl} — {LABELS[key]}")
+                        color=color_dict[key], lw=lw, ls=ls, alpha=alpha,
+                        marker=marker_dict[key], markersize=3, markevery=5,
+                        label=f"{mlbl} — {label_dict[key]}")
 
     for ep in cfg.snapshot_epochs[:-1]:
         ax.axvline(ep, color=GRAY, lw=0.6, ls=":", alpha=0.35, zorder=0)
@@ -223,10 +261,19 @@ def make_loss_figure(bundle: dict, out_path: Path) -> plt.Figure:
 
 def make_slice_figure(bundle: dict, out_path: Path,
                       n_slices: int = 9) -> plt.Figure:
-    """
-    u(x) line-plots at n_slices fixed times spread across [t0, t_extrap].
-    Laid out in 3 columns so the grid is compact.  Panels in the
-    extrapolation window get a warm background; the shock panel gets red.
+    """Create u(x) profile plots at fixed time slices.
+
+    Generates line plots of u(x) at multiple fixed times spanning the
+    full time domain. Panels in the extrapolation region have warm background;
+    panels with shockwaves have red background.
+
+    Args:
+        bundle: Dictionary containing predictions and ground truth data.
+        out_path: Path where the figure is saved.
+        n_slices: Number of time slices to plot (default 9).
+
+    Returns:
+        The created matplotlib Figure object.
     """
     cfg = bundle["cfg"]
     data = bundle["data"]
@@ -307,7 +354,7 @@ def make_slice_figure(bundle: dict, out_path: Path,
         axes_flat[idx].set_visible(False)
 
     shock_note = (f"  |  shock: t={time_shockwave:.4g} s  (red panels)"
-                  if time_shockwave is not None and not np.isinf(time_shockwave)
+                  if time_shockwave is not (None or np.isinf(time_shockwave))
                   else "")
     fig.suptitle(
         f"Burgers' equation — {cfg.situation}  ν={cfg.v}  |  "
@@ -329,6 +376,32 @@ def make_slice_figure(bundle: dict, out_path: Path,
 #  Row 1:  ext err |  blind err       |  ML err            |  (empty)
 
 def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
+    """Create a 2×4 heatmap summary comparing all three final models.
+
+    Row 0 shows the predicted u(x, t) field for each model alongside
+    the ground truth; Row 1 shows the absolute pointwise error for
+    each model. All field panels share a symmetric colormap scaled to
+    the true solution's maximum amplitude; all error panels share a
+    common scale set by the largest error across all three models.
+
+    Layout::
+
+        Row 0: True u | Std ML field  | PINN blind field | PINN ext.
+        Row 1: (empty)| Std ML |err|  | PINN blind |err| | PINN ext. |err|
+
+    Args:
+        bundle: Dictionary containing ``cfg``, ``data``, ``metrics``,
+            ``device_str``, ``time_shockwave``, and the three
+            ``u_*_full`` flat prediction arrays.
+        out_path: Path where the figure is saved.
+
+    Returns:
+        The created matplotlib Figure object.
+
+    Side effects:
+        Saves the figure to ``out_path`` and prints the save path
+        to stdout.
+    """
     cfg = bundle["cfg"]
     data = bundle["data"]
     m = bundle["metrics"]
@@ -377,11 +450,14 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
     ekw = dict(cfg=cfg, vmin=0, vmax=vmax_err, cmap=CMAP_ERROR,
                cbar_label="|u_pred − u_true|", time_shockwave=time_shockwave)
     _heatmap(ax_eerr, t_vals, x_vals, err_ext,
-             f"PINN ext.   mean={err_ext.mean():.4f}  max={err_ext.max():.4f}", **ekw)
+             f"PINN ext.   mean={err_ext.mean():.4f}"
+             f"max={err_ext.max():.4f}", **ekw)
     _heatmap(ax_berr, t_vals, x_vals, err_bl,
-             f"PINN blind  mean={err_bl.mean():.4f}  max={err_bl.max():.4f}",   **ekw)
+             f"PINN blind  mean={err_bl.mean():.4f}"
+             f"max={err_bl.max():.4f}", **ekw)
     _heatmap(ax_merr, t_vals, x_vals, err_ml,
-             f"Std ML      mean={err_ml.mean():.4f}  max={err_ml.max():.4f}",   **ekw)
+             f"Std ML      mean={err_ml.mean():.4f}"
+             f"max={err_ml.max():.4f}", **ekw)
 
     shock_note = (f"  |  shock: t={time_shockwave:.4g} s"
                   if time_shockwave is not None and not np.isinf(time_shockwave)
@@ -406,6 +482,33 @@ def make_summary_figure(bundle: dict, out_path: Path) -> plt.Figure:
 #    [PINN ext field] [PINN ext |err|] [PINN blind field] [PINN blind |err|]
 
 def make_epoch_figure(bundle: dict, out_path: Path) -> plt.Figure:
+    """Create a per-epoch field evolution figure for both PINN variants.
+
+    Produces one row per snapshot epoch with four columns per row,
+    showing the predicted u(x, t) field and absolute error for the
+    extended-physics PINN and the blind PINN side by side. The error
+    colormap is shared across all epochs and both models, scaled to
+    the global maximum absolute error.
+
+    Column layout per row::
+
+        [PINN ext. field]  [PINN ext. |err|]
+        [PINN blind field] [PINN blind |err|]
+
+    Args:
+        bundle: Dictionary containing ``cfg``, ``data``, ``pred_ext``,
+            ``pred_bl``, ``snaps_pinn_ext_phys``, ``snaps_pinn_blind``,
+            and ``time_shockwave``.
+        out_path: Path where the figure is saved.
+
+    Returns:
+        The created matplotlib Figure object.
+
+    Side effects:
+        Mutates ``pred_ext`` and ``pred_bl`` by calling
+        ``load_state_dict`` on each snapshot in turn. Saves the
+        figure to ``out_path`` and prints the save path to stdout.
+    """
     cfg = bundle["cfg"]
     data = bundle["data"]
     pred_ext = bundle["pred_ext"]
@@ -501,6 +604,19 @@ def make_epoch_figure(bundle: dict, out_path: Path) -> plt.Figure:
 # =============================================================================
 
 def parse_args() -> argparse.Namespace:
+    """Parse command-line arguments for the Burgers PINN plotting script.
+
+    Accepts an explicit path to a ``training_results.pt`` bundle via
+    ``--results``, or infers the path from ``--input_dir``,
+    ``--situation``, and ``--viscosity``. Also controls the output
+    directory, the number of time-slice panels in Figure 2, and
+    whether to call ``plt.show()``.
+
+    Returns:
+        argparse.Namespace: Parsed arguments, including ``results``,
+            ``input_dir``, ``out_dir``, ``situation``, ``viscosity``,
+            ``n_slices``, and ``no_show``.
+    """
     p = argparse.ArgumentParser(
         description="Plot Burgers PINN results from training_results.pt.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -529,6 +645,32 @@ def parse_args() -> argparse.Namespace:
 # =============================================================================
 
 def main() -> None:
+    """Entry point for generating all four Burgers PINN diagnostic figures.
+
+    Orchestrates the full plotting pipeline:
+
+    1. Parses CLI arguments via :func:`parse_args` and resolves the
+       path to the ``training_results.pt`` bundle, exiting with an
+       error if not found.
+    2. Loads the bundle and prints a summary of the config, grid
+       dimensions, available snapshot epochs, and shockwave time
+       (if present).
+    3. Instantiates ``Predictor`` objects for both PINN variants from
+       their best-validation checkpoints.
+    4. Assembles a ``bundle`` dict and calls each figure function:
+
+       - :func:`make_loss_figure`    → ``*_fig1_loss.png``
+       - :func:`make_slice_figure`   → ``*_fig2_slices.png``
+       - :func:`make_summary_figure` → ``*_fig3_heatmaps.png``
+       - :func:`make_epoch_figure`   → ``*_fig4_epochs.png``
+
+    5. Optionally displays all figures via ``plt.show()`` unless
+       ``--no_show`` is set.
+
+    Side effects:
+        Writes four PNG files to ``args.out_dir`` and prints progress
+        messages to stdout.
+    """
     args = parse_args()
 
     if args.results is not None:

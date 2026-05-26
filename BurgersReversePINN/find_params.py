@@ -1,11 +1,30 @@
+"""Hyperparameter search and viscosity prediction for reverse PINN.
+
+This module searches over a range of viscosity values and trains reverse PINN
+models to estimate the true viscosity from synthetic observations. Used to
+evaluate model performance across different viscosity regimes.
+"""
 from pathlib import Path
-from model import BurgerConfig
-from train import train_and_save_both, evaluate_model
 import matplotlib.pyplot as plt
 import numpy as np
+from BurgersReversePINN.model import BurgerConfig
+from BurgersReversePINN.train import train_and_save_both, evaluate_model
 
 
 def viscosity_predictions(situation: str):
+    """Search over viscosity values and train reverse PINN models to estimate viscosity.
+
+    Trains PINN models for multiple viscosity values and evaluates how well
+    the reverse PINN can estimate the true viscosity. Generates plots comparing
+    estimated vs true viscosity for both blind and extended physics models.
+
+    Args:
+        situation: Initial condition type ('Gaussian', 'Step', or 'N-wave').
+
+    Returns:
+        None. Saves viscosity prediction plots to the output directory and
+        prints viscosity estimates for each tested value.
+    """
     viscosities1 = np.logspace(-5, 1, num=7)
     viscosities2 = np.linspace(0.2, 0.9, num=8)
     viscosities3 = np.linspace(0.02, 0.09, num=8)
@@ -26,8 +45,8 @@ def viscosity_predictions(situation: str):
 
         nu_hat_blind, nu_hat_ext_phys = evaluate_model(situation, v)
         plotting.append((v, nu_hat_blind, nu_hat_ext_phys))
-        print(
-            f"Viscosity: {v:.1e}, Nu Hat (blind): {nu_hat_blind:.4f}, Nu Hat (ext phys): {nu_hat_ext_phys:.4f}")
+        print(f"Viscosity: {v:.1e}, Nu Hat (blind): {nu_hat_blind:.4f},"
+              f" Nu Hat (ext phys): {nu_hat_ext_phys:.4f}")
 
     # Plot the results
     plt.figure(figsize=(8, 5))

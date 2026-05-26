@@ -17,7 +17,7 @@ from typing import Optional
 
 import numpy as np
 import torch
-import torch.nn as nn
+from torch import nn
 
 
 # =============================================================================
@@ -121,14 +121,17 @@ class DamperConfig:
     # ── Derived quantities (read-only) ────────────────────────────────────────
     @property
     def omega_0(self) -> float:
+        """Undamped natural frequency sqrt(k / m) in rad/s."""
         return float(np.sqrt(self.stiffness / self.mass))
 
     @property
     def zeta(self) -> float:
+        """Damping ratio c / (2 * sqrt(m * k)), dimensionless."""
         return float(self.damping / (2.0 * np.sqrt(self.mass * self.stiffness)))
 
     @property
     def omega_d(self) -> float:
+        """Damped natural frequency omega_0 * sqrt(1 - zeta²) in rad/s."""
         return float(self.omega_0 * np.sqrt(max(0.0, 1.0 - self.zeta ** 2)))
 
     def abs_path(self, filename: str) -> Path:
@@ -161,9 +164,19 @@ class FCNet(nn.Module):
         self.net = nn.Sequential(*layers)
 
     def forward(self, t: torch.Tensor) -> torch.Tensor:
+        """Run a forward pass through the network.
+
+        Args:
+            t: Input tensor of shape ``(N, 1)`` containing time values.
+
+        Returns:
+            Output tensor of shape ``(N, 1)`` containing predicted
+            displacements.
+        """
         return self.net(t)
 
     def param_count(self) -> int:
+        """Return the total number of trainable parameters in the network."""
         return sum(p.numel() for p in self.parameters())
 
     @classmethod
@@ -246,6 +259,15 @@ class Predictor:
 
     @staticmethod
     def rmse(pred: np.ndarray, true: np.ndarray) -> float:
+        """Compute root-mean-square error between two arrays.
+
+        Args:
+            pred: Predicted values.
+            true: Ground-truth values of the same shape.
+
+        Returns:
+            Scalar RMSE value.
+        """
         return float(np.sqrt(np.mean((pred - true) ** 2)))
 
     @staticmethod

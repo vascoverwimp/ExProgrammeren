@@ -12,13 +12,12 @@ from __future__ import annotations
 
 import copy
 from dataclasses import dataclass, field
-from importlib.metadata import requires
 from pathlib import Path
 from typing import Optional
 
 import numpy as np
 import torch
-import torch.nn as nn
+from torch import nn
 
 
 # =============================================================================
@@ -131,7 +130,11 @@ class BurgerConfig:
 
     @property
     def ic_func(self):
-        """Initial condition function u(x,t0) based on the chosen situation."""
+        """Initial condition function u(x,t0) based on the chosen situation.
+
+        Returns:
+            A callable that takes spatial coordinates and returns initial values.
+        """
         if self.situation == "N-wave":
             return lambda x: torch.where(
                 torch.abs(x) < 1.0,
@@ -139,41 +142,57 @@ class BurgerConfig:
                 torch.zeros_like(x)
             )
 
-        elif self.situation == "Gaussian":
+        if self.situation == "Gaussian":
             return lambda x: torch.exp(-x**2 / 2)
 
-        elif self.situation == "Step":
+        if self.situation == "Step":
             return lambda x: torch.where(
                 x > 0,
                 torch.ones_like(x),
                 torch.zeros_like(x)
             )
-        else:
-            raise ValueError(f"Unknown situation: {self.situation}")
+
+        raise ValueError(f"Unknown situation: {self.situation}")
 
     @property
     def inviscid_shockwave_time(self) -> float:
-        """Time of shockwave formation in the inviscid (v=0) case."""
-        # For the inviscid Burgers equation, shockwaves form when characteristics intersect
-        # which happens at t = 1 / max(-du/dx) where du/dx is the spatial derivative of the initial condition.
+        """Time of shockwave formation in the inviscid (v=0) case.
+
+        For the inviscid Burgers equation, shockwaves form when characteristics
+        intersect at t = 1 / max(-du/dx). Returns infinity if no shockwave forms.
+
+        Returns:
+            Time of shockwave formation as a float, or infinity if no shockwave.
+        """
+        # For the inviscid Burgers equation, shockwaves form when
+        # characteristics intersect which happens at t = 1 / max(-du/dx)
+        # where du/dx is the spatial derivative of the initial condition.
         # The max of -du/dx occurs at the point where du/dx is most negative,
-        # which corresponds to the steepest downward slope in the initial condition.
-        # For the N-wave and Gaussian initial conditions, this can be computed analytically,
-        # while for the Step function, no shockwave forms since it's non-decreasing.
+        # which is the steepest downward slope in the initial condition.
+        # For the N-wave and Gaussian initial conditions, this can be found
+        # analytically, while for the Step function, no shockwave forms since
+        # it's non-decreasing.
         if self.situation == "N-wave":
-            return 1.0  # Shockwave forms at t=1 for the N-wave initial condition
-        elif self.situation == "Gaussian":
-            # 1/min(-x exp(x**2/2)) = 1/min(-x exp(-x**2/2)) = 1/max(x exp(-x**2/2)) = 1/(1 * exp(-1/2)) = e^(1/2)
+            return 1.0  # Shockwave forms at t=1 (max = 1)
+        if self.situation == "Gaussian":
+            # 1/max(x exp(-x^2/2)) = 1/(1 * exp(-1/2)) = e^(1/2)
             # Shockwave forms at t=e^(1/2) for the Gaussian initial condition
             return float(np.exp(0.5))
-        elif self.situation == "Step":
+        if self.situation == "Step":
             # No shockwave forms if the initial condition is non-decreasing
             return float('inf')
-        else:
-            raise ValueError(f"Unknown situation: {self.situation}")
+
+        raise ValueError(f"Unknown situation: {self.situation}")
 
     def abs_path(self, filename: str) -> Path:
-        """Return an absolute Path for a file stored in out_dir."""
+        """Return an absolute Path for a file stored in out_dir.
+
+        Args:
+            filename: Name of the file to locate in the output directory.
+
+        Returns:
+            Path object pointing to the file in out_dir.
+        """
         return Path(self.out_dir) / filename
 
 
@@ -194,6 +213,12 @@ class FCNet(nn.Module):
     """
 
     def __init__(self, hidden: int = 32, n_layers: int = 4, ini_guess_v: float = 1.0) -> None:
+        """Initialize fully-connected network with Tanh activations.
+
+        Args:
+            hidden: Number of neurons per hidden layer (default 32).
+            n_layers: Number of hidden layers (default 4).
+        """
         super().__init__()
         layers: list[nn.Module] = [nn.Linear(2, hidden), nn.Tanh()]
         for _ in range(n_layers - 1):
@@ -204,15 +229,36 @@ class FCNet(nn.Module):
             [np.log10(ini_guess_v)], requires_grad=True))
 
     def forward(self, x, t):
+        """Forward pass through the network.
+
+        Args:
+            x: Spatial coordinates tensor of shape (N, 1).
+            t: Temporal coordinates tensor of shape (N, 1).
+
+        Returns:
+            Network output tensor of shape (N, 1) representing u(x, t).
+        """
         xt = torch.cat([x, t], dim=1)
         return self.net(xt)
 
     def param_count(self) -> int:
+        """Count total number of trainable parameters in the network.
+
+        Returns:
+            Total parameter count as an integer.
+        """
         return sum(p.numel() for p in self.parameters())
 
     @classmethod
     def from_config(cls, cfg: BurgerConfig) -> "FCNet":
-        """Convenience constructor that reads architecture from a config."""
+        """Convenience constructor that reads architecture from a config.
+
+        Args:
+            cfg: BurgerConfig instance containing architecture parameters.
+
+        Returns:
+            FCNet instance with architecture specified in the config.
+        """
         return cls(hidden=cfg.hidden, n_layers=cfg.n_layers, ini_guess_v=cfg.ini_guess_v)
 
 
@@ -239,37 +285,63 @@ class Predictor:
         cfg: BurgerConfig,
         checkpoint_path: Optional[str] = None,
     ) -> None:
+        """Initialize the inference wrapper with model and optional checkpoint.
+
+        Args:
+            cfg: BurgerConfig instance with model architecture parameters.
+            checkpoint_path: Optional path to a saved checkpoint file to load weights from.
+        """
         self.cfg = cfg
         self.model = FCNet.from_config(cfg)
         if checkpoint_path is not None:
             self.load(checkpoint_path)
         self.model.eval()
 
-    # ── Loading ───────────────────────────────────────────────────────────────
+    # ── Loading ─────────────────────────────────────────────────────────────
 
     def load(self, path: str) -> None:
-        """Load weights from a checkpoint file saved by train.py."""
+        """Load weights from a checkpoint file saved by train.py.
+
+        Args:
+            path: Path to the checkpoint file containing model state_dict.
+        """
         bundle = torch.load(path, map_location="cpu", weights_only=False)
         state = bundle.get("model_state_dict", bundle)
         self.model.load_state_dict(state)
         self.model.eval()
 
     def load_state_dict(self, state_dict: dict) -> None:
-        """Load directly from an in-memory state_dict (e.g. a snapshot)."""
+        """Load directly from an in-memory state_dict (e.g. a snapshot).
+
+        Args:
+            state_dict: Dictionary containing model parameters to load.
+        """
         self.model.load_state_dict(state_dict)
         self.model.eval()
     # ── Inference ─────────────────────────────────────────────────────────────
 
     def predict_params(self) -> dict:
-        """Return the current estimates of the physical parameters."""
+        """Give current estimates of the viscosity.
+
+        Returns:
+            Dictionary with "v_hat" the predicted viscosity.
+        """
         return {
             "v_hat": 10**self.model.log_v_hat.item(),
         }
 
     def predict(self, x: np.ndarray, t: np.ndarray) -> np.ndarray:
-        """
-        Run forward pass on a numpy space and time array (have to have the same length).  Returns a numpy array of
-        the same length.  No gradient computation.
+        """Run forward pass on numpy space and time arrays (same length).
+
+        Performs inference without gradient computation on the given spatial
+        and temporal coordinates.
+
+        Args:
+            x: Spatial coordinates array of shape (N,).
+            t: Temporal coordinates array of shape (N,).
+
+        Returns:
+            Network predictions of shape (N,) as a numpy array.
         """
         t_t = torch.tensor(t, dtype=torch.float32).unsqueeze(1)
         x_t = torch.tensor(x, dtype=torch.float32).unsqueeze(1)
@@ -279,10 +351,18 @@ class Predictor:
     def predict_from_state(
         self, state_dict: dict, x: np.ndarray, t: np.ndarray
     ) -> np.ndarray:
-        """
-        Temporarily load a snapshot state_dict and predict, then restore
-        the original weights.  Used by plot.py to replay epoch snapshots
-        without allocating a separate Predictor per snapshot.
+        """Temporarily load a snapshot state_dict and predict, then restore original weights.
+
+        Used to replay epoch snapshots without allocating a separate Predictor per snapshot.
+        Restores original weights after prediction, leaving the predictor unchanged.
+
+        Args:
+            state_dict: Dictionary containing model parameters of the snapshot.
+            x: Spatial coordinates array of shape (N,).
+            t: Temporal coordinates array of shape (N,).
+
+        Returns:
+            Network predictions of shape (N,) using the snapshot weights.
         """
         original = copy.deepcopy(self.model.state_dict())
         try:
@@ -296,15 +376,34 @@ class Predictor:
 
     @staticmethod
     def rmse(pred: np.ndarray, true: np.ndarray) -> float:
+        """Compute root mean square error between predictions and true values.
+
+        Args:
+            pred: Predicted values array.
+            true: Ground truth values array.
+
+        Returns:
+            RMSE value as a float.
+        """
         return float(np.sqrt(np.mean((pred - true) ** 2)))
 
     @staticmethod
     def physics_residual(
         u: np.ndarray, x: np.ndarray, t: np.ndarray, cfg: BurgerConfig
     ) -> float:
-        """
-        Approximate ODE residual via numpy central finite differences.
-        Trims 5 boundary points on each side where finite-diff is inaccurate.
+        """Approximate ODE residual via numpy central finite differences.
+
+        Computes the physics residual of the Burgers equation by taking numerical
+        derivatives. Trims 5 boundary points on each side where finite-diff is inaccurate.
+
+        Args:
+            u: Solution values array.
+            x: Spatial coordinates array.
+            t: Temporal coordinates array.
+            cfg: BurgerConfig instance containing physical parameters (viscosity v).
+
+        Returns:
+            Root mean square physics residual as a float.
         """
 
         t_vec = np.unique(t)
