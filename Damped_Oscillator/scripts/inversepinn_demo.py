@@ -111,7 +111,7 @@ def main():
     device = get_device()
     print(f"Device : {device}")
 
-    set_seed(15)
+    set_seed(13)
     args = parse_args()
     zeta, omega_0 = resolve_parameters(args)
     output_path = resolve_output_path(args, zeta)
@@ -132,7 +132,8 @@ def main():
         lr=2e-3,
         lr_inverse=1.5e-2,
         scheduler_gamma=0.8,
-        scheduler_step=3000
+        scheduler_step=3000,
+        use_data=True
         )
 
     # -- train model ------------------------------------------------

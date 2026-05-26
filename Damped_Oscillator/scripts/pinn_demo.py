@@ -95,7 +95,7 @@ def resolve_output_path(args, zeta):
     else:
         label = "overdamped"
 
-    return SCRIPT_DIR / f"outputs/inversepinn_demo_{label}"
+    return SCRIPT_DIR / f"outputs/pinn_{label}"
 
 
 def main():
