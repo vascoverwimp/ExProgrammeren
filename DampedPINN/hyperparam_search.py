@@ -6,8 +6,8 @@ learning rate, loss weights, number of collocation points, and training data siz
 from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
-from DampedPINN.model import DamperConfig, FCNet
-from DampedPINN.train import evaluate_blind, train_model, generate_data, get_device
+from model import DamperConfig, FCNet
+from train import evaluate_blind, train_model, generate_data, get_device
 
 
 def search_learning_rate():

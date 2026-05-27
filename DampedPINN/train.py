@@ -34,7 +34,7 @@ import numpy as np
 import torch
 from torch import nn
 
-from DampedPINN.model import DamperConfig, FCNet, Predictor
+from model import DamperConfig, FCNet, Predictor
 
 
 # =============================================================================
@@ -665,7 +665,7 @@ def train_and_save_three(**kwargs) -> None:
     # ── PINN model (normal + extrapolated) ──────────────────────────────────
     print()
     print("=" * 70)
-    print("Training PINN  (data + physics (normal + extrapolated) + IC loss)")
+    print("Training PINN  (data + physics (training + extrapolated) + IC loss)")
     print("=" * 70)
     model_pinn = FCNet.from_config(cfg)
     print(f"  Parameters: {model_pinn.param_count()}")
@@ -680,7 +680,7 @@ def train_and_save_three(**kwargs) -> None:
     # ── PINN model (blind) ───────────────────────────────────────────────────
     print()
     print("=" * 70)
-    print("Training PINN  (data + physics (normal + extrapolated) + IC loss)")
+    print("Training PINN  (data + physics (training only) + IC loss)")
     print("=" * 70)
     model_pinn = FCNet.from_config(cfg)
     print(f"  Parameters: {model_pinn.param_count()}")

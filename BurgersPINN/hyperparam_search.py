@@ -7,8 +7,8 @@ Physics-Informed Neural Networks (PINNs) on the Burgers equation.
 from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
-from BurgersPINN.model import BurgerConfig, FCNet
-from BurgersPINN.train import evaluate_blind, train_model, generate_data, get_device
+from model import BurgerConfig, FCNet
+from train import evaluate_blind, train_model, generate_data, get_device
 
 
 def search_learning_rate():

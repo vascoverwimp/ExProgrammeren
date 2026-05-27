@@ -1,8 +1,8 @@
 from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
-from DampedReversePINN.model import DamperConfig, FCNet
-from DampedReversePINN.train import evaluate_blind, train_model, generate_data, get_device
+from model import DamperConfig, FCNet
+from train import evaluate_blind, train_model, generate_data, get_device
 
 
 def search_learning_rate_param():

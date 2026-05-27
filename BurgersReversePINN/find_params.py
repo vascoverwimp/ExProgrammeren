@@ -7,8 +7,8 @@ evaluate model performance across different viscosity regimes.
 from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
-from BurgersReversePINN.model import BurgerConfig
-from BurgersReversePINN.train import train_and_save_both, evaluate_model
+from model import BurgerConfig
+from train import train_and_save_both, evaluate_model
 
 
 def viscosity_predictions(situation: str):

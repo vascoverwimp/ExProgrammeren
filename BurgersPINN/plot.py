@@ -33,7 +33,7 @@ from matplotlib import gridspec
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import torch
 
-from BurgersPINN.model import BurgerConfig, Predictor
+from model import BurgerConfig, Predictor
 
 
 # =============================================================================
@@ -151,7 +151,7 @@ def _heatmap(
             and t_vals[0] <= time_shockwave <= t_vals[-1]):
         ax.axhline(time_shockwave, color=SHOCK, lw=1.2, ls="--", alpha=0.9)
         ax.text(x_lo, time_shockwave + 0.02 * t_span,
-                r"\lightning", color=SHOCK, fontsize=7, va="bottom")
+                r"⚡", color=SHOCK, fontsize=7, va="bottom")
 
     ax.set_xlabel("x  [m]", fontsize=8)
     ax.set_ylabel("t  [s]", fontsize=8)

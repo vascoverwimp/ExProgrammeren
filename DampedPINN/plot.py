@@ -42,7 +42,7 @@ from matplotlib import gridspec
 from matplotlib.lines import Line2D
 import torch
 
-from DampedPINN.model import DamperConfig, Predictor
+from model import DamperConfig, Predictor
 
 
 # =============================================================================

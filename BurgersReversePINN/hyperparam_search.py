@@ -6,8 +6,8 @@ viscosity parameter along with solving the Burgers equation.
 """
 from pathlib import Path
 import matplotlib.pyplot as plt
-from BurgersReversePINN.model import BurgerConfig, FCNet
-from BurgersReversePINN.train import evaluate_blind, train_model, generate_data, get_device
+from model import BurgerConfig, FCNet
+from train import evaluate_blind, train_model, generate_data, get_device
 import numpy as np
 
 

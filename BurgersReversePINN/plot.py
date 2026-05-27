@@ -39,7 +39,7 @@ from matplotlib import gridspec
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import torch
 
-from BurgersReversePINN.model import BurgerConfig, Predictor
+from model import BurgerConfig, Predictor
 
 
 # =============================================================================
@@ -395,7 +395,7 @@ def make_slice_figure(bundle: dict, out_path: Path,
 
         region_tag = "extrap" if in_extrap else "train"
         color_tag = ORANGE_EXT if in_extrap else TEAL_BLIND
-        shock_marker = "  ⚡ near shockwave" if near_shockwave else ""
+        shock_marker = r" ⚡ near shockwave" if near_shockwave else ""
         ax.set_title(
             f"t = {t_actual:.3f} s  [{region_tag}]{shock_marker}",
             fontsize=9, loc="left", pad=4, color=color_tag,
@@ -413,7 +413,8 @@ def make_slice_figure(bundle: dict, out_path: Path,
         axes_flat[idx].set_visible(False)
 
     shock_info = (
-        f"shockwave (inviscid): t ≈ {cfg.inviscid_shockwave_time:.3f} (⚡ red panels)"
+        f"shockwave (inviscid): t ≈ {cfg.inviscid_shockwave_time:.3f}" +
+        r" (⚡ red panels)"
         if not np.isinf(cfg.inviscid_shockwave_time) else "no shockwave"
     )
     fig.suptitle(
@@ -602,7 +603,7 @@ def make_epoch_figure_blind(bundle: dict, out_path: Path) -> plt.Figure:
 
         is_near_shock = (not np.isinf(cfg.inviscid_shockwave_time) and
                          abs(epoch - cfg.inviscid_shockwave_time) < 500)
-        shock_marker = r"\lightning" if is_near_shock else ""
+        shock_marker = r"⚡" if is_near_shock else ""
 
         _heatmap(ax_pred, t_vals_ep, x_vals_ep, grid_pred,
                  f"PINN_blind epoch {epoch}{shock_marker}",

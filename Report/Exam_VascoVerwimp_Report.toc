@@ -32,4 +32,5 @@
 \contentsline {section}{\numberline {4.2}Burgers' Equation}{36}{section.4.2}%
 \contentsline {subsection}{\numberline {4.2.1}Normal Problem}{36}{subsection.4.2.1}%
 \contentsline {subsection}{\numberline {4.2.2}Reverse Problem}{50}{subsection.4.2.2}%
+\contentsline {section}{\numberline {4.3}Reflection and Discussion}{54}{section.4.3}%
 \contentsline {chapter}{\numberline {5}Conclusion}{55}{chapter.5}%

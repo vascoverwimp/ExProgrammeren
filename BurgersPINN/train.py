@@ -34,8 +34,8 @@ import numpy as np
 import torch
 from torch import nn
 
-from BurgersPINN.model import BurgerConfig, FCNet, Predictor
-from BurgersPINN.Burger_PDE import BurgersSolver
+from model import BurgerConfig, FCNet, Predictor
+from Burger_PDE import BurgersSolver
 
 # =============================================================================
 # 0.  DEVICE SELECTION
@@ -804,7 +804,7 @@ def train_and_save_three(**kwargs) -> None:
     # ── PINN model (extended physics) ────────────────────────────────────────────
     print()
     print("=" * 70)
-    print("Training PINN  (data + physics (both normal and extrapolated region) + IC loss)")
+    print("Training PINN  (data + physics (both training and extrapolated region) + IC loss)")
     print("=" * 70)
     model_pinn_ext_phys = FCNet.from_config(cfg)
     print(f"  Parameters: {model_pinn_ext_phys.param_count()}")
@@ -819,7 +819,7 @@ def train_and_save_three(**kwargs) -> None:
     # ── PINN model (blind) ────────────────────────────────────────────────────
     print()
     print("=" * 70)
-    print("Training PINN  (data + physics (only normal region) + IC loss)")
+    print("Training PINN  (data + physics (only training region) + IC loss)")
     print("=" * 70)
     model_pinn_blind = FCNet.from_config(cfg)
     print(f"  Parameters: {model_pinn_blind.param_count()}")

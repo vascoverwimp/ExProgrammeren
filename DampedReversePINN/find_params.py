@@ -1,8 +1,8 @@
 from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
-from DampedReversePINN.model import DamperConfig
-from DampedReversePINN.train import train_and_save_both, evaluate_model
+from model import DamperConfig
+from train import train_and_save_both, evaluate_model
 
 
 def damper_predictions():

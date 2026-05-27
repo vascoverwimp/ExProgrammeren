@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.15)  26 MAY 2026 11:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.15)  27 MAY 2026 13:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1144,12 +1144,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [21]
-<figures/Lr_rough.png, id=294, 578.16pt x 361.35pt>
+<figures/Lr_rough.png, id=299, 578.16pt x 361.35pt>
 File: figures/Lr_rough.png Graphic file (type png)
 <use figures/Lr_rough.png>
 Package pdftex.def Info: figures/Lr_rough.png  used on input line 588.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/Lr_smooth.png, id=296, 578.16pt x 361.35pt>
+<figures/Lr_smooth.png, id=301, 578.16pt x 361.35pt>
 File: figures/Lr_smooth.png Graphic file (type png)
 <use figures/Lr_smooth.png>
 Package pdftex.def Info: figures/Lr_smooth.png  used on input line 594.
@@ -1163,17 +1163,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [22]
-<figures/weights_rough.png, id=301, 578.16pt x 361.35pt>
+<figures/weights_rough.png, id=306, 578.16pt x 361.35pt>
 File: figures/weights_rough.png Graphic file (type png)
 <use figures/weights_rough.png>
 Package pdftex.def Info: figures/weights_rough.png  used on input line 605.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/weights_smooth.png, id=302, 578.16pt x 361.35pt>
+<figures/weights_smooth.png, id=307, 578.16pt x 361.35pt>
 File: figures/weights_smooth.png Graphic file (type png)
 <use figures/weights_smooth.png>
 Package pdftex.def Info: figures/weights_smooth.png  used on input line 611.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/collocation_smooth.png, id=303, 578.16pt x 361.35pt>
+<figures/collocation_smooth.png, id=308, 578.16pt x 361.35pt>
 File: figures/collocation_smooth.png Graphic file (type png)
 <use figures/collocation_smooth.png>
 Package pdftex.def Info: figures/collocation_smooth.png  used on input line 620.
@@ -1187,7 +1187,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [23 <./figures/Lr_rough.png> <./figures/Lr_smooth.png> <./figures/weights_rough.png> <./figures/weights_smooth.png>]
-<figures/damped_lrparam_vs_rmse_rough.png, id=316, 578.16pt x 361.35pt>
+<figures/damped_lrparam_vs_rmse_rough.png, id=321, 578.16pt x 361.35pt>
 File: figures/damped_lrparam_vs_rmse_rough.png Graphic file (type png)
 <use figures/damped_lrparam_vs_rmse_rough.png>
 Package pdftex.def Info: figures/damped_lrparam_vs_rmse_rough.png  used on input line 630.
@@ -1197,7 +1197,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 631--631
 []\OT1/cmr/m/n/10.95 (a) |Coarse search over
  []
 
-<figures/damped_lrparam_vs_w0_diff_rough.png, id=317, 578.16pt x 361.35pt>
+<figures/damped_lrparam_vs_w0_diff_rough.png, id=322, 578.16pt x 361.35pt>
 File: figures/damped_lrparam_vs_w0_diff_rough.png Graphic file (type png)
 <use figures/damped_lrparam_vs_w0_diff_rough.png>
 Package pdftex.def Info: figures/damped_lrparam_vs_w0_diff_rough.png  used on input line 636.
@@ -1207,7 +1207,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 637--637
 []\OT1/cmr/m/n/10.95 (b) |Coarse search over
  []
 
-<figures/damped_lrparam_vs_zeta_diff_rough.png, id=318, 578.16pt x 361.35pt>
+<figures/damped_lrparam_vs_zeta_diff_rough.png, id=323, 578.16pt x 361.35pt>
 File: figures/damped_lrparam_vs_zeta_diff_rough.png Graphic file (type png)
 <use figures/damped_lrparam_vs_zeta_diff_rough.png>
 Package pdftex.def Info: figures/damped_lrparam_vs_zeta_diff_rough.png  used on input line 642.
@@ -1217,7 +1217,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 643--643
 []\OT1/cmr/m/n/10.95 (c) |Coarse search over
  []
 
-<figures/damped_lrparam_vs_rmse_zoomed.png, id=319, 578.16pt x 361.35pt>
+<figures/damped_lrparam_vs_rmse_zoomed.png, id=324, 578.16pt x 361.35pt>
 File: figures/damped_lrparam_vs_rmse_zoomed.png Graphic file (type png)
 <use figures/damped_lrparam_vs_rmse_zoomed.png>
 Package pdftex.def Info: figures/damped_lrparam_vs_rmse_zoomed.png  used on input line 648.
@@ -1227,7 +1227,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 649--649
 []\OT1/cmr/m/n/10.95 (d) |Zoomed search over
  []
 
-<figures/damped_lrparam_vs_w0_diff_zoomed.png, id=320, 578.16pt x 361.35pt>
+<figures/damped_lrparam_vs_w0_diff_zoomed.png, id=325, 578.16pt x 361.35pt>
 File: figures/damped_lrparam_vs_w0_diff_zoomed.png Graphic file (type png)
 <use figures/damped_lrparam_vs_w0_diff_zoomed.png>
 Package pdftex.def Info: figures/damped_lrparam_vs_w0_diff_zoomed.png  used on input line 654.
@@ -1237,7 +1237,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 655--655
 []\OT1/cmr/m/n/10.95 (e) |Zoomed search over
  []
 
-<figures/damped_lrparam_vs_zeta_diff_zoomed.png, id=321, 578.16pt x 361.35pt>
+<figures/damped_lrparam_vs_zeta_diff_zoomed.png, id=326, 578.16pt x 361.35pt>
 File: figures/damped_lrparam_vs_zeta_diff_zoomed.png Graphic file (type png)
 <use figures/damped_lrparam_vs_zeta_diff_zoomed.png>
 Package pdftex.def Info: figures/damped_lrparam_vs_zeta_diff_zoomed.png  used on input line 660.
@@ -1247,12 +1247,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 661--661
 []\OT1/cmr/m/n/10.95 (f) |Zoomed search over
  []
 
-<figures/burger_learning_rate_search_rough.png, id=322, 578.16pt x 361.35pt>
+<figures/burger_learning_rate_search_rough.png, id=327, 578.16pt x 361.35pt>
 File: figures/burger_learning_rate_search_rough.png Graphic file (type png)
 <use figures/burger_learning_rate_search_rough.png>
 Package pdftex.def Info: figures/burger_learning_rate_search_rough.png  used on input line 675.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/burger_learning_rate_search_zoomed.png, id=323, 578.16pt x 361.35pt>
+<figures/burger_learning_rate_search_zoomed.png, id=328, 578.16pt x 361.35pt>
 File: figures/burger_learning_rate_search_zoomed.png Graphic file (type png)
 <use figures/burger_learning_rate_search_zoomed.png>
 Package pdftex.def Info: figures/burger_learning_rate_search_zoomed.png  used on input line 681.
@@ -1265,22 +1265,22 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [24 <./figures/collocation_smooth.png> <./figures/damped_lrparam_vs_rmse_rough.png> <./figures/damped_lrparam_vs_w0_diff_rough.png> <./figures/damped_lrparam_vs_zeta_diff_rough.png> <./figures/damped_lrparam_vs_rmse_zoomed.png> <./figures/damped_lrparam_vs_w0_diff_zoomed.png> <./figures/damped_lrparam_vs_zeta_diff_zoomed.png>]
-<figures/burger_weight_search_rough.png, id=338, 578.16pt x 361.35pt>
+<figures/burger_weight_search_rough.png, id=343, 578.16pt x 361.35pt>
 File: figures/burger_weight_search_rough.png Graphic file (type png)
 <use figures/burger_weight_search_rough.png>
 Package pdftex.def Info: figures/burger_weight_search_rough.png  used on input line 692.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/burger_weight_search_zoomed.png, id=339, 578.16pt x 361.35pt>
+<figures/burger_weight_search_zoomed.png, id=344, 578.16pt x 361.35pt>
 File: figures/burger_weight_search_zoomed.png Graphic file (type png)
 <use figures/burger_weight_search_zoomed.png>
 Package pdftex.def Info: figures/burger_weight_search_zoomed.png  used on input line 698.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/burger_num_collocations_search_rough.png, id=340, 578.16pt x 361.35pt>
+<figures/burger_num_collocations_search_rough.png, id=345, 578.16pt x 361.35pt>
 File: figures/burger_num_collocations_search_rough.png Graphic file (type png)
 <use figures/burger_num_collocations_search_rough.png>
 Package pdftex.def Info: figures/burger_num_collocations_search_rough.png  used on input line 709.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/burger_num_collocations_search.png, id=341, 578.16pt x 361.35pt>
+<figures/burger_num_collocations_search.png, id=346, 578.16pt x 361.35pt>
 File: figures/burger_num_collocations_search.png Graphic file (type png)
 <use figures/burger_num_collocations_search.png>
 Package pdftex.def Info: figures/burger_num_collocations_search.png  used on input line 715.
@@ -1294,22 +1294,22 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [25 <./figures/burger_learning_rate_search_rough.png> <./figures/burger_learning_rate_search_zoomed.png> <./figures/burger_weight_search_rough.png> <./figures/burger_weight_search_zoomed.png>]
-<figures/burgers_lrparam_vs_rmse_rough.png, id=352, 578.16pt x 361.35pt>
+<figures/burgers_lrparam_vs_rmse_rough.png, id=357, 578.16pt x 361.35pt>
 File: figures/burgers_lrparam_vs_rmse_rough.png Graphic file (type png)
 <use figures/burgers_lrparam_vs_rmse_rough.png>
 Package pdftex.def Info: figures/burgers_lrparam_vs_rmse_rough.png  used on input line 726.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/burgers_lrparam_vs_v_diff_rough.png, id=353, 578.16pt x 361.35pt>
+<figures/burgers_lrparam_vs_v_diff_rough.png, id=358, 578.16pt x 361.35pt>
 File: figures/burgers_lrparam_vs_v_diff_rough.png Graphic file (type png)
 <use figures/burgers_lrparam_vs_v_diff_rough.png>
 Package pdftex.def Info: figures/burgers_lrparam_vs_v_diff_rough.png  used on input line 732.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/burgers_lrparam_vs_rmse_zoomed.png, id=354, 578.16pt x 361.35pt>
+<figures/burgers_lrparam_vs_rmse_zoomed.png, id=359, 578.16pt x 361.35pt>
 File: figures/burgers_lrparam_vs_rmse_zoomed.png Graphic file (type png)
 <use figures/burgers_lrparam_vs_rmse_zoomed.png>
 Package pdftex.def Info: figures/burgers_lrparam_vs_rmse_zoomed.png  used on input line 738.
 (pdftex.def)             Requested size: 217.42265pt x 135.88637pt.
-<figures/burgers_lrparam_vs_v_diff_zoomed.png, id=355, 578.16pt x 361.35pt>
+<figures/burgers_lrparam_vs_v_diff_zoomed.png, id=360, 578.16pt x 361.35pt>
 File: figures/burgers_lrparam_vs_v_diff_zoomed.png Graphic file (type png)
 <use figures/burgers_lrparam_vs_v_diff_zoomed.png>
 Package pdftex.def Info: figures/burgers_lrparam_vs_v_diff_zoomed.png  used on input line 744.
@@ -1332,7 +1332,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [27]
 Chapter 4.
-<figures/dampedLoss_ex.png, id=380, 786.7794pt x 370.986pt>
+<figures/dampedLoss_ex.png, id=385, 786.7794pt x 370.986pt>
 File: figures/dampedLoss_ex.png Graphic file (type png)
 <use figures/dampedLoss_ex.png>
 Package pdftex.def Info: figures/dampedLoss_ex.png  used on input line 774.
@@ -1340,7 +1340,7 @@ Package pdftex.def Info: figures/dampedLoss_ex.png  used on input line 774.
 [28
 
 ]
-<figures/w04.0e+00_zeta1.2e-01_fig2_summary.png, id=392, 1112.4762pt x 755.4624pt>
+<figures/w04.0e+00_zeta1.2e-01_fig2_summary.png, id=397, 1112.4762pt x 755.4624pt>
 File: figures/w04.0e+00_zeta1.2e-01_fig2_summary.png Graphic file (type png)
 <use figures/w04.0e+00_zeta1.2e-01_fig2_summary.png>
 Package pdftex.def Info: figures/w04.0e+00_zeta1.2e-01_fig2_summary.png  used on input line 783.
@@ -1354,12 +1354,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [29 <./figures/dampedLoss_ex.png>]
-<figures/w02.0e+00_zeta1.2e-01_fig2_summary.png, id=398, 1112.4762pt x 755.4624pt>
+<figures/w02.0e+00_zeta1.2e-01_fig2_summary.png, id=403, 1112.4762pt x 755.4624pt>
 File: figures/w02.0e+00_zeta1.2e-01_fig2_summary.png Graphic file (type png)
 <use figures/w02.0e+00_zeta1.2e-01_fig2_summary.png>
 Package pdftex.def Info: figures/w02.0e+00_zeta1.2e-01_fig2_summary.png  used on input line 790.
 (pdftex.def)             Requested size: 407.66833pt x 276.83083pt.
-<figures/w04.0e+00_zeta1.0e+00_fig2_summary.png, id=399, 1097.5404pt x 755.4624pt>
+<figures/w04.0e+00_zeta1.0e+00_fig2_summary.png, id=404, 1097.5404pt x 755.4624pt>
 File: figures/w04.0e+00_zeta1.0e+00_fig2_summary.png Graphic file (type png)
 <use figures/w04.0e+00_zeta1.0e+00_fig2_summary.png>
 Package pdftex.def Info: figures/w04.0e+00_zeta1.0e+00_fig2_summary.png  used on input line 797.
@@ -1373,12 +1373,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [30 <./figures/w04.0e+00_zeta1.2e-01_fig2_summary.png> <./figures/w02.0e+00_zeta1.2e-01_fig2_summary.png>]
-<figures/w02.0e+00_zeta1.0e+00_fig2_summary.png, id=407, 1097.5404pt x 755.4624pt>
+<figures/w02.0e+00_zeta1.0e+00_fig2_summary.png, id=412, 1097.5404pt x 755.4624pt>
 File: figures/w02.0e+00_zeta1.0e+00_fig2_summary.png Graphic file (type png)
 <use figures/w02.0e+00_zeta1.0e+00_fig2_summary.png>
 Package pdftex.def Info: figures/w02.0e+00_zeta1.0e+00_fig2_summary.png  used on input line 804.
 (pdftex.def)             Requested size: 407.66833pt x 280.60028pt.
-<figures/w04.0e+00_zeta1.5e+00_fig2_summary.png, id=408, 1097.5404pt x 755.4624pt>
+<figures/w04.0e+00_zeta1.5e+00_fig2_summary.png, id=413, 1097.5404pt x 755.4624pt>
 File: figures/w04.0e+00_zeta1.5e+00_fig2_summary.png Graphic file (type png)
 <use figures/w04.0e+00_zeta1.5e+00_fig2_summary.png>
 Package pdftex.def Info: figures/w04.0e+00_zeta1.5e+00_fig2_summary.png  used on input line 811.
@@ -1392,12 +1392,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [31 <./figures/w04.0e+00_zeta1.0e+00_fig2_summary.png> <./figures/w02.0e+00_zeta1.0e+00_fig2_summary.png>]
-<figures/w02.0e+00_zeta1.5e+00_fig2_summary.png, id=415, 1097.5404pt x 755.4624pt>
+<figures/w02.0e+00_zeta1.5e+00_fig2_summary.png, id=420, 1097.5404pt x 755.4624pt>
 File: figures/w02.0e+00_zeta1.5e+00_fig2_summary.png Graphic file (type png)
 <use figures/w02.0e+00_zeta1.5e+00_fig2_summary.png>
 Package pdftex.def Info: figures/w02.0e+00_zeta1.5e+00_fig2_summary.png  used on input line 818.
 (pdftex.def)             Requested size: 407.66833pt x 280.60028pt.
-<figures/REVw02.0e+00_zeta1.2e-01_fig2_summary.png, id=419, 1112.4762pt x 755.4624pt>
+<figures/REVw02.0e+00_zeta1.2e-01_fig2_summary.png, id=424, 1112.4762pt x 755.4624pt>
 File: figures/REVw02.0e+00_zeta1.2e-01_fig2_summary.png Graphic file (type png)
 <use figures/REVw02.0e+00_zeta1.2e-01_fig2_summary.png>
 Package pdftex.def Info: figures/REVw02.0e+00_zeta1.2e-01_fig2_summary.png  used on input line 827.
@@ -1411,7 +1411,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [32 <./figures/w04.0e+00_zeta1.5e+00_fig2_summary.png> <./figures/w02.0e+00_zeta1.5e+00_fig2_summary.png>]
-<figures/w02.0e+00_zeta1.2e-01_fig3_param_conv.png, id=426, 931.3194pt x 651.3936pt>
+<figures/w02.0e+00_zeta1.2e-01_fig3_param_conv.png, id=431, 931.3194pt x 651.3936pt>
 File: figures/w02.0e+00_zeta1.2e-01_fig3_param_conv.png Graphic file (type png)
 <use figures/w02.0e+00_zeta1.2e-01_fig3_param_conv.png>
 Package pdftex.def Info: figures/w02.0e+00_zeta1.2e-01_fig3_param_conv.png  used on input line 834.
@@ -1425,22 +1425,22 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [33 <./figures/REVw02.0e+00_zeta1.2e-01_fig2_summary.png>]
-<figures/zeta_predictions.png, id=436, 578.16pt x 361.35pt>
+<figures/zeta_predictions.png, id=441, 578.16pt x 361.35pt>
 File: figures/zeta_predictions.png Graphic file (type png)
 <use figures/zeta_predictions.png>
 Package pdftex.def Info: figures/zeta_predictions.png  used on input line 844.
 (pdftex.def)             Requested size: 294.42636pt x 184.01588pt.
-<figures/zeta_2d.png, id=437, 1156.32pt x 289.08pt>
+<figures/zeta_2d.png, id=442, 1156.32pt x 289.08pt>
 File: figures/zeta_2d.png Graphic file (type png)
 <use figures/zeta_2d.png>
 Package pdftex.def Info: figures/zeta_2d.png  used on input line 849.
 (pdftex.def)             Requested size: 448.4407pt x 112.10997pt.
-<figures/omega0_predictions.png, id=438, 578.16pt x 361.35pt>
+<figures/omega0_predictions.png, id=443, 578.16pt x 361.35pt>
 File: figures/omega0_predictions.png Graphic file (type png)
 <use figures/omega0_predictions.png>
 Package pdftex.def Info: figures/omega0_predictions.png  used on input line 860.
 (pdftex.def)             Requested size: 294.42636pt x 184.01588pt.
-<figures/omega0_2d.png, id=439, 1156.32pt x 289.08pt>
+<figures/omega0_2d.png, id=444, 1156.32pt x 289.08pt>
 File: figures/omega0_2d.png Graphic file (type png)
 <use figures/omega0_2d.png>
 Package pdftex.def Info: figures/omega0_2d.png  used on input line 865.
@@ -1462,7 +1462,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [35 <./figures/zeta_predictions.png> <./figures/zeta_2d.png>]
-<figures/burger_N-wave_1.0e-01_fig1_loss.png, id=464, 786.7794pt x 370.986pt>
+<figures/burger_N-wave_1.0e-01_fig1_loss.png, id=469, 786.7794pt x 370.986pt>
 File: figures/burger_N-wave_1.0e-01_fig1_loss.png Graphic file (type png)
 <use figures/burger_N-wave_1.0e-01_fig1_loss.png>
 Package pdftex.def Info: figures/burger_N-wave_1.0e-01_fig1_loss.png  used on input line 895.
@@ -1476,12 +1476,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [36 <./figures/omega0_predictions.png> <./figures/omega0_2d.png>]
-<figures/burger_Step_1.0e-02_fig2_slices.png, id=472, 1078.2684pt x 661.5114pt>
+<figures/burger_Step_1.0e-02_fig2_slices.png, id=477, 1078.2684pt x 661.5114pt>
 File: figures/burger_Step_1.0e-02_fig2_slices.png Graphic file (type png)
 <use figures/burger_Step_1.0e-02_fig2_slices.png>
 Package pdftex.def Info: figures/burger_Step_1.0e-02_fig2_slices.png  used on input line 906.
 (pdftex.def)             Requested size: 448.4407pt x 275.11765pt.
-<figures/burger_Step_1.0e-02_fig3_heatmaps.png, id=473, 1416.492pt x 697.6464pt>
+<figures/burger_Step_1.0e-02_fig3_heatmaps.png, id=478, 1416.492pt x 697.6464pt>
 File: figures/burger_Step_1.0e-02_fig3_heatmaps.png Graphic file (type png)
 <use figures/burger_Step_1.0e-02_fig3_heatmaps.png>
 Package pdftex.def Info: figures/burger_Step_1.0e-02_fig3_heatmaps.png  used on input line 911.
@@ -1495,12 +1495,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [37 <./figures/burger_N-wave_1.0e-01_fig1_loss.png>]
-<figures/burger_Step_5.0e-02_fig2_slices.png, id=489, 1078.2684pt x 661.5114pt>
+<figures/burger_Step_5.0e-02_fig2_slices.png, id=494, 1078.2684pt x 661.5114pt>
 File: figures/burger_Step_5.0e-02_fig2_slices.png Graphic file (type png)
 <use figures/burger_Step_5.0e-02_fig2_slices.png>
 Package pdftex.def Info: figures/burger_Step_5.0e-02_fig2_slices.png  used on input line 921.
 (pdftex.def)             Requested size: 448.4407pt x 275.11765pt.
-<figures/burger_Step_5.0e-02_fig3_heatmaps.png, id=490, 1416.492pt x 697.6464pt>
+<figures/burger_Step_5.0e-02_fig3_heatmaps.png, id=495, 1416.492pt x 697.6464pt>
 File: figures/burger_Step_5.0e-02_fig3_heatmaps.png Graphic file (type png)
 <use figures/burger_Step_5.0e-02_fig3_heatmaps.png>
 Package pdftex.def Info: figures/burger_Step_5.0e-02_fig3_heatmaps.png  used on input line 926.
@@ -1522,12 +1522,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [39 <./figures/burger_Step_1.0e-02_fig2_slices.png> <./figures/burger_Step_1.0e-02_fig3_heatmaps.png>]
-<figures/burger_Step_1.0e-01_fig2_slices.png, id=501, 1078.2684pt x 661.5114pt>
+<figures/burger_Step_1.0e-01_fig2_slices.png, id=506, 1078.2684pt x 661.5114pt>
 File: figures/burger_Step_1.0e-01_fig2_slices.png Graphic file (type png)
 <use figures/burger_Step_1.0e-01_fig2_slices.png>
 Package pdftex.def Info: figures/burger_Step_1.0e-01_fig2_slices.png  used on input line 937.
 (pdftex.def)             Requested size: 448.4407pt x 275.11765pt.
-<figures/burger_Step_1.0e-01_fig3_heatmaps.png, id=502, 1416.492pt x 697.6464pt>
+<figures/burger_Step_1.0e-01_fig3_heatmaps.png, id=507, 1416.492pt x 697.6464pt>
 File: figures/burger_Step_1.0e-01_fig3_heatmaps.png Graphic file (type png)
 <use figures/burger_Step_1.0e-01_fig3_heatmaps.png>
 Package pdftex.def Info: figures/burger_Step_1.0e-01_fig3_heatmaps.png  used on input line 942.
@@ -1541,12 +1541,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [40 <./figures/burger_Step_5.0e-02_fig2_slices.png> <./figures/burger_Step_5.0e-02_fig3_heatmaps.png>]
-<figures/burger_Gaussian_1.0e-02_fig2_slices.png, id=509, 1078.2684pt x 661.5114pt>
+<figures/burger_Gaussian_1.0e-02_fig2_slices.png, id=514, 1078.2684pt x 661.5114pt>
 File: figures/burger_Gaussian_1.0e-02_fig2_slices.png Graphic file (type png)
 <use figures/burger_Gaussian_1.0e-02_fig2_slices.png>
 Package pdftex.def Info: figures/burger_Gaussian_1.0e-02_fig2_slices.png  used on input line 953.
 (pdftex.def)             Requested size: 448.4407pt x 275.11765pt.
-<figures/burger_Gaussian_1.0e-02_fig3_heatmaps.png, id=510, 1416.492pt x 697.6464pt>
+<figures/burger_Gaussian_1.0e-02_fig3_heatmaps.png, id=515, 1416.492pt x 697.6464pt>
 File: figures/burger_Gaussian_1.0e-02_fig3_heatmaps.png Graphic file (type png)
 <use figures/burger_Gaussian_1.0e-02_fig3_heatmaps.png>
 Package pdftex.def Info: figures/burger_Gaussian_1.0e-02_fig3_heatmaps.png  used on input line 958.
@@ -1560,12 +1560,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [41 <./figures/burger_Step_1.0e-01_fig2_slices.png> <./figures/burger_Step_1.0e-01_fig3_heatmaps.png>]
-<figures/burger_Gaussian_5.0e-02_fig2_slices.png, id=517, 1078.2684pt x 661.5114pt>
+<figures/burger_Gaussian_5.0e-02_fig2_slices.png, id=522, 1078.2684pt x 661.5114pt>
 File: figures/burger_Gaussian_5.0e-02_fig2_slices.png Graphic file (type png)
 <use figures/burger_Gaussian_5.0e-02_fig2_slices.png>
 Package pdftex.def Info: figures/burger_Gaussian_5.0e-02_fig2_slices.png  used on input line 969.
 (pdftex.def)             Requested size: 448.4407pt x 275.11765pt.
-<figures/burger_Gaussian_5.0e-02_fig3_heatmaps.png, id=518, 1416.492pt x 697.6464pt>
+<figures/burger_Gaussian_5.0e-02_fig3_heatmaps.png, id=523, 1416.492pt x 697.6464pt>
 File: figures/burger_Gaussian_5.0e-02_fig3_heatmaps.png Graphic file (type png)
 <use figures/burger_Gaussian_5.0e-02_fig3_heatmaps.png>
 Package pdftex.def Info: figures/burger_Gaussian_5.0e-02_fig3_heatmaps.png  used on input line 974.
@@ -1579,12 +1579,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [42 <./figures/burger_Gaussian_1.0e-02_fig2_slices.png> <./figures/burger_Gaussian_1.0e-02_fig3_heatmaps.png>]
-<figures/burger_Gaussian_1.0e-01_fig2_slices.png, id=526, 1078.2684pt x 661.5114pt>
+<figures/burger_Gaussian_1.0e-01_fig2_slices.png, id=531, 1078.2684pt x 661.5114pt>
 File: figures/burger_Gaussian_1.0e-01_fig2_slices.png Graphic file (type png)
 <use figures/burger_Gaussian_1.0e-01_fig2_slices.png>
 Package pdftex.def Info: figures/burger_Gaussian_1.0e-01_fig2_slices.png  used on input line 985.
 (pdftex.def)             Requested size: 448.4407pt x 275.11765pt.
-<figures/burger_Gaussian_1.0e-01_fig3_heatmaps.png, id=527, 1416.492pt x 697.6464pt>
+<figures/burger_Gaussian_1.0e-01_fig3_heatmaps.png, id=532, 1416.492pt x 697.6464pt>
 File: figures/burger_Gaussian_1.0e-01_fig3_heatmaps.png Graphic file (type png)
 <use figures/burger_Gaussian_1.0e-01_fig3_heatmaps.png>
 Package pdftex.def Info: figures/burger_Gaussian_1.0e-01_fig3_heatmaps.png  used on input line 990.
@@ -1598,12 +1598,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [43 <./figures/burger_Gaussian_5.0e-02_fig2_slices.png> <./figures/burger_Gaussian_5.0e-02_fig3_heatmaps.png>]
-<figures/burger_N-wave_1.0e-02_fig2_slices.png, id=534, 1078.2684pt x 661.5114pt>
+<figures/burger_N-wave_1.0e-02_fig2_slices.png, id=539, 1078.2684pt x 661.5114pt>
 File: figures/burger_N-wave_1.0e-02_fig2_slices.png Graphic file (type png)
 <use figures/burger_N-wave_1.0e-02_fig2_slices.png>
 Package pdftex.def Info: figures/burger_N-wave_1.0e-02_fig2_slices.png  used on input line 1001.
 (pdftex.def)             Requested size: 448.4407pt x 275.11765pt.
-<figures/burger_N-wave_1.0e-02_fig3_heatmaps.png, id=535, 1416.492pt x 697.6464pt>
+<figures/burger_N-wave_1.0e-02_fig3_heatmaps.png, id=540, 1416.492pt x 697.6464pt>
 File: figures/burger_N-wave_1.0e-02_fig3_heatmaps.png Graphic file (type png)
 <use figures/burger_N-wave_1.0e-02_fig3_heatmaps.png>
 Package pdftex.def Info: figures/burger_N-wave_1.0e-02_fig3_heatmaps.png  used on input line 1006.
@@ -1617,12 +1617,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [44 <./figures/burger_Gaussian_1.0e-01_fig2_slices.png> <./figures/burger_Gaussian_1.0e-01_fig3_heatmaps.png>]
-<figures/burger_N-wave_5.0e-02_fig2_slices.png, id=542, 1078.2684pt x 661.0296pt>
+<figures/burger_N-wave_5.0e-02_fig2_slices.png, id=547, 1078.2684pt x 661.0296pt>
 File: figures/burger_N-wave_5.0e-02_fig2_slices.png Graphic file (type png)
 <use figures/burger_N-wave_5.0e-02_fig2_slices.png>
 Package pdftex.def Info: figures/burger_N-wave_5.0e-02_fig2_slices.png  used on input line 1017.
 (pdftex.def)             Requested size: 448.4407pt x 274.91727pt.
-<figures/burger_N-wave_5.0e-02_fig3_heatmaps.png, id=543, 1416.492pt x 697.6464pt>
+<figures/burger_N-wave_5.0e-02_fig3_heatmaps.png, id=548, 1416.492pt x 697.6464pt>
 File: figures/burger_N-wave_5.0e-02_fig3_heatmaps.png Graphic file (type png)
 <use figures/burger_N-wave_5.0e-02_fig3_heatmaps.png>
 Package pdftex.def Info: figures/burger_N-wave_5.0e-02_fig3_heatmaps.png  used on input line 1022.
@@ -1636,12 +1636,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [45 <./figures/burger_N-wave_1.0e-02_fig2_slices.png> <./figures/burger_N-wave_1.0e-02_fig3_heatmaps.png>]
-<figures/burger_N-wave_1.0e-01_fig2_slices.png, id=550, 1078.2684pt x 661.5114pt>
+<figures/burger_N-wave_1.0e-01_fig2_slices.png, id=555, 1078.2684pt x 661.5114pt>
 File: figures/burger_N-wave_1.0e-01_fig2_slices.png Graphic file (type png)
 <use figures/burger_N-wave_1.0e-01_fig2_slices.png>
 Package pdftex.def Info: figures/burger_N-wave_1.0e-01_fig2_slices.png  used on input line 1033.
 (pdftex.def)             Requested size: 448.4407pt x 275.11765pt.
-<figures/burger_N-wave_1.0e-01_fig3_heatmaps.png, id=551, 1416.492pt x 697.6464pt>
+<figures/burger_N-wave_1.0e-01_fig3_heatmaps.png, id=556, 1416.492pt x 697.6464pt>
 File: figures/burger_N-wave_1.0e-01_fig3_heatmaps.png Graphic file (type png)
 <use figures/burger_N-wave_1.0e-01_fig3_heatmaps.png>
 Package pdftex.def Info: figures/burger_N-wave_1.0e-01_fig3_heatmaps.png  used on input line 1038.
@@ -1655,12 +1655,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [46 <./figures/burger_N-wave_5.0e-02_fig2_slices.png> <./figures/burger_N-wave_5.0e-02_fig3_heatmaps.png>]
-<figures/burger_N-wave_1.0e-01_fig2_slices_extra.png, id=559, 1084.5318pt x 661.5114pt>
+<figures/burger_N-wave_1.0e-01_fig2_slices_extra.png, id=564, 1084.5318pt x 661.5114pt>
 File: figures/burger_N-wave_1.0e-01_fig2_slices_extra.png Graphic file (type png)
 <use figures/burger_N-wave_1.0e-01_fig2_slices_extra.png>
 Package pdftex.def Info: figures/burger_N-wave_1.0e-01_fig2_slices_extra.png  used on input line 1049.
 (pdftex.def)             Requested size: 448.4407pt x 273.53291pt.
-<figures/burger_N-wave_1.0e-01_fig3_heatmaps_extra.png, id=560, 1416.492pt x 697.6464pt>
+<figures/burger_N-wave_1.0e-01_fig3_heatmaps_extra.png, id=565, 1416.492pt x 697.6464pt>
 File: figures/burger_N-wave_1.0e-01_fig3_heatmaps_extra.png Graphic file (type png)
 <use figures/burger_N-wave_1.0e-01_fig3_heatmaps_extra.png>
 Package pdftex.def Info: figures/burger_N-wave_1.0e-01_fig3_heatmaps_extra.png  used on input line 1054.
@@ -1682,12 +1682,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [48]
-<figures/REVburger_N-wave_1.0e-01_fig2_slices.png, id=576, 928.4286pt x 617.6676pt>
+<figures/REVburger_N-wave_1.0e-01_fig2_slices.png, id=581, 928.4286pt x 617.6676pt>
 File: figures/REVburger_N-wave_1.0e-01_fig2_slices.png Graphic file (type png)
 <use figures/REVburger_N-wave_1.0e-01_fig2_slices.png>
 Package pdftex.def Info: figures/REVburger_N-wave_1.0e-01_fig2_slices.png  used on input line 1067.
 (pdftex.def)             Requested size: 448.4407pt x 298.3432pt.
-<figures/REVburger_N-wave_1.0e-01_fig3_heatmaps.png, id=577, 1141.866pt x 563.706pt>
+<figures/REVburger_N-wave_1.0e-01_fig3_heatmaps.png, id=582, 1141.866pt x 563.706pt>
 File: figures/REVburger_N-wave_1.0e-01_fig3_heatmaps.png Graphic file (type png)
 <use figures/REVburger_N-wave_1.0e-01_fig3_heatmaps.png>
 Package pdftex.def Info: figures/REVburger_N-wave_1.0e-01_fig3_heatmaps.png  used on input line 1072.
@@ -1709,7 +1709,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [50]
-<figures/burger_N-wave_1.0e-01_fig2_nu_evolution.png, id=590, 405.1938pt x 375.804pt>
+<figures/burger_N-wave_1.0e-01_fig2_nu_evolution.png, id=595, 405.1938pt x 375.804pt>
 File: figures/burger_N-wave_1.0e-01_fig2_nu_evolution.png Graphic file (type png)
 <use figures/burger_N-wave_1.0e-01_fig2_nu_evolution.png>
 Package pdftex.def Info: figures/burger_N-wave_1.0e-01_fig2_nu_evolution.png  used on input line 1081.
@@ -1723,7 +1723,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [51 <./figures/REVburger_N-wave_1.0e-01_fig2_slices.png> <./figures/REVburger_N-wave_1.0e-01_fig3_heatmaps.png>]
-<figures/viscosity_predictions_Step.png, id=600, 578.16pt x 361.35pt>
+<figures/viscosity_predictions_Step.png, id=605, 578.16pt x 361.35pt>
 File: figures/viscosity_predictions_Step.png Graphic file (type png)
 <use figures/viscosity_predictions_Step.png>
 Package pdftex.def Info: figures/viscosity_predictions_Step.png  used on input line 1090.
@@ -1737,12 +1737,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [52 <./figures/burger_N-wave_1.0e-01_fig2_nu_evolution.png>]
-<figures/viscosity_predictions_Gaussian.png, id=609, 578.16pt x 361.35pt>
+<figures/viscosity_predictions_Gaussian.png, id=614, 578.16pt x 361.35pt>
 File: figures/viscosity_predictions_Gaussian.png Graphic file (type png)
 <use figures/viscosity_predictions_Gaussian.png>
 Package pdftex.def Info: figures/viscosity_predictions_Gaussian.png  used on input line 1098.
 (pdftex.def)             Requested size: 448.4407pt x 280.27493pt.
-<figures/viscosity_predictions_N-wave.png, id=610, 578.16pt x 361.35pt>
+<figures/viscosity_predictions_N-wave.png, id=615, 578.16pt x 361.35pt>
 File: figures/viscosity_predictions_N-wave.png Graphic file (type png)
 <use figures/viscosity_predictions_N-wave.png>
 Package pdftex.def Info: figures/viscosity_predictions_N-wave.png  used on input line 1106.
@@ -1773,23 +1773,23 @@ LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
  ***********
 Package rerunfilecheck Info: File `Exam_VascoVerwimp_Report.out' has not changed.
-(rerunfilecheck)             Checksum: AA13503E2F5EB7869AC304797263ECD0;5666.
+(rerunfilecheck)             Checksum: AF23633928D775B8B3C8B6B6D91955A8;5852.
 Package logreq Info: Writing requests to 'Exam_VascoVerwimp_Report.run.xml'.
 \openout1 = `Exam_VascoVerwimp_Report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 31666 strings out of 474587
- 614891 string characters out of 5745701
+ 31668 strings out of 474587
+ 614915 string characters out of 5745701
  1938558 words of memory out of 5000000
- 53281 multiletter control sequences out of 15000+600000
+ 53282 multiletter control sequences out of 15000+600000
  569799 words of font info for 81 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  83i,12n,87p,1438b,1828s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\vasco\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/vasco/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on Exam_VascoVerwimp_Report.pdf (56 pages, 8379471 bytes).
+Output written on Exam_VascoVerwimp_Report.pdf (56 pages, 8381882 bytes).
 PDF statistics:
- 721 PDF objects out of 1000 (max. 8388607)
- 151 named destinations out of 1000 (max. 500000)
- 566 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 726 PDF objects out of 1000 (max. 8388607)
+ 152 named destinations out of 1000 (max. 500000)
+ 574 words of extra memory for PDF output out of 10000 (max. 10000000)
 
