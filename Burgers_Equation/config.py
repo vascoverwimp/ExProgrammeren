@@ -17,7 +17,7 @@ from dataclasses import dataclass
 class Config:
     """Config class containing all parameters for model training."""
     # Physical parameters
-    nu: float = 0.05                   # viscosity
+    nu: float = 0.05        # viscosity
 
     # Initial conditions
     ic: str = "Gauss"       # Initial condition type: "Gauss", "N_wave", "N_wave_chop", "Step_up", "Slope"  # noqa: E501
@@ -40,10 +40,12 @@ class Config:
 
     @property
     def delta_x(self) -> float:
+        """Return spatial cell dimension."""
         return self.L/self.n_x
 
     @property
     def n_t(self) -> float:
+        """Return number of time steps."""
         return int(self.t_extrap // self.delta_t)
 
     # Loss weights

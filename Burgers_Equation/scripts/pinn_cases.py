@@ -50,15 +50,10 @@ def train_model(cfg: Config, output_path: str) -> None:
         cfg.t_dom = 5.0
         cfg.t_extrap = 7.0
     else:
-        print("--------------------------------------------------"
-              "\n"
-              f"Shockwave predicted to occur at {time_to_shock:.3f}s."
-              "\n"
-              "This time is not suitable for training. Returning None"
-              "\n"
-              f"(ic={cfg.ic}, nu={cfg.nu})"
-              "--------------------------------------------------")
-        return None
+        print(
+            f"Shock time {time_to_shock:.3f}s outside expected range"
+            " — using default domain."
+        )
 
     # -- train model ------------------------------------------------
     data = generate_data(cfg)
@@ -79,7 +74,7 @@ def train_model(cfg: Config, output_path: str) -> None:
     save_plots_from_file(output_path)
 
 
-def main():
+def main() -> None:
     """Main loop."""
     ics = ["Gauss", "N_wave", "Step_up"]
     nu_values = [0.1, 0.05, 0.01]

@@ -14,7 +14,6 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent))  # noqa: E402
 import argparse
-import numpy as np
 from config import Config
 from data import generate_data
 from model import FCNet
@@ -98,7 +97,7 @@ def resolve_output_path(args, zeta):
     return SCRIPT_DIR / f"outputs/pinn_{label}"
 
 
-def main():
+def main() -> None:
     """Main loop."""
     print("=" * 50)
     print("  PINN Demo — Damped Harmonic Oscillator")

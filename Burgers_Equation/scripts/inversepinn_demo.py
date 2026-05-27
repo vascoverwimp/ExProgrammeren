@@ -80,7 +80,7 @@ def resolve_output_path(args):
     return SCRIPT_DIR / f"outputs/inversepinn_{args.nu_regime()}"
 
 
-def main():
+def main() -> None:
     """Main loop."""
     print("=" * 50)
     print("  Inverse PINN Demo — Burgers Equation")
@@ -92,7 +92,7 @@ def main():
 
     args = parse_args()
     ic, nu = resolve_parameters(args)
-    output_path = resolve_output_path(args, ic)
+    output_path = resolve_output_path(nu)
     output_path.mkdir(parents=True, exist_ok=True)
 
     print(f"IC     : {ic}")

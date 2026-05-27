@@ -26,7 +26,7 @@ OUTPUT_PATH = SCRIPT_DIR / "outputs/optuna_tuning"
 DAMPED_CASES = ["underdamped", "critically", "overdamped"]
 
 
-def main():
+def main() -> None:
     """Main loop."""
     device = get_device()
     print(f"Device : {device}\n")

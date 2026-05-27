@@ -76,7 +76,7 @@ def run_single(run_idx: int, device) -> dict | None:
     data = generate_data(cfg)
     model = InverseFCNet(cfg)
 
-    history, snapshots, best_state = train(
+    history, snapshots, _ = train(
         model=model,
         data=data,
         cfg=cfg,
@@ -136,7 +136,7 @@ def main():
     run_idx = 0
 
     try:
-        with open(CSV_PATH, "a", newline="") as f:
+        with open(CSV_PATH, "a", newline="", encoding='utf-8') as f:
             writer = csv.DictWriter(f, fieldnames=CSV_FIELDS)
             if write_header:
                 writer.writeheader()
@@ -147,7 +147,7 @@ def main():
 
                 try:
                     row = run_single(run_idx, device)
-                except Exception as e:
+                except (RuntimeError, ValueError, OSError) as e:
                     print(f"  [run {run_idx}] failed: {e} — skipping.")
                     continue
 

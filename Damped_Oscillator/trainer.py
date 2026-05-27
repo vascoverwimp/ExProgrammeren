@@ -10,7 +10,6 @@ Email           : des.deborger@student.uantwerpen.be
 Last modified   : 12/05/2026
 """
 import time
-import os
 from config import Config
 import torch
 import torch.nn as nn
@@ -18,9 +17,6 @@ import optuna
 from utils import to_tensor
 from losses import loss_data, loss_ic, loss_physics, loss_physics_inverse
 from data import make_collocation, make_train_observation
-
-os.makedirs("outputs", exist_ok=True)
-
 
 def train(
     model: nn.Module,
@@ -73,13 +69,13 @@ def train(
     y_val_t = to_tensor(data["y_val"])
     t_ic_t = to_tensor(data["t_ic"], requires_grad=True)
 
-    if not cfg.randomise_observation:  # Only make observation points once
-        t_obs_t = to_tensor(data["t_obs"])
-        y_obs_t = to_tensor(data["y_obs"])
+    t_obs_t = to_tensor(data["t_obs"])
+    y_obs_t = to_tensor(data["y_obs"])
 
-    if not cfg.randomise_collocation:  # Only make collocation points once
-        t_col_dom_t = to_tensor(data["t_col_dom"], requires_grad=True)
-        t_col_extrap_t = to_tensor(data["t_col_extrap"], requires_grad=True)
+    t_col_dom_t = to_tensor(data["t_col_dom"], requires_grad=True)
+    t_col_extrap_t = to_tensor(data["t_col_extrap"], requires_grad=True)
+
+    best_state = None
 
     # -- initialize optimiser and scheduler ----------------------------------
     if inverse_mode:
@@ -205,10 +201,11 @@ def train(
             best_state = {k: v.cpu() for k, v in model.state_dict().items()}
 
         if epochs_no_improvement >= cfg.patience:
-            print(
-                f"[{label}] early stopping at epoch {epoch},"
-                " improvement stalled."
-            )
+            if verbatim:
+                print(
+                    f"[{label}] early stopping at epoch {epoch},"
+                    " improvement stalled."
+                )
             break
 
         # -- snapshots ------------------------------------------------------

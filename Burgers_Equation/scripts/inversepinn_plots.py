@@ -55,7 +55,7 @@ def nu_estimation_plot(
     if nu_class is not None:
         nu_data = nu_data[nu_data["nu_class"] == nu_class]
 
-    fig, ax = plt.subplots(figsize=(8, 8))
+    _, ax = plt.subplots(figsize=(8, 8))
     style_ax(ax)
 
     ax.scatter(nu_data["nu_true"], nu_data["nu_pred"], s=5, color=RED)
@@ -72,7 +72,6 @@ def nu_estimation_plot(
     if nu_class is not None:
         ax.set_title(
             rf"$\nu$ prediction for {ic} initial condition and {nu_class} viscosity", fontsize=14)  # noqa:E501
-        max = np.max(nu_data[["nu_true", "nu_pred"]])
     else:
         ax.set_title(
             rf"$\nu$ prediction for {ic} initial condition", fontsize=14)
@@ -82,17 +81,16 @@ def nu_estimation_plot(
 
 
 def rmse(csv_path: str) -> tuple:
-    """Calculate RMSE."""
     """Return the RMSE of every case"""
     df = pd.read_csv(csv_path)
     df_low = df[df["nu_class"] == "low"]
     df_high = df[df["nu_class"] == "high"]
 
-    nu_full = np.sqrt(np.mean((df["nu_true"]-df["nu_pred"]) ** 2))
-    nu_low = np.sqrt(np.mean((df_low["nu_true"]-df_low["nu_pred"]) ** 2))
-    nu_high = np.sqrt(np.mean((df_high["nu_true"]-df_high["nu_pred"]) ** 2))
+    full = np.sqrt(np.mean((df["nu_true"]-df["nu_pred"]) ** 2))
+    low = np.sqrt(np.mean((df_low["nu_true"]-df_low["nu_pred"]) ** 2))
+    high = np.sqrt(np.mean((df_high["nu_true"]-df_high["nu_pred"]) ** 2))
 
-    return nu_full, nu_low, nu_high
+    return full, low, high
 
 
 if __name__ == "__main__":
@@ -106,15 +104,13 @@ if __name__ == "__main__":
         "----------------------------------"
     )
 
-    for ic in ["Gauss"]:
+    for nu_class_val in ["low", "high", None]:
+        nu_estimation_plot(csv_path=OUTPUT_PATH / "nu_pairs.csv",
+                            ic="Gauss",
+                            nu_class=nu_class_val,
+                            output_path=OUTPUT_PATH /
+                            f"scatter_Gauss_{nu_class_val}.png",
+                            show=False
+                            )
 
-        for nu_class in ["low", "high", None]:
-            nu_estimation_plot(csv_path=OUTPUT_PATH / "nu_pairs.csv",
-                               ic=ic,
-                               nu_class=nu_class,
-                               output_path=OUTPUT_PATH /
-                               f"scatter_{ic}_{nu_class}.png",
-                               show=False
-                               )
-
-        print(f"Saved {ic} scatter plots")
+        print("Saved Gauss scatter plots")

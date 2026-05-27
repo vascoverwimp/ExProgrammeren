@@ -75,8 +75,8 @@ def train_model(cfg: Config, output_path: str) -> None:
     save_plots_from_file(output_path)
 
 
-def main():
-
+def main() -> None:
+    """Main loop."""
     cfg_list = [
         Config(
             n_layers=2,

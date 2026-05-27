@@ -92,17 +92,14 @@ def objective(trial: optuna.Trial) -> float:
     device = get_device()
     model = FCNet(cfg)
 
-    try:
-        history, _, _ = train(
-            model=model,
-            data=_base_data,
-            cfg=cfg,
-            device=device,
-            verbatim=False,
-            optuna_trial=trial,
-        )
-    except optuna.exceptions.TrialPruned:
-        raise
+    history, _, _ = train(
+        model=model,
+        data=_base_data,
+        cfg=cfg,
+        device=device,
+        verbatim=False,
+        optuna_trial=trial,
+    )
 
     best_val = min(history["loss_val"])
 
@@ -122,8 +119,8 @@ def objective(trial: optuna.Trial) -> float:
     }
 
     write_header = not CSV_PATH.exists()
-    with open(CSV_PATH, "a", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=CSV_FIELDS)
+    with open(CSV_PATH, "a", newline="", encoding='utf-8') as file:
+        writer = csv.DictWriter(file, fieldnames=CSV_FIELDS)
         if write_header:
             writer.writeheader()
         writer.writerow(row)
@@ -160,7 +157,7 @@ if __name__ == "__main__":
         regime_path.mkdir(parents=True, exist_ok=True)
         CSV_PATH = regime_path / "optuna_results.csv"
 
-        study = optuna.create_study(
+        my_study = optuna.create_study(
             direction="minimize",
             pruner=optuna.pruners.MedianPruner(n_warmup_steps=20),
             sampler=optuna.samplers.TPESampler(seed=SEED),
@@ -169,26 +166,26 @@ if __name__ == "__main__":
             load_if_exists=True,
         )
 
-        study.optimize(
+        my_study.optimize(
             objective,
             n_trials=N_TRIALS,
             callbacks=[print_callback],
         )
 
         # -- summary -------------------------------------------------------
-        print(f"\n[{ic}] Best value : {study.best_value:.6f}")
+        print(f"\n[{ic}] Best value : {my_study.best_value:.6f}")
         print(f"[{ic}] Best params:")
-        for k, v in study.best_params.items():
+        for k, v in my_study.best_params.items():
             print(f"  {k:<25} {v}")
 
         # -- save best params ----------------------------------------------
-        with open(regime_path / "best_params.json", "w") as f:
+        with open(regime_path / "best_params.json", "w", encoding='utf-8') as f:
             json.dump({
                 "regime":      ic,
-                "best_val":    study.best_value,
-                "best_params": study.best_params,
+                "best_val":    my_study.best_value,
+                "best_params": my_study.best_params,
             }, f, indent=4)
 
-        df = study.trials_dataframe()
+        df = my_study.trials_dataframe()
         df.to_csv(regime_path / "all_trials.csv", index=False)
         print(f"[{ic}] Saved to {regime_path}")

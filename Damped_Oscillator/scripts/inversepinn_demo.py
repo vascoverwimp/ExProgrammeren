@@ -102,7 +102,7 @@ def resolve_output_path(args, zeta):
     return SCRIPT_DIR / f"outputs/inversepinn_demo_{label}"
 
 
-def main():
+def main() -> None:
     """Main loop."""
     print("=" * 50)
     print("  Inverse PINN Demo — Damped Harmonic Oscillator")

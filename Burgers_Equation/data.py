@@ -11,7 +11,6 @@ Last modified   : 24/05/2026
 
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
 from config import Config
 from analytic import cole_hopf_grid, interpolate_solution
 
@@ -111,8 +110,8 @@ def generate_data(cfg: Config) -> dict:
     }
 
 
-def plot_observations_3D(data: dict) -> None:
-    """Make a 3d p^lot of the observation points."""
+def plot_observations_3d(data: dict) -> None:
+    """Make a 3d plot of the observation points."""
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
@@ -128,6 +127,6 @@ def plot_observations_3D(data: dict) -> None:
 
 
 if __name__ == "__main__":
-    cfg = Config()
-    data = generate_data(cfg)
-    plot_observations_3D(data)
+    my_cfg = Config()
+    my_data = generate_data(my_cfg)
+    plot_observations_3d(my_data)

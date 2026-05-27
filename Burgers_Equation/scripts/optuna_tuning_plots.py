@@ -26,7 +26,7 @@ OUTPUT_PATH.mkdir(exist_ok=True)
 ICS = ["Gauss", "N_wave", "Step_up", "Step_down", "Slope"]
 
 
-def main():
+def main() -> None:
     """Main loop."""
     device = get_device()
     print(f"Device : {device}\n")

@@ -15,7 +15,6 @@ Last modified   : 24/05/2026
 
 import torch
 import torch.nn as nn
-import numpy as np
 from config import Config
 
 
@@ -121,11 +120,11 @@ def loss_bc(
         ) -> torch.Tensor:
     """L_bc = mean(u_hat(x=0)-left_bc)^2 + (u_hat(x=L)-right_bc)^2)"""
     x0 = torch.zeros_like(t_bc_t)
-    xL = torch.full_like(t_bc_t, cfg.L)
+    xl = torch.full_like(t_bc_t, cfg.L)
 
     u_hat_x0 = model(t_bc_t, x0)
-    u_hat_xL = model(t_bc_t, xL)
+    u_hat_xl = model(t_bc_t, xl)
 
     return torch.mean(
-        (u_hat_x0 - cfg.bc_left)**2 + (u_hat_xL - cfg.bc_right)**2
+        (u_hat_x0 - cfg.bc_left)**2 + (u_hat_xl - cfg.bc_right)**2
         )

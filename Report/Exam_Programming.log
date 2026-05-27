@@ -1,36 +1,36 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10) (preloaded format=pdflatex 2026.4.12)  26 MAY 2026 22:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.4.21)  27 MAY 2026 12:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/desde/Documents/GitHub/ExProgrammeren/Report/Exam_Programming.tex
-(c:/Users/desde/Documents/GitHub/ExProgrammeren/Report/Exam_Programming.tex
-LaTeX2e <2023-06-01> patch level 1
-L3 programming layer <2023-08-29>
-(uantwerpenbamathesis.cls
+**/home/des/ExProgrammeren/Report/Exam_Programming.tex
+(/home/des/ExProgrammeren/Report/Exam_Programming.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+(./uantwerpenbamathesis.cls
 Document Class: uantwerpenbamathesis 2022/08/22 v4.4 .dtx skeleton file
-(uantwerpencommonoptions.clo
+(./uantwerpencommonoptions.clo
 File: uantwerpencommonoptions.clo 
 \logounitheight=\skip48
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrbook.cls
+) (/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrbook.cls
 Document Class: scrbook 2023/07/07 v3.41 KOMA-Script document class (book)
-(C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrkbase.sty
+(/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrkbase.sty
 Package: scrkbase 2023/07/07 v3.41 KOMA-Script package (KOMA-Script-dependent basics and keyval usage)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrbase.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrbase.sty
 Package: scrbase 2023/07/07 v3.41 KOMA-Script package (KOMA-Script-independent basics and keyval usage)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrlfile.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrlfile.sty
 Package: scrlfile 2023/07/07 v3.41 KOMA-Script package (file load hooks)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrlfile-hook.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrlfile-hook.sty
 Package: scrlfile-hook 2023/07/07 v3.41 KOMA-Script package (using LaTeX hooks)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrlogo.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrlogo.sty
 Package: scrlogo 2023/07/07 v3.41 KOMA-Script package (logo)
-))) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+))) (/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
 \KV@toks@=\toks17
 )
 Applying: [2021/05/01] Usage of raw or classic option list on input line 252.
 Already applied: [0000/00/00] Usage of raw or classic option list on input line 368.
-)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\tocbasic.sty
+)) (/usr/share/texlive/texmf-dist/tex/latex/koma-script/tocbasic.sty
 Package: tocbasic 2023/07/07 v3.41 KOMA-Script package (handling toc-files)
 \scr@dte@tocline@numberwidth=\skip49
 \scr@dte@tocline@numbox=\box51
@@ -51,12 +51,12 @@ Package scrbook Info: You've used standard option `11pt'.
 (scrbook)             you'd have to use `fontsize=11pt' there
 (scrbook)             instead of `11pt', too.
 Class scrbook Info: File `scrsize11pt.clo' used to setup font sizes on input line 2691.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrsize11pt.clo
+ (/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrsize11pt.clo
 File: scrsize11pt.clo 2023/07/07 v3.41 KOMA-Script font size class option (11pt)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\typearea.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/koma-script/typearea.sty
 Package: typearea 2023/07/07 v3.41 KOMA-Script package (type area)
 \ta@bcor=\skip50
-\ta@div=\count185
+\ta@div=\count187
 Package typearea Info: You've used standard option `a4paper'.
 (typearea)             This is correct!
 (typearea)             Internally I'm using `paper=a4'.
@@ -85,13 +85,13 @@ Package typearea Info: These are the values describing the layout:
 (typearea)              \baselineskip   = 13.6pt
 (typearea)              on input line 1799.
 )
-\c@part=\count186
-\c@chapter=\count187
-\c@section=\count188
-\c@subsection=\count189
-\c@subsubsection=\count190
-\c@paragraph=\count191
-\c@subparagraph=\count192
+\c@part=\count188
+\c@chapter=\count189
+\c@section=\count190
+\c@subsection=\count191
+\c@subsubsection=\count192
+\c@paragraph=\count193
+\c@subparagraph=\count194
 \scr@dte@chapter@maxnumwidth=\skip55
 Class scrbook Info: using compatibility default `afterindent=bysign'
 (scrbook)           for `\chapter on input line 5990.
@@ -130,24 +130,24 @@ Package tocbasic Info: omitting babel extension for `lof'
 (tocbasic)             because of feature `nobabel' available
 (tocbasic)             for `lof' on input line 7242.
 \scr@dte@figure@maxnumwidth=\skip64
-\c@figure=\count193
+\c@figure=\count195
 Package tocbasic Info: omitting babel extension for `lot'
 (tocbasic)             because of feature `nobabel' available
 (tocbasic)             for `lot' on input line 7259.
 \scr@dte@table@maxnumwidth=\skip65
-\c@table=\count194
+\c@table=\count196
 Class scrbook Info: Redefining `\numberline' on input line 7430.
 \bibindent=\dimen140
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+ (/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+ (/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty
 Package: iftex 2022/02/03 v1.0f TeX engine tests
 ))
-\Gm@cnth=\count195
-\Gm@cntv=\count196
-\c@Gm@tempcnt=\count197
+\Gm@cnth=\count197
+\Gm@cntv=\count198
+\c@Gm@tempcnt=\count199
 \Gm@bindingoffset=\dimen141
 \Gm@wd@mp=\dimen142
 \Gm@odd@mp=\dimen143
@@ -157,46 +157,46 @@ Package: iftex 2022/02/03 v1.0f TeX engine tests
 \Gm@layouthoffset=\dimen147
 \Gm@layoutvoffset=\dimen148
 \Gm@dimlist=\toks18
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
-Package: expl3 2023-08-29 L3 programming layer (loader) 
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
-File: l3backend-pdftex.def 2023-04-19 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count198
+) (/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2024-01-22 L3 programming layer (loader) 
+ (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count266
 \l__pdf_internal_box=\box53
-)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/xparse\xparse.sty
-Package: xparse 2023-08-29 L3 Experimental document command parser
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/xstring\xstring.sty (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/xstring\xstring.tex
-\xs_counta=\count199
-\xs_countb=\count266
+)) (/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+Package: xparse 2023-10-10 L3 Experimental document command parser
+) (/usr/share/texlive/texmf-dist/tex/generic/xstring/xstring.sty (/usr/share/texlive/texmf-dist/tex/generic/xstring/xstring.tex
+\xs_counta=\count267
+\xs_countb=\count268
 )
 Package: xstring 2023/08/22 v1.86 String manipulations (CT)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
 Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count267
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/base\ifthen.sty
+\etb@tempcnta=\count269
+) (/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/tools\shellesc.sty
-Package: shellesc 2023/04/15 v1.0d unified shell escape interface for LaTeX
+) (/usr/share/texlive/texmf-dist/tex/latex/tools/shellesc.sty
+Package: shellesc 2023/07/08 v1.0d unified shell escape interface for LaTeX
 Package shellesc Info: Restricted shell escape enabled on input line 77.
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 107.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
 File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen149
 \Gin@req@width=\dimen150
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/soul\soul.sty
-Package: soul 2026-03-06 v3.2 Permit use of UTF-8 characters in soul (HO)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/soul\soul-ori.sty
-Package: soul-ori 2026-03-06 v3.2 letterspacing/underlining (mf)
+) (/usr/share/texlive/texmf-dist/tex/generic/soul/soul.sty
+Package: soul 2023-06-14 v3.1 Permit use of UTF-8 characters in soul (HO)
+ (/usr/share/texlive/texmf-dist/tex/generic/soul/soul-ori.sty
+Package: soul-ori 2023-06-14 v3.1 letterspacing/underlining (mf)
 \SOUL@word=\toks19
 \SOUL@lasttoken=\toks20
 \SOUL@syllable=\toks21
@@ -209,33 +209,33 @@ Package: soul-ori 2026-03-06 v3.2 letterspacing/underlining (mf)
 \SOUL@hyphkern=\dimen154
 \SOUL@dimen=\dimen155
 \SOUL@dimeni=\dimen156
-\SOUL@minus=\count268
-\SOUL@comma=\count269
-\SOUL@apo=\count270
-\SOUL@grave=\count271
+\SOUL@minus=\count270
+\SOUL@comma=\count271
+\SOUL@apo=\count272
+\SOUL@grave=\count273
 \SOUL@spaceskip=\skip66
 \SOUL@ttwidth=\dimen157
 \SOUL@uldp=\dimen158
 \SOUL@ulht=\dimen159
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr.sty
+) (/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty
 Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/etexcmds\etexcmds.sty
+) (/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty
 Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
-)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\adjustbox.sty
+)) (/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjustbox.sty
 Package: adjustbox 2022/10/17 v1.3a Adjusting TeX boxes (trim, clip, ...)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/xkeyval\xkeyval.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
 Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/xkeyval\xkeyval.tex (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/xkeyval\xkvutils.tex
+ (/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
 \XKV@toks=\toks25
 \XKV@tempa@toks=\toks26
 )
-\XKV@depth=\count272
+\XKV@depth=\count274
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
-)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\adjcalc.sty
+)) (/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjcalc.sty
 Package: adjcalc 2012/05/16 v1.1 Provides advanced setlength with multiple back-ends (calc, etex, pgfmath)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\trimclip.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/adjustbox/trimclip.sty
 Package: trimclip 2020/08/19 v1.2 Trim and clip general TeX material
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/collectbox\collectbox.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/collectbox/collectbox.sty
 Package: collectbox 2022/10/17 v0.4c Collect macro arguments as boxes
 \collectedbox=\box54
 )
@@ -244,7 +244,7 @@ Package: collectbox 2022/10/17 v0.4c Collect macro arguments as boxes
 \tc@urx=\dimen162
 \tc@ury=\dimen163
 Package trimclip Info: Using driver 'tc-pdftex.def'.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\tc-pdftex.def
+ (/usr/share/texlive/texmf-dist/tex/latex/adjustbox/tc-pdftex.def
 File: tc-pdftex.def 2019/01/04 v2.2 Clipping driver for pdftex
 ))
 \adjbox@Width=\dimen164
@@ -255,37 +255,37 @@ File: tc-pdftex.def 2019/01/04 v2.2 Clipping driver for pdftex
 \adjbox@pheight=\dimen169
 \adjbox@pdepth=\dimen170
 \adjbox@ptotalheight=\dimen171
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/ifoddpage\ifoddpage.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
 Package: ifoddpage 2022/10/18 v1.2 Conditionals for odd/even page detection
-\c@checkoddpage=\count273
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/varwidth\varwidth.sty
+\c@checkoddpage=\count275
+) (/usr/share/texlive/texmf-dist/tex/latex/varwidth/varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \@vwid@box=\box55
-\sift@deathcycles=\count274
+\sift@deathcycles=\count276
 \@vwid@loff=\dimen172
 \@vwid@roff=\dimen173
-)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/graphics\color.sty
+)) (/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
 Package: color 2022/01/06 v1.3d Standard LaTeX Color (DPC)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package color Info: Driver file: pdftex.def on input line 149.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/pgf/frontendlayer\tikz.sty (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgf.sty (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfrcs.sty (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil-common.tex
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty (/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
 \pgfutil@everybye=\toks27
 \pgfutil@tempdima=\dimen174
 \pgfutil@tempdimb=\dimen175
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil-latex.def
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
 \pgfutil@abb=\box56
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfrcs.code.tex (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf\pgf.revision.tex)
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex (/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)
 Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
 ))
 Package: pgf 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgfcore.sty (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/pgf/systemlayer\pgfsys.sty (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsys.code.tex
+ (/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty (/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
 Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys.code.tex
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
 \pgfkeys@pathtoks=\toks28
 \pgfkeys@temptoks=\toks29
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeyslibraryfiltered.code.tex
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.tex
 \pgfkeys@tmptoks=\toks30
 ))
 \pgf@x=\dimen176
@@ -300,57 +300,57 @@ Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
 \pgf@yd=\dimen185
 \w@pgf@writea=\write3
 \r@pgf@reada=\read2
-\c@pgf@counta=\count275
-\c@pgf@countb=\count276
-\c@pgf@countc=\count277
-\c@pgf@countd=\count278
+\c@pgf@counta=\count277
+\c@pgf@countb=\count278
+\c@pgf@countc=\count279
+\c@pgf@countd=\count280
 \t@pgf@toka=\toks31
 \t@pgf@tokb=\toks32
 \t@pgf@tokc=\toks33
-\pgf@sys@id@count=\count279
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgf.cfg
+\pgf@sys@id@count=\count281
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
 File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
 )
 Driver file for pgf: pgfsys-pdftex.def
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsys-pdftex.def
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
 File: pgfsys-pdftex.def 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsys-common-pdf.def
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
 File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
-))) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsyssoftpath.code.tex
+))) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
 File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfsyssoftpath@smallbuffer@items=\count280
-\pgfsyssoftpath@bigbuffer@items=\count281
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsysprotocol.code.tex
+\pgfsyssoftpath@smallbuffer@items=\count282
+\pgfsyssoftpath@bigbuffer@items=\count283
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
 File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
-)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
-Package: xcolor 2022/06/12 v2.14 LaTeX color extensions (UK)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
+)) (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2023/11/15 v3.01 LaTeX color extensions (UK)
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
-Package xcolor Info: Driver file: pdftex.def on input line 227.
-LaTeX Info: Redefining \color on input line 711.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)
-Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1353.
-Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1357.
-Package xcolor Info: Model `RGB' extended on input line 1369.
-Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1371.
-Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1372.
-Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1373.
-Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1374.
-Package xcolor Info: Model `Gray' substituted by `gray' on input line 1375.
-Package xcolor Info: Model `wave' substituted by `hsb' on input line 1376.
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcore.code.tex
+Package xcolor Info: Driver file: pdftex.def on input line 274.
+LaTeX Info: Redefining \color on input line 758.
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1350.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1354.
+Package xcolor Info: Model `RGB' extended on input line 1366.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1368.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1371.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1372.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1373.
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
 Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code.tex (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathutil.code.tex) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathparser.code.tex
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
 \pgfmath@dimen=\dimen186
-\pgfmath@count=\count282
+\pgfmath@count=\count284
 \pgfmath@box=\box57
 \pgfmath@toks=\toks34
 \pgfmath@stack@operand=\toks35
 \pgfmath@stack@operation=\toks36
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.code.tex) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.basic.code.tex) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.trigonometric.code.tex) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.random.code.tex) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.comparison.code.tex) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.base.code.tex) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.round.code.tex) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.misc.code.tex) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.integerarithmetics.code.tex) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathcalc.code.tex) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfloat.code.tex
-\c@pgfmathroundto@lastzeros=\count283
-)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfint.code.tex) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepoints.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count285
+)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfint.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
 File: pgfcorepoints.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@picminx=\dimen187
 \pgf@picmaxx=\dimen188
@@ -366,77 +366,77 @@ File: pgfcorepoints.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@yy=\dimen198
 \pgf@zx=\dimen199
 \pgf@zy=\dimen256
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepathconstruct.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
 File: pgfcorepathconstruct.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@path@lastx=\dimen257
 \pgf@path@lasty=\dimen258
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepathusage.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex
 File: pgfcorepathusage.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@shorten@end@additional=\dimen259
 \pgf@shorten@start@additional=\dimen260
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorescopes.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex
 File: pgfcorescopes.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgfpic=\box58
 \pgf@hbox=\box59
 \pgf@layerbox@main=\box60
-\pgf@picture@serial@count=\count284
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoregraphicstate.code.tex
+\pgf@picture@serial@count=\count286
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
 File: pgfcoregraphicstate.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgflinewidth=\dimen261
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoretransformations.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformations.code.tex
 File: pgfcoretransformations.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@pt@x=\dimen262
 \pgf@pt@y=\dimen263
 \pgf@pt@temp=\dimen264
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorequick.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
 File: pgfcorequick.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreobjects.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex
 File: pgfcoreobjects.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepathprocessing.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.tex
 File: pgfcorepathprocessing.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorearrows.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex
 File: pgfcorearrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgfarrowsep=\dimen265
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreshade.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
 File: pgfcoreshade.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@max=\dimen266
-\pgf@sys@shading@range@num=\count285
-\pgf@shadingcount=\count286
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreimage.code.tex
+\pgf@sys@shading@range@num=\count287
+\pgf@shadingcount=\count288
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
 File: pgfcoreimage.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreexternal.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex
 File: pgfcoreexternal.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgfexternal@startupbox=\box61
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorelayers.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex
 File: pgfcorelayers.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoretransparency.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex
 File: pgfcoretransparency.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepatterns.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex
 File: pgfcorepatterns.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorerdf.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex
 File: pgfcorerdf.code.tex 2023-01-15 v3.1.10 (3.1.10)
-))) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmoduleshapes.code.tex
+))) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
 File: pgfmoduleshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgfnodeparttextbox=\box62
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmoduleplot.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
 File: pgfmoduleplot.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfcomp-version-0-65.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty
 Package: pgfcomp-version-0-65 2023-01-15 v3.1.10 (3.1.10)
 \pgf@nodesepstart=\dimen267
 \pgf@nodesepend=\dimen268
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfcomp-version-1-18.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty
 Package: pgfcomp-version-1-18 2023-01-15 v3.1.10 (3.1.10)
-)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgffor.sty (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfkeys.sty (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys.code.tex)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/pgf/math\pgfmath.sty (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code.tex)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgffor.code.tex
+)) (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgffor.sty (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex)) (/usr/share/texlive/texmf-dist/tex/latex/pgf/math/pgfmath.sty (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
 Package: pgffor 2023-01-15 v3.1.10 (3.1.10)
 \pgffor@iter=\dimen269
 \pgffor@skip=\dimen270
 \pgffor@stack=\toks37
 \pgffor@toks=\toks38
-)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz\tikz.code.tex
+)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
 Package: tikz 2023-01-15 v3.1.10 (3.1.10)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibraryplothandlers.code.tex
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.tex
 File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@plot@mark@count=\count287
+\pgf@plot@mark@count=\count289
 \pgfplotmarksize=\dimen271
 )
 \tikz@lastx=\dimen272
@@ -451,29 +451,28 @@ File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \tikz@figbox@bg=\box64
 \tikz@tempbox=\box65
 \tikz@tempbox@bg=\box66
-\tikztreelevel=\count288
-\tikznumberofchildren=\count289
-\tikznumberofcurrentchild=\count290
-\tikz@fig@count=\count291
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodulematrix.code.tex
+\tikztreelevel=\count290
+\tikznumberofchildren=\count291
+\tikznumberofcurrentchild=\count292
+\tikz@fig@count=\count293
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
 File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfmatrixcurrentrow=\count292
-\pgfmatrixcurrentcolumn=\count293
-\pgf@matrix@numberofcolumns=\count294
+\pgfmatrixcurrentrow=\count294
+\pgfmatrixcurrentcolumn=\count295
+\pgf@matrix@numberofcolumns=\count296
 )
-\tikz@expandcount=\count295
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarytopaths.code.tex
+\tikz@expandcount=\count297
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2023-01-15 v3.1.10 (3.1.10)
-))) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarypositioning.code.tex
+))) (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarypositioning.code.tex
 File: tikzlibrarypositioning.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarycalc.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarycalc.code.tex
 File: tikzlibrarycalc.code.tex 2023-01-15 v3.1.10 (3.1.10)
-)
-(C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/eso-pic\eso-pic.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty
 Package: eso-pic 2023/05/03 v3.0c eso-pic (RN)
 \ESO@tempdima=\dimen280
 \ESO@tempdimb=\dimen281
-) (uantwerpencolorlogoscheme.sty
+) (./uantwerpencolorlogoscheme.sty
 Package: uantwerpencolorlogoscheme 2022/08/22 v4.4 .dtx skeleton file
 )
 
@@ -490,28 +489,22 @@ Class scrbook Warning: Usage of package `fancyhdr' together
 (scrbook)              Nevertheless, using requested
 (scrbook)              package `fancyhdr' on input line 57.
 
-(C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/fancyhdr\fancyhdr.sty
-Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
+(/usr/share/texlive/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+Package: fancyhdr 2022/11/09 v4.1 Extensive control of page headers and footers
 \f@nch@headwidth=\skip67
-\f@nch@offset@elh=\skip68
-\f@nch@offset@erh=\skip69
-\f@nch@offset@olh=\skip70
-\f@nch@offset@orh=\skip71
-\f@nch@offset@elf=\skip72
-\f@nch@offset@erf=\skip73
-\f@nch@offset@olf=\skip74
-\f@nch@offset@orf=\skip75
-\f@nch@height=\skip76
-\f@nch@footalignment=\skip77
-\f@nch@widthL=\skip78
-\f@nch@widthC=\skip79
-\f@nch@widthR=\skip80
-\@temptokenb=\toks39
-)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/caption\subcaption.sty
+\f@nch@O@elh=\skip68
+\f@nch@O@erh=\skip69
+\f@nch@O@olh=\skip70
+\f@nch@O@orh=\skip71
+\f@nch@O@elf=\skip72
+\f@nch@O@erf=\skip73
+\f@nch@O@olf=\skip74
+\f@nch@O@orf=\skip75
+)) (/usr/share/texlive/texmf-dist/tex/latex/caption/subcaption.sty
 Package: subcaption 2023/07/28 v1.6b Sub-captions (AR)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
 Package: caption 2023/08/05 v3.6o Customizing captions (AR)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption3.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
 Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
 \caption@tempdima=\dimen282
 \captionmargin=\dimen283
@@ -522,20 +515,20 @@ Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
 \caption@parindent=\dimen288
 \caption@hangindent=\dimen289
 Package caption Info: KOMA-Script document class detected.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption-koma.sto
+ (/usr/share/texlive/texmf-dist/tex/latex/caption/caption-koma.sto
 File: caption-koma.sto 2023/09/08 v2.0e Adaption of the caption package to the KOMA-Script document classes (AR)
 ))
-\c@caption@flags=\count296
-\c@continuedfloat=\count297
+\c@caption@flags=\count298
+\c@continuedfloat=\count299
 Package caption Info: KOMA-Script scrextend package detected.
 \caption@addmargin@hsize=\dimen290
 \caption@addmargin@linewidth=\dimen291
 )
 Package caption Info: New subtype `subfigure' on input line 238.
-\c@subfigure=\count298
+\c@subfigure=\count300
 Package caption Info: New subtype `subtable' on input line 238.
-\c@subtable=\count299
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.sty
+\c@subtable=\count301
+) (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \heavyrulewidth=\dimen292
 \lightrulewidth=\dimen293
@@ -547,240 +540,238 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \cmidrulesep=\dimen299
 \cmidrulekern=\dimen300
 \defaultaddspace=\dimen301
-\@cmidla=\count300
-\@cmidlb=\count301
+\@cmidla=\count302
+\@cmidlb=\count303
 \@aboverulesep=\dimen302
 \@belowrulesep=\dimen303
-\@thisruleclass=\count302
-\@lastruleclass=\count303
+\@thisruleclass=\count304
+\@lastruleclass=\count305
 \@thisrulewidth=\dimen304
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/tcolorbox\tcolorbox.sty
-Package: tcolorbox 2023/09/26 version 6.1.0 text color boxes
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/tools\verbatim.sty
-Package: verbatim 2022-07-02 v1.5u LaTeX2e package for verbatim enhancements
-\every@verbatim=\toks40
-\verbatim@line=\toks41
+) (/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcolorbox.sty
+Package: tcolorbox 2024/01/10 version 6.2.0 text color boxes
+ (/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty
+Package: verbatim 2023-11-06 v1.5v LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks39
+\verbatim@line=\toks40
 \verbatim@in@stream=\read3
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/environ\environ.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/environ/environ.sty
 Package: environ 2014/05/04 v0.3 A new way to define environments
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/trimspaces\trimspaces.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/trimspaces/trimspaces.sty
 Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 )
-\@envbody=\toks42
+\@envbody=\toks41
 )
 \tcb@titlebox=\box67
 \tcb@upperbox=\box68
 \tcb@lowerbox=\box69
 \tcb@phantombox=\box70
-\c@tcbbreakpart=\count304
-\c@tcblayer=\count305
-\c@tcolorbox@number=\count306
-\tcb@temp=\box71
+\c@tcbbreakpart=\count306
+\c@tcblayer=\count307
+\c@tcolorbox@number=\count308
+\l__tcobox_tmpa_box=\box71
+\l__tcobox_tmpa_dim=\dimen305
 \tcb@temp=\box72
 \tcb@temp=\box73
 \tcb@temp=\box74
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrhack.sty
+\tcb@temp=\box75
+) (/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrhack.sty
 Package: scrhack 2023/07/07 v3.41 KOMA-Script package (hacking other packages)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/xpatch\xpatch.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/xpatch/xpatch.sty
 Package: xpatch 2020/03/25 v0.3a Extending etoolbox patching commands
-)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/babel\babel.sty
-Package: babel 2023/09/29 v3.95 The Babel package
-\babel@savecnt=\count307
-\U@D=\dimen305
-\l@unhyphenated=\language79
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/babel\txtbabel.def)
+)) (/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2024/01/07 v24.1 The Babel package
+\babel@savecnt=\count309
+\U@D=\dimen306
+\l@unhyphenated=\language33
+ (/usr/share/texlive/texmf-dist/tex/generic/babel/txtbabel.def)
 \bbl@readstream=\read4
-\bbl@dirlevel=\count308
-
-*************************************
-* Local config file bblopts.cfg used
-*
-(C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/arabi\bblopts.cfg
-File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of babel
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/babel-english\english.ldf
+\bbl@dirlevel=\count310
+ (/usr/share/texlive/texmf-dist/tex/generic/babel-english/english.ldf
 Language: english 2017/06/06 v3.3r English support from the babel system
+Package babel Info: Hyphen rules for 'british' set to \l@english
+(babel)             (\language0). Reported on input line 82.
+Package babel Info: Hyphen rules for 'UKenglish' set to \l@english
+(babel)             (\language0). Reported on input line 83.
 Package babel Info: Hyphen rules for 'canadian' set to \l@english
 (babel)             (\language0). Reported on input line 102.
-Package babel Info: Hyphen rules for 'australian' set to \l@ukenglish
-(babel)             (\language73). Reported on input line 105.
-Package babel Info: Hyphen rules for 'newzealand' set to \l@ukenglish
-(babel)             (\language73). Reported on input line 108.
-)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/babel/locale/en\babel-english.tex
+Package babel Info: Hyphen rules for 'australian' set to \l@english
+(babel)             (\language0). Reported on input line 105.
+Package babel Info: Hyphen rules for 'newzealand' set to \l@english
+(babel)             (\language0). Reported on input line 108.
+)) (/usr/share/texlive/texmf-dist/tex/generic/babel/locale/en/babel-english.tex
 Package babel Info: Importing font and identification data for english
 (babel)             from babel-en.ini. Reported on input line 11.
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2023/05/13 v2.17o AMS math features
-\@mathmargin=\skip81
+\@mathmargin=\skip76
 
 For additional information on amsmath, use the `?' option.
-(C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
 Package: amstext 2021/08/26 v2.01 AMS text
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
-\@emptytoks=\toks43
-\ex@=\dimen306
-)) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
+\@emptytoks=\toks42
+\ex@=\dimen307
+)) (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
-\pmbraise@=\dimen307
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
+\pmbraise@=\dimen308
+) (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 2022/04/08 v2.04 operator names
 )
-\inf@bad=\count309
+\inf@bad=\count311
 LaTeX Info: Redefining \frac on input line 234.
-\uproot@=\count310
-\leftroot@=\count311
+\uproot@=\count312
+\leftroot@=\count313
 LaTeX Info: Redefining \overline on input line 399.
 LaTeX Info: Redefining \colon on input line 410.
-\classnum@=\count312
-\DOTSCASE@=\count313
+\classnum@=\count314
+\DOTSCASE@=\count315
 LaTeX Info: Redefining \ldots on input line 496.
 LaTeX Info: Redefining \dots on input line 499.
 LaTeX Info: Redefining \cdots on input line 620.
-\Mathstrutbox@=\box75
-\strutbox@=\box76
+\Mathstrutbox@=\box76
+\strutbox@=\box77
 LaTeX Info: Redefining \big on input line 722.
 LaTeX Info: Redefining \Big on input line 723.
 LaTeX Info: Redefining \bigg on input line 724.
 LaTeX Info: Redefining \Bigg on input line 725.
-\big@size=\dimen308
+\big@size=\dimen309
 LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
-\macc@depth=\count314
+\macc@depth=\count316
 LaTeX Info: Redefining \bmod on input line 905.
 LaTeX Info: Redefining \pmod on input line 910.
 LaTeX Info: Redefining \smash on input line 940.
 LaTeX Info: Redefining \relbar on input line 970.
 LaTeX Info: Redefining \Relbar on input line 971.
-\c@MaxMatrixCols=\count315
+\c@MaxMatrixCols=\count317
 \dotsspace@=\muskip16
-\c@parentequation=\count316
-\dspbrk@lvl=\count317
-\tag@help=\toks44
-\row@=\count318
-\column@=\count319
-\maxfields@=\count320
-\andhelp@=\toks45
-\eqnshift@=\dimen309
-\alignsep@=\dimen310
-\tagshift@=\dimen311
-\tagwidth@=\dimen312
-\totwidth@=\dimen313
-\lineht@=\dimen314
-\@envbody=\toks46
-\multlinegap=\skip82
-\multlinetaggap=\skip83
-\mathdisplay@stack=\toks47
+\c@parentequation=\count318
+\dspbrk@lvl=\count319
+\tag@help=\toks43
+\row@=\count320
+\column@=\count321
+\maxfields@=\count322
+\andhelp@=\toks44
+\eqnshift@=\dimen310
+\alignsep@=\dimen311
+\tagshift@=\dimen312
+\tagwidth@=\dimen313
+\totwidth@=\dimen314
+\lineht@=\dimen315
+\@envbody=\toks45
+\multlinegap=\skip77
+\multlinetaggap=\skip78
+\mathdisplay@stack=\toks46
 LaTeX Info: Redefining \[ on input line 2953.
 LaTeX Info: Redefining \] on input line 2954.
 )
 Package scrhack Info: hyperref hack deactivated because of
 (scrhack)             detection of KOMA-Script class, that doesn't
 (scrhack)             need that hack, on input line 41.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
-Package: hyperref 2023-07-08 v7.01b Hypertext links for LaTeX
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
-Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcmds.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2024-01-20 v7.01h Hypertext links for LaTeX
+ (/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+) (/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+) (/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+ (/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+) (/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
 Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
-Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvdefinekeys.sty
-Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/pdfescape\pdfescape.sty
-Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/hycolor\hycolor.sty
+)) (/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty
 Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/letltxmacro\letltxmacro.sty
-Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/auxhook\auxhook.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty
 Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
-Package: nameref 2023-08-07 v2.53 Cross-referencing by name of section
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/refcount\refcount.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2023-11-26 v2.56 Cross-referencing by name of section
+ (/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
 Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/gettitlestring\gettitlestring.sty
+) (/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
 Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 ))
-\c@section@level=\count321
+\c@section@level=\count323
 )
-\@linkdim=\dimen315
-\Hy@linkcounter=\count322
-\Hy@pagecounter=\count323
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
-File: pd1enc.def 2023-07-08 v7.01b Hyperref: PDFDocEncoding definition (HO)
+\@linkdim=\dimen316
+\Hy@linkcounter=\count324
+\Hy@pagecounter=\count325
+ (/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2024-01-20 v7.01h Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.sty
+) (/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
-\Hy@SavedSpaceFactor=\count324
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
-File: puenc.def 2023-07-08 v7.01b Hyperref: PDF Unicode definition (HO)
+\Hy@SavedSpaceFactor=\count326
+ (/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2024-01-20 v7.01h Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
 ... no UTF-8 mapping file for font encoding PU
 )
-Package hyperref Info: Option `hyperindex' set `true' on input line 4050.
-Package hyperref Info: Hyper figures OFF on input line 4167.
-Package hyperref Info: Link nesting OFF on input line 4172.
-Package hyperref Info: Hyper index ON on input line 4175.
-Package hyperref Info: Plain pages OFF on input line 4182.
-Package hyperref Info: Backreferencing ON on input line 4185.
+Package hyperref Info: Option `hyperindex' set `true' on input line 4062.
+Package hyperref Info: Hyper figures OFF on input line 4179.
+Package hyperref Info: Link nesting OFF on input line 4184.
+Package hyperref Info: Hyper index ON on input line 4187.
+Package hyperref Info: Plain pages OFF on input line 4194.
+Package hyperref Info: Backreferencing ON on input line 4197.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4434.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\backref.sty
-Package: backref 2023/04/20 v1.42 Bibliographical back referencing
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfilecheck.sty
+Package hyperref Info: Bookmarks ON on input line 4446.
+ (/usr/share/texlive/texmf-dist/tex/latex/hyperref/backref.sty
+Package: backref 2023-11-26 v1.44 Bibliographical back referencing
+ (/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
 Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/base\atveryend-ltx.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty
 Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend package
 with kernel methods
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/uniquecounter\uniquecounter.sty
+) (/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
 Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/bigintcalc\bigintcalc.sty
+ (/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
 ))
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 285.
 ))
-\c@Hy@tempcnt=\count325
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
+\c@Hy@tempcnt=\count327
+ (/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
-LaTeX Info: Redefining \url on input line 4772.
-\XeTeXLinkMargin=\dimen316
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
+LaTeX Info: Redefining \url on input line 4784.
+\XeTeXLinkMargin=\dimen317
+ (/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
 )
-\Fld@menulength=\count326
-\Field@Width=\dimen317
-\Fld@charsize=\dimen318
-Package hyperref Info: Hyper figures OFF on input line 6051.
-Package hyperref Info: Link nesting OFF on input line 6056.
-Package hyperref Info: Hyper index ON on input line 6059.
-Package hyperref Info: backreferencing ON on input line 6064.
-Package hyperref Info: Link coloring OFF on input line 6071.
-Package hyperref Info: Link coloring with OCG OFF on input line 6076.
-Package hyperref Info: PDF/A mode OFF on input line 6081.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/base\atbegshi-ltx.sty
+\Fld@menulength=\count328
+\Field@Width=\dimen318
+\Fld@charsize=\dimen319
+Package hyperref Info: Hyper figures OFF on input line 6063.
+Package hyperref Info: Link nesting OFF on input line 6068.
+Package hyperref Info: Hyper index ON on input line 6071.
+Package hyperref Info: backreferencing ON on input line 6076.
+Package hyperref Info: Link coloring OFF on input line 6083.
+Package hyperref Info: Link coloring with OCG OFF on input line 6088.
+Package hyperref Info: PDF/A mode OFF on input line 6093.
+ (/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
 )
-\Hy@abspage=\count327
-\c@Item=\count328
-\c@Hfootnote=\count329
+\Hy@abspage=\count329
+\c@Item=\count330
+\c@Hfootnote=\count331
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hpdftex.def
-File: hpdftex.def 2023-07-08 v7.01b Hyperref driver for pdfTeX
-\Fld@listcount=\count330
-\c@bookmark@seq@number=\count331
-\Hy@SectionHShift=\skip84
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\mathptmx.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2024-01-20 v7.01h Hyperref driver for pdfTeX
+\Fld@listcount=\count332
+\c@bookmark@seq@number=\count333
+\Hy@SectionHShift=\skip79
+) (/usr/share/texlive/texmf-dist/tex/latex/psnfss/mathptmx.sty
 Package: mathptmx 2020/03/25 PSNFSS-v9.3 Times w/ Math, improved (SPQR, WaS) 
 LaTeX Font Info:    Redeclaring symbol font `operators' on input line 28.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
@@ -817,31 +808,30 @@ LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 LaTeX Info: Redefining \hbar on input line 50.
 )
 LaTeX Font Info:    Redeclaring math alphabet \mathcal on input line 43.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/tools\multicol.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/tools/multicol.sty
 Package: multicol 2023/03/30 v1.9f multicolumn formatting (FMi)
-\c@tracingmulticols=\count332
-\mult@box=\box77
-\multicol@leftmargin=\dimen319
-\c@unbalance=\count333
-\c@collectmore=\count334
-\doublecol@number=\count335
-\multicoltolerance=\count336
-\multicolpretolerance=\count337
-\full@width=\dimen320
-\page@free=\dimen321
-\premulticols=\dimen322
-\postmulticols=\dimen323
-\multicolsep=\skip85
-\multicolbaselineskip=\skip86
-\partial@page=\box78
-\last@line=\box79
-\mc@boxedresult=\box80
-\maxbalancingoverflow=\dimen324
-\mult@rightbox=\box81
-\mult@grightbox=\box82
-\mult@firstbox=\box83
-\mult@gfirstbox=\box84
-\@tempa=\box85
+\c@tracingmulticols=\count334
+\mult@box=\box78
+\multicol@leftmargin=\dimen320
+\c@unbalance=\count335
+\c@collectmore=\count336
+\doublecol@number=\count337
+\multicoltolerance=\count338
+\multicolpretolerance=\count339
+\full@width=\dimen321
+\page@free=\dimen322
+\premulticols=\dimen323
+\postmulticols=\dimen324
+\multicolsep=\skip80
+\multicolbaselineskip=\skip81
+\partial@page=\box79
+\last@line=\box80
+\mc@boxedresult=\box81
+\maxbalancingoverflow=\dimen325
+\mult@rightbox=\box82
+\mult@grightbox=\box83
+\mult@firstbox=\box84
+\mult@gfirstbox=\box85
 \@tempa=\box86
 \@tempa=\box87
 \@tempa=\box88
@@ -877,39 +867,44 @@ Package: multicol 2023/03/30 v1.9f multicolumn formatting (FMi)
 \@tempa=\box118
 \@tempa=\box119
 \@tempa=\box120
-\c@minrows=\count338
-\c@columnbadness=\count339
-\c@finalcolumnbadness=\count340
-\last@try=\dimen325
-\multicolovershoot=\dimen326
-\multicolundershoot=\dimen327
-\mult@nat@firstbox=\box121
-\colbreak@box=\box122
-\mc@col@check@num=\count341
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
+\@tempa=\box121
+\c@minrows=\count340
+\c@columnbadness=\count341
+\c@finalcolumnbadness=\count342
+\last@try=\dimen326
+\multicolovershoot=\dimen327
+\multicolundershoot=\dimen328
+\mult@nat@firstbox=\box122
+\colbreak@box=\box123
+\mc@col@check@num=\count343
+) (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count342
-\float@exts=\toks48
-\float@box=\box123
-\@float@everytoks=\toks49
-\@floatcapt=\box124
+\c@float@type=\count344
+\float@exts=\toks47
+\float@box=\box124
+\@float@everytoks=\toks48
+\@floatcapt=\box125
 )
 Package scrhack Info: loading float hack on input line 55.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\float.hak
+ (/usr/share/texlive/texmf-dist/tex/latex/koma-script/float.hak
 File: float.hak 2023/07/07 v3.41 KOMA-Script scrhack part (hacking package float)
 Package scrhack Info: redefining \newfloat on input line 163.
 Package scrhack Info: redefining \listof on input line 163.
 Package scrhack Info: undefining \float@addtolists on input line 163.
 )
 LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 65.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ptm.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 
 LaTeX Warning: Unused global option(s):
     [we].
 
-(Exam_Programming.aux)
+(./Exam_Programming.aux
+
+LaTeX Warning: Label `tab:wall_times_DHO' multiply defined.
+
+)
 \openout1 = `Exam_Programming.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 65.
@@ -930,7 +925,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 65.
 LaTeX Font Info:    ... okay on input line 65.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 65.
 LaTeX Font Info:    ... okay on input line 65.
-\smallogo=\box125
+\smallogo=\box126
 <Logos/logo-uantwerpen-we-en-rgb-pos.pdf, id=4, 391.4625pt x 103.38625pt>
 File: Logos/logo-uantwerpen-we-en-rgb-pos.pdf Graphic file (type pdf)
 <use Logos/logo-uantwerpen-we-en-rgb-pos.pdf>
@@ -984,31 +979,31 @@ Package scrbase Info: activating english \indexname on input line 65.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-(C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count343
-\scratchdimen=\dimen328
-\scratchbox=\box126
-\nofMPsegments=\count344
-\nofMParguments=\count345
-\everyMPshowfont=\toks50
-\MPscratchCnt=\count346
-\MPscratchDim=\dimen329
-\MPnumerator=\count347
-\makeMPintoPDFobject=\count348
-\everyMPtoPDFconversion=\toks51
-) (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
+\scratchcounter=\count345
+\scratchdimen=\dimen329
+\scratchbox=\box127
+\nofMPsegments=\count346
+\nofMParguments=\count347
+\everyMPshowfont=\toks49
+\MPscratchCnt=\count348
+\MPscratchDim=\dimen330
+\MPnumerator=\count349
+\makeMPintoPDFobject=\count350
+\everyMPtoPDFconversion=\toks50
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+ (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
 Package hyperref Info: Link coloring ON on input line 65.
- (Exam_Programming.out) (Exam_Programming.out)
+ (./Exam_Programming.out) (./Exam_Programming.out)
 \@outlinefile=\write4
 \openout4 = `Exam_Programming.out'.
 
@@ -1020,17 +1015,17 @@ Class scrbook Info: loading recommended package `bookmark'.
 (scrbook)           you can avoid this message adding:
 (scrbook)             \usepackage{bookmark}
 (scrbook)           before \begin{document} on input line 65.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/bookmark\bookmark.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2023-12-10 v1.31 PDF bookmarks (HO)
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/bookmark\bkm-pdftex.def
+ (/usr/share/texlive/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
 File: bkm-pdftex.def 2023-12-10 v1.31 bookmark driver for pdfTeX and luaTeX (HO)
-\BKM@id=\count349
+\BKM@id=\count351
 ))
 File: Logos/logo-uantwerpen-we-en-rgb-pos.pdf Graphic file (type pdf)
 <use Logos/logo-uantwerpen-we-en-rgb-pos.pdf>
 Package pdftex.def Info: Logos/logo-uantwerpen-we-en-rgb-pos.pdf  used on input line 68.
 (pdftex.def)             Requested size: 176.407pt x 46.58963pt.
- [1{C:/Users/desde/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
+ [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
 
 
@@ -1038,21 +1033,21 @@ Package pdftex.def Info: Logos/logo-uantwerpen-we-en-rgb-pos.pdf  used on input 
 
 
 
-] (Exam_Programming.toc
+] (./Exam_Programming.toc
 LaTeX Font Info:    Trying to load font information for OT1+ztmcm on input line 4.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ztmcm.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ztmcm.fd
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
 )
 LaTeX Font Info:    Trying to load font information for OML+ztmcm on input line 4.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omlztmcm.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omlztmcm.fd
 File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
 )
 LaTeX Font Info:    Trying to load font information for OMS+ztmcm on input line 4.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omsztmcm.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsztmcm.fd
 File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
 )
 LaTeX Font Info:    Trying to load font information for OMX+ztmcm on input line 4.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omxztmcm.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omxztmcm.fd
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
@@ -1101,17 +1096,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 103--105
  []
 
 [3]
-<Images_DHO/analytic_solution_overdamped.png, id=158, 578.16pt x 361.35pt>
+<Images_DHO/analytic_solution_overdamped.png, id=161, 578.16pt x 361.35pt>
 File: Images_DHO/analytic_solution_overdamped.png Graphic file (type png)
 <use Images_DHO/analytic_solution_overdamped.png>
 Package pdftex.def Info: Images_DHO/analytic_solution_overdamped.png  used on input line 144.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
-<Images_DHO/analytic_solution_criticallydamped.png, id=160, 578.16pt x 361.35pt>
+<Images_DHO/analytic_solution_criticallydamped.png, id=163, 578.16pt x 361.35pt>
 File: Images_DHO/analytic_solution_criticallydamped.png Graphic file (type png)
 <use Images_DHO/analytic_solution_criticallydamped.png>
 Package pdftex.def Info: Images_DHO/analytic_solution_criticallydamped.png  used on input line 151.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
-<Images_DHO/analytic_solution_underdamped.png, id=161, 578.16pt x 361.35pt>
+<Images_DHO/analytic_solution_underdamped.png, id=164, 578.16pt x 361.35pt>
 File: Images_DHO/analytic_solution_underdamped.png Graphic file (type png)
 <use Images_DHO/analytic_solution_underdamped.png>
 Package pdftex.def Info: Images_DHO/analytic_solution_underdamped.png  used on input line 158.
@@ -1134,7 +1129,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 192--194
 
  []
 
-<Images_DHO/ic_effect.png, id=184, 1156.32pt x 578.16pt>
+<Images_DHO/ic_effect.png, id=188, 1156.32pt x 578.16pt>
 File: Images_DHO/ic_effect.png Graphic file (type png)
 <use Images_DHO/ic_effect.png>
 Package pdftex.def Info: Images_DHO/ic_effect.png  used on input line 206.
@@ -1166,7 +1161,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 253--254
 
 [7]
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 257.
- (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 Underfull \hbox (badness 10000) in paragraph at lines 267--268
@@ -1235,7 +1230,7 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 431.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 431.
-<Images_DHO/unsqueeze.png, id=259, 758.835pt x 473.77pt>
+<Images_DHO/unsqueeze.png, id=263, 758.835pt x 473.77pt>
 File: Images_DHO/unsqueeze.png Graphic file (type png)
 <use Images_DHO/unsqueeze.png>
 Package pdftex.def Info: Images_DHO/unsqueeze.png  used on input line 437.
@@ -1277,7 +1272,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 548--549
 Underfull \vbox (badness 1122) has occurred while \output is active []
 
  [18]
-<Images_DHO/pinn_overdamped/summary.png, id=320, 1156.32pt x 650.43pt>
+<Images_DHO/pinn_overdamped/summary.png, id=325, 1156.32pt x 650.43pt>
 File: Images_DHO/pinn_overdamped/summary.png Graphic file (type png)
 <use Images_DHO/pinn_overdamped/summary.png>
 Package pdftex.def Info: Images_DHO/pinn_overdamped/summary.png  used on input line 599.
@@ -1293,12 +1288,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 606--607
  []
 
 [19 <./Images_DHO/pinn_overdamped/summary.png>]
-<Images_DHO/pinn_criticallydamped/summary.png, id=330, 1156.32pt x 650.43pt>
+<Images_DHO/pinn_criticallydamped/summary.png, id=335, 1156.32pt x 650.43pt>
 File: Images_DHO/pinn_criticallydamped/summary.png Graphic file (type png)
 <use Images_DHO/pinn_criticallydamped/summary.png>
 Package pdftex.def Info: Images_DHO/pinn_criticallydamped/summary.png  used on input line 628.
 (pdftex.def)             Requested size: 339.29898pt x 190.85294pt.
-<Images_DHO/pinn_underdamped/summary.png, id=333, 1156.32pt x 650.43pt>
+<Images_DHO/pinn_underdamped/summary.png, id=338, 1156.32pt x 650.43pt>
 File: Images_DHO/pinn_underdamped/summary.png Graphic file (type png)
 <use Images_DHO/pinn_underdamped/summary.png>
 Package pdftex.def Info: Images_DHO/pinn_underdamped/summary.png  used on input line 653.
@@ -1316,12 +1311,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 660--661
 
  []
 
-<Images_DHO/pinn_underdamped/analytic_solution.png, id=345, 578.16pt x 361.35pt>
+<Images_DHO/pinn_underdamped/analytic_solution.png, id=350, 578.16pt x 361.35pt>
 File: Images_DHO/pinn_underdamped/analytic_solution.png Graphic file (type png)
 <use Images_DHO/pinn_underdamped/analytic_solution.png>
 Package pdftex.def Info: Images_DHO/pinn_underdamped/analytic_solution.png  used on input line 666.
 (pdftex.def)             Requested size: 271.44194pt x 169.64705pt.
-<Images_DHO/pinn_underdamped/predicted_solution.png, id=346, 578.16pt x 361.35pt>
+<Images_DHO/pinn_underdamped/predicted_solution.png, id=351, 578.16pt x 361.35pt>
 File: Images_DHO/pinn_underdamped/predicted_solution.png Graphic file (type png)
 <use Images_DHO/pinn_underdamped/predicted_solution.png>
 Package pdftex.def Info: Images_DHO/pinn_underdamped/predicted_solution.png  used on input line 673.
@@ -1330,12 +1325,12 @@ Package pdftex.def Info: Images_DHO/pinn_underdamped/predicted_solution.png  use
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [21 <./Images_DHO/pinn_underdamped/summary.png> <./Images_DHO/pinn_underdamped/analytic_solution.png>]
-<Images_DHO/pinn_underdamped/epoch_snapshots.png, id=356, 1011.78pt x 693.792pt>
+<Images_DHO/pinn_underdamped/epoch_snapshots.png, id=361, 1011.78pt x 693.792pt>
 File: Images_DHO/pinn_underdamped/epoch_snapshots.png Graphic file (type png)
 <use Images_DHO/pinn_underdamped/epoch_snapshots.png>
 Package pdftex.def Info: Images_DHO/pinn_underdamped/epoch_snapshots.png  used on input line 680.
 (pdftex.def)             Requested size: 361.92029pt x 248.17696pt.
-<Images_DHO/pinn_underdamped/losses.png, id=357, 722.7pt x 361.35pt>
+<Images_DHO/pinn_underdamped/losses.png, id=362, 722.7pt x 361.35pt>
 File: Images_DHO/pinn_underdamped/losses.png Graphic file (type png)
 <use Images_DHO/pinn_underdamped/losses.png>
 Package pdftex.def Info: Images_DHO/pinn_underdamped/losses.png  used on input line 687.
@@ -1343,650 +1338,717 @@ Package pdftex.def Info: Images_DHO/pinn_underdamped/losses.png  used on input l
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [22 <./Images_DHO/pinn_underdamped/predicted_solution.png> <./Images_DHO/pinn_underdamped/epoch_snapshots.png>]
-<Images_DHO/pinn_blindextrap/summary.png, id=369, 1156.32pt x 650.43pt>
+ [22 <./Images_DHO/pinn_underdamped/predicted_solution.png> <./Images_DHO/pinn_underdamped/epoch_snapshots.png>] [23 <./Images_DHO/pinn_underdamped/losses.png>]
+<Images_DHO/pinn_profiling/mem_train.png, id=381, 867.24pt x 578.16pt>
+File: Images_DHO/pinn_profiling/mem_train.png Graphic file (type png)
+<use Images_DHO/pinn_profiling/mem_train.png>
+Package pdftex.def Info: Images_DHO/pinn_profiling/mem_train.png  used on input line 745.
+(pdftex.def)             Requested size: 217.14941pt x 144.7602pt.
+<Images_DHO/pinn_profiling/mem_train_gpu.png, id=382, 867.24pt x 578.16pt>
+File: Images_DHO/pinn_profiling/mem_train_gpu.png Graphic file (type png)
+<use Images_DHO/pinn_profiling/mem_train_gpu.png>
+Package pdftex.def Info: Images_DHO/pinn_profiling/mem_train_gpu.png  used on input line 752.
+(pdftex.def)             Requested size: 217.14941pt x 144.7602pt.
+<Images_DHO/pinn_profiling/mem_plots.png, id=383, 867.24pt x 578.16pt>
+File: Images_DHO/pinn_profiling/mem_plots.png Graphic file (type png)
+<use Images_DHO/pinn_profiling/mem_plots.png>
+Package pdftex.def Info: Images_DHO/pinn_profiling/mem_plots.png  used on input line 765.
+(pdftex.def)             Requested size: 217.14941pt x 144.7602pt.
+<Images_DHO/pinn_profiling/mem_plots_gpu.png, id=384, 867.24pt x 578.16pt>
+File: Images_DHO/pinn_profiling/mem_plots_gpu.png Graphic file (type png)
+<use Images_DHO/pinn_profiling/mem_plots_gpu.png>
+Package pdftex.def Info: Images_DHO/pinn_profiling/mem_plots_gpu.png  used on input line 772.
+(pdftex.def)             Requested size: 217.14941pt x 144.7602pt.
+<Images_DHO/pinn_blindextrap/summary.png, id=386, 1156.32pt x 650.43pt>
 File: Images_DHO/pinn_blindextrap/summary.png Graphic file (type png)
 <use Images_DHO/pinn_blindextrap/summary.png>
-Package pdftex.def Info: Images_DHO/pinn_blindextrap/summary.png  used on input line 698.
+Package pdftex.def Info: Images_DHO/pinn_blindextrap/summary.png  used on input line 784.
 (pdftex.def)             Requested size: 339.29898pt x 190.85294pt.
- [23 <./Images_DHO/pinn_underdamped/losses.png> <./Images_DHO/pinn_blindextrap/summary.png>]
-<Images_DHO/pinn_nophys/summary.png, id=378, 1156.32pt x 650.43pt>
+ [24 <./Images_DHO/pinn_profiling/mem_train.png> <./Images_DHO/pinn_profiling/mem_train_gpu.png> <./Images_DHO/pinn_profiling/mem_plots.png> <./Images_DHO/pinn_profiling/mem_plots_gpu.png>]
+<Images_DHO/pinn_nophys/summary.png, id=400, 1156.32pt x 650.43pt>
 File: Images_DHO/pinn_nophys/summary.png Graphic file (type png)
 <use Images_DHO/pinn_nophys/summary.png>
-Package pdftex.def Info: Images_DHO/pinn_nophys/summary.png  used on input line 708.
+Package pdftex.def Info: Images_DHO/pinn_nophys/summary.png  used on input line 794.
 (pdftex.def)             Requested size: 339.29898pt x 190.85294pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 712--713
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [25 <./Images_DHO/pinn_blindextrap/summary.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 798--799
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 717--718
+Underfull \hbox (badness 10000) in paragraph at lines 803--804
 
  []
 
-[24 <./Images_DHO/pinn_nophys/summary.png>]
 File: Images_DHO/pinn_underdamped/predicted_solution.png Graphic file (type png)
 <use Images_DHO/pinn_underdamped/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_underdamped/predicted_solution.png  used on input line 723.
+Package pdftex.def Info: Images_DHO/pinn_underdamped/predicted_solution.png  used on input line 809.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
-<Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png, id=390, 578.16pt x 361.35pt>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [26 <./Images_DHO/pinn_nophys/summary.png>]
+<Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png, id=419, 578.16pt x 361.35pt>
 File: Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png Graphic file (type png)
 <use Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png  used on input line 731.
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png  used on input line 817.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
- [25 <./Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png>]
-<Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png, id=400, 578.16pt x 361.35pt>
+<Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png, id=420, 578.16pt x 361.35pt>
 File: Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png Graphic file (type png)
 <use Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png  used on input line 741.
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png  used on input line 827.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 746--747
+ [27 <./Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 832--833
 
  []
 
-<Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png, id=401, 578.16pt x 361.35pt>
+<Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png, id=431, 578.16pt x 361.35pt>
 File: Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png Graphic file (type png)
 <use Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png  used on input line 751.
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png  used on input line 837.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
-[26 <./Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png> <./Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png>]
-<Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png, id=411, 578.16pt x 361.35pt>
+<Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png, id=432, 578.16pt x 361.35pt>
 File: Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png Graphic file (type png)
 <use Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png  used on input line 761.
-(pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
-<Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png, id=412, 578.16pt x 361.35pt>
-File: Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png Graphic file (type png)
-<use Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png  used on input line 770.
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png  used on input line 847.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 775--776
+Underfull \vbox (badness 5374) has occurred while \output is active []
+
+ [28 <./Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png> <./Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png>]
+<Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png, id=442, 578.16pt x 361.35pt>
+File: Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png Graphic file (type png)
+<use Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png>
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png  used on input line 856.
+(pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 861--862
 
  []
 
-[27 <./Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png> <./Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png>]
-<Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png, id=424, 578.16pt x 361.35pt>
+<Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png, id=444, 578.16pt x 361.35pt>
 File: Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png Graphic file (type png)
 <use Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png  used on input line 780.
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png  used on input line 866.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
- [28 <./Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png>]
-Overfull \hbox (30.34299pt too wide) in paragraph at lines 824--837
+[29 <./Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png> <./Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png>] [30 <./Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png>]
+Overfull \hbox (30.34299pt too wide) in paragraph at lines 910--923
  [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 840--841
+Underfull \hbox (badness 10000) in paragraph at lines 926--927
 
  []
 
-[29]
-Underfull \hbox (badness 10000) in paragraph at lines 862--863
+[31]
+Underfull \hbox (badness 10000) in paragraph at lines 948--949
 
  []
 
-<Images_DHO/inversepinn_overdamped/predicted_solution.png, id=442, 578.16pt x 361.35pt>
+<Images_DHO/inversepinn_overdamped/predicted_solution.png, id=471, 578.16pt x 361.35pt>
 File: Images_DHO/inversepinn_overdamped/predicted_solution.png Graphic file (type png)
 <use Images_DHO/inversepinn_overdamped/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/inversepinn_overdamped/predicted_solution.png  used on input line 884.
+Package pdftex.def Info: Images_DHO/inversepinn_overdamped/predicted_solution.png  used on input line 970.
 (pdftex.def)             Requested size: 339.29898pt x 212.05882pt.
-[30]
-<Images_DHO/inversepinn_overdamped/parameter_convergence.png, id=452, 722.7pt x 361.35pt>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [32]
+<Images_DHO/inversepinn_overdamped/parameter_convergence.png, id=481, 722.7pt x 361.35pt>
 File: Images_DHO/inversepinn_overdamped/parameter_convergence.png Graphic file (type png)
 <use Images_DHO/inversepinn_overdamped/parameter_convergence.png>
-Package pdftex.def Info: Images_DHO/inversepinn_overdamped/parameter_convergence.png  used on input line 891.
+Package pdftex.def Info: Images_DHO/inversepinn_overdamped/parameter_convergence.png  used on input line 977.
 (pdftex.def)             Requested size: 339.29898pt x 169.64705pt.
-<Images_DHO/inversepinn_criticallydamped/predicted_solution.png, id=456, 578.16pt x 361.35pt>
+<Images_DHO/inversepinn_criticallydamped/predicted_solution.png, id=485, 578.16pt x 361.35pt>
 File: Images_DHO/inversepinn_criticallydamped/predicted_solution.png Graphic file (type png)
 <use Images_DHO/inversepinn_criticallydamped/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/inversepinn_criticallydamped/predicted_solution.png  used on input line 915.
+Package pdftex.def Info: Images_DHO/inversepinn_criticallydamped/predicted_solution.png  used on input line 1001.
 (pdftex.def)             Requested size: 339.29898pt x 212.05882pt.
- [31 <./Images_DHO/inversepinn_overdamped/predicted_solution.png> <./Images_DHO/inversepinn_overdamped/parameter_convergence.png>]
-<Images_DHO/inversepinn_criticallydamped/parameter_convergence.png, id=464, 722.7pt x 361.35pt>
+ [33 <./Images_DHO/inversepinn_overdamped/predicted_solution.png> <./Images_DHO/inversepinn_overdamped/parameter_convergence.png>]
+<Images_DHO/inversepinn_criticallydamped/parameter_convergence.png, id=494, 722.7pt x 361.35pt>
 File: Images_DHO/inversepinn_criticallydamped/parameter_convergence.png Graphic file (type png)
 <use Images_DHO/inversepinn_criticallydamped/parameter_convergence.png>
-Package pdftex.def Info: Images_DHO/inversepinn_criticallydamped/parameter_convergence.png  used on input line 922.
+Package pdftex.def Info: Images_DHO/inversepinn_criticallydamped/parameter_convergence.png  used on input line 1008.
 (pdftex.def)             Requested size: 339.29898pt x 169.64705pt.
-<Images_DHO/inversepinn_underdamped/predicted_solution.png, id=467, 578.16pt x 361.35pt>
+<Images_DHO/inversepinn_underdamped/predicted_solution.png, id=497, 578.16pt x 361.35pt>
 File: Images_DHO/inversepinn_underdamped/predicted_solution.png Graphic file (type png)
 <use Images_DHO/inversepinn_underdamped/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/inversepinn_underdamped/predicted_solution.png  used on input line 947.
+Package pdftex.def Info: Images_DHO/inversepinn_underdamped/predicted_solution.png  used on input line 1033.
 (pdftex.def)             Requested size: 339.29898pt x 212.05882pt.
- [32 <./Images_DHO/inversepinn_criticallydamped/predicted_solution.png> <./Images_DHO/inversepinn_criticallydamped/parameter_convergence.png>]
-<Images_DHO/inversepinn_underdamped/parameter_convergence.png, id=477, 722.7pt x 361.35pt>
+ [34 <./Images_DHO/inversepinn_criticallydamped/predicted_solution.png> <./Images_DHO/inversepinn_criticallydamped/parameter_convergence.png>]
+<Images_DHO/inversepinn_underdamped/parameter_convergence.png, id=507, 722.7pt x 361.35pt>
 File: Images_DHO/inversepinn_underdamped/parameter_convergence.png Graphic file (type png)
 <use Images_DHO/inversepinn_underdamped/parameter_convergence.png>
-Package pdftex.def Info: Images_DHO/inversepinn_underdamped/parameter_convergence.png  used on input line 954.
+Package pdftex.def Info: Images_DHO/inversepinn_underdamped/parameter_convergence.png  used on input line 1040.
 (pdftex.def)             Requested size: 339.29898pt x 169.64705pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 961--962
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1048
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 963--964
+Underfull \hbox (badness 10000) in paragraph at lines 1049--1050
 
  []
 
-[33 <./Images_DHO/inversepinn_underdamped/predicted_solution.png> <./Images_DHO/inversepinn_underdamped/parameter_convergence.png>]
-<Images_DHO/parameter_estimation/scatter_zeta_full.png, id=489, 578.16pt x 578.16pt>
+[35 <./Images_DHO/inversepinn_underdamped/predicted_solution.png> <./Images_DHO/inversepinn_underdamped/parameter_convergence.png>]
+<Images_DHO/parameter_estimation/scatter_zeta_full.png, id=518, 578.16pt x 578.16pt>
 File: Images_DHO/parameter_estimation/scatter_zeta_full.png Graphic file (type png)
 <use Images_DHO/parameter_estimation/scatter_zeta_full.png>
-Package pdftex.def Info: Images_DHO/parameter_estimation/scatter_zeta_full.png  used on input line 971.
+Package pdftex.def Info: Images_DHO/parameter_estimation/scatter_zeta_full.png  used on input line 1057.
 (pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 972.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1058.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 972.
-<Images_DHO/parameter_estimation/scatter_omega_0_full.png, id=490, 578.16pt x 578.16pt>
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1058.
+<Images_DHO/parameter_estimation/scatter_omega_0_full.png, id=519, 578.16pt x 578.16pt>
 File: Images_DHO/parameter_estimation/scatter_omega_0_full.png Graphic file (type png)
 <use Images_DHO/parameter_estimation/scatter_omega_0_full.png>
-Package pdftex.def Info: Images_DHO/parameter_estimation/scatter_omega_0_full.png  used on input line 978.
+Package pdftex.def Info: Images_DHO/parameter_estimation/scatter_omega_0_full.png  used on input line 1064.
 (pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
-<Images_DHO/parameter_estimation/parameter_space_rmse_full.png, id=492, 578.16pt x 505.89pt>
+<Images_DHO/parameter_estimation/parameter_space_rmse_full.png, id=521, 578.16pt x 505.89pt>
 File: Images_DHO/parameter_estimation/parameter_space_rmse_full.png Graphic file (type png)
 <use Images_DHO/parameter_estimation/parameter_space_rmse_full.png>
-Package pdftex.def Info: Images_DHO/parameter_estimation/parameter_space_rmse_full.png  used on input line 1007.
+Package pdftex.def Info: Images_DHO/parameter_estimation/parameter_space_rmse_full.png  used on input line 1093.
 (pdftex.def)             Requested size: 294.05635pt x 257.29802pt.
 
 Underfull \vbox (badness 4608) has occurred while \output is active []
 
- [34 <./Images_DHO/parameter_estimation/scatter_zeta_full.png> <./Images_DHO/parameter_estimation/scatter_omega_0_full.png>]
-<Images_DHO/analytic_solutions_zeta_underdamped.png, id=502, 722.7pt x 433.62pt>
+ [36 <./Images_DHO/parameter_estimation/scatter_zeta_full.png> <./Images_DHO/parameter_estimation/scatter_omega_0_full.png>]
+<Images_DHO/analytic_solutions_zeta_underdamped.png, id=531, 722.7pt x 433.62pt>
 File: Images_DHO/analytic_solutions_zeta_underdamped.png Graphic file (type png)
 <use Images_DHO/analytic_solutions_zeta_underdamped.png>
-Package pdftex.def Info: Images_DHO/analytic_solutions_zeta_underdamped.png  used on input line 1018.
+Package pdftex.def Info: Images_DHO/analytic_solutions_zeta_underdamped.png  used on input line 1104.
 (pdftex.def)             Requested size: 217.14941pt x 130.28549pt.
-<Images_DHO/analytic_solutions_zeta_overdamped.png, id=503, 722.7pt x 433.62pt>
+<Images_DHO/analytic_solutions_zeta_overdamped.png, id=532, 722.7pt x 433.62pt>
 File: Images_DHO/analytic_solutions_zeta_overdamped.png Graphic file (type png)
 <use Images_DHO/analytic_solutions_zeta_overdamped.png>
-Package pdftex.def Info: Images_DHO/analytic_solutions_zeta_overdamped.png  used on input line 1025.
+Package pdftex.def Info: Images_DHO/analytic_solutions_zeta_overdamped.png  used on input line 1111.
 (pdftex.def)             Requested size: 217.14941pt x 130.28549pt.
-<Images_DHO/analytic_solutions_omega_underdamped.png, id=504, 722.7pt x 433.62pt>
+<Images_DHO/analytic_solutions_omega_underdamped.png, id=533, 722.7pt x 433.62pt>
 File: Images_DHO/analytic_solutions_omega_underdamped.png Graphic file (type png)
 <use Images_DHO/analytic_solutions_omega_underdamped.png>
-Package pdftex.def Info: Images_DHO/analytic_solutions_omega_underdamped.png  used on input line 1034.
+Package pdftex.def Info: Images_DHO/analytic_solutions_omega_underdamped.png  used on input line 1120.
 (pdftex.def)             Requested size: 217.14941pt x 130.28549pt.
-<Images_DHO/analytic_solutions_omega_overdamped.png, id=505, 722.7pt x 433.62pt>
+<Images_DHO/analytic_solutions_omega_overdamped.png, id=534, 722.7pt x 433.62pt>
 File: Images_DHO/analytic_solutions_omega_overdamped.png Graphic file (type png)
 <use Images_DHO/analytic_solutions_omega_overdamped.png>
-Package pdftex.def Info: Images_DHO/analytic_solutions_omega_overdamped.png  used on input line 1041.
+Package pdftex.def Info: Images_DHO/analytic_solutions_omega_overdamped.png  used on input line 1127.
 (pdftex.def)             Requested size: 217.14941pt x 130.28549pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1050--1051
+Underfull \hbox (badness 10000) in paragraph at lines 1136--1137
 
  []
 
-[35 <./Images_DHO/parameter_estimation/parameter_space_rmse_full.png> <./Images_DHO/analytic_solutions_zeta_underdamped.png> <./Images_DHO/analytic_solutions_zeta_overdamped.png> <./Images_DHO/analytic_solutions_omega_underdamped.png> <./Images_DHO/analytic_solutions_omega_overdamped.png>] [36]
+[37 <./Images_DHO/parameter_estimation/parameter_space_rmse_full.png> <./Images_DHO/analytic_solutions_zeta_underdamped.png> <./Images_DHO/analytic_solutions_zeta_overdamped.png> <./Images_DHO/analytic_solutions_omega_underdamped.png> <./Images_DHO/analytic_solutions_omega_overdamped.png>] [38]
 chapter 3.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1062--1064
+Underfull \hbox (badness 10000) in paragraph at lines 1148--1150
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1065--1066
+Underfull \hbox (badness 10000) in paragraph at lines 1151--1152
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1067--1068
-
- []
-
-[37
-
-
-]
-<Images_DHO/gauss_characteristics.png, id=533, 722.7pt x 578.16pt>
-File: Images_DHO/gauss_characteristics.png Graphic file (type png)
-<use Images_DHO/gauss_characteristics.png>
-Package pdftex.def Info: Images_DHO/gauss_characteristics.png  used on input line 1098.
-(pdftex.def)             Requested size: 407.15602pt x 325.72588pt.
-<Images_DHO/gauss_ic.png, id=534, 722.7pt x 433.62pt>
-File: Images_DHO/gauss_ic.png Graphic file (type png)
-<use Images_DHO/gauss_ic.png>
-Package pdftex.def Info: Images_DHO/gauss_ic.png  used on input line 1108.
-(pdftex.def)             Requested size: 217.14941pt x 130.28549pt.
-<Images_DHO/gauss_t.png, id=535, 722.7pt x 433.62pt>
-File: Images_DHO/gauss_t.png Graphic file (type png)
-<use Images_DHO/gauss_t.png>
-Package pdftex.def Info: Images_DHO/gauss_t.png  used on input line 1115.
-(pdftex.def)             Requested size: 217.14941pt x 130.28549pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [38 <./Images_DHO/gauss_characteristics.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 1153--1154
 
  []
 
-[39 <./Images_DHO/gauss_ic.png> <./Images_DHO/gauss_t.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1176--1178
+[39
+
+
+]
+<Images_DHO/gauss_characteristics.png, id=563, 722.7pt x 578.16pt>
+File: Images_DHO/gauss_characteristics.png Graphic file (type png)
+<use Images_DHO/gauss_characteristics.png>
+Package pdftex.def Info: Images_DHO/gauss_characteristics.png  used on input line 1184.
+(pdftex.def)             Requested size: 407.15602pt x 325.72588pt.
+<Images_DHO/gauss_ic.png, id=564, 722.7pt x 433.62pt>
+File: Images_DHO/gauss_ic.png Graphic file (type png)
+<use Images_DHO/gauss_ic.png>
+Package pdftex.def Info: Images_DHO/gauss_ic.png  used on input line 1194.
+(pdftex.def)             Requested size: 217.14941pt x 130.28549pt.
+<Images_DHO/gauss_t.png, id=565, 722.7pt x 433.62pt>
+File: Images_DHO/gauss_t.png Graphic file (type png)
+<use Images_DHO/gauss_t.png>
+Package pdftex.def Info: Images_DHO/gauss_t.png  used on input line 1201.
+(pdftex.def)             Requested size: 217.14941pt x 130.28549pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [40 <./Images_DHO/gauss_characteristics.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1239--1240
+
+ []
+
+[41 <./Images_DHO/gauss_ic.png> <./Images_DHO/gauss_t.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1262--1264
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1179--1180
+Underfull \hbox (badness 10000) in paragraph at lines 1265--1266
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1184--1186
+Underfull \hbox (badness 10000) in paragraph at lines 1270--1272
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1189--1190
+Underfull \hbox (badness 10000) in paragraph at lines 1275--1276
 
  []
 
-[40]
-Underfull \hbox (badness 10000) in paragraph at lines 1191--1192
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1193--1194
+[42]
+Underfull \hbox (badness 10000) in paragraph at lines 1277--1278
 
  []
 
 
-Overfull \hbox (20.07759pt too wide) in paragraph at lines 1215--1216
+Underfull \hbox (badness 10000) in paragraph at lines 1279--1280
+
+ []
+
+
+Overfull \hbox (20.07759pt too wide) in paragraph at lines 1301--1302
 []\OT1/ptm/m/n/10.95 The only no-table dif-fer-ence com-pared to the damped har-monic os-cil-la-tor is the in-clu-sion of the [][]\OT1/cmtt/m/n/10.95 analytic.py
  []
 
-[41] [42]
-<Images_BE/Gauss_nu_0.1/method_of_characteristics.png, id=588, 722.7pt x 578.16pt>
+[43] [44]
+<Images_BE/Gauss_nu_0.1/method_of_characteristics.png, id=618, 722.7pt x 578.16pt>
 File: Images_BE/Gauss_nu_0.1/method_of_characteristics.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.1/method_of_characteristics.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.1/method_of_characteristics.png  used on input line 1283.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.1/method_of_characteristics.png  used on input line 1369.
 (pdftex.def)             Requested size: 294.05635pt x 235.24744pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1287--1288
+Underfull \hbox (badness 10000) in paragraph at lines 1373--1374
 
  []
 
-[43 <./Images_BE/Gauss_nu_0.1/method_of_characteristics.png>]
-<Images_BE/Gauss_nu_0.05/gt_solution.png, id=598, 867.24pt x 578.16pt>
+[45 <./Images_BE/Gauss_nu_0.1/method_of_characteristics.png>]
+<Images_BE/Gauss_nu_0.05/gt_solution.png, id=629, 867.24pt x 578.16pt>
 File: Images_BE/Gauss_nu_0.05/gt_solution.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/gt_solution.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/gt_solution.png  used on input line 1295.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/gt_solution.png  used on input line 1381.
 (pdftex.def)             Requested size: 262.39204pt x 174.93143pt.
-<Images_BE/Gauss_nu_0.05/gt_2D.png, id=599, 578.16pt x 578.16pt>
+<Images_BE/Gauss_nu_0.05/gt_2D.png, id=630, 578.16pt x 578.16pt>
 File: Images_BE/Gauss_nu_0.05/gt_2D.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/gt_2D.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/gt_2D.png  used on input line 1302.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/gt_2D.png  used on input line 1388.
 (pdftex.def)             Requested size: 180.9567pt x 180.95685pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1309--1310
+Underfull \hbox (badness 10000) in paragraph at lines 1395--1396
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1311--1312
+Underfull \hbox (badness 10000) in paragraph at lines 1397--1398
 
  []
 
-<Images_BE/Gauss_nu_0.05/3_times.png, id=603, 433.62pt x 722.7pt>
+<Images_BE/Gauss_nu_0.05/3_times.png, id=634, 433.62pt x 722.7pt>
 File: Images_BE/Gauss_nu_0.05/3_times.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/3_times.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/3_times.png  used on input line 1317.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/3_times.png  used on input line 1403.
 (pdftex.def)             Requested size: 361.92029pt x 603.22629pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [44 <./Images_BE/Gauss_nu_0.05/gt_solution.png> <./Images_BE/Gauss_nu_0.05/gt_2D.png>]
+ [46 <./Images_BE/Gauss_nu_0.05/gt_solution.png> <./Images_BE/Gauss_nu_0.05/gt_2D.png>]
 File: Images_BE/Gauss_nu_0.05/gt_2D.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/gt_2D.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/gt_2D.png  used on input line 1326.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/gt_2D.png  used on input line 1412.
 (pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
-<Images_BE/Gauss_nu_0.05/pred_2D.png, id=614, 578.16pt x 578.16pt>
+<Images_BE/Gauss_nu_0.05/pred_2D.png, id=645, 578.16pt x 578.16pt>
 File: Images_BE/Gauss_nu_0.05/pred_2D.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/pred_2D.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/pred_2D.png  used on input line 1333.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/pred_2D.png  used on input line 1419.
 (pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [45 <./Images_BE/Gauss_nu_0.05/3_times.png>]
-<Images_BE/Gauss_nu_0.05/pred_solution.png, id=625, 867.24pt x 462.528pt>
+ [47 <./Images_BE/Gauss_nu_0.05/3_times.png>]
+<Images_BE/Gauss_nu_0.05/pred_solution.png, id=655, 867.24pt x 462.528pt>
 File: Images_BE/Gauss_nu_0.05/pred_solution.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/pred_solution.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/pred_solution.png  used on input line 1345.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/pred_solution.png  used on input line 1431.
 (pdftex.def)             Requested size: 361.92029pt x 193.02534pt.
-<Images_BE/Gauss_nu_0.05/pred_grid.png, id=626, 1011.78pt x 925.056pt>
+<Images_BE/Gauss_nu_0.05/pred_grid.png, id=656, 1011.78pt x 925.056pt>
 File: Images_BE/Gauss_nu_0.05/pred_grid.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/pred_grid.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/pred_grid.png  used on input line 1352.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/pred_grid.png  used on input line 1438.
 (pdftex.def)             Requested size: 361.92029pt x 330.90262pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [46 <./Images_BE/Gauss_nu_0.05/pred_2D.png> <./Images_BE/Gauss_nu_0.05/pred_solution.png>]
-<Images_BE/Gauss_nu_0.05/losses.png, id=636, 722.7pt x 361.35pt>
+ [48 <./Images_BE/Gauss_nu_0.05/pred_2D.png> <./Images_BE/Gauss_nu_0.05/pred_solution.png>]
+<Images_BE/Gauss_nu_0.05/losses.png, id=666, 722.7pt x 361.35pt>
 File: Images_BE/Gauss_nu_0.05/losses.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/losses.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/losses.png  used on input line 1361.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/losses.png  used on input line 1447.
 (pdftex.def)             Requested size: 294.05635pt x 147.02965pt.
- [47 <./Images_BE/Gauss_nu_0.05/pred_grid.png> <./Images_BE/Gauss_nu_0.05/losses.png>]
-<Images_BE/Gauss_nu_0.05/summary.png, id=645, 1300.86pt x 794.97pt>
+ [49 <./Images_BE/Gauss_nu_0.05/pred_grid.png> <./Images_BE/Gauss_nu_0.05/losses.png>]
+<Images_BE/Gauss_nu_0.05/summary.png, id=675, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.05/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/summary.png  used on input line 1370.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/summary.png  used on input line 1456.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1375--1376
+Underfull \hbox (badness 10000) in paragraph at lines 1461--1462
 
  []
 
-[48 <./Images_BE/Gauss_nu_0.05/summary.png>]
-<Images_BE/Gauss_nu_0.1/3_times.png, id=654, 433.62pt x 722.7pt>
+[50 <./Images_BE/Gauss_nu_0.05/summary.png>]
+<Images_BE/Gauss_nu_0.1/3_times.png, id=684, 433.62pt x 722.7pt>
 File: Images_BE/Gauss_nu_0.1/3_times.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.1/3_times.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.1/3_times.png  used on input line 1384.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.1/3_times.png  used on input line 1470.
 (pdftex.def)             Requested size: 180.9567pt x 301.59108pt.
-<Images_BE/Gauss_nu_0.1/summary.png, id=655, 1300.86pt x 794.97pt>
+<Images_BE/Gauss_nu_0.1/summary.png, id=685, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.1/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.1/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.1/summary.png  used on input line 1391.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.1/summary.png  used on input line 1477.
 (pdftex.def)             Requested size: 271.44194pt x 165.88116pt.
-<Images_BE/Gauss_nu_0.01_bad/3_times.png, id=656, 433.62pt x 722.7pt>
+<Images_BE/Gauss_nu_0.01_bad/3_times.png, id=686, 433.62pt x 722.7pt>
 File: Images_BE/Gauss_nu_0.01_bad/3_times.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.01_bad/3_times.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.01_bad/3_times.png  used on input line 1400.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.01_bad/3_times.png  used on input line 1486.
 (pdftex.def)             Requested size: 203.578pt x 339.29411pt.
- [49
+ [51
 
  <./Images_BE/Gauss_nu_0.1/3_times.png> <./Images_BE/Gauss_nu_0.1/summary.png>]
-<Images_BE/Gauss_nu_0.01/summary.png, id=666, 1300.86pt x 794.97pt>
+<Images_BE/Gauss_nu_0.01/summary.png, id=697, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.01/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.01/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.01/summary.png  used on input line 1407.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.01/summary.png  used on input line 1493.
 (pdftex.def)             Requested size: 316.67767pt x 193.526pt.
- [50 <./Images_BE/Gauss_nu_0.01_bad/3_times.png> <./Images_BE/Gauss_nu_0.01/summary.png>]
-<Images_BE/Gauss_nu_0.01/3_times.png, id=676, 433.62pt x 722.7pt>
+ [52 <./Images_BE/Gauss_nu_0.01_bad/3_times.png> <./Images_BE/Gauss_nu_0.01/summary.png>]
+<Images_BE/Gauss_nu_0.01/3_times.png, id=707, 433.62pt x 722.7pt>
 File: Images_BE/Gauss_nu_0.01/3_times.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.01/3_times.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.01/3_times.png  used on input line 1416.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.01/3_times.png  used on input line 1502.
 (pdftex.def)             Requested size: 180.9567pt x 301.59108pt.
 File: Images_BE/Gauss_nu_0.01/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.01/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.01/summary.png  used on input line 1423.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.01/summary.png  used on input line 1509.
 (pdftex.def)             Requested size: 316.67767pt x 193.526pt.
- [51 <./Images_BE/Gauss_nu_0.01/3_times.png>]
+ [53 <./Images_BE/Gauss_nu_0.01/3_times.png>]
 
-LaTeX Warning: Reference `fig:N_wave_nu_0.05_bad/method_of_characteristics' on page 52 undefined on input line 1438.
+LaTeX Warning: Reference `fig:N_wave_nu_0.05_bad/method_of_characteristics' on page 54 undefined on input line 1524.
 
-<Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png, id=686, 722.7pt x 578.16pt>
+<Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png, id=716, 722.7pt x 578.16pt>
 File: Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png  used on input line 1441.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png  used on input line 1527.
 (pdftex.def)             Requested size: 294.05635pt x 235.24744pt.
-<Images_BE/N_wave_nu_0.05_bad/3_times.png, id=687, 433.62pt x 722.7pt>
+<Images_BE/N_wave_nu_0.05_bad/3_times.png, id=717, 433.62pt x 722.7pt>
 File: Images_BE/N_wave_nu_0.05_bad/3_times.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.05_bad/3_times.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.05_bad/3_times.png  used on input line 1450.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.05_bad/3_times.png  used on input line 1536.
 (pdftex.def)             Requested size: 226.19933pt x 376.99713pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [52 <./Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png>]
-<Images_BE/N_wave_nu_0.05_bad/summary.png, id=697, 1300.86pt x 794.97pt>
+ [54 <./Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png>]
+<Images_BE/N_wave_nu_0.05_bad/summary.png, id=728, 1300.86pt x 794.97pt>
 File: Images_BE/N_wave_nu_0.05_bad/summary.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.05_bad/summary.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.05_bad/summary.png  used on input line 1457.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.05_bad/summary.png  used on input line 1543.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
- [53 <./Images_BE/N_wave_nu_0.05_bad/3_times.png> <./Images_BE/N_wave_nu_0.05_bad/summary.png>]
-<Images_BE/N_wave_nu_0.05/3_times.png, id=706, 433.62pt x 722.7pt>
+ [55 <./Images_BE/N_wave_nu_0.05_bad/3_times.png> <./Images_BE/N_wave_nu_0.05_bad/summary.png>]
+<Images_BE/N_wave_nu_0.05/3_times.png, id=737, 433.62pt x 722.7pt>
 File: Images_BE/N_wave_nu_0.05/3_times.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.05/3_times.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.05/3_times.png  used on input line 1466.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.05/3_times.png  used on input line 1552.
 (pdftex.def)             Requested size: 180.9567pt x 301.59108pt.
-<Images_BE/N_wave_nu_0.05/summary.png, id=707, 1300.86pt x 794.97pt>
+<Images_BE/N_wave_nu_0.05/summary.png, id=738, 1300.86pt x 794.97pt>
 File: Images_BE/N_wave_nu_0.05/summary.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.05/summary.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.05/summary.png  used on input line 1473.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.05/summary.png  used on input line 1559.
 (pdftex.def)             Requested size: 316.67767pt x 193.526pt.
- [54 <./Images_BE/N_wave_nu_0.05/3_times.png> <./Images_BE/N_wave_nu_0.05/summary.png>]
-<Images_BE/N_wave_nu_0.1/3_times.png, id=716, 433.62pt x 722.7pt>
+ [56 <./Images_BE/N_wave_nu_0.05/3_times.png> <./Images_BE/N_wave_nu_0.05/summary.png>]
+<Images_BE/N_wave_nu_0.1/3_times.png, id=747, 433.62pt x 722.7pt>
 File: Images_BE/N_wave_nu_0.1/3_times.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.1/3_times.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.1/3_times.png  used on input line 1482.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.1/3_times.png  used on input line 1568.
 (pdftex.def)             Requested size: 203.578pt x 339.29411pt.
-<Images_BE/N_wave_nu_0.1/summary.png, id=717, 1300.86pt x 794.97pt>
+<Images_BE/N_wave_nu_0.1/summary.png, id=748, 1300.86pt x 794.97pt>
 File: Images_BE/N_wave_nu_0.1/summary.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.1/summary.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.1/summary.png  used on input line 1489.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.1/summary.png  used on input line 1575.
 (pdftex.def)             Requested size: 316.67767pt x 193.526pt.
- [55
+ [57
 
  <./Images_BE/N_wave_nu_0.1/3_times.png> <./Images_BE/N_wave_nu_0.1/summary.png>]
-<Images_BE/N_wave_nu_0.01/3_times.png, id=727, 433.62pt x 722.7pt>
+<Images_BE/N_wave_nu_0.01/3_times.png, id=759, 433.62pt x 722.7pt>
 File: Images_BE/N_wave_nu_0.01/3_times.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.01/3_times.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.01/3_times.png  used on input line 1498.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.01/3_times.png  used on input line 1584.
 (pdftex.def)             Requested size: 180.9567pt x 301.59108pt.
-<Images_BE/N_wave_nu_0.01/summary.png, id=728, 1300.86pt x 794.97pt>
+<Images_BE/N_wave_nu_0.01/summary.png, id=760, 1300.86pt x 794.97pt>
 File: Images_BE/N_wave_nu_0.01/summary.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.01/summary.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.01/summary.png  used on input line 1505.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.01/summary.png  used on input line 1591.
 (pdftex.def)             Requested size: 316.67767pt x 193.526pt.
- [56
+ [58
 
  <./Images_BE/N_wave_nu_0.01/3_times.png> <./Images_BE/N_wave_nu_0.01/summary.png>]
-<Images_BE/Step_up_nu_0.1/method_of_characteristics.png, id=739, 722.7pt x 578.16pt>
+<Images_BE/Step_up_nu_0.1/method_of_characteristics.png, id=771, 722.7pt x 578.16pt>
 File: Images_BE/Step_up_nu_0.1/method_of_characteristics.png Graphic file (type png)
 <use Images_BE/Step_up_nu_0.1/method_of_characteristics.png>
-Package pdftex.def Info: Images_BE/Step_up_nu_0.1/method_of_characteristics.png  used on input line 1524.
+Package pdftex.def Info: Images_BE/Step_up_nu_0.1/method_of_characteristics.png  used on input line 1610.
 (pdftex.def)             Requested size: 294.05635pt x 235.24744pt.
-<Images_BE/Step_up_nu_0.05/pred_solution.png, id=740, 867.24pt x 462.528pt>
+<Images_BE/Step_up_nu_0.05/pred_solution.png, id=772, 867.24pt x 462.528pt>
 File: Images_BE/Step_up_nu_0.05/pred_solution.png Graphic file (type png)
 <use Images_BE/Step_up_nu_0.05/pred_solution.png>
-Package pdftex.def Info: Images_BE/Step_up_nu_0.05/pred_solution.png  used on input line 1534.
+Package pdftex.def Info: Images_BE/Step_up_nu_0.05/pred_solution.png  used on input line 1620.
 (pdftex.def)             Requested size: 271.44194pt x 144.76547pt.
-<Images_BE/Step_up_nu_0.05/summary.png, id=741, 1300.86pt x 794.97pt>
+<Images_BE/Step_up_nu_0.05/summary.png, id=773, 1300.86pt x 794.97pt>
 File: Images_BE/Step_up_nu_0.05/summary.png Graphic file (type png)
 <use Images_BE/Step_up_nu_0.05/summary.png>
-Package pdftex.def Info: Images_BE/Step_up_nu_0.05/summary.png  used on input line 1541.
+Package pdftex.def Info: Images_BE/Step_up_nu_0.05/summary.png  used on input line 1627.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
- [57 <./Images_BE/Step_up_nu_0.1/method_of_characteristics.png> <./Images_BE/Step_up_nu_0.05/pred_solution.png>] [58 <./Images_BE/Step_up_nu_0.05/summary.png>]
-<Images_BE/Step_up_nu_0.1/pred_solution.png, id=759, 867.24pt x 462.528pt>
+ [59 <./Images_BE/Step_up_nu_0.1/method_of_characteristics.png> <./Images_BE/Step_up_nu_0.05/pred_solution.png>] [60 <./Images_BE/Step_up_nu_0.05/summary.png>]
+<Images_BE/Step_up_nu_0.1/pred_solution.png, id=790, 867.24pt x 462.528pt>
 File: Images_BE/Step_up_nu_0.1/pred_solution.png Graphic file (type png)
 <use Images_BE/Step_up_nu_0.1/pred_solution.png>
-Package pdftex.def Info: Images_BE/Step_up_nu_0.1/pred_solution.png  used on input line 1551.
+Package pdftex.def Info: Images_BE/Step_up_nu_0.1/pred_solution.png  used on input line 1637.
 (pdftex.def)             Requested size: 316.67767pt x 168.89542pt.
-<Images_BE/Step_up_nu_0.1/summary.png, id=760, 1300.86pt x 794.97pt>
+<Images_BE/Step_up_nu_0.1/summary.png, id=791, 1300.86pt x 794.97pt>
 File: Images_BE/Step_up_nu_0.1/summary.png Graphic file (type png)
 <use Images_BE/Step_up_nu_0.1/summary.png>
-Package pdftex.def Info: Images_BE/Step_up_nu_0.1/summary.png  used on input line 1558.
+Package pdftex.def Info: Images_BE/Step_up_nu_0.1/summary.png  used on input line 1644.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
-<Images_BE/Step_up_nu_0.01/pred_solution.png, id=761, 867.24pt x 462.528pt>
+<Images_BE/Step_up_nu_0.01/pred_solution.png, id=792, 867.24pt x 462.528pt>
 File: Images_BE/Step_up_nu_0.01/pred_solution.png Graphic file (type png)
 <use Images_BE/Step_up_nu_0.01/pred_solution.png>
-Package pdftex.def Info: Images_BE/Step_up_nu_0.01/pred_solution.png  used on input line 1567.
+Package pdftex.def Info: Images_BE/Step_up_nu_0.01/pred_solution.png  used on input line 1653.
 (pdftex.def)             Requested size: 316.67767pt x 168.89542pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [59
-
- <./Images_BE/Step_up_nu_0.1/pred_solution.png> <./Images_BE/Step_up_nu_0.1/summary.png>]
-<Images_BE/Step_up_nu_0.01/summary.png, id=772, 1300.86pt x 794.97pt>
-File: Images_BE/Step_up_nu_0.01/summary.png Graphic file (type png)
-<use Images_BE/Step_up_nu_0.01/summary.png>
-Package pdftex.def Info: Images_BE/Step_up_nu_0.01/summary.png  used on input line 1574.
-(pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
- [60 <./Images_BE/Step_up_nu_0.01/pred_solution.png> <./Images_BE/Step_up_nu_0.01/summary.png>]
-<Images_BE/Gauss_nu_0.05_data_included/summary.png, id=781, 1300.86pt x 794.97pt>
-File: Images_BE/Gauss_nu_0.05_data_included/summary.png Graphic file (type png)
-<use Images_BE/Gauss_nu_0.05_data_included/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05_data_included/summary.png  used on input line 1586.
-(pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
-<Images_BE/Gauss_nu_0.05_ML/summary.png, id=782, 1300.86pt x 794.97pt>
-File: Images_BE/Gauss_nu_0.05_ML/summary.png Graphic file (type png)
-<use Images_BE/Gauss_nu_0.05_ML/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05_ML/summary.png  used on input line 1596.
-(pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [61
 
- <./Images_BE/Gauss_nu_0.05_data_included/summary.png>]
-<Images_BE/Gauss_nu_0.05_extrapblind/summary.png, id=789, 1300.86pt x 794.97pt>
+ <./Images_BE/Step_up_nu_0.1/pred_solution.png> <./Images_BE/Step_up_nu_0.1/summary.png>]
+<Images_BE/Step_up_nu_0.01/summary.png, id=803, 1300.86pt x 794.97pt>
+File: Images_BE/Step_up_nu_0.01/summary.png Graphic file (type png)
+<use Images_BE/Step_up_nu_0.01/summary.png>
+Package pdftex.def Info: Images_BE/Step_up_nu_0.01/summary.png  used on input line 1660.
+(pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
+ [62 <./Images_BE/Step_up_nu_0.01/pred_solution.png> <./Images_BE/Step_up_nu_0.01/summary.png>]
+<Images_BE/pinn_profiling/mem_data.png, id=812, 867.24pt x 578.16pt>
+File: Images_BE/pinn_profiling/mem_data.png Graphic file (type png)
+<use Images_BE/pinn_profiling/mem_data.png>
+Package pdftex.def Info: Images_BE/pinn_profiling/mem_data.png  used on input line 1688.
+(pdftex.def)             Requested size: 217.14941pt x 144.7602pt.
+<Images_BE/pinn_profiling/mem_data_gpu.png, id=813, 867.24pt x 578.16pt>
+File: Images_BE/pinn_profiling/mem_data_gpu.png Graphic file (type png)
+<use Images_BE/pinn_profiling/mem_data_gpu.png>
+Package pdftex.def Info: Images_BE/pinn_profiling/mem_data_gpu.png  used on input line 1695.
+(pdftex.def)             Requested size: 217.14941pt x 144.7602pt.
+<Images_BE/pinn_profiling/mem_train.png, id=814, 867.24pt x 578.16pt>
+File: Images_BE/pinn_profiling/mem_train.png Graphic file (type png)
+<use Images_BE/pinn_profiling/mem_train.png>
+Package pdftex.def Info: Images_BE/pinn_profiling/mem_train.png  used on input line 1708.
+(pdftex.def)             Requested size: 217.14941pt x 144.7602pt.
+<Images_BE/pinn_profiling/mem_train_gpu.png, id=815, 867.24pt x 578.16pt>
+File: Images_BE/pinn_profiling/mem_train_gpu.png Graphic file (type png)
+<use Images_BE/pinn_profiling/mem_train_gpu.png>
+Package pdftex.def Info: Images_BE/pinn_profiling/mem_train_gpu.png  used on input line 1715.
+(pdftex.def)             Requested size: 217.14941pt x 144.7602pt.
+<Images_BE/pinn_profiling/mem_plots.png, id=816, 867.24pt x 578.16pt>
+File: Images_BE/pinn_profiling/mem_plots.png Graphic file (type png)
+<use Images_BE/pinn_profiling/mem_plots.png>
+Package pdftex.def Info: Images_BE/pinn_profiling/mem_plots.png  used on input line 1728.
+(pdftex.def)             Requested size: 217.14941pt x 144.7602pt.
+<Images_BE/pinn_profiling/mem_plots_gpu.png, id=817, 867.24pt x 578.16pt>
+File: Images_BE/pinn_profiling/mem_plots_gpu.png Graphic file (type png)
+<use Images_BE/pinn_profiling/mem_plots_gpu.png>
+Package pdftex.def Info: Images_BE/pinn_profiling/mem_plots_gpu.png  used on input line 1735.
+(pdftex.def)             Requested size: 217.14941pt x 144.7602pt.
+ [63
+
+ <./Images_BE/pinn_profiling/mem_data.png> <./Images_BE/pinn_profiling/mem_data_gpu.png> <./Images_BE/pinn_profiling/mem_train.png> <./Images_BE/pinn_profiling/mem_train_gpu.png>]
+<Images_BE/Gauss_nu_0.05_data_included/summary.png, id=830, 1300.86pt x 794.97pt>
+File: Images_BE/Gauss_nu_0.05_data_included/summary.png Graphic file (type png)
+<use Images_BE/Gauss_nu_0.05_data_included/summary.png>
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05_data_included/summary.png  used on input line 1747.
+(pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
+<Images_BE/Gauss_nu_0.05_ML/summary.png, id=831, 1300.86pt x 794.97pt>
+File: Images_BE/Gauss_nu_0.05_ML/summary.png Graphic file (type png)
+<use Images_BE/Gauss_nu_0.05_ML/summary.png>
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05_ML/summary.png  used on input line 1757.
+(pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
+ [64 <./Images_BE/pinn_profiling/mem_plots.png> <./Images_BE/pinn_profiling/mem_plots_gpu.png> <./Images_BE/Gauss_nu_0.05_data_included/summary.png>]
+<Images_BE/Gauss_nu_0.05_extrapblind/summary.png, id=841, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.05_extrapblind/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05_extrapblind/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05_extrapblind/summary.png  used on input line 1606.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05_extrapblind/summary.png  used on input line 1767.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
- [62 <./Images_BE/Gauss_nu_0.05_ML/summary.png> <./Images_BE/Gauss_nu_0.05_extrapblind/summary.png>]
-<Images_BE/Gauss_nu_0.05_low_complexity/summary.png, id=799, 1300.86pt x 794.97pt>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [65 <./Images_BE/Gauss_nu_0.05_ML/summary.png>]
+<Images_BE/Gauss_nu_0.05_low_complexity/summary.png, id=849, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.05_low_complexity/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05_low_complexity/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05_low_complexity/summary.png  used on input line 1625.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05_low_complexity/summary.png  used on input line 1786.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
-<Images_BE/Gauss_nu_0.05_high_lr/summary.png, id=800, 1300.86pt x 794.97pt>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [66 <./Images_BE/Gauss_nu_0.05_extrapblind/summary.png>]
+<Images_BE/Gauss_nu_0.05_high_lr/summary.png, id=856, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.05_high_lr/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05_high_lr/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05_high_lr/summary.png  used on input line 1634.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05_high_lr/summary.png  used on input line 1795.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
- [63 <./Images_BE/Gauss_nu_0.05_low_complexity/summary.png>]
-<Images_BE/Gauss_nu_0.05_low_lr/summary.png, id=809, 1300.86pt x 794.97pt>
+<Images_BE/Gauss_nu_0.05_low_lr/summary.png, id=857, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.05_low_lr/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05_low_lr/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05_low_lr/summary.png  used on input line 1641.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05_low_lr/summary.png  used on input line 1802.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
-<Images_BE/Gauss_nu_0.05_no_bc/summary.png, id=810, 1300.86pt x 794.97pt>
+ [67 <./Images_BE/Gauss_nu_0.05_low_complexity/summary.png> <./Images_BE/Gauss_nu_0.05_high_lr/summary.png>]
+<Images_BE/Gauss_nu_0.05_no_bc/summary.png, id=867, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.05_no_bc/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05_no_bc/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05_no_bc/summary.png  used on input line 1651.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05_no_bc/summary.png  used on input line 1812.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [64 <./Images_BE/Gauss_nu_0.05_high_lr/summary.png> <./Images_BE/Gauss_nu_0.05_low_lr/summary.png>]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [65 <./Images_BE/Gauss_nu_0.05_no_bc/summary.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1706--1707
+ [68 <./Images_BE/Gauss_nu_0.05_low_lr/summary.png> <./Images_BE/Gauss_nu_0.05_no_bc/summary.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1867--1868
 
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [66]
-Underfull \hbox (badness 10000) in paragraph at lines 1727--1728
+[69]
+Underfull \hbox (badness 10000) in paragraph at lines 1888--1889
 
  []
 
-<Images_BE/inversepinn_high/pred_solution.png, id=840, 867.24pt x 462.528pt>
+<Images_BE/inversepinn_high/pred_solution.png, id=891, 867.24pt x 462.528pt>
 File: Images_BE/inversepinn_high/pred_solution.png Graphic file (type png)
 <use Images_BE/inversepinn_high/pred_solution.png>
-Package pdftex.def Info: Images_BE/inversepinn_high/pred_solution.png  used on input line 1750.
+Package pdftex.def Info: Images_BE/inversepinn_high/pred_solution.png  used on input line 1911.
 (pdftex.def)             Requested size: 361.92029pt x 193.02534pt.
-<Images_BE/inversepinn_high/summary.png, id=841, 1300.86pt x 794.97pt>
-File: Images_BE/inversepinn_high/summary.png Graphic file (type png)
-<use Images_BE/inversepinn_high/summary.png>
-Package pdftex.def Info: Images_BE/inversepinn_high/summary.png  used on input line 1757.
-(pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
-[67 <./Images_BE/inversepinn_high/pred_solution.png>]
-<Images_BE/inversepinn_high/parameter_convergence.png, id=851, 722.7pt x 361.35pt>
-File: Images_BE/inversepinn_high/parameter_convergence.png Graphic file (type png)
-<use Images_BE/inversepinn_high/parameter_convergence.png>
-Package pdftex.def Info: Images_BE/inversepinn_high/parameter_convergence.png  used on input line 1764.
-(pdftex.def)             Requested size: 316.67767pt x 158.33835pt.
-<Images_BE/inversepinn_low/pred_solution.png, id=853, 867.24pt x 462.528pt>
-File: Images_BE/inversepinn_low/pred_solution.png Graphic file (type png)
-<use Images_BE/inversepinn_low/pred_solution.png>
-Package pdftex.def Info: Images_BE/inversepinn_low/pred_solution.png  used on input line 1789.
-(pdftex.def)             Requested size: 361.92029pt x 193.02534pt.
- [68 <./Images_BE/inversepinn_high/summary.png> <./Images_BE/inversepinn_high/parameter_convergence.png>]
-<Images_BE/inversepinn_low/summary.png, id=864, 1300.86pt x 794.97pt>
-File: Images_BE/inversepinn_low/summary.png Graphic file (type png)
-<use Images_BE/inversepinn_low/summary.png>
-Package pdftex.def Info: Images_BE/inversepinn_low/summary.png  used on input line 1796.
-(pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
-<Images_BE/inversepinn_low/parameter_convergence.png, id=865, 722.7pt x 361.35pt>
-File: Images_BE/inversepinn_low/parameter_convergence.png Graphic file (type png)
-<use Images_BE/inversepinn_low/parameter_convergence.png>
-Package pdftex.def Info: Images_BE/inversepinn_low/parameter_convergence.png  used on input line 1803.
-(pdftex.def)             Requested size: 316.67767pt x 158.33835pt.
- [69 <./Images_BE/inversepinn_low/pred_solution.png> <./Images_BE/inversepinn_low/summary.png> <./Images_BE/inversepinn_low/parameter_convergence.png>]
-<Images_BE/nu_estimation/scatter_Gauss_None.png, id=879, 578.16pt x 578.16pt>
-File: Images_BE/nu_estimation/scatter_Gauss_None.png Graphic file (type png)
-<use Images_BE/nu_estimation/scatter_Gauss_None.png>
-Package pdftex.def Info: Images_BE/nu_estimation/scatter_Gauss_None.png  used on input line 1816.
-(pdftex.def)             Requested size: 361.92029pt x 361.91371pt.
-<Images_BE/nu_estimation/scatter_Gauss_high.png, id=882, 578.16pt x 578.16pt>
-File: Images_BE/nu_estimation/scatter_Gauss_high.png Graphic file (type png)
-<use Images_BE/nu_estimation/scatter_Gauss_high.png>
-Package pdftex.def Info: Images_BE/nu_estimation/scatter_Gauss_high.png  used on input line 1827.
-(pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
-<Images_BE/nu_estimation/scatter_Gauss_low.png, id=883, 578.16pt x 578.16pt>
-File: Images_BE/nu_estimation/scatter_Gauss_low.png Graphic file (type png)
-<use Images_BE/nu_estimation/scatter_Gauss_low.png>
-Package pdftex.def Info: Images_BE/nu_estimation/scatter_Gauss_low.png  used on input line 1834.
-(pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [70 <./Images_BE/nu_estimation/scatter_Gauss_None.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1858--1859
+ [70]
+<Images_BE/inversepinn_high/summary.png, id=901, 1300.86pt x 794.97pt>
+File: Images_BE/inversepinn_high/summary.png Graphic file (type png)
+<use Images_BE/inversepinn_high/summary.png>
+Package pdftex.def Info: Images_BE/inversepinn_high/summary.png  used on input line 1918.
+(pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
+<Images_BE/inversepinn_high/parameter_convergence.png, id=902, 722.7pt x 361.35pt>
+File: Images_BE/inversepinn_high/parameter_convergence.png Graphic file (type png)
+<use Images_BE/inversepinn_high/parameter_convergence.png>
+Package pdftex.def Info: Images_BE/inversepinn_high/parameter_convergence.png  used on input line 1925.
+(pdftex.def)             Requested size: 316.67767pt x 158.33835pt.
+ [71 <./Images_BE/inversepinn_high/pred_solution.png> <./Images_BE/inversepinn_high/summary.png> <./Images_BE/inversepinn_high/parameter_convergence.png>]
+<Images_BE/inversepinn_low/pred_solution.png, id=914, 867.24pt x 462.528pt>
+File: Images_BE/inversepinn_low/pred_solution.png Graphic file (type png)
+<use Images_BE/inversepinn_low/pred_solution.png>
+Package pdftex.def Info: Images_BE/inversepinn_low/pred_solution.png  used on input line 1950.
+(pdftex.def)             Requested size: 361.92029pt x 193.02534pt.
+<Images_BE/inversepinn_low/summary.png, id=915, 1300.86pt x 794.97pt>
+File: Images_BE/inversepinn_low/summary.png Graphic file (type png)
+<use Images_BE/inversepinn_low/summary.png>
+Package pdftex.def Info: Images_BE/inversepinn_low/summary.png  used on input line 1957.
+(pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [72 <./Images_BE/inversepinn_low/pred_solution.png>]
+<Images_BE/inversepinn_low/parameter_convergence.png, id=924, 722.7pt x 361.35pt>
+File: Images_BE/inversepinn_low/parameter_convergence.png Graphic file (type png)
+<use Images_BE/inversepinn_low/parameter_convergence.png>
+Package pdftex.def Info: Images_BE/inversepinn_low/parameter_convergence.png  used on input line 1964.
+(pdftex.def)             Requested size: 316.67767pt x 158.33835pt.
+<Images_BE/nu_estimation/scatter_Gauss_None.png, id=927, 578.16pt x 578.16pt>
+File: Images_BE/nu_estimation/scatter_Gauss_None.png Graphic file (type png)
+<use Images_BE/nu_estimation/scatter_Gauss_None.png>
+Package pdftex.def Info: Images_BE/nu_estimation/scatter_Gauss_None.png  used on input line 1977.
+(pdftex.def)             Requested size: 361.92029pt x 361.91371pt.
+
+Underfull \vbox (badness 1360) has occurred while \output is active []
+
+ [73 <./Images_BE/inversepinn_low/summary.png> <./Images_BE/inversepinn_low/parameter_convergence.png>]
+<Images_BE/nu_estimation/scatter_Gauss_high.png, id=939, 578.16pt x 578.16pt>
+File: Images_BE/nu_estimation/scatter_Gauss_high.png Graphic file (type png)
+<use Images_BE/nu_estimation/scatter_Gauss_high.png>
+Package pdftex.def Info: Images_BE/nu_estimation/scatter_Gauss_high.png  used on input line 1988.
+(pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
+<Images_BE/nu_estimation/scatter_Gauss_low.png, id=940, 578.16pt x 578.16pt>
+File: Images_BE/nu_estimation/scatter_Gauss_low.png Graphic file (type png)
+<use Images_BE/nu_estimation/scatter_Gauss_low.png>
+Package pdftex.def Info: Images_BE/nu_estimation/scatter_Gauss_low.png  used on input line 1995.
+(pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
+ [74 <./Images_BE/nu_estimation/scatter_Gauss_None.png> <./Images_BE/nu_estimation/scatter_Gauss_high.png> <./Images_BE/nu_estimation/scatter_Gauss_low.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 2019--2020
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1860--1861
+Underfull \hbox (badness 10000) in paragraph at lines 2021--2022
 
  []
 
-<Images_BE/inversepinn_veryhigh/parameter_convergence.png, id=892, 722.7pt x 361.35pt>
+<Images_BE/inversepinn_veryhigh/parameter_convergence.png, id=950, 722.7pt x 361.35pt>
 File: Images_BE/inversepinn_veryhigh/parameter_convergence.png Graphic file (type png)
 <use Images_BE/inversepinn_veryhigh/parameter_convergence.png>
-Package pdftex.def Info: Images_BE/inversepinn_veryhigh/parameter_convergence.png  used on input line 1866.
+Package pdftex.def Info: Images_BE/inversepinn_veryhigh/parameter_convergence.png  used on input line 2027.
 (pdftex.def)             Requested size: 316.67767pt x 158.33835pt.
-[71 <./Images_BE/nu_estimation/scatter_Gauss_high.png> <./Images_BE/nu_estimation/scatter_Gauss_low.png>] [72 <./Images_BE/inversepinn_veryhigh/parameter_convergence.png>]
+[75 <./Images_BE/inversepinn_veryhigh/parameter_convergence.png>] [76]
 chapter 4.
-(Exam_Programming.bbl (Exam_Programming.brf)
+(./Exam_Programming.bbl (./Exam_Programming.brf)
 \tf@brf=\write6
 \openout6 = `Exam_Programming.brf'.
 
- [73
+ [77
 
 
-] [74
+] [78
 
 
-]) [75] (Exam_Programming.aux)
+]) [79] (./Exam_Programming.aux)
  ***********
-LaTeX2e <2023-06-01> patch level 1
+LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2020/03/25>
  ***********
 
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `Exam_Programming.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 Package rerunfilecheck Info: File `Exam_Programming.brf' has not changed.
-(rerunfilecheck)             Checksum: B7A92A619916DADE3C0DCB26C2186B42;859.
+(rerunfilecheck)             Checksum: E5B772CA7A4D209135B0A7BEFC7BD396;859.
  ) 
 Here is how much of TeX's memory you used:
- 32665 strings out of 475247
- 666846 string characters out of 5757792
- 1938785 words of memory out of 5000000
- 53264 multiletter control sequences out of 15000+600000
+ 32627 strings out of 475582
+ 661906 string characters out of 5778246
+ 1943975 words of memory out of 5000000
+ 53738 multiletter control sequences out of 15000+600000
  617957 words of font info for 155 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 122i,18n,131p,11016b,1433s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmss17.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/urw/symbol/usyr.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/urw/symbol/usyr.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Exam_Programming.pdf (79 pages, 34602444 bytes).
+ 350 hyphenation exceptions out of 8191
+ 122i,18n,131p,10994b,1435s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Exam_Programming.pdf (83 pages, 36469700 bytes).
 PDF statistics:
- 1198 PDF objects out of 1200 (max. 8388607)
- 341 named destinations out of 1000 (max. 500000)
- 793 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1264 PDF objects out of 1440 (max. 8388607)
+ 953 compressed objects within 10 object streams
+ 355 named destinations out of 1000 (max. 500000)
+ 851 words of extra memory for PDF output out of 10000 (max. 10000000)
 

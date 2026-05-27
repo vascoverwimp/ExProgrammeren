@@ -69,60 +69,6 @@ def analytic(t: np.ndarray, cfg: Config) -> np.ndarray:
         return a * np.exp(r1 * t) + b * np.exp(r2 * t)
 
 
-def make_observations_strata(cfg: Config) -> tuple[np.ndarray, np.ndarray,
-                                                   np.ndarray, np.ndarray]:
-    """Generate noisy observation points and stratified train/validation sets."""  # noqa: E501
-    if cfg.strata_splitting < 2:
-        t = np.random.uniform(0.1, cfg.t_dom, cfg.n_obs)
-        y = analytic(t, cfg) + np.random.normal(0.0, cfg.sigma, cfg.n_obs)
-
-        t_train, t_val, y_train, y_val = train_test_split(
-            t, y, test_size=cfg.test_train_split
-        )
-
-    else:
-        t_train_list = []
-        t_val_list = []
-        y_train_list = []
-        y_val_list = []
-
-        stratum_total = int(cfg.strata_splitting)
-        stratum_width = cfg.t_dom / stratum_total
-        stratum_points = int(cfg.n_obs / stratum_total)
-
-        for i in range(stratum_total):
-
-            low = 0.1 + i * stratum_width
-            high = 0.1 + (i + 1) * stratum_width
-
-            stratum_t = np.random.uniform(low, high, stratum_points)
-
-            stratum_y = (
-                analytic(stratum_t, cfg)
-                + np.random.normal(0.0, cfg.sigma, stratum_points)
-            )
-
-            stratum_t_train, stratum_t_val, stratum_y_train, stratum_y_val = (
-                train_test_split(
-                    stratum_t,
-                    stratum_y,
-                    test_size=cfg.test_train_split
-                )
-            )
-
-            t_train_list.append(stratum_t_train)
-            t_val_list.append(stratum_t_val)
-            y_train_list.append(stratum_y_train)
-            y_val_list.append(stratum_y_val)
-
-        t_train = np.concatenate(t_train_list)
-        t_val = np.concatenate(t_val_list)
-        y_train = np.concatenate(y_train_list)
-        y_val = np.concatenate(y_val_list)
-
-    return t_train, y_train, t_val, y_val
-
-
 def make_train_observation(cfg: Config) -> tuple[np.ndarray, np.ndarray]:
     """Make noisy observation points."""
     t_obs = np.random.uniform(0.1, cfg.t_dom, cfg.n_obs)

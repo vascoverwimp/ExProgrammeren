@@ -169,8 +169,8 @@ def objective(trial: optuna.Trial) -> float:
 
     write_header = not CSV_PATH.exists()
 
-    with open(CSV_PATH, "a", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=CSV_FIELDS)
+    with open(CSV_PATH, "a", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=CSV_FIELDS)
 
         if write_header:
             writer.writeheader()

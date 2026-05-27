@@ -106,15 +106,15 @@ def u_0(cfg: Config) -> np.ndarray:
 
 
 # -- Cole-Hopf transformation ------------------------------------------------
-def cole_hopf_trans(u_0: np.ndarray, cfg: Config) -> np.ndarray:
+def cole_hopf_trans(u_init: np.ndarray, cfg: Config) -> np.ndarray:
     """
     Transform to phi using Cole-Hopf tranformation.
 
     phi_0 = exp(-1/2nu int^x_0 u(x)dx)
     """
-    phi_0 = np.zeros_like(u_0, dtype=float)
-    for i in range(len(phi_0)):
-        integral = np.sum(u_0[:i]) * cfg.delta_x
+    phi_0 = np.zeros_like(u_init, dtype=float)
+    for i, _ in enumerate(phi_0):
+        integral = np.sum(u_init[:i]) * cfg.delta_x
         phi_0[i] = np.exp(-1.0 / (2.0 * cfg.nu) * integral)
     return phi_0
 
@@ -146,13 +146,13 @@ def reverse_cole_hopf_trans(phi: np.ndarray, cfg: Config) -> np.ndarray:
 
 
 def solve_burgers_padded(
-        u_0: np.ndarray,
+        u_init: np.ndarray,
         t: float,
         cfg: Config,
         pad: int
         ) -> np.ndarray:
     """Solve the Burgers equation throught the Cole-Hopf transformation."""
-    u_0_padded = np.pad(u_0, pad_width=pad, mode='edge')
+    u_0_padded = np.pad(u_init, pad_width=pad, mode='edge')
     x_grid_padded = np.arange(len(u_0_padded)) * \
         cfg.delta_x - pad * cfg.delta_x
 
@@ -361,22 +361,27 @@ def lax_wendroff(
 
 
 def gauss_solution_grid(cfg: Config) -> np.ndarray:
+    """Lax-Wendroff gauss solution grid."""
     return lax_wendroff(gauss(cfg=cfg), t_end=cfg.t_extrap, cfg=cfg)
 
 
 def step_up_solution_grid(cfg: Config) -> np.ndarray:
+    """Lax-Wendroff step-up solution grid."""
     return lax_wendroff(step_up(cfg=cfg), t_end=cfg.t_extrap, cfg=cfg)
 
 
 def n_wave_solution_grid(cfg: Config) -> np.ndarray:
+    """Lax-Wendroff n-wave solution grid."""
     return lax_wendroff(n_wave(cfg=cfg), t_end=cfg.t_extrap, cfg=cfg)
 
 
 def n_wave_chop_solution_grid(cfg: Config) -> np.ndarray:
+    """Lax-Wendroff n-wave chopped solution grid."""
     return lax_wendroff(n_wave_chop(cfg=cfg), t_end=cfg.t_extrap, cfg=cfg)
 
 
 def slope_solution_grid(cfg: Config) -> np.ndarray:
+    """Lax-Wendroff slope solution grid."""
     return lax_wendroff(negative_slope(cfg=cfg), t_end=cfg.t_extrap, cfg=cfg)
 
 
@@ -460,6 +465,7 @@ def residual(sol: np.ndarray, t_arr: np.ndarray, cfg: Config) -> np.ndarray:
 
 
 def rmse(sol: np.ndarray, t_arr: np.ndarray, cfg: Config) -> np.ndarray:
+    """Pointwise RMSE"""
     return np.mean(residual(sol, t_arr, cfg) ** 2)
 
 
@@ -501,7 +507,7 @@ def plot_anim(sol: np.ndarray, plot_pause: float = 1) -> None:
         ax.set_title(f"Time step {frame}/{n_t}")
         return line,
 
-    ani = animation.FuncAnimation(
+    _ = animation.FuncAnimation(
         fig,
         update,
         frames=n_t,
@@ -513,10 +519,10 @@ def plot_anim(sol: np.ndarray, plot_pause: float = 1) -> None:
 
 
 if __name__ == "__main__":
-    cfg = Config(ic="N_wave")
-    cfg.height = 2
-    u_init = u_0(cfg)
-    plt.plot(u_init)
+    my_cfg = Config(ic="N_wave")
+    my_cfg.height = 2
+    u_init_example = u_0(my_cfg)
+    plt.plot(u_init_example)
     plt.show()
 
     # # Upwind Euler

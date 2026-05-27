@@ -67,7 +67,7 @@ def resolve_output_path(args, ic):
     return SCRIPT_DIR / f"outputs/pinn_{ic.lower()}"
 
 
-def main():
+def main() -> None:
     """Main loop."""
     print("=" * 50)
     print("  PINN Demo — Burgers Equation")

@@ -691,8 +691,94 @@ Since the underdamped regime is the most interesting, I will show the rest of th
 
 These plots give us some useful insights. The epoch plot (Figure \ref{fig:pinn_underdamped/epoch_snapshots}) shows how the model learns the equation behavior, starting at low $t$ and working its way through the entire domain. The loss plot (Figure \ref{fig:pinn_underdamped/losses}) is also very interesting. We can see that the $\mathcal{L}_{i.c.}$ is minimised the fastest, as it is the largest contribution to the total loss function. At that point, the largest contribution to the total is form the data, and the $\mathcal{L}_{data}$ and $\mathcal{L}_{total}$ curves match each other quite well.  In this case $\mathcal{L}_{val}$ stays lower than $\mathcal{L}_{data}$, since the observation points have data applied to them but the validation points do not. Over time, the other loss terms also converge, and at some point the validation loss $\mathcal{L}_{val}$ stops decreasing; this is the point where the model starts overfitting. Since no more significant optimisations are made, the training is stopped.
 
+\subsection{Profiling}
+This section is made using the \verb|pinn_profiling.py| script. Before invertigating the prediction performance, I will profile the cde and display the memory usage and training time for my local machine. All models discussed in this report were trained in a MEDION Defender P50 laptop. The specs for this laptop are shown below:
+
+\begin{table}[H]
+\centering
+\caption{System Specifications}\label{tab:system_specs}
+\begin{tabular}{llc}
+\toprule
+\textbf{Component} & \textbf{Description} & \textbf{Value} \\
+\midrule
+\texttt{CPU}        & Processor                   & Intel Core i7-13620H (13th Gen) × 16    \\
+\texttt{RAM}        & System memory               & 32.0 GiB                                \\
+\texttt{GPU}        & Discrete graphics           & NVIDIA GeForce RTX 4060 Laptop          \\
+\texttt{VRAM}       & GPU memory                  & 8.0 GiB                                 \\
+\texttt{iGPU}       & Integrated graphics         & Intel Graphics (RPL-P)                  \\
+\texttt{Storage}    & Disk capacity               & 2.0 TB                                  \\
+\texttt{OS}         & Operating system            & Ubuntu 24.04.4 LTS (64-bit)             \\
+\texttt{Kernel}     & Kernel version              & Linux 6.17.0-29-generic                 \\
+\texttt{CUDA}       & CUDA version                & 12.2                                    \\
+\texttt{Driver}     & NVIDIA driver version       & 535.309.01                              \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We will run the training for the underdamped case again, and profile the following metrics for data generation, model training and plot generation:
+\begin{itemize}
+    \item The wall time, calculated using the \verb|time| module.
+    \item The RAM usage over time, using the \verb|memory_profiler| library.
+    \item The GPU VRAM usage over time, using the \verb|torch| and \verb|threading| libraries.
+\end{itemize}
+This gives the following runtimes:
+
+\begin{table}[H]
+\centering
+\caption{Wall times}\label{tab:wall_times_DHO}
+\begin{tabular}{lc}
+\toprule
+\textbf{Process} & \textbf{Time ([s])}\\
+\midrule
+Data generation        & $0.0$                        \\
+Model training         & $16.2$                       \\
+Plot generation        & $2.9$                        \\
+\bottomrule
+\end{tabular}
+\end{table}
+The training finished after 4550 epochs, which results in a time per epoch of $3.56$~ms. Since the data generation happens almost instantly, it is not useful to track the memory usage for that process. The RAM and VRAM usage as a function of time\footnote{Note that the process takes longer than shown in Table \ref{tab:system_specs}. This is because of the overhead of the memory profiler.} for the model training is displayed below:
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Images_DHO/pinn_profiling/mem_train.png}
+        \caption{RAM usage as a function of time when training the model.}
+        \label{fig:pinn_profiling/mem_train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Images_DHO/pinn_profiling/mem_train_gpu.png}
+        \caption{VRAM usage as a function of time when training the model.}
+        \label{fig:pinn_profiling/mem_train_gpu}
+    \end{subfigure}
+    \caption{Memory profiling during model training.}
+    \label{fig:pinn_profiling_train}
+\end{figure}
+
+The RAM and VRAM usage for the plot generation is displayed below:
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Images_DHO/pinn_profiling/mem_plots.png}
+        \caption{RAM usage as a function of time when generating plots.}
+        \label{fig:pinn_profiling/mem_plot}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Images_DHO/pinn_profiling/mem_plots_gpu.png}
+        \caption{VRAM usage as a function of time when generating plots.}
+        \label{fig:pinn_profiling/mem_plot_gpu}
+    \end{subfigure}
+    \caption{Memory profiling during model training.}
+    \label{fig:pinn_profiling_plot}
+\end{figure}
+
 \subsection{Comparison between blind and physics informed extrapolation}\label{ch:extrap_DHO}
-This section is made using the \verb|pinn_blind_extrap.py| script. Before tuning the hyperparameters or attempting to solve the inverse problem, I want to study the effect of some of the loss terms. Firstly, in all previous simulations, the collocation points were allowed to be chosen in the extrapolated domain. This makes the extrapolation not fully blind, but physics-informed. In this experiment, the collocation points will only be chosen in the training domain, and no other hyperparameters will be changed.. This results in an actually blind test, as shown in Fugure \ref{fig:pinn_blindextrap/summary}
+This section is made using the \verb|pinn_blind_extrap.py| script. Before tuning the hyperparameters or attempting to solve the inverse problem, I want to study the effect of some of the loss terms. Firstly, in all previous simulations, the collocation points were allowed to be chosen in the extrapolated domain. This makes the extrapolation not fully blind, but physics-informed. In this experiment, the collocation points will only be chosen in the training domain, and no other hyperparameters will be changed.. This results in an actually blind test, as shown in Figure \ref{fig:pinn_blindextrap/summary}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{Images_DHO/pinn_blindextrap/summary.png}
@@ -1578,6 +1664,81 @@ Let us now see what happens if the viscosity is decreased to $\nu=0.01$. The sol
 Interestingly, the $RMSE$ does not seem to increase with decreasing viscosity like in the previous two examples. This is because with a step-up initial condition, a lower viscosity will not lead to a steeper gradient since no shockwave is formed. We only have a rarefaction, where a solution with a lower value for $\nu$ can be fitted with comparable accuracy to a solution with higher $\nu$.
 \clearpage
 We will now discuss the effect of different parameters for the trained models. Since the gaussian initial conditions gave the most accurate results and profuce a shockwave, I will stick to this inital condition with $\nu=0.05$ for the rest of the report.
+
+This gives the following runtimes:
+
+\begin{table}[H]
+\centering
+\caption{Wall times}\label{tab:wall_times_DHO}
+\begin{tabular}{lc}
+\toprule
+\textbf{Process} & \textbf{Time ([s])}\\
+\midrule
+Data generation        & $15.0$                      \\
+Model training         & $88.8$                       \\
+Plot generation        & $24.5$                        \\
+\bottomrule
+\end{tabular}
+\end{table}
+The training finished after 7200 epochs, which results in a time per epoch of $12.33$~ms. The RAM and VRAM usage as a function of time for the data generation is displayed below:
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Images_BE/pinn_profiling/mem_data.png}
+        \caption{RAM usage as a function of time when generating ground truth data.}
+        \label{fig:pinn_profiling/mem_data_BE}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Images_BE/pinn_profiling/mem_data_gpu.png}
+        \caption{VRAM usage as a function of time when generating ground truth data.}
+        \label{fig:pinn_profiling/mem_data_gpu_BE}
+    \end{subfigure}
+    \caption{Memory profiling during model training.}
+    \label{fig:pinn_profiling_data_BE}
+\end{figure}
+
+The RAM and VRAM usage as a function of time for the model training is displayed below:
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Images_BE/pinn_profiling/mem_train.png}
+        \caption{RAM usage as a function of time when training the model.}
+        \label{fig:pinn_profiling/mem_train_BE}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Images_BE/pinn_profiling/mem_train_gpu.png}
+        \caption{VRAM usage as a function of time when training the model.}
+        \label{fig:pinn_profiling/mem_train_gpu_BE}
+    \end{subfigure}
+    \caption{Memory profiling during model training.}
+    \label{fig:pinn_profiling_train_BE}
+\end{figure}
+
+The RAM and VRAM usage for the plot generation is displayed below:
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Images_BE/pinn_profiling/mem_plots.png}
+        \caption{RAM usage as a function of time when generating plots.}
+        \label{fig:pinn_profiling/mem_plot_BE}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Images_BE/pinn_profiling/mem_plots_gpu.png}
+        \caption{VRAM usage as a function of time when generating plots.}
+        \label{fig:pinn_profiling/mem_plot_gpu_BE}
+    \end{subfigure}
+    \caption{Memory profiling during model training.}
+    \label{fig:pinn_profiling_plot_BE}
+\end{figure}
 
 \subsection{Inclusion of data}
 This section is made using the \verb|pinn_data_included.py| script. The code is implemented in such a way that we can include training data in the training loop by modifying the Config class. We want to compare the results with and without training data. The predicted solution where data is included in the training is shown below:

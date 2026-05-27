@@ -13,7 +13,6 @@ Last modified   : 24/05/2026
 
 import json
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 from matplotlib.axes import Axes
@@ -210,7 +209,6 @@ def plot_pred_1D(
 
 def plot_solution_grid(
     model:       nn.Module,
-    data:        dict,
     cfg:         Config,
     snapshots:   dict,
     u_grid:      np.ndarray,
@@ -219,7 +217,6 @@ def plot_solution_grid(
     times:       list[float] = None,
     model_color: str = GREEN,
     model_label: str = "PINN",
-    fig_title:   str = r"PINN -- spatial solution at different times",
     clip_y:      bool = False,
     output_path: Path = None,
     show:        bool = True
@@ -384,13 +381,14 @@ def plot_losses(
     save_show(output_path=output_path, show=show)
 
 
-def plot_gt_2D(
+def plot_gt_2d(
     cfg:         Config,
     u_grid:      np.ndarray,
     t_arr:       np.ndarray,
     output_path: Path = None,
     show:        bool = True
 ) -> None:
+    """Plot 2D matrix of ground truth."""
     x = np.linspace(0, cfg.L, 500)
     t = np.linspace(0, cfg.t_extrap, 500)
     x_matrix, t_matrix = np.meshgrid(x, t)
@@ -443,7 +441,7 @@ def plot_gt_2D(
     save_show(output_path=output_path, show=show)
 
 
-def plot_pred_2D(
+def plot_pred_2d(
     model:       nn.Module,
     cfg:         Config,
     snapshots:   dict,
@@ -508,11 +506,9 @@ def plot_pred_2D(
     save_show(output_path=output_path, show=show)
 
 
-def plot_epoch_figure_2D(
+def plot_epoch_figure_2d(
     cfg:         Config,
     snapshots:   dict,
-    model_color: str = GREEN,
-    model_label: str = "PINN",
     fig_title:   str = r"PINN -- predicted $u(x, t)$ after training epochs",
     output_path: Path = None,
     show:        bool = True
@@ -633,7 +629,7 @@ def plot_epoch_figure_2D(
     save_show(output_path=output_path, show=show)
 
 
-def plot_summary_2D(
+def plot_summary_2d(
     model:       nn.Module,
     history:     dict,
     cfg:         Config,
@@ -644,6 +640,7 @@ def plot_summary_2D(
     output_path: Path = None,
     show:        bool = True
 ) -> None:
+    """Plot summary figure."""
     # -- detect inverse mode ----------------------------------------------
     inverse = any("_nu_raw" in k for v in snapshots.values() for k in v.keys())
 
@@ -755,7 +752,7 @@ def plot_summary_2D(
     for spine in ax5.spines.values():
         spine.set_edgecolor(LGRAY)
 
-    LOSS_STYLE = {
+    loss_style = {
         "loss_data":  (BLUE,   "-",  r"$\mathcal{L}_{data}$"),
         "loss_phys":  (GREEN,  "-",  r"$\mathcal{L}_{phys}$"),
         "loss_ic":    (PURPLE, "-",  r"$\mathcal{L}_{ic}$"),
@@ -764,7 +761,7 @@ def plot_summary_2D(
         "loss_total": (GRAY,   ":",  r"$\mathcal{L}_{total}$"),
     }
     epochs = history["epoch"]
-    for key, (color, ls, label) in LOSS_STYLE.items():
+    for key, (color, ls, label) in loss_style.items():
         if key in history and any(v > 0 for v in history[key]):
             ax5.semilogy(epochs, history[key],
                          color=color, ls=ls, lw=1.6, label=label)
@@ -894,7 +891,7 @@ def plot_method_of_characteristics(
     t_end = cfg.t_extrap
     t_line = np.linspace(0, t_end, 200)
 
-    fig, ax = plt.subplots(figsize=(10, 8))
+    _, ax = plt.subplots(figsize=(10, 8))
 
     for i, (x0, u0) in enumerate(zip(x_samples, u_samples)):
         x_char = x0 + u0 * t_line
@@ -959,7 +956,6 @@ def plot_three_times(
         times = [0, cfg.t_shock / 2, cfg.t_shock]
 
     x_plot = np.linspace(0, cfg.L, 300)
-    n_cols = 2
 
     fig, axes = plt.subplots(3, 1,
                              figsize=(6, 10),
@@ -1059,7 +1055,6 @@ def save_model_plots(
 
     plot_solution_grid(
         model=model,
-        data=data,
         cfg=cfg,
         snapshots=snapshots,
         u_grid=data["u_grid"],
@@ -1086,7 +1081,7 @@ def save_model_plots(
         show=False
     )
 
-    plot_gt_2D(
+    plot_gt_2d(
         cfg=cfg,
         u_grid=data["u_grid"],
         t_arr=data["t_arr"],
@@ -1094,7 +1089,7 @@ def save_model_plots(
         show=False
     )
 
-    plot_pred_2D(
+    plot_pred_2d(
         model=model,
         cfg=cfg,
         snapshots=snapshots,
@@ -1102,14 +1097,14 @@ def save_model_plots(
         show=False
     )
 
-    plot_epoch_figure_2D(
+    plot_epoch_figure_2d(
         cfg=cfg,
         snapshots=snapshots,
         output_path=output_path / "epochs_2D.png",
         show=False
     )
 
-    plot_summary_2D(
+    plot_summary_2d(
         model=model,
         history=history,
         cfg=cfg,
@@ -1137,7 +1132,8 @@ def save_model_plots(
 
 
 def save_plots_from_file(
-        folder_path: str
+        folder_path: str,
+        verbatim: bool = True
 ) -> None:
     """
     Load a model als export all plots.
@@ -1148,7 +1144,7 @@ def save_plots_from_file(
     state_dict = torch.load(folder_path / "best_model.pt", map_location="cpu")
     inverse = any("_nu_raw" in k for k in state_dict.keys())
 
-    with open(folder_path / "config.json") as f:
+    with open(folder_path / "config.json", encoding='utf-8') as f:
         cfg = Config(**json.load(f))
 
     model = InverseFCNet(cfg) if inverse else FCNet(cfg)
@@ -1157,4 +1153,6 @@ def save_plots_from_file(
     data = generate_data(cfg)
     save_model_plots(model, history, snapshots,
                      data, cfg, inverse, folder_path)
-    print(f"Plots saved to {folder_path}")
+    
+    if verbatim:
+        print(f"Plots saved to {folder_path}")

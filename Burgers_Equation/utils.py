@@ -64,7 +64,7 @@ def load_best_cfg(json_path: str) -> Config:
     """
     Load best Optuna parameters from a JSON file as a Config object.
     """
-    with open(json_path) as f:
+    with open(json_path, encoding='utf-8') as f:
         data = json.load(f)
 
     params = data["best_params"]
@@ -80,7 +80,8 @@ def save_model(
     history:     dict,
     snapshots:   dict,
     cfg:         Config,
-    output_path: Path
+    output_path: Path,
+    verbatim:    bool = False,
 ) -> None:
     """
     Save model weights, training history, snapshots, and config.
@@ -99,7 +100,7 @@ def save_model(
     torch.save(best_state, output_path / "best_model.pt")
 
     # -- history as .csv file ------------------------------------------------
-    with open(output_path / "history.csv", "w", newline="") as f:
+    with open(output_path / "history.csv", "w", newline="", encoding='utf-8') as f:
         writer = csv.DictWriter(f, fieldnames=history.keys())
         writer.writeheader()
         writer.writerows([
@@ -111,10 +112,11 @@ def save_model(
     torch.save(snapshots, output_path / "snapshots.pt")
 
     # -- config as .json file --------------------------------
-    with open(output_path / "config.json", "w") as f:
+    with open(output_path / "config.json", "w", encoding='utf-8') as f:
         json.dump(dataclasses.asdict(cfg), f, indent=4)
 
-    print(f"Saved model, history, snapshots and config to {output_path}/")
+    if verbatim:
+        print(f"Saved model, history, snapshots and config to {output_path}/")
 
 
 def load_model(
@@ -137,7 +139,6 @@ def load_model(
     history   : dict of loss curves
     snapshots : dict mapping epoch -> state dict
     """
-    import csv
     folder_path = Path(folder_path)
 
     # model weights
@@ -145,12 +146,12 @@ def load_model(
         folder_path / "best_model.pt", map_location="cpu"))
 
     # history
-    with open(folder_path / "history.csv") as f:
+    with open(folder_path / "history.csv", encoding='utf-8') as f:
         rows = list(csv.DictReader(f))
     history = {k: [float(r[k]) for r in rows] for k in rows[0]}
 
     # config
-    with open(folder_path / "config.json") as f:
+    with open(folder_path / "config.json", encoding='utf-8') as f:
         cfg_dict = json.load(f)
     cfg = Config(**cfg_dict)
 

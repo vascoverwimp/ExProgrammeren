@@ -48,7 +48,7 @@ def train_model(cfg, label, device):
     save_plots_from_file(output_path)
 
 
-def main():
+def main() -> None:
     """Main loop."""
     device = get_device()
     print(f"Device : {device}")

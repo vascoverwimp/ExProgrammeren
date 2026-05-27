@@ -52,11 +52,13 @@ PANEL = "#F1EFE8"   # axes background
 
 
 def shade_extrap(cfg: Config, ax: Axes) -> None:
+    """Shade extrapolated region."""
     ax.axvspan(cfg.t_dom, cfg.t_extrap, color=GRAY, alpha=0.12)
     ax.axvline(cfg.t_dom, color=GRAY, lw=0.8, ls="--", alpha=0.6)
 
 
 def style_ax(ax: Axes) -> None:
+    """Style axis."""
     ax.set_facecolor(PANEL)
     for spine in ax.spines.values():
         spine.set_edgecolor(LGRAY)
@@ -608,7 +610,6 @@ def save_model_plots(
     device: torch.device,
     inverse: bool,
     output_path: Path,
-    model_color: str = GREEN,
     model_label: str = "PINN",
 ) -> None:
     """Generate and save all summary and epoch figures for a trained model."""
@@ -669,7 +670,7 @@ def save_model_plots(
         )
 
 
-def save_plots_from_file(folder_path: str) -> None:
+def save_plots_from_file(folder_path: str, verbatim: bool = True) -> None:
     """Load a model and export all plots."""
     folder_path = Path(folder_path)
     device = get_device()
@@ -681,7 +682,7 @@ def save_plots_from_file(folder_path: str) -> None:
         for k in state_dict.keys()
     )
 
-    with open(folder_path / "config.json") as f:
+    with open(folder_path / "config.json", encoding='utf-8') as f:
         cfg = Config(**json.load(f))
 
     model = InverseFCNet(cfg) if inverse else FCNet(cfg)
@@ -690,10 +691,11 @@ def save_plots_from_file(folder_path: str) -> None:
     data = generate_data(cfg)
     save_model_plots(model, history, snapshots, data,
                      cfg, device, inverse, folder_path)
-    print(f"Plots saved to {folder_path}")
+    if verbatim:
+        print(f"Plots saved to {folder_path}")
 
 
 if __name__ == "__main__":
     m, c, k = convert_to_mck(zeta=0.2, omega_0=3)
-    cfg = Config(m=m, c=c, k=k)
-    plot_analytic(cfg, 10)
+    cfg_example = Config(m=m, c=c, k=k)
+    plot_analytic(cfg_example, 10)

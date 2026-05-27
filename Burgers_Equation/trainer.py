@@ -12,7 +12,6 @@ Last modified   : 24/05/2026
 
 import optuna
 import time
-import os
 import copy
 from config import Config
 import torch
@@ -20,8 +19,6 @@ import torch.nn as nn
 from utils import to_tensor
 from losses import loss_data, loss_ic, loss_physics, loss_physics_inverse, loss_bc  # noqa:E501
 from data import make_collocation, make_observation, make_bc_points
-
-os.makedirs("outputs", exist_ok=True)
 
 
 def train(
@@ -82,21 +79,18 @@ def train(
     u_grid = data["u_grid"]
     t_arr = data["t_arr"]
 
-    if not cfg.randomise_observation:
-        # Only make observation points once
-        x_obs_t = to_tensor(data["x_obs"])
-        t_obs_t = to_tensor(data["t_obs"])
-        u_obs_t = to_tensor(data["u_obs"])
+    x_obs_t = to_tensor(data["x_obs"])
+    t_obs_t = to_tensor(data["t_obs"])
+    u_obs_t = to_tensor(data["u_obs"])
 
-    if not cfg.randomise_collocation:
-        # Only make collocation points once
-        x_col_dom_t = to_tensor(data["x_col_dom"],    requires_grad=True)
-        t_col_dom_t = to_tensor(data["t_col_dom"],    requires_grad=True)
-        x_col_extrap_t = to_tensor(data["x_col_extrap"], requires_grad=True)
-        t_col_extrap_t = to_tensor(data["t_col_extrap"], requires_grad=True)
+    x_col_dom_t = to_tensor(data["x_col_dom"],    requires_grad=True)
+    t_col_dom_t = to_tensor(data["t_col_dom"],    requires_grad=True)
+    x_col_extrap_t = to_tensor(data["x_col_extrap"], requires_grad=True)
+    t_col_extrap_t = to_tensor(data["t_col_extrap"], requires_grad=True)
 
-    if not cfg.randomise_bc_points:
-        t_bc_t = to_tensor(data["t_bc"])            # Only make BC points once
+    t_bc_t = to_tensor(data["t_bc"])
+
+    best_state=None
 
     # -- initialize optimiser and scheduler -----------------------------------
     if inverse_mode:
@@ -234,8 +228,10 @@ def train(
             best_state = {k: v.cpu() for k, v in model.state_dict().items()}
 
         if epochs_no_improvement >= cfg.patience:
-            print(
-                f"  [{label}] early stopping at epoch {epoch}, improvement stalled.")  # noqa:E501
+            if verbatim:
+                print(
+                    f"  [{label}] early stopping at epoch {epoch}, improvement stalled."
+                    )
             break
 
         # -- snapshots ------------------------------------------------------

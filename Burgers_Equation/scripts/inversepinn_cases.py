@@ -27,7 +27,7 @@ OUTPUT_PATH = SCRIPT_DIR / "outputs/Gauss_backward_demo_highnu"
 OUTPUT_PATH.mkdir(exist_ok=True)
 
 
-def main():
+def main() -> None:
     """Main loop."""
     device = get_device()
     print(f"Device : {device}")

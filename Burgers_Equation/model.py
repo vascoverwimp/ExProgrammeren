@@ -41,9 +41,11 @@ class FCNet(nn.Module):
         self.net = nn.Sequential(*layers)
 
     def forward(self, t: torch.Tensor, x: torch.Tensor) -> torch.Tensor:
+        """Forward pass."""
         return self.net(torch.cat([t, x], dim=1))
 
     def param_count(self) -> int:
+        """Return parameter count."""
         return sum(p.numel() for p in self.parameters())
 
 
@@ -77,12 +79,15 @@ class InverseFCNet(nn.Module):
 
     @property
     def nu_hat(self):
+        """Positive viscosity."""
         return torch.nn.functional.softplus(self._nu_raw)  # always > 0
 
     def forward(self, t: torch.Tensor, x: torch.Tensor) -> torch.Tensor:
+        """Forward pass."""
         return self.net(torch.cat([t, x], dim=1))
 
     def param_count(self) -> int:
+        """Return parameter count."""
         return sum(p.numel() for p in self.parameters())
 
 

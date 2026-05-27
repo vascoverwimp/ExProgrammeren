@@ -3,17 +3,6 @@
 \providecommand\babel@aux[2]{}
 \@nameuse{bbl@beforestart}
 \providecommand\hyper@newdestlabel[2]{}
-\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
-\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
-\global\let\oldnewlabel\newlabel
-\gdef\newlabel#1#2{\newlabelxx{#1}#2}
-\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
-\AtEndDocument{\ifx\hyper@anchor\@undefined
-\let\newlabel\oldnewlabel
-\fi}
-\fi}
-\global\let\hyper@last\relax 
-\gdef\HyperFirstAtBeginDocument#1{#1}
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \providecommand\BKM@entry[2]{}
@@ -125,291 +114,329 @@
 \newlabel{fig:pinn_underdamped/predicted_solution}{{2.10}{22}{Predicted solution for the underdamped case}{figure.caption.25}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.11}{\ignorespaces Epoch snapshots for the underdamped case.}}{22}{figure.caption.26}\protected@file@percent }
 \newlabel{fig:pinn_underdamped/epoch_snapshots}{{2.11}{22}{Epoch snapshots for the underdamped case}{figure.caption.26}{}}
-\BKM@entry{id=17,dest={73756273656374696F6E2E322E342E34},srcline={694}}{5C3337365C3337375C303030435C3030306F5C3030306D5C303030705C303030615C303030725C303030695C303030735C3030306F5C3030306E5C3030305C3034305C303030625C303030655C303030745C303030775C303030655C303030655C3030306E5C3030305C3034305C303030625C3030306C5C303030695C3030306E5C303030645C3030305C3034305C303030615C3030306E5C303030645C3030305C3034305C303030705C303030685C303030795C303030735C303030695C303030635C303030735C3030305C3034305C303030695C3030306E5C303030665C3030306F5C303030725C3030306D5C303030655C303030645C3030305C3034305C303030655C303030785C303030745C303030725C303030615C303030705C3030306F5C3030306C5C303030615C303030745C303030695C3030306F5C3030306E}
+\BKM@entry{id=17,dest={73756273656374696F6E2E322E342E34},srcline={694}}{5C3337365C3337375C303030505C303030725C3030306F5C303030665C303030695C3030306C5C303030695C3030306E5C30303067}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.12}{\ignorespaces Loss convergence plot for the underdamped case.}}{23}{figure.caption.27}\protected@file@percent }
 \newlabel{fig:pinn_underdamped/losses}{{2.12}{23}{Loss convergence plot for the underdamped case}{figure.caption.27}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.4}Comparison between blind and physics informed extrapolation}{23}{subsection.2.4.4}\protected@file@percent }
-\newlabel{ch:extrap_DHO}{{2.4.4}{23}{Comparison between blind and physics informed extrapolation}{subsection.2.4.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.13}{\ignorespaces Summary plot for a PINN whithout collocation points in the extrapolated domain. This leads to a fully blind predicition for $t>t_{dom}$.}}{23}{figure.caption.28}\protected@file@percent }
-\newlabel{fig:pinn_blindextrap/summary}{{2.13}{23}{Summary plot for a PINN whithout collocation points in the extrapolated domain. This leads to a fully blind predicition for $t>t_{dom}$}{figure.caption.28}{}}
-\BKM@entry{id=18,dest={73756273656374696F6E2E322E342E35},srcline={704}}{5C3337365C3337375C303030435C3030306F5C3030306D5C303030705C303030615C303030725C303030695C303030735C3030306F5C3030306E5C3030305C3034305C303030775C303030695C303030745C303030685C3030305C3034305C303030745C303030725C303030615C303030645C303030695C303030745C303030695C3030306F5C3030306E5C303030615C3030306C5C3030305C3034305C3030304D5C3030304C5C3030305C3034305C3030306D5C3030306F5C303030645C303030655C3030306C}
-\BKM@entry{id=19,dest={73756273656374696F6E2E322E342E36},srcline={716}}{5C3337365C3337375C303030485C303030795C303030705C303030655C303030725C303030705C303030615C303030725C303030615C3030306D5C303030655C303030745C303030655C303030725C3030305C3034305C3030306F5C303030705C303030745C303030695C3030306D5C303030695C303030735C303030615C303030745C303030695C3030306F5C3030306E}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.4}Profiling}{23}{subsection.2.4.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2.5}{\ignorespaces System Specifications}}{23}{table.caption.28}\protected@file@percent }
+\newlabel{tab:system_specs}{{2.5}{23}{System Specifications}{table.caption.28}{}}
+\BKM@entry{id=18,dest={73756273656374696F6E2E322E342E35},srcline={780}}{5C3337365C3337375C303030435C3030306F5C3030306D5C303030705C303030615C303030725C303030695C303030735C3030306F5C3030306E5C3030305C3034305C303030625C303030655C303030745C303030775C303030655C303030655C3030306E5C3030305C3034305C303030625C3030306C5C303030695C3030306E5C303030645C3030305C3034305C303030615C3030306E5C303030645C3030305C3034305C303030705C303030685C303030795C303030735C303030695C303030635C303030735C3030305C3034305C303030695C3030306E5C303030665C3030306F5C303030725C3030306D5C303030655C303030645C3030305C3034305C303030655C303030785C303030745C303030725C303030615C303030705C3030306F5C3030306C5C303030615C303030745C303030695C3030306F5C3030306E}
+\@writefile{lot}{\contentsline {table}{\numberline {2.6}{\ignorespaces Wall times}}{24}{table.caption.29}\protected@file@percent }
+\newlabel{tab:wall_times_DHO}{{2.6}{24}{Wall times}{table.caption.29}{}}
+\newlabel{fig:pinn_profiling/mem_train}{{2.13a}{24}{RAM usage as a function of time when training the model}{figure.caption.30}{}}
+\newlabel{sub@fig:pinn_profiling/mem_train}{{a}{24}{RAM usage as a function of time when training the model}{figure.caption.30}{}}
+\newlabel{fig:pinn_profiling/mem_train_gpu}{{2.13b}{24}{VRAM usage as a function of time when training the model}{figure.caption.30}{}}
+\newlabel{sub@fig:pinn_profiling/mem_train_gpu}{{b}{24}{VRAM usage as a function of time when training the model}{figure.caption.30}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.13}{\ignorespaces Memory profiling during model training.}}{24}{figure.caption.30}\protected@file@percent }
+\newlabel{fig:pinn_profiling_train}{{2.13}{24}{Memory profiling during model training}{figure.caption.30}{}}
+\newlabel{fig:pinn_profiling/mem_plot}{{2.14a}{24}{RAM usage as a function of time when generating plots}{figure.caption.31}{}}
+\newlabel{sub@fig:pinn_profiling/mem_plot}{{a}{24}{RAM usage as a function of time when generating plots}{figure.caption.31}{}}
+\newlabel{fig:pinn_profiling/mem_plot_gpu}{{2.14b}{24}{VRAM usage as a function of time when generating plots}{figure.caption.31}{}}
+\newlabel{sub@fig:pinn_profiling/mem_plot_gpu}{{b}{24}{VRAM usage as a function of time when generating plots}{figure.caption.31}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.14}{\ignorespaces Memory profiling during model training.}}{24}{figure.caption.31}\protected@file@percent }
+\newlabel{fig:pinn_profiling_plot}{{2.14}{24}{Memory profiling during model training}{figure.caption.31}{}}
+\BKM@entry{id=19,dest={73756273656374696F6E2E322E342E36},srcline={790}}{5C3337365C3337375C303030435C3030306F5C3030306D5C303030705C303030615C303030725C303030695C303030735C3030306F5C3030306E5C3030305C3034305C303030775C303030695C303030745C303030685C3030305C3034305C303030745C303030725C303030615C303030645C303030695C303030745C303030695C3030306F5C3030306E5C303030615C3030306C5C3030305C3034305C3030304D5C3030304C5C3030305C3034305C3030306D5C3030306F5C303030645C303030655C3030306C}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.5}Comparison between blind and physics informed extrapolation}{25}{subsection.2.4.5}\protected@file@percent }
+\newlabel{ch:extrap_DHO}{{2.4.5}{25}{Comparison between blind and physics informed extrapolation}{subsection.2.4.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.15}{\ignorespaces Summary plot for a PINN whithout collocation points in the extrapolated domain. This leads to a fully blind predicition for $t>t_{dom}$.}}{25}{figure.caption.32}\protected@file@percent }
+\newlabel{fig:pinn_blindextrap/summary}{{2.15}{25}{Summary plot for a PINN whithout collocation points in the extrapolated domain. This leads to a fully blind predicition for $t>t_{dom}$}{figure.caption.32}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.6}Comparison with traditional ML model}{25}{subsection.2.4.6}\protected@file@percent }
+\BKM@entry{id=20,dest={73756273656374696F6E2E322E342E37},srcline={802}}{5C3337365C3337375C303030485C303030795C303030705C303030655C303030725C303030705C303030615C303030725C303030615C3030306D5C303030655C303030745C303030655C303030725C3030305C3034305C3030306F5C303030705C303030745C303030695C3030306D5C303030695C303030735C303030615C303030745C303030695C3030306F5C3030306E}
 \citation{watanabe2025treestructuredparzenestimatorunderstanding}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.5}Comparison with traditional ML model}{24}{subsection.2.4.5}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2.14}{\ignorespaces Summary plot for a non-physics informed neural network.}}{24}{figure.caption.29}\protected@file@percent }
-\newlabel{fig:pinn_nophys/summary}{{2.14}{24}{Summary plot for a non-physics informed neural network}{figure.caption.29}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.6}Hyperparameter optimisation}{24}{subsection.2.4.6}\protected@file@percent }
-\newlabel{ch:hyperparameters_DHO}{{2.4.6}{24}{Hyperparameter optimisation}{subsection.2.4.6}{}}
-\@writefile{brf}{\backcite{watanabe2025treestructuredparzenestimatorunderstanding}{{25}{2.4.6}{subsection.2.4.6}}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.15}{\ignorespaces Predicted solution with standard hyperparameters shown in Table \ref {tab:standard_parameters_DHO}}}{25}{figure.caption.30}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.6.1}Model complexity}{25}{subsubsection.2.4.6.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2.16}{\ignorespaces Predicted solution from a model with a very low complexity.}}{25}{figure.caption.31}\protected@file@percent }
-\newlabel{fig:pinn_hyperparameters/low_complexity/predicted_solution}{{2.16}{25}{Predicted solution from a model with a very low complexity}{figure.caption.31}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.6.2}Learning rate}{26}{subsubsection.2.4.6.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2.17}{\ignorespaces Predicted solution with $lr=0.05$.}}{26}{figure.caption.32}\protected@file@percent }
-\newlabel{fig:pinn_hyperparameters/high_lr/predicted_solution}{{2.17}{26}{Predicted solution with $lr=0.05$}{figure.caption.32}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.18}{\ignorespaces Predicted solution with $lr=0.05$.}}{26}{figure.caption.33}\protected@file@percent }
-\newlabel{fig:pinn_hyperparameters/low_lr/predicted_solution}{{2.18}{26}{Predicted solution with $lr=0.05$}{figure.caption.33}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.6.3}Loss function weights}{27}{subsubsection.2.4.6.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2.19}{\ignorespaces Predicted solution with $\lambda _{phys}=100$.}}{27}{figure.caption.34}\protected@file@percent }
-\newlabel{fig:pinn_hyperparameters/large_phys/predicted_solution}{{2.19}{27}{Predicted solution with $\lambda _{phys}=100$}{figure.caption.34}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.20}{\ignorespaces Predicted solution with $\lambda _{phys}=100$ and no collocation points in the extrapolated domain.}}{27}{figure.caption.35}\protected@file@percent }
-\newlabel{fig:pinn_hyperparameters/large_phys_no_extrap/predicted_solution}{{2.20}{27}{Predicted solution with $\lambda _{phys}=100$ and no collocation points in the extrapolated domain}{figure.caption.35}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.16}{\ignorespaces Summary plot for a non-physics informed neural network.}}{26}{figure.caption.33}\protected@file@percent }
+\newlabel{fig:pinn_nophys/summary}{{2.16}{26}{Summary plot for a non-physics informed neural network}{figure.caption.33}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.7}Hyperparameter optimisation}{26}{subsection.2.4.7}\protected@file@percent }
+\newlabel{ch:hyperparameters_DHO}{{2.4.7}{26}{Hyperparameter optimisation}{subsection.2.4.7}{}}
+\@writefile{brf}{\backcite{watanabe2025treestructuredparzenestimatorunderstanding}{{26}{2.4.7}{subsection.2.4.7}}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.17}{\ignorespaces Predicted solution with standard hyperparameters shown in Table \ref {tab:standard_parameters_DHO}}}{27}{figure.caption.34}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.7.1}Model complexity}{27}{subsubsection.2.4.7.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.18}{\ignorespaces Predicted solution from a model with a very low complexity.}}{27}{figure.caption.35}\protected@file@percent }
+\newlabel{fig:pinn_hyperparameters/low_complexity/predicted_solution}{{2.18}{27}{Predicted solution from a model with a very low complexity}{figure.caption.35}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.7.2}Learning rate}{27}{subsubsection.2.4.7.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.19}{\ignorespaces Predicted solution with $lr=0.05$.}}{28}{figure.caption.36}\protected@file@percent }
+\newlabel{fig:pinn_hyperparameters/high_lr/predicted_solution}{{2.19}{28}{Predicted solution with $lr=0.05$}{figure.caption.36}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.20}{\ignorespaces Predicted solution with $lr=0.05$.}}{28}{figure.caption.37}\protected@file@percent }
+\newlabel{fig:pinn_hyperparameters/low_lr/predicted_solution}{{2.20}{28}{Predicted solution with $lr=0.05$}{figure.caption.37}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.7.3}Loss function weights}{29}{subsubsection.2.4.7.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.21}{\ignorespaces Predicted solution with $\lambda _{phys}=100$.}}{29}{figure.caption.38}\protected@file@percent }
+\newlabel{fig:pinn_hyperparameters/large_phys/predicted_solution}{{2.21}{29}{Predicted solution with $\lambda _{phys}=100$}{figure.caption.38}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.22}{\ignorespaces Predicted solution with $\lambda _{phys}=100$ and no collocation points in the extrapolated domain.}}{29}{figure.caption.39}\protected@file@percent }
+\newlabel{fig:pinn_hyperparameters/large_phys_no_extrap/predicted_solution}{{2.22}{29}{Predicted solution with $\lambda _{phys}=100$ and no collocation points in the extrapolated domain}{figure.caption.39}{}}
 \citation{watanabe2025treestructuredparzenestimatorunderstanding}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.21}{\ignorespaces Predicted solution with $\lambda _{phys}=100$ and no noisy observation points for training.}}{28}{figure.caption.36}\protected@file@percent }
-\newlabel{fig:pinn_hyperparameters/large_phys_no_data/predicted_solution}{{2.21}{28}{Predicted solution with $\lambda _{phys}=100$ and no noisy observation points for training}{figure.caption.36}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.6.4}Optuna}{28}{subsubsection.2.4.6.4}\protected@file@percent }
-\newlabel{ch:optuna_DHO}{{2.4.6.4}{28}{Optuna}{subsubsection.2.4.6.4}{}}
-\@writefile{brf}{\backcite{watanabe2025treestructuredparzenestimatorunderstanding}{{28}{2.4.6.4}{subsubsection.2.4.6.4}}}
-\BKM@entry{id=20,dest={73656374696F6E2E322E35},srcline={839}}{5C3337365C3337375C303030495C3030306E5C303030765C303030655C303030725C303030735C303030655C3030305C3034305C303030705C303030725C3030306F5C303030625C3030306C5C303030655C3030306D}
-\@writefile{lot}{\contentsline {table}{\numberline {2.5}{\ignorespaces Optuna Hyperparameter Search Ranges}}{29}{table.caption.37}\protected@file@percent }
-\newlabel{tab:optuna_hyperparams}{{2.5}{29}{Optuna Hyperparameter Search Ranges}{table.caption.37}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2.6}{\ignorespaces Optimal Hyperparameters Found by Optuna}}{29}{table.caption.38}\protected@file@percent }
-\newlabel{tab:optuna_best_params}{{2.6}{29}{Optimal Hyperparameters Found by Optuna}{table.caption.38}{}}
-\BKM@entry{id=21,dest={73756273656374696F6E2E322E352E31},srcline={866}}{5C3337365C3337375C3030304F5C303030765C303030655C303030725C303030645C303030615C3030306D5C303030705C303030655C303030645C3030305C3034305C303030635C303030615C303030735C30303065}
-\@writefile{toc}{\contentsline {section}{\numberline {2.5}Inverse problem}{30}{section.2.5}\protected@file@percent }
-\newlabel{ch:inverse_DHO}{{2.5}{30}{Inverse problem}{section.2.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2.7}{\ignorespaces Hyperparameters used for inverse problem}}{30}{table.caption.39}\protected@file@percent }
-\newlabel{tab:inverse_hyperparameters}{{2.7}{30}{Hyperparameters used for inverse problem}{table.caption.39}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Overdamped case}{30}{subsection.2.5.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2.8}{\ignorespaces Overdamped parameters}}{30}{table.caption.40}\protected@file@percent }
-\BKM@entry{id=22,dest={73756273656374696F6E2E322E352E32},srcline={897}}{5C3337365C3337375C303030435C303030725C303030695C303030745C303030695C303030635C303030615C3030306C5C3030306C5C303030795C3030305C3034305C303030645C303030615C3030306D5C303030705C303030655C303030645C3030305C3034305C303030635C303030615C303030735C30303065}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.22}{\ignorespaces Predicted solution and parameters for an overdamped harmonic oscillator with randomised parameters.}}{31}{figure.caption.41}\protected@file@percent }
-\newlabel{fig:inversepinn_overdamped/predicted_solution}{{2.22}{31}{Predicted solution and parameters for an overdamped harmonic oscillator with randomised parameters}{figure.caption.41}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.23}{\ignorespaces Parameter convergence to true values for an overdamped harmonic oscillator with randomised parameters.}}{31}{figure.caption.42}\protected@file@percent }
-\newlabel{fig:inversepinn_overdamped/parameter_convergence}{{2.23}{31}{Parameter convergence to true values for an overdamped harmonic oscillator with randomised parameters}{figure.caption.42}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}Critically damped case}{31}{subsection.2.5.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2.9}{\ignorespaces Overdamped parameters}}{31}{table.caption.43}\protected@file@percent }
-\BKM@entry{id=23,dest={73756273656374696F6E2E322E352E33},srcline={928}}{5C3337365C3337375C303030555C3030306E5C303030645C303030655C303030725C303030645C303030615C3030306D5C303030705C303030655C303030645C3030305C3034305C303030635C303030615C303030735C30303065}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.24}{\ignorespaces Predicted solution and parameters for a critically damped harmonic oscillator with randomised parameters.}}{32}{figure.caption.44}\protected@file@percent }
-\newlabel{fig:inversepinn_criticallydamped/predicted_solution}{{2.24}{32}{Predicted solution and parameters for a critically damped harmonic oscillator with randomised parameters}{figure.caption.44}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.25}{\ignorespaces Parameter convergence to true values for a critically damped harmonic oscillator with randomised parameters.}}{32}{figure.caption.45}\protected@file@percent }
-\newlabel{fig:inversepinn_criticallydamped/parameter_convergence}{{2.25}{32}{Parameter convergence to true values for a critically damped harmonic oscillator with randomised parameters}{figure.caption.45}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.3}Underdamped case}{32}{subsection.2.5.3}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2.10}{\ignorespaces Overdamped parameters}}{32}{table.caption.46}\protected@file@percent }
-\BKM@entry{id=24,dest={73756273656374696F6E2E322E352E34},srcline={960}}{5C3337365C3337375C303030535C303030745C303030615C303030745C303030695C303030735C303030745C303030695C303030635C303030615C3030306C5C3030305C3034305C303030615C3030306E5C303030615C3030306C5C303030795C303030735C303030695C30303073}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.26}{\ignorespaces Predicted solution and parameters for an underdamped harmonic oscillator with randomised parameters.}}{33}{figure.caption.47}\protected@file@percent }
-\newlabel{fig:inversepinn_underdamped/predicted_solution}{{2.26}{33}{Predicted solution and parameters for an underdamped harmonic oscillator with randomised parameters}{figure.caption.47}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.27}{\ignorespaces Parameter convergence to true values for an underdamped harmonic oscillator with randomised parameters.}}{33}{figure.caption.48}\protected@file@percent }
-\newlabel{fig:inversepinn_underdamped/parameter_convergence}{{2.27}{33}{Parameter convergence to true values for an underdamped harmonic oscillator with randomised parameters}{figure.caption.48}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.4}Statistical analysis}{33}{subsection.2.5.4}\protected@file@percent }
-\newlabel{ch:stat_DHO}{{2.5.4}{33}{Statistical analysis}{subsection.2.5.4}{}}
-\newlabel{fig:parameter_estimation/scatter_zeta_full}{{2.28a}{34}{Scatter plot of 304 true and predicted $\zeta $ pairs}{figure.caption.49}{}}
-\newlabel{sub@fig:parameter_estimation/scatter_zeta_full}{{a}{34}{Scatter plot of 304 true and predicted $\zeta $ pairs}{figure.caption.49}{}}
-\newlabel{fig:parameter_estimation/scatter_omega_0_full}{{2.28b}{34}{Scatter plot of 304 true and predicted $\omega _0$ pairs}{figure.caption.49}{}}
-\newlabel{sub@fig:parameter_estimation/scatter_omega_0_full}{{b}{34}{Scatter plot of 304 true and predicted $\omega _0$ pairs}{figure.caption.49}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.28}{\ignorespaces Scatter plots of true and predicted physical parameters for the damped harmonic oscillator.}}{34}{figure.caption.49}\protected@file@percent }
-\newlabel{fig:parameter_estimation/scatter_full}{{2.28}{34}{Scatter plots of true and predicted physical parameters for the damped harmonic oscillator}{figure.caption.49}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2.11}{\ignorespaces Parameter estimation RMSE across different cases}}{34}{table.caption.50}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2.29}{\ignorespaces Parameter space of 304 true $(\zeta , \omega _0)$ pairs and the $RMSE$ compared to the predicted values.}}{35}{figure.caption.51}\protected@file@percent }
-\newlabel{fig:parameter_estimation/parameter_space_rmse_full}{{2.29}{35}{Parameter space of 304 true $(\zeta , \omega _0)$ pairs and the $RMSE$ compared to the predicted values}{figure.caption.51}{}}
-\newlabel{fig:analytic_solutions_zeta_underdamped}{{2.30a}{35}{Underdamped solutions for different $\zeta $}{figure.caption.52}{}}
-\newlabel{sub@fig:analytic_solutions_zeta_underdamped}{{a}{35}{Underdamped solutions for different $\zeta $}{figure.caption.52}{}}
-\newlabel{fig:analytic_solutions_zeta_overdamped}{{2.30b}{35}{Overdamped solutions for different $\zeta $}{figure.caption.52}{}}
-\newlabel{sub@fig:analytic_solutions_zeta_overdamped}{{b}{35}{Overdamped solutions for different $\zeta $}{figure.caption.52}{}}
-\newlabel{fig:analytic_solutions_omega_underdamped}{{2.30c}{35}{Underdamped solutions for different $\omega _0$}{figure.caption.52}{}}
-\newlabel{sub@fig:analytic_solutions_omega_underdamped}{{c}{35}{Underdamped solutions for different $\omega _0$}{figure.caption.52}{}}
-\newlabel{fig:analytic_solutions_omega_overdamped}{{2.30d}{35}{Overdamped solutions for different $\omega _0$}{figure.caption.52}{}}
-\newlabel{sub@fig:analytic_solutions_omega_overdamped}{{d}{35}{Overdamped solutions for different $\omega _0$}{figure.caption.52}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.30}{\ignorespaces \relax }}{35}{figure.caption.52}\protected@file@percent }
-\newlabel{fig:grid_zeta_omega}{{2.30}{35}{\relax }{figure.caption.52}{}}
-\BKM@entry{id=25,dest={636861707465722E33},srcline={1054}}{5C3337365C3337375C303030425C303030755C303030725C303030675C303030655C303030725C303030275C303030735C3030305C3034305C303030455C303030715C303030755C303030615C303030745C303030695C3030306F5C3030306E}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.23}{\ignorespaces Predicted solution with $\lambda _{phys}=100$ and no noisy observation points for training.}}{30}{figure.caption.40}\protected@file@percent }
+\newlabel{fig:pinn_hyperparameters/large_phys_no_data/predicted_solution}{{2.23}{30}{Predicted solution with $\lambda _{phys}=100$ and no noisy observation points for training}{figure.caption.40}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.7.4}Optuna}{30}{subsubsection.2.4.7.4}\protected@file@percent }
+\newlabel{ch:optuna_DHO}{{2.4.7.4}{30}{Optuna}{subsubsection.2.4.7.4}{}}
+\@writefile{brf}{\backcite{watanabe2025treestructuredparzenestimatorunderstanding}{{30}{2.4.7.4}{subsubsection.2.4.7.4}}}
+\BKM@entry{id=21,dest={73656374696F6E2E322E35},srcline={925}}{5C3337365C3337375C303030495C3030306E5C303030765C303030655C303030725C303030735C303030655C3030305C3034305C303030705C303030725C3030306F5C303030625C3030306C5C303030655C3030306D}
+\@writefile{lot}{\contentsline {table}{\numberline {2.7}{\ignorespaces Optuna Hyperparameter Search Ranges}}{31}{table.caption.41}\protected@file@percent }
+\newlabel{tab:optuna_hyperparams}{{2.7}{31}{Optuna Hyperparameter Search Ranges}{table.caption.41}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2.8}{\ignorespaces Optimal Hyperparameters Found by Optuna}}{31}{table.caption.42}\protected@file@percent }
+\newlabel{tab:optuna_best_params}{{2.8}{31}{Optimal Hyperparameters Found by Optuna}{table.caption.42}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}Inverse problem}{31}{section.2.5}\protected@file@percent }
+\newlabel{ch:inverse_DHO}{{2.5}{31}{Inverse problem}{section.2.5}{}}
+\BKM@entry{id=22,dest={73756273656374696F6E2E322E352E31},srcline={952}}{5C3337365C3337375C3030304F5C303030765C303030655C303030725C303030645C303030615C3030306D5C303030705C303030655C303030645C3030305C3034305C303030635C303030615C303030735C30303065}
+\@writefile{lot}{\contentsline {table}{\numberline {2.9}{\ignorespaces Hyperparameters used for inverse problem}}{32}{table.caption.43}\protected@file@percent }
+\newlabel{tab:inverse_hyperparameters}{{2.9}{32}{Hyperparameters used for inverse problem}{table.caption.43}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Overdamped case}{32}{subsection.2.5.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2.10}{\ignorespaces Overdamped parameters}}{32}{table.caption.44}\protected@file@percent }
+\BKM@entry{id=23,dest={73756273656374696F6E2E322E352E32},srcline={983}}{5C3337365C3337375C303030435C303030725C303030695C303030745C303030695C303030635C303030615C3030306C5C3030306C5C303030795C3030305C3034305C303030645C303030615C3030306D5C303030705C303030655C303030645C3030305C3034305C303030635C303030615C303030735C30303065}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.24}{\ignorespaces Predicted solution and parameters for an overdamped harmonic oscillator with randomised parameters.}}{33}{figure.caption.45}\protected@file@percent }
+\newlabel{fig:inversepinn_overdamped/predicted_solution}{{2.24}{33}{Predicted solution and parameters for an overdamped harmonic oscillator with randomised parameters}{figure.caption.45}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.25}{\ignorespaces Parameter convergence to true values for an overdamped harmonic oscillator with randomised parameters.}}{33}{figure.caption.46}\protected@file@percent }
+\newlabel{fig:inversepinn_overdamped/parameter_convergence}{{2.25}{33}{Parameter convergence to true values for an overdamped harmonic oscillator with randomised parameters}{figure.caption.46}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}Critically damped case}{33}{subsection.2.5.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2.11}{\ignorespaces Overdamped parameters}}{33}{table.caption.47}\protected@file@percent }
+\BKM@entry{id=24,dest={73756273656374696F6E2E322E352E33},srcline={1014}}{5C3337365C3337375C303030555C3030306E5C303030645C303030655C303030725C303030645C303030615C3030306D5C303030705C303030655C303030645C3030305C3034305C303030635C303030615C303030735C30303065}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.26}{\ignorespaces Predicted solution and parameters for a critically damped harmonic oscillator with randomised parameters.}}{34}{figure.caption.48}\protected@file@percent }
+\newlabel{fig:inversepinn_criticallydamped/predicted_solution}{{2.26}{34}{Predicted solution and parameters for a critically damped harmonic oscillator with randomised parameters}{figure.caption.48}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.27}{\ignorespaces Parameter convergence to true values for a critically damped harmonic oscillator with randomised parameters.}}{34}{figure.caption.49}\protected@file@percent }
+\newlabel{fig:inversepinn_criticallydamped/parameter_convergence}{{2.27}{34}{Parameter convergence to true values for a critically damped harmonic oscillator with randomised parameters}{figure.caption.49}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.3}Underdamped case}{34}{subsection.2.5.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2.12}{\ignorespaces Overdamped parameters}}{34}{table.caption.50}\protected@file@percent }
+\BKM@entry{id=25,dest={73756273656374696F6E2E322E352E34},srcline={1046}}{5C3337365C3337375C303030535C303030745C303030615C303030745C303030695C303030735C303030745C303030695C303030635C303030615C3030306C5C3030305C3034305C303030615C3030306E5C303030615C3030306C5C303030795C303030735C303030695C30303073}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.28}{\ignorespaces Predicted solution and parameters for an underdamped harmonic oscillator with randomised parameters.}}{35}{figure.caption.51}\protected@file@percent }
+\newlabel{fig:inversepinn_underdamped/predicted_solution}{{2.28}{35}{Predicted solution and parameters for an underdamped harmonic oscillator with randomised parameters}{figure.caption.51}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.29}{\ignorespaces Parameter convergence to true values for an underdamped harmonic oscillator with randomised parameters.}}{35}{figure.caption.52}\protected@file@percent }
+\newlabel{fig:inversepinn_underdamped/parameter_convergence}{{2.29}{35}{Parameter convergence to true values for an underdamped harmonic oscillator with randomised parameters}{figure.caption.52}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.4}Statistical analysis}{35}{subsection.2.5.4}\protected@file@percent }
+\newlabel{ch:stat_DHO}{{2.5.4}{35}{Statistical analysis}{subsection.2.5.4}{}}
+\newlabel{fig:parameter_estimation/scatter_zeta_full}{{2.30a}{36}{Scatter plot of 304 true and predicted $\zeta $ pairs}{figure.caption.53}{}}
+\newlabel{sub@fig:parameter_estimation/scatter_zeta_full}{{a}{36}{Scatter plot of 304 true and predicted $\zeta $ pairs}{figure.caption.53}{}}
+\newlabel{fig:parameter_estimation/scatter_omega_0_full}{{2.30b}{36}{Scatter plot of 304 true and predicted $\omega _0$ pairs}{figure.caption.53}{}}
+\newlabel{sub@fig:parameter_estimation/scatter_omega_0_full}{{b}{36}{Scatter plot of 304 true and predicted $\omega _0$ pairs}{figure.caption.53}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.30}{\ignorespaces Scatter plots of true and predicted physical parameters for the damped harmonic oscillator.}}{36}{figure.caption.53}\protected@file@percent }
+\newlabel{fig:parameter_estimation/scatter_full}{{2.30}{36}{Scatter plots of true and predicted physical parameters for the damped harmonic oscillator}{figure.caption.53}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2.13}{\ignorespaces Parameter estimation RMSE across different cases}}{36}{table.caption.54}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.31}{\ignorespaces Parameter space of 304 true $(\zeta , \omega _0)$ pairs and the $RMSE$ compared to the predicted values.}}{37}{figure.caption.55}\protected@file@percent }
+\newlabel{fig:parameter_estimation/parameter_space_rmse_full}{{2.31}{37}{Parameter space of 304 true $(\zeta , \omega _0)$ pairs and the $RMSE$ compared to the predicted values}{figure.caption.55}{}}
+\newlabel{fig:analytic_solutions_zeta_underdamped}{{2.32a}{37}{Underdamped solutions for different $\zeta $}{figure.caption.56}{}}
+\newlabel{sub@fig:analytic_solutions_zeta_underdamped}{{a}{37}{Underdamped solutions for different $\zeta $}{figure.caption.56}{}}
+\newlabel{fig:analytic_solutions_zeta_overdamped}{{2.32b}{37}{Overdamped solutions for different $\zeta $}{figure.caption.56}{}}
+\newlabel{sub@fig:analytic_solutions_zeta_overdamped}{{b}{37}{Overdamped solutions for different $\zeta $}{figure.caption.56}{}}
+\newlabel{fig:analytic_solutions_omega_underdamped}{{2.32c}{37}{Underdamped solutions for different $\omega _0$}{figure.caption.56}{}}
+\newlabel{sub@fig:analytic_solutions_omega_underdamped}{{c}{37}{Underdamped solutions for different $\omega _0$}{figure.caption.56}{}}
+\newlabel{fig:analytic_solutions_omega_overdamped}{{2.32d}{37}{Overdamped solutions for different $\omega _0$}{figure.caption.56}{}}
+\newlabel{sub@fig:analytic_solutions_omega_overdamped}{{d}{37}{Overdamped solutions for different $\omega _0$}{figure.caption.56}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.32}{\ignorespaces \relax }}{37}{figure.caption.56}\protected@file@percent }
+\newlabel{fig:grid_zeta_omega}{{2.32}{37}{\relax }{figure.caption.56}{}}
+\BKM@entry{id=26,dest={636861707465722E33},srcline={1140}}{5C3337365C3337375C303030425C303030755C303030725C303030675C303030655C303030725C303030275C303030735C3030305C3034305C303030455C303030715C303030755C303030615C303030745C303030695C3030306F5C3030306E}
 \citation{vanremortel_einsle_2026}
-\BKM@entry{id=26,dest={73656374696F6E2E332E31},srcline={1077}}{5C3337365C3337375C303030475C303030725C3030306F5C303030755C3030306E5C303030645C3030305C3034305C303030745C303030725C303030755C303030745C303030685C3030305C3034305C303030735C3030306F5C3030306C5C303030765C303030695C3030306E5C303030675C3030305C3034305C303030735C303030745C303030725C303030615C303030745C303030655C303030675C303030695C303030655C30303073}
-\BKM@entry{id=27,dest={73756273656374696F6E2E332E312E31},srcline={1080}}{5C3337365C3337375C3030304D5C303030655C303030745C303030685C3030306F5C303030645C3030305C3034305C3030306F5C303030665C3030305C3034305C303030635C303030685C303030615C303030725C303030615C303030635C303030745C303030655C303030725C303030695C303030735C303030745C303030695C303030635C30303073}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Burger's Equation}{37}{chapter.3}\protected@file@percent }
+\BKM@entry{id=27,dest={73656374696F6E2E332E31},srcline={1163}}{5C3337365C3337375C303030475C303030725C3030306F5C303030755C3030306E5C303030645C3030305C3034305C303030745C303030725C303030755C303030745C303030685C3030305C3034305C303030735C3030306F5C3030306C5C303030765C303030695C3030306E5C303030675C3030305C3034305C303030735C303030745C303030725C303030615C303030745C303030655C303030675C303030695C303030655C30303073}
+\BKM@entry{id=28,dest={73756273656374696F6E2E332E312E31},srcline={1166}}{5C3337365C3337375C3030304D5C303030655C303030745C303030685C3030306F5C303030645C3030305C3034305C3030306F5C303030665C3030305C3034305C303030635C303030685C303030615C303030725C303030615C303030635C303030745C303030655C303030725C303030695C303030735C303030745C303030695C303030635C30303073}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Burger's Equation}{39}{chapter.3}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{brf}{\backcite{vanremortel_einsle_2026}{{37}{3}{equation.3.0.2}}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.1}Ground truth solving strategies}{37}{section.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Method of characteristics}{38}{subsection.3.1.1}\protected@file@percent }
-\newlabel{ch:method_of_characteristics}{{3.1.1}{38}{Method of characteristics}{subsection.3.1.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Method of characteristics applied to a Gaussian initial condition.}}{38}{figure.caption.53}\protected@file@percent }
-\newlabel{fig:gauss_characteristics}{{3.1}{38}{Method of characteristics applied to a Gaussian initial condition}{figure.caption.53}{}}
-\BKM@entry{id=28,dest={73756273656374696F6E2E332E312E32},srcline={1125}}{5C3337365C3337375C3030304E5C303030755C3030306D5C303030655C303030725C303030695C303030635C303030615C3030306C5C3030305C3034305C303030505C303030445C303030455C3030305C3034305C303030735C3030306F5C3030306C5C303030765C303030655C303030725C30303073}
-\newlabel{fig:gauss_ic}{{3.2a}{39}{Initial Gauss condition}{figure.caption.54}{}}
-\newlabel{sub@fig:gauss_ic}{{a}{39}{Initial Gauss condition}{figure.caption.54}{}}
-\newlabel{fig:gauss_t}{{3.2b}{39}{Gauss at $t=1$}{figure.caption.54}{}}
-\newlabel{sub@fig:gauss_t}{{b}{39}{Gauss at $t=1$}{figure.caption.54}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Gaussian initial condition and its time evolution.}}{39}{figure.caption.54}\protected@file@percent }
-\newlabel{fig:gauss_ic_t}{{3.2}{39}{Gaussian initial condition and its time evolution}{figure.caption.54}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Numerical PDE solvers}{39}{subsection.3.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.2.1}Euler's method (upwind)}{39}{subsubsection.3.1.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.2.2}Lax-Wendroff scheme}{39}{subsubsection.3.1.2.2}\protected@file@percent }
-\BKM@entry{id=29,dest={73756273656374696F6E2E332E312E33},srcline={1157}}{5C3337365C3337375C303030435C3030306F5C3030306C5C303030655C3030302D5C303030485C3030306F5C303030705C303030665C3030305C3034305C303030545C303030725C303030615C3030306E5C303030735C303030665C3030306F5C303030725C3030306D5C303030615C303030745C303030695C3030306F5C3030306E}
+\@writefile{brf}{\backcite{vanremortel_einsle_2026}{{39}{3}{equation.3.0.2}}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Ground truth solving strategies}{39}{section.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Method of characteristics}{40}{subsection.3.1.1}\protected@file@percent }
+\newlabel{ch:method_of_characteristics}{{3.1.1}{40}{Method of characteristics}{subsection.3.1.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Method of characteristics applied to a Gaussian initial condition.}}{40}{figure.caption.57}\protected@file@percent }
+\newlabel{fig:gauss_characteristics}{{3.1}{40}{Method of characteristics applied to a Gaussian initial condition}{figure.caption.57}{}}
+\BKM@entry{id=29,dest={73756273656374696F6E2E332E312E32},srcline={1211}}{5C3337365C3337375C3030304E5C303030755C3030306D5C303030655C303030725C303030695C303030635C303030615C3030306C5C3030305C3034305C303030505C303030445C303030455C3030305C3034305C303030735C3030306F5C3030306C5C303030765C303030655C303030725C30303073}
+\newlabel{fig:gauss_ic}{{3.2a}{41}{Initial Gauss condition}{figure.caption.58}{}}
+\newlabel{sub@fig:gauss_ic}{{a}{41}{Initial Gauss condition}{figure.caption.58}{}}
+\newlabel{fig:gauss_t}{{3.2b}{41}{Gauss at $t=1$}{figure.caption.58}{}}
+\newlabel{sub@fig:gauss_t}{{b}{41}{Gauss at $t=1$}{figure.caption.58}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Gaussian initial condition and its time evolution.}}{41}{figure.caption.58}\protected@file@percent }
+\newlabel{fig:gauss_ic_t}{{3.2}{41}{Gaussian initial condition and its time evolution}{figure.caption.58}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Numerical PDE solvers}{41}{subsection.3.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.2.1}Euler's method (upwind)}{41}{subsubsection.3.1.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.2.2}Lax-Wendroff scheme}{41}{subsubsection.3.1.2.2}\protected@file@percent }
+\BKM@entry{id=30,dest={73756273656374696F6E2E332E312E33},srcline={1243}}{5C3337365C3337375C303030435C3030306F5C3030306C5C303030655C3030302D5C303030485C3030306F5C303030705C303030665C3030305C3034305C303030545C303030725C303030615C3030306E5C303030735C303030665C3030306F5C303030725C3030306D5C303030615C303030745C303030695C3030306F5C3030306E}
 \citation{whitham2011linear}
-\BKM@entry{id=30,dest={73656374696F6E2E332E32},srcline={1188}}{5C3337365C3337375C303030505C303030495C3030304E5C3030304E5C303030735C3030305C3034305C303030665C3030306F5C303030725C3030305C3034305C303030745C303030685C303030655C3030305C3034305C303030425C303030755C303030725C303030675C303030655C303030725C303030275C303030735C3030305C3034305C303030655C303030715C303030755C303030615C303030745C303030695C3030306F5C3030306E}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}Cole-Hopf Transformation}{40}{subsection.3.1.3}\protected@file@percent }
-\@writefile{brf}{\backcite{whitham2011linear}{{40}{3.1.3}{equation.3.1.9}}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}PINNs for the Burger's equation}{40}{section.3.2}\protected@file@percent }
-\BKM@entry{id=31,dest={73756273656374696F6E2E332E322E31},srcline={1196}}{5C3337365C3337375C303030465C303030695C3030306C5C303030655C3030305C3034305C303030735C303030745C303030725C303030755C303030635C303030745C303030755C303030725C30303065}
-\BKM@entry{id=32,dest={73756273656374696F6E2E332E322E32},srcline={1216}}{5C3337365C3337375C303030425C3030306F5C303030755C3030306E5C303030645C303030615C303030725C303030795C3030305C3034305C303030635C3030306F5C3030306E5C303030645C303030695C303030745C303030695C3030306F5C3030306E5C3030305C3034305C3030306C5C3030306F5C303030735C30303073}
-\BKM@entry{id=33,dest={73756273656374696F6E2E332E322E33},srcline={1224}}{5C3337365C3337375C303030505C3030306C5C3030306F5C303030745C303030745C303030695C3030306E5C303030675C3030305C3034305C3030306D5C303030655C303030745C303030685C3030306F5C303030645C30303073}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}File structure}{41}{subsection.3.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Boundary condition loss}{41}{subsection.3.2.2}\protected@file@percent }
-\BKM@entry{id=34,dest={73656374696F6E2E332E33},srcline={1247}}{5C3337365C3337375C303030435C3030306F5C303030645C303030655C3030305C3034305C303030645C303030655C3030306D5C3030306F5C3030306E5C303030735C303030745C303030725C303030615C303030745C303030695C3030306F5C3030306E}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}Plotting methods}{42}{subsection.3.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.3}Code demonstration}{42}{section.3.3}\protected@file@percent }
-\BKM@entry{id=35,dest={73756273656374696F6E2E332E332E31},srcline={1275}}{5C3337365C3337375C303030475C303030615C303030755C303030735C30303073}
-\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces PINN Hyperparameters}}{43}{table.caption.55}\protected@file@percent }
-\newlabel{tab:standard_parameters_BE}{{3.1}{43}{PINN Hyperparameters}{table.caption.55}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Gauss}{43}{subsection.3.3.1}\protected@file@percent }
-\newlabel{ch:gauss}{{3.3.1}{43}{Gauss}{subsection.3.3.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Method of characteristics applied to a Gaussian initial condition.}}{43}{figure.caption.56}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.1/method_of_characteristics}{{3.3}{43}{Method of characteristics applied to a Gaussian initial condition}{figure.caption.56}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1.1}Gauss, $\nu =0.05$}{44}{subsubsection.3.3.1.1}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.05_gt_solution}{{3.4a}{44}{3D solution}{figure.caption.57}{}}
-\newlabel{sub@fig:Gauss_nu_0.05_gt_solution}{{a}{44}{3D solution}{figure.caption.57}{}}
-\newlabel{fig:Gauss_nu_0.05_gt_2D}{{3.4b}{44}{2D solution}{figure.caption.57}{}}
-\newlabel{sub@fig:Gauss_nu_0.05_gt_2D}{{b}{44}{2D solution}{figure.caption.57}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces Ground truth solution to the gaussian initial conditions calculated witht eh Cole-Hopf transformation.}}{44}{figure.caption.57}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.05_gt}{{3.4}{44}{Ground truth solution to the gaussian initial conditions calculated witht eh Cole-Hopf transformation}{figure.caption.57}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.05$.}}{45}{figure.caption.58}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.05/3_times}{{3.5}{45}{Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.05$}{figure.caption.58}{}}
-\newlabel{fig:Gauss_nu_0.05/gt_2D}{{3.6a}{46}{Ground truth solution in 2D for gaussian initial conditions and $\nu =0.05$}{figure.caption.59}{}}
-\newlabel{sub@fig:Gauss_nu_0.05/gt_2D}{{a}{46}{Ground truth solution in 2D for gaussian initial conditions and $\nu =0.05$}{figure.caption.59}{}}
-\newlabel{fig:Gauss_nu_0.05/pred_2D}{{3.6b}{46}{Predicted solutions in 2D for gaussian initial conditions and $\nu =0.05$}{figure.caption.59}{}}
-\newlabel{sub@fig:Gauss_nu_0.05/pred_2D}{{b}{46}{Predicted solutions in 2D for gaussian initial conditions and $\nu =0.05$}{figure.caption.59}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces Ground truth and predicted solutions in 2D for gaussian initial conditions and $\nu =0.05$.}}{46}{figure.caption.59}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.05_2D}{{3.6}{46}{Ground truth and predicted solutions in 2D for gaussian initial conditions and $\nu =0.05$}{figure.caption.59}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.7}{\ignorespaces Predicted solutions at 8 different times for gaussian initial conditions and $\nu =0.05$.}}{46}{figure.caption.60}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.05/pred_solution}{{3.7}{46}{Predicted solutions at 8 different times for gaussian initial conditions and $\nu =0.05$}{figure.caption.60}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.8}{\ignorespaces Predicted solutions at 8 different times for gaussian initial conditions and $\nu =0.05$.}}{47}{figure.caption.61}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.05/pred_grid}{{3.8}{47}{Predicted solutions at 8 different times for gaussian initial conditions and $\nu =0.05$}{figure.caption.61}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.9}{\ignorespaces Convergence of loss function terms for gaussian initial conditions and $\nu =0.05$.}}{47}{figure.caption.62}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.05/losses}{{3.9}{47}{Convergence of loss function terms for gaussian initial conditions and $\nu =0.05$}{figure.caption.62}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.10}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$.}}{48}{figure.caption.63}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.05/summary}{{3.10}{48}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$}{figure.caption.63}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1.2}Gauss, $\nu =0.1$}{49}{subsubsection.3.3.1.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.11}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.1$.}}{49}{figure.caption.64}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.1/3_times}{{3.11}{49}{Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.1$}{figure.caption.64}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.12}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.1$.}}{49}{figure.caption.65}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.1/summary}{{3.12}{49}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.1$}{figure.caption.65}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1.3}Gauss, $\nu =0.01$}{50}{subsubsection.3.3.1.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.13}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.01$.}}{50}{figure.caption.66}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.01/3_times_bad}{{3.13}{50}{Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.01$}{figure.caption.66}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.14}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.01$.}}{50}{figure.caption.67}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.01/summary_bad}{{3.14}{50}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.01$}{figure.caption.67}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.15}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.01$.}}{51}{figure.caption.68}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.01/3_times}{{3.15}{51}{Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.01$}{figure.caption.68}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.16}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.01$.}}{51}{figure.caption.69}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.01/summary}{{3.16}{51}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.01$}{figure.caption.69}{}}
-\BKM@entry{id=36,dest={73756273656374696F6E2E332E332E32},srcline={1429}}{5C3337365C3337375C3030304E5C3030302D5C303030775C303030615C303030765C30303065}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}N-wave}{52}{subsection.3.3.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.17}{\ignorespaces Method of characteristics applied to an N-wave initial condition.}}{52}{figure.caption.70}\protected@file@percent }
-\newlabel{fig:N_wave_nu_0.1/method_of_characteristics}{{3.17}{52}{Method of characteristics applied to an N-wave initial condition}{figure.caption.70}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.1}N-wave, $\nu =0.05$}{52}{subsubsection.3.3.2.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.18}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.05$.}}{53}{figure.caption.71}\protected@file@percent }
-\newlabel{fig:N_wave_nu_0.05_bad/3_times}{{3.18}{53}{Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.05$}{figure.caption.71}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.19}{\ignorespaces Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.05$.}}{53}{figure.caption.72}\protected@file@percent }
-\newlabel{fig:N_wave_nu_0.05_bad/summary}{{3.19}{53}{Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.05$}{figure.caption.72}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.20}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.05$.}}{54}{figure.caption.73}\protected@file@percent }
-\newlabel{fig:N_wave_nu_0.05/3_times}{{3.20}{54}{Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.05$}{figure.caption.73}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.21}{\ignorespaces Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.05$.}}{54}{figure.caption.74}\protected@file@percent }
-\newlabel{fig:N_wave_nu_0.05/summary}{{3.21}{54}{Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.05$}{figure.caption.74}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.2}N-wave, $\nu =0.1$}{55}{subsubsection.3.3.2.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.22}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.1$.}}{55}{figure.caption.75}\protected@file@percent }
-\newlabel{fig:N_wave_nu_0.1/3_times}{{3.22}{55}{Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.1$}{figure.caption.75}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.23}{\ignorespaces Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.1$.}}{55}{figure.caption.76}\protected@file@percent }
-\newlabel{fig:N_wave_nu_0.1/summary}{{3.23}{55}{Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.1$}{figure.caption.76}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.3}N-wave, $\nu =0.01$}{56}{subsubsection.3.3.2.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.24}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.01$.}}{56}{figure.caption.77}\protected@file@percent }
-\newlabel{fig:N_wave_nu_0.01/3_times}{{3.24}{56}{Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.01$}{figure.caption.77}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.25}{\ignorespaces Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.01$.}}{56}{figure.caption.78}\protected@file@percent }
-\newlabel{fig:N_wave_nu_0.01/summary}{{3.25}{56}{Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.01$}{figure.caption.78}{}}
-\BKM@entry{id=37,dest={73756273656374696F6E2E332E332E33},srcline={1512}}{5C3337365C3337375C303030535C303030745C303030655C303030705C3030302D5C303030755C30303070}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}Step-up}{57}{subsection.3.3.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.26}{\ignorespaces Method of characteristics applied to a Step-up initial condition.}}{57}{figure.caption.79}\protected@file@percent }
-\newlabel{fig:Step_up_nu_0.1/method_of_characteristics}{{3.26}{57}{Method of characteristics applied to a Step-up initial condition}{figure.caption.79}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3.1}Step-up, $\nu =0.05$}{57}{subsubsection.3.3.3.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.27}{\ignorespaces Predicted solutions at four different times for N-wave initial conditions and $\nu =0.05$.}}{57}{figure.caption.80}\protected@file@percent }
-\newlabel{fig:Step_up_nu_0.05/pred_solution}{{3.27}{57}{Predicted solutions at four different times for N-wave initial conditions and $\nu =0.05$}{figure.caption.80}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.28}{\ignorespaces Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.05$.}}{58}{figure.caption.81}\protected@file@percent }
-\newlabel{fig:Step_up_nu_0.05/summary}{{3.28}{58}{Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.05$}{figure.caption.81}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3.2}Step-up, $\nu =0.1$}{59}{subsubsection.3.3.3.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.29}{\ignorespaces Predicted solutions at four different times for N-wave initial conditions and $\nu =0.1$.}}{59}{figure.caption.82}\protected@file@percent }
-\newlabel{fig:Step_up_nu_0.1/pred_solution}{{3.29}{59}{Predicted solutions at four different times for N-wave initial conditions and $\nu =0.1$}{figure.caption.82}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.30}{\ignorespaces Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.1$.}}{59}{figure.caption.83}\protected@file@percent }
-\newlabel{fig:Step_up_nu_0.1/summary}{{3.30}{59}{Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.1$}{figure.caption.83}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3.3}Step-up, $\nu =0.01$}{59}{subsubsection.3.3.3.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.31}{\ignorespaces Predicted solutions at four different times for step-up initial conditions and $\nu =0.01$.}}{60}{figure.caption.84}\protected@file@percent }
-\newlabel{fig:Step_up_nu_0.01/pred_solution}{{3.31}{60}{Predicted solutions at four different times for step-up initial conditions and $\nu =0.01$}{figure.caption.84}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.32}{\ignorespaces Summary plot for the predicted solution by a PINN for step-up initial conditions and $\nu =0.01$.}}{60}{figure.caption.85}\protected@file@percent }
-\newlabel{fig:Step_up_nu_0.01/summary}{{3.32}{60}{Summary plot for the predicted solution by a PINN for step-up initial conditions and $\nu =0.01$}{figure.caption.85}{}}
-\BKM@entry{id=38,dest={73756273656374696F6E2E332E332E34},srcline={1582}}{5C3337365C3337375C303030495C3030306E5C303030635C3030306C5C303030755C303030735C303030695C3030306F5C3030306E5C3030305C3034305C3030306F5C303030665C3030305C3034305C303030645C303030615C303030745C30303061}
-\BKM@entry{id=39,dest={73756273656374696F6E2E332E332E35},srcline={1592}}{5C3337365C3337375C303030435C3030306F5C3030306D5C303030705C303030615C303030725C303030695C303030735C3030306F5C3030306E5C3030305C3034305C303030775C303030695C303030745C303030685C3030305C3034305C303030745C303030725C303030615C303030645C303030695C303030745C303030695C3030306F5C3030306E5C303030615C3030306C5C3030305C3034305C3030304D5C3030304C5C3030305C3034305C3030306D5C3030306F5C303030645C303030655C3030306C}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.4}Inclusion of data}{61}{subsection.3.3.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.33}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ when noisy data points are included in the training.}}{61}{figure.caption.86}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.05_data_included/summary}{{3.33}{61}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ when noisy data points are included in the training}{figure.caption.86}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.5}Comparison with traditional ML model}{61}{subsection.3.3.5}\protected@file@percent }
-\BKM@entry{id=40,dest={73756273656374696F6E2E332E332E36},srcline={1602}}{5C3337365C3337375C303030455C303030785C303030745C303030725C303030615C303030705C3030306F5C3030306C5C303030615C303030745C303030695C3030306E5C303030675C3030305C3034305C303030635C303030615C303030705C303030615C303030625C303030695C3030306C5C303030695C303030745C303030695C303030655C30303073}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.34}{\ignorespaces Summary plot for the predicted solution by a non-physics informed neural network for gaussian initial conditions and $\nu =0.05$.}}{62}{figure.caption.87}\protected@file@percent }
-\newlabel{fig:Step_up_nu_0.05_ML/summary}{{3.34}{62}{Summary plot for the predicted solution by a non-physics informed neural network for gaussian initial conditions and $\nu =0.05$}{figure.caption.87}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.6}Extrapolating capabilities}{62}{subsection.3.3.6}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.35}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ when the model is only trained on a fraction of the domain.}}{62}{figure.caption.88}\protected@file@percent }
-\newlabel{fig:Gauss_nu_0.05_extrapblind/summary}{{3.35}{62}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ when the model is only trained on a fraction of the domain}{figure.caption.88}{}}
-\BKM@entry{id=41,dest={73756273656374696F6E2E332E332E37},srcline={1619}}{5C3337365C3337375C303030485C303030795C303030705C303030655C303030725C303030705C303030615C303030725C303030615C3030306D5C303030655C303030745C303030655C303030725C3030305C3034305C3030306F5C303030705C303030745C303030695C3030306D5C303030695C303030735C303030615C303030745C303030695C3030306F5C3030306E}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.7}Hyperparameter optimisation}{63}{subsection.3.3.7}\protected@file@percent }
-\newlabel{ch:hyperparameters_BE}{{3.3.7}{63}{Hyperparameter optimisation}{subsection.3.3.7}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.7.1}Model complexity}{63}{subsubsection.3.3.7.1}\protected@file@percent }
-\newlabel{ch:complexity_BE}{{3.3.7.1}{63}{Model complexity}{subsubsection.3.3.7.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.36}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ with a very low model complexity.}}{63}{figure.caption.89}\protected@file@percent }
-\newlabel{fig:low_complexity/summary}{{3.36}{63}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ with a very low model complexity}{figure.caption.89}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.7.2}Learning rate}{63}{subsubsection.3.3.7.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.37}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ with a high learning rate.}}{64}{figure.caption.90}\protected@file@percent }
-\newlabel{fig:high_lr/summary}{{3.37}{64}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ with a high learning rate}{figure.caption.90}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.38}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ with a low learning rate.}}{64}{figure.caption.91}\protected@file@percent }
-\newlabel{fig:low_lr/summary}{{3.38}{64}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ with a low learning rate}{figure.caption.91}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.7.3}Boundary condition weights}{65}{subsubsection.3.3.7.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.39}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ and no boundary condition loss term.}}{65}{figure.caption.92}\protected@file@percent }
-\newlabel{fig:no_ic/summary}{{3.39}{65}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ and no boundary condition loss term}{figure.caption.92}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.7.4}Optuna}{65}{subsubsection.3.3.7.4}\protected@file@percent }
-\newlabel{eq:loss_BE}{{3.16}{65}{Optuna}{equation.3.3.16}{}}
-\BKM@entry{id=42,dest={73656374696F6E2E332E34},srcline={1705}}{5C3337365C3337375C303030495C3030306E5C303030765C303030655C303030725C303030735C303030655C3030305C3034305C303030705C303030725C3030306F5C303030625C3030306C5C303030655C3030306D}
-\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Optuna Hyperparameter Search Ranges for the Burger's Equation}}{66}{table.caption.93}\protected@file@percent }
-\newlabel{tab:optuna_hyperparams_BE}{{3.2}{66}{Optuna Hyperparameter Search Ranges for the Burger's Equation}{table.caption.93}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.3}{\ignorespaces Best hyperparameters found by Optuna per initial condition.}}{66}{table.caption.94}\protected@file@percent }
-\newlabel{tab:optuna_best_params_BE}{{3.3}{66}{Best hyperparameters found by Optuna per initial condition}{table.caption.94}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.4}Inverse problem}{66}{section.3.4}\protected@file@percent }
-\BKM@entry{id=43,dest={73756273656374696F6E2E332E342E31},srcline={1731}}{5C3337365C3337375C303030445C303030655C3030306D5C3030306F5C3030306E5C303030735C303030745C303030725C303030615C303030745C303030695C3030306F5C3030306E}
-\@writefile{lot}{\contentsline {table}{\numberline {3.4}{\ignorespaces Hyperparameters used for the Burgers equation inverse problem.}}{67}{table.caption.95}\protected@file@percent }
-\newlabel{tab:inverse_hyperparameters_BE}{{3.4}{67}{Hyperparameters used for the Burgers equation inverse problem}{table.caption.95}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Demonstration}{67}{subsection.3.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1.1}High viscosity}{67}{subsubsection.3.4.1.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3.5}{\ignorespaces High viscosity parameters}}{67}{table.caption.96}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.40}{\ignorespaces Predicted solutions at four different times for the backward problem with $\nu =0.4028$ and $\hat  \nu =0.3886$.}}{67}{figure.caption.97}\protected@file@percent }
-\newlabel{fig:inversepinn_high/pred_solution}{{3.40}{67}{Predicted solutions at four different times for the backward problem with $\nu =0.4028$ and $\hat \nu =0.3886$}{figure.caption.97}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.41}{\ignorespaces Summary plot for the backward problem with $\nu =0.4028$ and $\hat  \nu =0.3886$.}}{68}{figure.caption.98}\protected@file@percent }
-\newlabel{fig:inversepinn_high/summary}{{3.41}{68}{Summary plot for the backward problem with $\nu =0.4028$ and $\hat \nu =0.3886$}{figure.caption.98}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.42}{\ignorespaces Parameter convergence for the backward problem with $\nu =0.4028$ and $\hat  \nu =0.3886$.}}{68}{figure.caption.99}\protected@file@percent }
-\newlabel{fig:inversepinn_high/parameter_convergence}{{3.42}{68}{Parameter convergence for the backward problem with $\nu =0.4028$ and $\hat \nu =0.3886$}{figure.caption.99}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1.2}Low viscosity}{68}{subsubsection.3.4.1.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3.6}{\ignorespaces Low viscosity parameters}}{68}{table.caption.100}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.43}{\ignorespaces Predicted solutions at four different times for the backward problem with $\nu =0.0068$ and $\hat  \nu =0.0179$.}}{69}{figure.caption.101}\protected@file@percent }
-\newlabel{fig:inversepinn_low/pred_solution}{{3.43}{69}{Predicted solutions at four different times for the backward problem with $\nu =0.0068$ and $\hat \nu =0.0179$}{figure.caption.101}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.44}{\ignorespaces Summary plot for the backward problem with $\nu =0.0068$ and $\hat  \nu =0.0179$}}{69}{figure.caption.102}\protected@file@percent }
-\newlabel{fig:inversepinn_low/summary}{{3.44}{69}{Summary plot for the backward problem with $\nu =0.0068$ and $\hat \nu =0.0179$}{figure.caption.102}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.45}{\ignorespaces Parameter convergence for the backward problem with $\nu =0.0068$ and $\hat  \nu =0.0179$}}{69}{figure.caption.103}\protected@file@percent }
-\newlabel{fig:inversepinn_low/parameter_convergence}{{3.45}{69}{Parameter convergence for the backward problem with $\nu =0.0068$ and $\hat \nu =0.0179$}{figure.caption.103}{}}
-\BKM@entry{id=44,dest={73756273656374696F6E2E332E342E32},srcline={1811}}{5C3337365C3337375C303030535C303030745C303030615C303030745C303030695C303030735C303030745C303030695C303030635C303030615C3030306C5C3030305C3034305C303030615C3030306E5C303030615C3030306C5C303030795C303030735C303030695C30303073}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Statistical analysis}{70}{subsection.3.4.2}\protected@file@percent }
-\newlabel{ch:statistics_BE}{{3.4.2}{70}{Statistical analysis}{subsection.3.4.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.46}{\ignorespaces Scatter plot of 767 $(\nu ,\ \hat  \nu )$ pairs for gaussian initial conditions.}}{70}{figure.caption.104}\protected@file@percent }
-\newlabel{fig:nu_estimation/scatter_Gauss_None}{{3.46}{70}{Scatter plot of 767 $(\nu ,\ \hat \nu )$ pairs for gaussian initial conditions}{figure.caption.104}{}}
-\newlabel{fig:nu_estimation/scatter_Gauss_high}{{3.47a}{71}{High $\nu $}{figure.caption.105}{}}
-\newlabel{sub@fig:nu_estimation/scatter_Gauss_high}{{a}{71}{High $\nu $}{figure.caption.105}{}}
-\newlabel{fig:nu_estimation/scatter_Gauss_low}{{3.47b}{71}{Low $\nu $}{figure.caption.105}{}}
-\newlabel{sub@fig:nu_estimation/scatter_Gauss_low}{{b}{71}{Low $\nu $}{figure.caption.105}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.47}{\ignorespaces Scatter plots of $(\nu ,\ \hat  \nu )$ pairs for gaussian initial conditions.}}{71}{figure.caption.105}\protected@file@percent }
-\newlabel{fig:nu_estimation/scatter_Gauss}{{3.47}{71}{Scatter plots of $(\nu ,\ \hat \nu )$ pairs for gaussian initial conditions}{figure.caption.105}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.7}{\ignorespaces Parameter estimation RMSE across different regimes}}{71}{table.caption.106}\protected@file@percent }
-\newlabel{tab:RMSE_BE}{{3.7}{71}{Parameter estimation RMSE across different regimes}{table.caption.106}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.48}{\ignorespaces Parameter convergence for a backward problem with $\nu =0.4500$ and $\hat  \nu =0.3930$}}{72}{figure.caption.107}\protected@file@percent }
-\newlabel{fig:inversepinn_veryhigh/parameter_convergence}{{3.48}{72}{Parameter convergence for a backward problem with $\nu =0.4500$ and $\hat \nu =0.3930$}{figure.caption.107}{}}
-\BKM@entry{id=45,dest={636861707465722E34},srcline={1873}}{5C3337365C3337375C303030435C3030306F5C3030306E5C303030635C3030306C5C303030755C303030735C303030695C3030306F5C3030306E}
+\BKM@entry{id=31,dest={73656374696F6E2E332E32},srcline={1274}}{5C3337365C3337375C303030505C303030495C3030304E5C3030304E5C303030735C3030305C3034305C303030665C3030306F5C303030725C3030305C3034305C303030745C303030685C303030655C3030305C3034305C303030425C303030755C303030725C303030675C303030655C303030725C303030275C303030735C3030305C3034305C303030655C303030715C303030755C303030615C303030745C303030695C3030306F5C3030306E}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}Cole-Hopf Transformation}{42}{subsection.3.1.3}\protected@file@percent }
+\@writefile{brf}{\backcite{whitham2011linear}{{42}{3.1.3}{equation.3.1.9}}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}PINNs for the Burger's equation}{42}{section.3.2}\protected@file@percent }
+\BKM@entry{id=32,dest={73756273656374696F6E2E332E322E31},srcline={1282}}{5C3337365C3337375C303030465C303030695C3030306C5C303030655C3030305C3034305C303030735C303030745C303030725C303030755C303030635C303030745C303030755C303030725C30303065}
+\BKM@entry{id=33,dest={73756273656374696F6E2E332E322E32},srcline={1302}}{5C3337365C3337375C303030425C3030306F5C303030755C3030306E5C303030645C303030615C303030725C303030795C3030305C3034305C303030635C3030306F5C3030306E5C303030645C303030695C303030745C303030695C3030306F5C3030306E5C3030305C3034305C3030306C5C3030306F5C303030735C30303073}
+\BKM@entry{id=34,dest={73756273656374696F6E2E332E322E33},srcline={1310}}{5C3337365C3337375C303030505C3030306C5C3030306F5C303030745C303030745C303030695C3030306E5C303030675C3030305C3034305C3030306D5C303030655C303030745C303030685C3030306F5C303030645C30303073}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}File structure}{43}{subsection.3.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Boundary condition loss}{43}{subsection.3.2.2}\protected@file@percent }
+\BKM@entry{id=35,dest={73656374696F6E2E332E33},srcline={1333}}{5C3337365C3337375C303030435C3030306F5C303030645C303030655C3030305C3034305C303030645C303030655C3030306D5C3030306F5C3030306E5C303030735C303030745C303030725C303030615C303030745C303030695C3030306F5C3030306E}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}Plotting methods}{44}{subsection.3.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Code demonstration}{44}{section.3.3}\protected@file@percent }
+\BKM@entry{id=36,dest={73756273656374696F6E2E332E332E31},srcline={1361}}{5C3337365C3337375C303030475C303030615C303030755C303030735C30303073}
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces PINN Hyperparameters}}{45}{table.caption.59}\protected@file@percent }
+\newlabel{tab:standard_parameters_BE}{{3.1}{45}{PINN Hyperparameters}{table.caption.59}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Gauss}{45}{subsection.3.3.1}\protected@file@percent }
+\newlabel{ch:gauss}{{3.3.1}{45}{Gauss}{subsection.3.3.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Method of characteristics applied to a Gaussian initial condition.}}{45}{figure.caption.60}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.1/method_of_characteristics}{{3.3}{45}{Method of characteristics applied to a Gaussian initial condition}{figure.caption.60}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1.1}Gauss, $\nu =0.05$}{46}{subsubsection.3.3.1.1}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.05_gt_solution}{{3.4a}{46}{3D solution}{figure.caption.61}{}}
+\newlabel{sub@fig:Gauss_nu_0.05_gt_solution}{{a}{46}{3D solution}{figure.caption.61}{}}
+\newlabel{fig:Gauss_nu_0.05_gt_2D}{{3.4b}{46}{2D solution}{figure.caption.61}{}}
+\newlabel{sub@fig:Gauss_nu_0.05_gt_2D}{{b}{46}{2D solution}{figure.caption.61}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces Ground truth solution to the gaussian initial conditions calculated witht eh Cole-Hopf transformation.}}{46}{figure.caption.61}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.05_gt}{{3.4}{46}{Ground truth solution to the gaussian initial conditions calculated witht eh Cole-Hopf transformation}{figure.caption.61}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.05$.}}{47}{figure.caption.62}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.05/3_times}{{3.5}{47}{Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.05$}{figure.caption.62}{}}
+\newlabel{fig:Gauss_nu_0.05/gt_2D}{{3.6a}{48}{Ground truth solution in 2D for gaussian initial conditions and $\nu =0.05$}{figure.caption.63}{}}
+\newlabel{sub@fig:Gauss_nu_0.05/gt_2D}{{a}{48}{Ground truth solution in 2D for gaussian initial conditions and $\nu =0.05$}{figure.caption.63}{}}
+\newlabel{fig:Gauss_nu_0.05/pred_2D}{{3.6b}{48}{Predicted solutions in 2D for gaussian initial conditions and $\nu =0.05$}{figure.caption.63}{}}
+\newlabel{sub@fig:Gauss_nu_0.05/pred_2D}{{b}{48}{Predicted solutions in 2D for gaussian initial conditions and $\nu =0.05$}{figure.caption.63}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces Ground truth and predicted solutions in 2D for gaussian initial conditions and $\nu =0.05$.}}{48}{figure.caption.63}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.05_2D}{{3.6}{48}{Ground truth and predicted solutions in 2D for gaussian initial conditions and $\nu =0.05$}{figure.caption.63}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.7}{\ignorespaces Predicted solutions at 8 different times for gaussian initial conditions and $\nu =0.05$.}}{48}{figure.caption.64}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.05/pred_solution}{{3.7}{48}{Predicted solutions at 8 different times for gaussian initial conditions and $\nu =0.05$}{figure.caption.64}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.8}{\ignorespaces Predicted solutions at 8 different times for gaussian initial conditions and $\nu =0.05$.}}{49}{figure.caption.65}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.05/pred_grid}{{3.8}{49}{Predicted solutions at 8 different times for gaussian initial conditions and $\nu =0.05$}{figure.caption.65}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.9}{\ignorespaces Convergence of loss function terms for gaussian initial conditions and $\nu =0.05$.}}{49}{figure.caption.66}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.05/losses}{{3.9}{49}{Convergence of loss function terms for gaussian initial conditions and $\nu =0.05$}{figure.caption.66}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.10}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$.}}{50}{figure.caption.67}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.05/summary}{{3.10}{50}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$}{figure.caption.67}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1.2}Gauss, $\nu =0.1$}{51}{subsubsection.3.3.1.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.11}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.1$.}}{51}{figure.caption.68}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.1/3_times}{{3.11}{51}{Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.1$}{figure.caption.68}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.12}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.1$.}}{51}{figure.caption.69}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.1/summary}{{3.12}{51}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.1$}{figure.caption.69}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1.3}Gauss, $\nu =0.01$}{52}{subsubsection.3.3.1.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.13}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.01$.}}{52}{figure.caption.70}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.01/3_times_bad}{{3.13}{52}{Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.01$}{figure.caption.70}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.14}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.01$.}}{52}{figure.caption.71}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.01/summary_bad}{{3.14}{52}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.01$}{figure.caption.71}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.15}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.01$.}}{53}{figure.caption.72}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.01/3_times}{{3.15}{53}{Predicted solutions at start time, before shock time and at shock time for gaussian initial conditions and $\nu =0.01$}{figure.caption.72}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.16}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.01$.}}{53}{figure.caption.73}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.01/summary}{{3.16}{53}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.01$}{figure.caption.73}{}}
+\BKM@entry{id=37,dest={73756273656374696F6E2E332E332E32},srcline={1515}}{5C3337365C3337375C3030304E5C3030302D5C303030775C303030615C303030765C30303065}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}N-wave}{54}{subsection.3.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.17}{\ignorespaces Method of characteristics applied to an N-wave initial condition.}}{54}{figure.caption.74}\protected@file@percent }
+\newlabel{fig:N_wave_nu_0.1/method_of_characteristics}{{3.17}{54}{Method of characteristics applied to an N-wave initial condition}{figure.caption.74}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.1}N-wave, $\nu =0.05$}{54}{subsubsection.3.3.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.18}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.05$.}}{55}{figure.caption.75}\protected@file@percent }
+\newlabel{fig:N_wave_nu_0.05_bad/3_times}{{3.18}{55}{Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.05$}{figure.caption.75}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.19}{\ignorespaces Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.05$.}}{55}{figure.caption.76}\protected@file@percent }
+\newlabel{fig:N_wave_nu_0.05_bad/summary}{{3.19}{55}{Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.05$}{figure.caption.76}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.20}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.05$.}}{56}{figure.caption.77}\protected@file@percent }
+\newlabel{fig:N_wave_nu_0.05/3_times}{{3.20}{56}{Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.05$}{figure.caption.77}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.21}{\ignorespaces Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.05$.}}{56}{figure.caption.78}\protected@file@percent }
+\newlabel{fig:N_wave_nu_0.05/summary}{{3.21}{56}{Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.05$}{figure.caption.78}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.2}N-wave, $\nu =0.1$}{57}{subsubsection.3.3.2.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.22}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.1$.}}{57}{figure.caption.79}\protected@file@percent }
+\newlabel{fig:N_wave_nu_0.1/3_times}{{3.22}{57}{Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.1$}{figure.caption.79}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.23}{\ignorespaces Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.1$.}}{57}{figure.caption.80}\protected@file@percent }
+\newlabel{fig:N_wave_nu_0.1/summary}{{3.23}{57}{Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.1$}{figure.caption.80}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.3}N-wave, $\nu =0.01$}{58}{subsubsection.3.3.2.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.24}{\ignorespaces Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.01$.}}{58}{figure.caption.81}\protected@file@percent }
+\newlabel{fig:N_wave_nu_0.01/3_times}{{3.24}{58}{Predicted solutions at start time, before shock time and at shock time for N-wave initial conditions and $\nu =0.01$}{figure.caption.81}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.25}{\ignorespaces Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.01$.}}{58}{figure.caption.82}\protected@file@percent }
+\newlabel{fig:N_wave_nu_0.01/summary}{{3.25}{58}{Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.01$}{figure.caption.82}{}}
+\BKM@entry{id=38,dest={73756273656374696F6E2E332E332E33},srcline={1598}}{5C3337365C3337375C303030535C303030745C303030655C303030705C3030302D5C303030755C30303070}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}Step-up}{59}{subsection.3.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.26}{\ignorespaces Method of characteristics applied to a Step-up initial condition.}}{59}{figure.caption.83}\protected@file@percent }
+\newlabel{fig:Step_up_nu_0.1/method_of_characteristics}{{3.26}{59}{Method of characteristics applied to a Step-up initial condition}{figure.caption.83}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3.1}Step-up, $\nu =0.05$}{59}{subsubsection.3.3.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.27}{\ignorespaces Predicted solutions at four different times for N-wave initial conditions and $\nu =0.05$.}}{59}{figure.caption.84}\protected@file@percent }
+\newlabel{fig:Step_up_nu_0.05/pred_solution}{{3.27}{59}{Predicted solutions at four different times for N-wave initial conditions and $\nu =0.05$}{figure.caption.84}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.28}{\ignorespaces Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.05$.}}{60}{figure.caption.85}\protected@file@percent }
+\newlabel{fig:Step_up_nu_0.05/summary}{{3.28}{60}{Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.05$}{figure.caption.85}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3.2}Step-up, $\nu =0.1$}{61}{subsubsection.3.3.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.29}{\ignorespaces Predicted solutions at four different times for N-wave initial conditions and $\nu =0.1$.}}{61}{figure.caption.86}\protected@file@percent }
+\newlabel{fig:Step_up_nu_0.1/pred_solution}{{3.29}{61}{Predicted solutions at four different times for N-wave initial conditions and $\nu =0.1$}{figure.caption.86}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.30}{\ignorespaces Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.1$.}}{61}{figure.caption.87}\protected@file@percent }
+\newlabel{fig:Step_up_nu_0.1/summary}{{3.30}{61}{Summary plot for the predicted solution by a PINN for N-wave initial conditions and $\nu =0.1$}{figure.caption.87}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3.3}Step-up, $\nu =0.01$}{61}{subsubsection.3.3.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.31}{\ignorespaces Predicted solutions at four different times for step-up initial conditions and $\nu =0.01$.}}{62}{figure.caption.88}\protected@file@percent }
+\newlabel{fig:Step_up_nu_0.01/pred_solution}{{3.31}{62}{Predicted solutions at four different times for step-up initial conditions and $\nu =0.01$}{figure.caption.88}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.32}{\ignorespaces Summary plot for the predicted solution by a PINN for step-up initial conditions and $\nu =0.01$.}}{62}{figure.caption.89}\protected@file@percent }
+\newlabel{fig:Step_up_nu_0.01/summary}{{3.32}{62}{Summary plot for the predicted solution by a PINN for step-up initial conditions and $\nu =0.01$}{figure.caption.89}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Wall times}}{63}{table.caption.90}\protected@file@percent }
+\newlabel{tab:wall_times_DHO}{{3.2}{63}{Wall times}{table.caption.90}{}}
+\newlabel{fig:pinn_profiling/mem_data_BE}{{3.33a}{63}{RAM usage as a function of time when generating ground truth data}{figure.caption.91}{}}
+\newlabel{sub@fig:pinn_profiling/mem_data_BE}{{a}{63}{RAM usage as a function of time when generating ground truth data}{figure.caption.91}{}}
+\newlabel{fig:pinn_profiling/mem_data_gpu_BE}{{3.33b}{63}{VRAM usage as a function of time when generating ground truth data}{figure.caption.91}{}}
+\newlabel{sub@fig:pinn_profiling/mem_data_gpu_BE}{{b}{63}{VRAM usage as a function of time when generating ground truth data}{figure.caption.91}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.33}{\ignorespaces Memory profiling during model training.}}{63}{figure.caption.91}\protected@file@percent }
+\newlabel{fig:pinn_profiling_data_BE}{{3.33}{63}{Memory profiling during model training}{figure.caption.91}{}}
+\newlabel{fig:pinn_profiling/mem_train_BE}{{3.34a}{63}{RAM usage as a function of time when training the model}{figure.caption.92}{}}
+\newlabel{sub@fig:pinn_profiling/mem_train_BE}{{a}{63}{RAM usage as a function of time when training the model}{figure.caption.92}{}}
+\newlabel{fig:pinn_profiling/mem_train_gpu_BE}{{3.34b}{63}{VRAM usage as a function of time when training the model}{figure.caption.92}{}}
+\newlabel{sub@fig:pinn_profiling/mem_train_gpu_BE}{{b}{63}{VRAM usage as a function of time when training the model}{figure.caption.92}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.34}{\ignorespaces Memory profiling during model training.}}{63}{figure.caption.92}\protected@file@percent }
+\newlabel{fig:pinn_profiling_train_BE}{{3.34}{63}{Memory profiling during model training}{figure.caption.92}{}}
+\BKM@entry{id=39,dest={73756273656374696F6E2E332E332E34},srcline={1743}}{5C3337365C3337375C303030495C3030306E5C303030635C3030306C5C303030755C303030735C303030695C3030306F5C3030306E5C3030305C3034305C3030306F5C303030665C3030305C3034305C303030645C303030615C303030745C30303061}
+\BKM@entry{id=40,dest={73756273656374696F6E2E332E332E35},srcline={1753}}{5C3337365C3337375C303030435C3030306F5C3030306D5C303030705C303030615C303030725C303030695C303030735C3030306F5C3030306E5C3030305C3034305C303030775C303030695C303030745C303030685C3030305C3034305C303030745C303030725C303030615C303030645C303030695C303030745C303030695C3030306F5C3030306E5C303030615C3030306C5C3030305C3034305C3030304D5C3030304C5C3030305C3034305C3030306D5C3030306F5C303030645C303030655C3030306C}
+\newlabel{fig:pinn_profiling/mem_plot_BE}{{3.35a}{64}{RAM usage as a function of time when generating plots}{figure.caption.93}{}}
+\newlabel{sub@fig:pinn_profiling/mem_plot_BE}{{a}{64}{RAM usage as a function of time when generating plots}{figure.caption.93}{}}
+\newlabel{fig:pinn_profiling/mem_plot_gpu_BE}{{3.35b}{64}{VRAM usage as a function of time when generating plots}{figure.caption.93}{}}
+\newlabel{sub@fig:pinn_profiling/mem_plot_gpu_BE}{{b}{64}{VRAM usage as a function of time when generating plots}{figure.caption.93}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.35}{\ignorespaces Memory profiling during model training.}}{64}{figure.caption.93}\protected@file@percent }
+\newlabel{fig:pinn_profiling_plot_BE}{{3.35}{64}{Memory profiling during model training}{figure.caption.93}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.4}Inclusion of data}{64}{subsection.3.3.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.36}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ when noisy data points are included in the training.}}{64}{figure.caption.94}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.05_data_included/summary}{{3.36}{64}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ when noisy data points are included in the training}{figure.caption.94}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.5}Comparison with traditional ML model}{64}{subsection.3.3.5}\protected@file@percent }
+\BKM@entry{id=41,dest={73756273656374696F6E2E332E332E36},srcline={1763}}{5C3337365C3337375C303030455C303030785C303030745C303030725C303030615C303030705C3030306F5C3030306C5C303030615C303030745C303030695C3030306E5C303030675C3030305C3034305C303030635C303030615C303030705C303030615C303030625C303030695C3030306C5C303030695C303030745C303030695C303030655C30303073}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.37}{\ignorespaces Summary plot for the predicted solution by a non-physics informed neural network for gaussian initial conditions and $\nu =0.05$.}}{65}{figure.caption.95}\protected@file@percent }
+\newlabel{fig:Step_up_nu_0.05_ML/summary}{{3.37}{65}{Summary plot for the predicted solution by a non-physics informed neural network for gaussian initial conditions and $\nu =0.05$}{figure.caption.95}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.6}Extrapolating capabilities}{65}{subsection.3.3.6}\protected@file@percent }
+\BKM@entry{id=42,dest={73756273656374696F6E2E332E332E37},srcline={1780}}{5C3337365C3337375C303030485C303030795C303030705C303030655C303030725C303030705C303030615C303030725C303030615C3030306D5C303030655C303030745C303030655C303030725C3030305C3034305C3030306F5C303030705C303030745C303030695C3030306D5C303030695C303030735C303030615C303030745C303030695C3030306F5C3030306E}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.38}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ when the model is only trained on a fraction of the domain.}}{66}{figure.caption.96}\protected@file@percent }
+\newlabel{fig:Gauss_nu_0.05_extrapblind/summary}{{3.38}{66}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ when the model is only trained on a fraction of the domain}{figure.caption.96}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.7}Hyperparameter optimisation}{66}{subsection.3.3.7}\protected@file@percent }
+\newlabel{ch:hyperparameters_BE}{{3.3.7}{66}{Hyperparameter optimisation}{subsection.3.3.7}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.7.1}Model complexity}{66}{subsubsection.3.3.7.1}\protected@file@percent }
+\newlabel{ch:complexity_BE}{{3.3.7.1}{66}{Model complexity}{subsubsection.3.3.7.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.39}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ with a very low model complexity.}}{67}{figure.caption.97}\protected@file@percent }
+\newlabel{fig:low_complexity/summary}{{3.39}{67}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ with a very low model complexity}{figure.caption.97}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.7.2}Learning rate}{67}{subsubsection.3.3.7.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.40}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ with a high learning rate.}}{67}{figure.caption.98}\protected@file@percent }
+\newlabel{fig:high_lr/summary}{{3.40}{67}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ with a high learning rate}{figure.caption.98}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.41}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ with a low learning rate.}}{68}{figure.caption.99}\protected@file@percent }
+\newlabel{fig:low_lr/summary}{{3.41}{68}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ with a low learning rate}{figure.caption.99}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.7.3}Boundary condition weights}{68}{subsubsection.3.3.7.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.42}{\ignorespaces Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ and no boundary condition loss term.}}{68}{figure.caption.100}\protected@file@percent }
+\newlabel{fig:no_ic/summary}{{3.42}{68}{Summary plot for the predicted solution by a PINN for gaussian initial conditions and $\nu =0.05$ and no boundary condition loss term}{figure.caption.100}{}}
+\BKM@entry{id=43,dest={73656374696F6E2E332E34},srcline={1866}}{5C3337365C3337375C303030495C3030306E5C303030765C303030655C303030725C303030735C303030655C3030305C3034305C303030705C303030725C3030306F5C303030625C3030306C5C303030655C3030306D}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.7.4}Optuna}{69}{subsubsection.3.3.7.4}\protected@file@percent }
+\newlabel{eq:loss_BE}{{3.16}{69}{Optuna}{equation.3.3.16}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.3}{\ignorespaces Optuna Hyperparameter Search Ranges for the Burger's Equation}}{69}{table.caption.101}\protected@file@percent }
+\newlabel{tab:optuna_hyperparams_BE}{{3.3}{69}{Optuna Hyperparameter Search Ranges for the Burger's Equation}{table.caption.101}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.4}{\ignorespaces Best hyperparameters found by Optuna per initial condition.}}{69}{table.caption.102}\protected@file@percent }
+\newlabel{tab:optuna_best_params_BE}{{3.4}{69}{Best hyperparameters found by Optuna per initial condition}{table.caption.102}{}}
+\BKM@entry{id=44,dest={73756273656374696F6E2E332E342E31},srcline={1892}}{5C3337365C3337375C303030445C303030655C3030306D5C3030306F5C3030306E5C303030735C303030745C303030725C303030615C303030745C303030695C3030306F5C3030306E}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Inverse problem}{70}{section.3.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.5}{\ignorespaces Hyperparameters used for the Burgers equation inverse problem.}}{70}{table.caption.103}\protected@file@percent }
+\newlabel{tab:inverse_hyperparameters_BE}{{3.5}{70}{Hyperparameters used for the Burgers equation inverse problem}{table.caption.103}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Demonstration}{70}{subsection.3.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1.1}High viscosity}{70}{subsubsection.3.4.1.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.6}{\ignorespaces High viscosity parameters}}{70}{table.caption.104}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.43}{\ignorespaces Predicted solutions at four different times for the backward problem with $\nu =0.4028$ and $\hat  \nu =0.3886$.}}{71}{figure.caption.105}\protected@file@percent }
+\newlabel{fig:inversepinn_high/pred_solution}{{3.43}{71}{Predicted solutions at four different times for the backward problem with $\nu =0.4028$ and $\hat \nu =0.3886$}{figure.caption.105}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.44}{\ignorespaces Summary plot for the backward problem with $\nu =0.4028$ and $\hat  \nu =0.3886$.}}{71}{figure.caption.106}\protected@file@percent }
+\newlabel{fig:inversepinn_high/summary}{{3.44}{71}{Summary plot for the backward problem with $\nu =0.4028$ and $\hat \nu =0.3886$}{figure.caption.106}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.45}{\ignorespaces Parameter convergence for the backward problem with $\nu =0.4028$ and $\hat  \nu =0.3886$.}}{71}{figure.caption.107}\protected@file@percent }
+\newlabel{fig:inversepinn_high/parameter_convergence}{{3.45}{71}{Parameter convergence for the backward problem with $\nu =0.4028$ and $\hat \nu =0.3886$}{figure.caption.107}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1.2}Low viscosity}{72}{subsubsection.3.4.1.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.7}{\ignorespaces Low viscosity parameters}}{72}{table.caption.108}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.46}{\ignorespaces Predicted solutions at four different times for the backward problem with $\nu =0.0068$ and $\hat  \nu =0.0179$.}}{72}{figure.caption.109}\protected@file@percent }
+\newlabel{fig:inversepinn_low/pred_solution}{{3.46}{72}{Predicted solutions at four different times for the backward problem with $\nu =0.0068$ and $\hat \nu =0.0179$}{figure.caption.109}{}}
+\BKM@entry{id=45,dest={73756273656374696F6E2E332E342E32},srcline={1972}}{5C3337365C3337375C303030535C303030745C303030615C303030745C303030695C303030735C303030745C303030695C303030635C303030615C3030306C5C3030305C3034305C303030615C3030306E5C303030615C3030306C5C303030795C303030735C303030695C30303073}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.47}{\ignorespaces Summary plot for the backward problem with $\nu =0.0068$ and $\hat  \nu =0.0179$}}{73}{figure.caption.110}\protected@file@percent }
+\newlabel{fig:inversepinn_low/summary}{{3.47}{73}{Summary plot for the backward problem with $\nu =0.0068$ and $\hat \nu =0.0179$}{figure.caption.110}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.48}{\ignorespaces Parameter convergence for the backward problem with $\nu =0.0068$ and $\hat  \nu =0.0179$}}{73}{figure.caption.111}\protected@file@percent }
+\newlabel{fig:inversepinn_low/parameter_convergence}{{3.48}{73}{Parameter convergence for the backward problem with $\nu =0.0068$ and $\hat \nu =0.0179$}{figure.caption.111}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Statistical analysis}{73}{subsection.3.4.2}\protected@file@percent }
+\newlabel{ch:statistics_BE}{{3.4.2}{73}{Statistical analysis}{subsection.3.4.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.49}{\ignorespaces Scatter plot of 767 $(\nu ,\ \hat  \nu )$ pairs for gaussian initial conditions.}}{74}{figure.caption.112}\protected@file@percent }
+\newlabel{fig:nu_estimation/scatter_Gauss_None}{{3.49}{74}{Scatter plot of 767 $(\nu ,\ \hat \nu )$ pairs for gaussian initial conditions}{figure.caption.112}{}}
+\newlabel{fig:nu_estimation/scatter_Gauss_high}{{3.50a}{74}{High $\nu $}{figure.caption.113}{}}
+\newlabel{sub@fig:nu_estimation/scatter_Gauss_high}{{a}{74}{High $\nu $}{figure.caption.113}{}}
+\newlabel{fig:nu_estimation/scatter_Gauss_low}{{3.50b}{74}{Low $\nu $}{figure.caption.113}{}}
+\newlabel{sub@fig:nu_estimation/scatter_Gauss_low}{{b}{74}{Low $\nu $}{figure.caption.113}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.50}{\ignorespaces Scatter plots of $(\nu ,\ \hat  \nu )$ pairs for gaussian initial conditions.}}{74}{figure.caption.113}\protected@file@percent }
+\newlabel{fig:nu_estimation/scatter_Gauss}{{3.50}{74}{Scatter plots of $(\nu ,\ \hat \nu )$ pairs for gaussian initial conditions}{figure.caption.113}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.8}{\ignorespaces Parameter estimation RMSE across different regimes}}{75}{table.caption.114}\protected@file@percent }
+\newlabel{tab:RMSE_BE}{{3.8}{75}{Parameter estimation RMSE across different regimes}{table.caption.114}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.51}{\ignorespaces Parameter convergence for a backward problem with $\nu =0.4500$ and $\hat  \nu =0.3930$}}{75}{figure.caption.115}\protected@file@percent }
+\newlabel{fig:inversepinn_veryhigh/parameter_convergence}{{3.51}{75}{Parameter convergence for a backward problem with $\nu =0.4500$ and $\hat \nu =0.3930$}{figure.caption.115}{}}
+\BKM@entry{id=46,dest={636861707465722E34},srcline={2034}}{5C3337365C3337375C303030435C3030306F5C3030306E5C303030635C3030306C5C303030755C303030735C303030695C3030306F5C3030306E}
 \bibstyle{abbrv}
 \bibdata{bibliography}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Conclusion}{73}{chapter.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Conclusion}{77}{chapter.4}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \bibcite{geeksforgeeks2024lossfunctions}{1}
@@ -427,4 +454,4 @@
 \global\@namedef{scr@dte@section@lastmaxnumwidth}{18.0674pt}
 \global\@namedef{scr@dte@subsection@lastmaxnumwidth}{26.27988pt}
 \@writefile{toc}{\providecommand\tocbasic@end@toc@file{}\tocbasic@end@toc@file}
-\gdef \@abspage@last{79}
+\gdef \@abspage@last{83}

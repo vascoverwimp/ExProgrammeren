@@ -23,7 +23,8 @@ from plot import save_model_plots
 SCRIPT_DIR = Path(__file__).resolve().parent.parent
 
 
-def main():
+def main() -> None:
+    """Main loop"""
     device = get_device()
     print(f"Device : {device}")
 

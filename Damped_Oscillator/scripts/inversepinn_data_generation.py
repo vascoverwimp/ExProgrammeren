@@ -188,7 +188,8 @@ def main() -> None:
 
                 try:
                     row = run_single(run_idx, device)
-                except Exception as e:
+                except (RuntimeError, ValueError) as e:
+                    # Known/expected failures from training or data generation:
                     print(f"  [run {run_idx}] failed: {e} — skipping.")
                     continue
 

@@ -79,7 +79,7 @@ def train_model(cfg: Config, output_path: str) -> None:
     save_plots_from_file(output_path)
 
 
-def main():
+def main() -> None:
     """Main loop."""
     ics = ["Gauss"]
     nu_values = [0.05]

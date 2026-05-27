@@ -51,12 +51,13 @@ def parameter_estimation_plot(
     output_path: Path | None = None,
     show: bool = True,
 ) -> None:
+    """Make parameter estimation plot."""
     df = pd.read_csv(csv_path)
 
     if damped_case is not None:
         df = df[df["damped_case"] == damped_case]
 
-    fig, ax = plt.subplots(figsize=(8, 8))
+    _, ax = plt.subplots(figsize=(8, 8))
     style_ax(ax)
 
     ax.scatter(
@@ -97,6 +98,7 @@ def parameter_space_rmse_plot(
     output_path: Path | None = None,
     show: bool = True,
 ) -> None:
+    """Make parameter space plot."""
     df = pd.read_csv(csv_path)
 
     if damped_case is not None:
@@ -145,6 +147,7 @@ def parameter_space_rmse_plot(
 
 
 def rmse(csv_path: Path) -> tuple[float, ...]:
+    """Calculate RMSE of three cases."""
     df = pd.read_csv(csv_path)
 
     df_under = df[df["damped_case"] == "underdamped"]
@@ -167,6 +170,7 @@ def rmse(csv_path: Path) -> tuple[float, ...]:
 
 
 def main() -> None:
+    """Main loop."""
     (
         rmse_zeta_full,
         rmse_zeta_under,
