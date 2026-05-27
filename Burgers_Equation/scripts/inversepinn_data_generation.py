@@ -126,6 +126,7 @@ def run_single(run_idx: int, device) -> dict | None:
 
 
 def main():
+    """Main loop."""
     device = get_device()
     print(f"Device      : {device}")
     print(f"Output CSV  : {CSV_PATH}")

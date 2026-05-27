@@ -49,6 +49,7 @@ def nu_estimation_plot(
         output_path: Path = None,
         show: bool = True
 ) -> None:
+    """Make estimation plot."""
     nu_data = pd.read_csv(csv_path)
     nu_data = nu_data[nu_data["ic"] == ic]
     if nu_class is not None:
@@ -81,6 +82,7 @@ def nu_estimation_plot(
 
 
 def rmse(csv_path: str) -> tuple:
+    """Calculate RMSE."""
     """Return the RMSE of every case"""
     df = pd.read_csv(csv_path)
     df_low = df[df["nu_class"] == "low"]

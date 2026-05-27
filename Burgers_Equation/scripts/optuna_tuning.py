@@ -52,6 +52,7 @@ ICS = ["Gauss"]
 
 
 def set_seed(seed: int) -> None:
+    """Set seed"""
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)

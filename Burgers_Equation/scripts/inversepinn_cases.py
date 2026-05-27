@@ -28,6 +28,7 @@ OUTPUT_PATH.mkdir(exist_ok=True)
 
 
 def main():
+    """Main loop."""
     device = get_device()
     print(f"Device : {device}")
 

@@ -265,11 +265,120 @@ Same structure as the DHO trainer with the following additions:
 #### `utils.py`
 Identical in structure to the DHO utils. The `load_best_cfg` function reads an Optuna JSON output and populates a `Config` object, mapping the `regime` key to the `ic` field.
 
+## Running the demo scripts
+
+Both projects ship ready-to-run demo scripts under their respective `scripts/` folders. All scripts share the same CLI interface.
+
+---
+
+### Damped Harmonic Oscillator
+
+#### Forward problem
+
+```bash
+python Damped_Oscillator/scripts/pinn_demo.py
+python Damped_Oscillator/scripts/pinn_demo.py --underdamped
+python Damped_Oscillator/scripts/pinn_demo.py --zeta 0.5 --omega_0 3.0
+python Damped_Oscillator/scripts/pinn_demo.py --overdamped --output outputs/my_run
+```
+
+#### Inverse problem
+
+```bash
+python Damped_Oscillator/scripts/inversepinn_demo.py
+python Damped_Oscillator/scripts/inversepinn_demo.py --underdamped
+python Damped_Oscillator/scripts/inversepinn_demo.py --zeta 0.1 --omega_0 2.0
+python Damped_Oscillator/scripts/inversepinn_demo.py --overdamped --output outputs/my_run
+```
+
+#### Shared CLI arguments — Damped Harmonic Oscillator
+
+| Argument | Default | Description |
+|---|---|---|
+| `--zeta` | — | Fix damping ratio ζ; skips randomisation |
+| `--omega_0` | — | Fix natural frequency ω₀; skips randomisation |
+| `--underdamped` | — | Use underdamped regime (ζ < 1). Forward: fixed at 0.125; inverse: randomised in [0.02, 0.2] |
+| `--critically-damped` | — | Use critically damped case (ζ = 1) |
+| `--overdamped` | — | Use overdamped regime (ζ > 1). Forward: fixed at 1.5; inverse: randomised in [1.5, 2.0] |
+| `--show` | `False` | Display plots interactively after training |
+| `--output` | `outputs/<script>_<regime>` | Override the output directory |
+
+If no damping flag is given, the forward script defaults to ζ = 0.125 and the inverse script randomises in the underdamped regime.
+
+---
+
+### Burgers' Equation
+
+#### Forward problem
+
+```bash
+python Burgers_Equation/scripts/pinn_demo.py
+python Burgers_Equation/scripts/pinn_demo.py --ic N_wave --nu 0.05
+python Burgers_Equation/scripts/pinn_demo.py --ic Step_up --output outputs/my_run
+```
+
+#### Inverse problem
+
+```bash
+python Burgers_Equation/scripts/inversepinn_demo.py
+python Burgers_Equation/scripts/inversepinn_demo.py --nu 0.3 --ic Gauss
+python Burgers_Equation/scripts/inversepinn_demo.py --nu-regime low --output outputs/inverse_low
+```
+
+#### Shared CLI arguments — Burgers' Equation
+
+| Argument | Default | Description |
+|---|---|---|
+| `--ic` | `Gauss` | Initial condition type: `Gauss`, `N_wave`, or `Step_up` |
+| `--nu` | — | Fix viscosity to a specific value; skips randomisation |
+| `--nu-regime` | `high` | Viscosity regime to sample from when `--nu` is not set: `low` (0.005–0.015) or `high` (0.1–0.5). Inverse scripts only. |
+| `--show` | `False` | Display plots interactively after training |
+| `--output` | `outputs/<script>_<ic>` | Override the output directory |
+
+---
+
+### What happens when you run a script
+
+**Damped Harmonic Oscillator:**
+
+1. ζ and ω₀ are resolved from CLI flags or their defaults and converted to physical constants m, c, k.
+2. Training and validation data are generated from the closed-form analytic solution.
+3. The network is trained with early stopping. Progress is printed every `log_every` epochs.
+4. The best model, loss history, snapshots, and config are saved to the output directory.
+5. Plots are generated and saved automatically via `save_plots_from_file`.
+
+**Burgers' Equation:**
+
+1. The initial condition and viscosity are resolved from CLI arguments or their defaults.
+2. The shock formation time is estimated analytically. If it falls in the expected range (0.1–5 s), the training domain is automatically capped at the shock time, with a short extrapolation window beyond it.
+3. Training data (observations, collocation points, boundary conditions) is generated from the Cole-Hopf solution.
+4. The network is trained with early stopping. Progress is printed every `log_every` epochs.
+5. The best model, loss history, snapshots, and config are saved to the output directory (see [Saving and loading](#saving-and-loading)).
+6. Plots are generated and saved automatically via `save_plots_from_file`.
+
+---
+
+### Output directory layout
+
+```
+outputs/pinn_underdamped/
+├── best_model.pt
+├── history.csv
+├── snapshots.pt
+└── config.json
+```
+
+Plots are written alongside these files. To regenerate plots from a previous run without retraining:
+
+```python
+from Damped_Oscillator.plot import save_plots_from_file
+save_plots_from_file("outputs/pinn_underdamped")
+```
 ---
 
 ## Training a model
 
-A minimal training script follows this pattern:
+For more customisation, it is alo possible to create your own scripts using the provided code instead of using the demo files. A minimal training script follows this pattern:
 
 ```python
 from config import Config

@@ -103,6 +103,7 @@ def resolve_output_path(args, zeta):
 
 
 def main():
+    """Main loop."""
     print("=" * 50)
     print("  Inverse PINN Demo — Damped Harmonic Oscillator")
     print("  Training a physics-informed neural network")

@@ -68,6 +68,7 @@ def resolve_output_path(args, ic):
 
 
 def main():
+    """Main loop."""
     print("=" * 50)
     print("  PINN Demo — Burgers Equation")
     print("  Training a physics-informed neural network")

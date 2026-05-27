@@ -27,6 +27,7 @@ ICS = ["Gauss", "N_wave", "Step_up", "Step_down", "Slope"]
 
 
 def main():
+    """Main loop."""
     device = get_device()
     print(f"Device : {device}\n")
 

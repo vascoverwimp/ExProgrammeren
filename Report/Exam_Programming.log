@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10) (preloaded format=pdflatex 2026.4.12)  26 MAY 2026 19:21
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10) (preloaded format=pdflatex 2026.4.12)  26 MAY 2026 22:22
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1071,10 +1071,15 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
  [2]
 chapter 1.
 
+Overfull \hbox (1.98834pt too wide) in paragraph at lines 83--84
+[]\OT1/ptm/m/n/10.95 The code for all ex-per-i-ments is struc-tured in a mod-u-lar, reusable fash-ion across the [][]\OT1/cmtt/m/n/10.95 Damped_Oscillator
+ []
+
+
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.77 \chapter
+l.85 \chapter
              {Damped Harmonic Oscillator} [1
 
 
@@ -1084,14 +1089,14 @@ l.77 \chapter
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.77 \chapter
+l.85 \chapter
              {Damped Harmonic Oscillator} [2
 
 
 ]
 chapter 2.
 
-Underfull \hbox (badness 10000) in paragraph at lines 95--97
+Underfull \hbox (badness 10000) in paragraph at lines 103--105
 
  []
 
@@ -1099,87 +1104,87 @@ Underfull \hbox (badness 10000) in paragraph at lines 95--97
 <Images_DHO/analytic_solution_overdamped.png, id=158, 578.16pt x 361.35pt>
 File: Images_DHO/analytic_solution_overdamped.png Graphic file (type png)
 <use Images_DHO/analytic_solution_overdamped.png>
-Package pdftex.def Info: Images_DHO/analytic_solution_overdamped.png  used on input line 136.
+Package pdftex.def Info: Images_DHO/analytic_solution_overdamped.png  used on input line 144.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
 <Images_DHO/analytic_solution_criticallydamped.png, id=160, 578.16pt x 361.35pt>
 File: Images_DHO/analytic_solution_criticallydamped.png Graphic file (type png)
 <use Images_DHO/analytic_solution_criticallydamped.png>
-Package pdftex.def Info: Images_DHO/analytic_solution_criticallydamped.png  used on input line 143.
+Package pdftex.def Info: Images_DHO/analytic_solution_criticallydamped.png  used on input line 151.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
 <Images_DHO/analytic_solution_underdamped.png, id=161, 578.16pt x 361.35pt>
 File: Images_DHO/analytic_solution_underdamped.png Graphic file (type png)
 <use Images_DHO/analytic_solution_underdamped.png>
-Package pdftex.def Info: Images_DHO/analytic_solution_underdamped.png  used on input line 150.
+Package pdftex.def Info: Images_DHO/analytic_solution_underdamped.png  used on input line 158.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
 
 Underfull \vbox (badness 4366) has occurred while \output is active []
 
  [4 <./Images_DHO/analytic_solution_overdamped.png> <./Images_DHO/analytic_solution_criticallydamped.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 172--174
+Underfull \hbox (badness 10000) in paragraph at lines 180--182
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 178--180
+Underfull \hbox (badness 10000) in paragraph at lines 186--188
 
  []
 
 [5 <./Images_DHO/analytic_solution_underdamped.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 184--186
+Underfull \hbox (badness 10000) in paragraph at lines 192--194
 
  []
 
 <Images_DHO/ic_effect.png, id=184, 1156.32pt x 578.16pt>
 File: Images_DHO/ic_effect.png Graphic file (type png)
 <use Images_DHO/ic_effect.png>
-Package pdftex.def Info: Images_DHO/ic_effect.png  used on input line 198.
+Package pdftex.def Info: Images_DHO/ic_effect.png  used on input line 206.
 (pdftex.def)             Requested size: 339.29898pt x 169.64705pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 209--210
+Underfull \hbox (badness 10000) in paragraph at lines 217--218
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 211--212
+Underfull \hbox (badness 10000) in paragraph at lines 219--220
 
  []
 
 [6 <./Images_DHO/ic_effect.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 231--232
+Underfull \hbox (badness 10000) in paragraph at lines 239--240
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 243--244
+Underfull \hbox (badness 10000) in paragraph at lines 251--252
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 245--246
+Underfull \hbox (badness 10000) in paragraph at lines 253--254
 
  []
 
 [7]
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 249.
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 257.
  (C:\Users\desde\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 259--260
+Underfull \hbox (badness 10000) in paragraph at lines 267--268
 
  []
 
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 307--308
+Underfull \hbox (badness 10000) in paragraph at lines 315--316
 
  []
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 326--327
+Underfull \hbox (badness 10000) in paragraph at lines 334--335
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 338--339
+Underfull \hbox (badness 10000) in paragraph at lines 346--347
 
  []
 
@@ -1187,7 +1192,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 338--339
 Underfull \vbox (badness 5302) has occurred while \output is active []
 
  [10]
-Underfull \hbox (badness 10000) in paragraph at lines 359--360
+Underfull \hbox (badness 10000) in paragraph at lines 367--368
 
  []
 
@@ -1195,95 +1200,95 @@ Underfull \hbox (badness 10000) in paragraph at lines 359--360
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [11]
-Underfull \hbox (badness 10000) in paragraph at lines 385--386
+Underfull \hbox (badness 10000) in paragraph at lines 393--394
 
  []
 
 
-Overfull \hbox (33.75845pt too wide) in paragraph at lines 387--388
+Overfull \hbox (33.75845pt too wide) in paragraph at lines 395--396
 \OT1/ptm/m/n/10.95 and up-date the pa-ram-e-ters ac-cord-ingly (see eq. [][]2.23[][]). $\OML/ztmcm/m/it/10.95 m[]$ \OT1/ptm/m/n/10.95 and $\OML/ztmcm/m/it/10.95 v[]$ \OT1/ptm/m/n/10.95 are not ze-roed by the [][]\OT1/cmtt/m/n/10.95 optimiser.zero_grad()
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 387--388
+Underfull \hbox (badness 10000) in paragraph at lines 395--396
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 389--390
+Underfull \hbox (badness 10000) in paragraph at lines 397--398
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 402--403
+Underfull \hbox (badness 10000) in paragraph at lines 410--411
 
  []
 
 [12]
-Overfull \hbox (4.51942pt too wide) in paragraph at lines 419--420
+Overfull \hbox (4.51942pt too wide) in paragraph at lines 427--428
 \OT1/ptm/m/n/10.95 net-work need to be $\OT1/ztmcm/m/n/10.95 (\OML/ztmcm/m/it/10.95 n; \OT1/ztmcm/m/n/10.95 1)$ \OT1/ptm/m/n/10.95 shaped in or-der to do ma-trix mul-ti-pli-ca-tion. The first [][]\OT1/cmtt/m/n/10.95 nn.Linear(1, 32)
  []
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 423.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 431.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 423.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 431.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 423.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 431.
 <Images_DHO/unsqueeze.png, id=259, 758.835pt x 473.77pt>
 File: Images_DHO/unsqueeze.png Graphic file (type png)
 <use Images_DHO/unsqueeze.png>
-Package pdftex.def Info: Images_DHO/unsqueeze.png  used on input line 429.
+Package pdftex.def Info: Images_DHO/unsqueeze.png  used on input line 437.
 (pdftex.def)             Requested size: 339.29898pt x 211.84268pt.
 
 Underfull \vbox (badness 4013) has occurred while \output is active []
 
  [13] [14 <./Images_DHO/unsqueeze.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 474--475
+Underfull \hbox (badness 10000) in paragraph at lines 482--483
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 486--487
+Underfull \hbox (badness 10000) in paragraph at lines 495--496
 
  []
 
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 497--498
+Underfull \hbox (badness 10000) in paragraph at lines 506--507
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 515--516
+Underfull \hbox (badness 10000) in paragraph at lines 524--525
 
  []
 
 [16]
-Underfull \hbox (badness 10000) in paragraph at lines 537--538
+Underfull \hbox (badness 10000) in paragraph at lines 546--547
 
  []
 
 [17]
-Underfull \hbox (badness 10000) in paragraph at lines 539--540
+Underfull \hbox (badness 10000) in paragraph at lines 548--549
 
  []
 
 
-Underfull \vbox (badness 2277) has occurred while \output is active []
+Underfull \vbox (badness 1122) has occurred while \output is active []
 
  [18]
 <Images_DHO/pinn_overdamped/summary.png, id=320, 1156.32pt x 650.43pt>
 File: Images_DHO/pinn_overdamped/summary.png Graphic file (type png)
 <use Images_DHO/pinn_overdamped/summary.png>
-Package pdftex.def Info: Images_DHO/pinn_overdamped/summary.png  used on input line 590.
+Package pdftex.def Info: Images_DHO/pinn_overdamped/summary.png  used on input line 599.
 (pdftex.def)             Requested size: 339.29898pt x 190.85294pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 595--596
+Underfull \hbox (badness 10000) in paragraph at lines 604--605
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 597--598
+Underfull \hbox (badness 10000) in paragraph at lines 606--607
 
  []
 
@@ -1291,35 +1296,35 @@ Underfull \hbox (badness 10000) in paragraph at lines 597--598
 <Images_DHO/pinn_criticallydamped/summary.png, id=330, 1156.32pt x 650.43pt>
 File: Images_DHO/pinn_criticallydamped/summary.png Graphic file (type png)
 <use Images_DHO/pinn_criticallydamped/summary.png>
-Package pdftex.def Info: Images_DHO/pinn_criticallydamped/summary.png  used on input line 619.
+Package pdftex.def Info: Images_DHO/pinn_criticallydamped/summary.png  used on input line 628.
 (pdftex.def)             Requested size: 339.29898pt x 190.85294pt.
 <Images_DHO/pinn_underdamped/summary.png, id=333, 1156.32pt x 650.43pt>
 File: Images_DHO/pinn_underdamped/summary.png Graphic file (type png)
 <use Images_DHO/pinn_underdamped/summary.png>
-Package pdftex.def Info: Images_DHO/pinn_underdamped/summary.png  used on input line 644.
+Package pdftex.def Info: Images_DHO/pinn_underdamped/summary.png  used on input line 653.
 (pdftex.def)             Requested size: 339.29898pt x 190.85294pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [20 <./Images_DHO/pinn_criticallydamped/summary.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 649--650
+Underfull \hbox (badness 10000) in paragraph at lines 658--659
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 651--652
+Underfull \hbox (badness 10000) in paragraph at lines 660--661
 
  []
 
 <Images_DHO/pinn_underdamped/analytic_solution.png, id=345, 578.16pt x 361.35pt>
 File: Images_DHO/pinn_underdamped/analytic_solution.png Graphic file (type png)
 <use Images_DHO/pinn_underdamped/analytic_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_underdamped/analytic_solution.png  used on input line 657.
+Package pdftex.def Info: Images_DHO/pinn_underdamped/analytic_solution.png  used on input line 666.
 (pdftex.def)             Requested size: 271.44194pt x 169.64705pt.
 <Images_DHO/pinn_underdamped/predicted_solution.png, id=346, 578.16pt x 361.35pt>
 File: Images_DHO/pinn_underdamped/predicted_solution.png Graphic file (type png)
 <use Images_DHO/pinn_underdamped/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_underdamped/predicted_solution.png  used on input line 664.
+Package pdftex.def Info: Images_DHO/pinn_underdamped/predicted_solution.png  used on input line 673.
 (pdftex.def)             Requested size: 271.44194pt x 169.64705pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1328,12 +1333,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <Images_DHO/pinn_underdamped/epoch_snapshots.png, id=356, 1011.78pt x 693.792pt>
 File: Images_DHO/pinn_underdamped/epoch_snapshots.png Graphic file (type png)
 <use Images_DHO/pinn_underdamped/epoch_snapshots.png>
-Package pdftex.def Info: Images_DHO/pinn_underdamped/epoch_snapshots.png  used on input line 671.
+Package pdftex.def Info: Images_DHO/pinn_underdamped/epoch_snapshots.png  used on input line 680.
 (pdftex.def)             Requested size: 361.92029pt x 248.17696pt.
 <Images_DHO/pinn_underdamped/losses.png, id=357, 722.7pt x 361.35pt>
 File: Images_DHO/pinn_underdamped/losses.png Graphic file (type png)
 <use Images_DHO/pinn_underdamped/losses.png>
-Package pdftex.def Info: Images_DHO/pinn_underdamped/losses.png  used on input line 678.
+Package pdftex.def Info: Images_DHO/pinn_underdamped/losses.png  used on input line 687.
 (pdftex.def)             Requested size: 339.29898pt x 169.64705pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1342,136 +1347,127 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <Images_DHO/pinn_blindextrap/summary.png, id=369, 1156.32pt x 650.43pt>
 File: Images_DHO/pinn_blindextrap/summary.png Graphic file (type png)
 <use Images_DHO/pinn_blindextrap/summary.png>
-Package pdftex.def Info: Images_DHO/pinn_blindextrap/summary.png  used on input line 689.
+Package pdftex.def Info: Images_DHO/pinn_blindextrap/summary.png  used on input line 698.
 (pdftex.def)             Requested size: 339.29898pt x 190.85294pt.
  [23 <./Images_DHO/pinn_underdamped/losses.png> <./Images_DHO/pinn_blindextrap/summary.png>]
 <Images_DHO/pinn_nophys/summary.png, id=378, 1156.32pt x 650.43pt>
 File: Images_DHO/pinn_nophys/summary.png Graphic file (type png)
 <use Images_DHO/pinn_nophys/summary.png>
-Package pdftex.def Info: Images_DHO/pinn_nophys/summary.png  used on input line 699.
+Package pdftex.def Info: Images_DHO/pinn_nophys/summary.png  used on input line 708.
 (pdftex.def)             Requested size: 339.29898pt x 190.85294pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 703--704
+Underfull \hbox (badness 10000) in paragraph at lines 712--713
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 708--709
+Underfull \hbox (badness 10000) in paragraph at lines 717--718
 
  []
 
+[24 <./Images_DHO/pinn_nophys/summary.png>]
 File: Images_DHO/pinn_underdamped/predicted_solution.png Graphic file (type png)
 <use Images_DHO/pinn_underdamped/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_underdamped/predicted_solution.png  used on input line 714.
+Package pdftex.def Info: Images_DHO/pinn_underdamped/predicted_solution.png  used on input line 723.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
-[24 <./Images_DHO/pinn_nophys/summary.png>]
-<Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png, id=391, 578.16pt x 361.35pt>
+<Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png, id=390, 578.16pt x 361.35pt>
 File: Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png Graphic file (type png)
 <use Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png  used on input line 722.
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png  used on input line 731.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
-<Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png, id=392, 578.16pt x 361.35pt>
+ [25 <./Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png>]
+<Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png, id=400, 578.16pt x 361.35pt>
 File: Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png Graphic file (type png)
 <use Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png  used on input line 732.
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png  used on input line 741.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
 
-Underfull \vbox (badness 2521) has occurred while \output is active []
-
- [25 <./Images_DHO/pinn_hyperparameters/low_complexity/predicted_solution.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 737--738
+Underfull \hbox (badness 10000) in paragraph at lines 746--747
 
  []
 
 <Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png, id=401, 578.16pt x 361.35pt>
 File: Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png Graphic file (type png)
 <use Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png  used on input line 742.
-(pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
-<Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png, id=402, 578.16pt x 361.35pt>
-File: Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png Graphic file (type png)
-<use Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png  used on input line 752.
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png  used on input line 751.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
 [26 <./Images_DHO/pinn_hyperparameters/high_lr/predicted_solution.png> <./Images_DHO/pinn_hyperparameters/low_lr/predicted_solution.png>]
+<Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png, id=411, 578.16pt x 361.35pt>
+File: Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png Graphic file (type png)
+<use Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png>
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png  used on input line 761.
+(pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
 <Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png, id=412, 578.16pt x 361.35pt>
 File: Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png Graphic file (type png)
 <use Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png  used on input line 761.
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png  used on input line 770.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 766--767
+Underfull \hbox (badness 10000) in paragraph at lines 775--776
 
  []
 
-<Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png, id=414, 578.16pt x 361.35pt>
+[27 <./Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png> <./Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png>]
+<Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png, id=424, 578.16pt x 361.35pt>
 File: Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png Graphic file (type png)
 <use Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png  used on input line 771.
+Package pdftex.def Info: Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png  used on input line 780.
 (pdftex.def)             Requested size: 316.67767pt x 197.92157pt.
-[27 <./Images_DHO/pinn_hyperparameters/large_phys/predicted_solution.png> <./Images_DHO/pinn_hyperparameters/large_phys_no_extrap/predicted_solution.png>] [28 <./Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png>]
-Overfull \hbox (30.34299pt too wide) in paragraph at lines 815--828
+ [28 <./Images_DHO/pinn_hyperparameters/large_phys_no_data/predicted_solution.png>]
+Overfull \hbox (30.34299pt too wide) in paragraph at lines 824--837
  [][] 
  []
 
 
-Overfull \hbox (15.63142pt too wide) in paragraph at lines 831--832
-\OT1/ptm/m/n/10.95 class, [][]\OT1/cmtt/m/n/10.95 InverseFCNet []\OT1/ptm/m/n/10.95 with $[]$ and $[]$ as model pa-ram-e-ters and a new loss func-tion [][]\OT1/cmtt/m/n/10.95 loss_physics_inverse
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 831--832
+Underfull \hbox (badness 10000) in paragraph at lines 840--841
 
  []
 
 [29]
-Underfull \hbox (badness 10000) in paragraph at lines 853--854
+Underfull \hbox (badness 10000) in paragraph at lines 862--863
 
  []
 
 <Images_DHO/inversepinn_overdamped/predicted_solution.png, id=442, 578.16pt x 361.35pt>
 File: Images_DHO/inversepinn_overdamped/predicted_solution.png Graphic file (type png)
 <use Images_DHO/inversepinn_overdamped/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/inversepinn_overdamped/predicted_solution.png  used on input line 875.
+Package pdftex.def Info: Images_DHO/inversepinn_overdamped/predicted_solution.png  used on input line 884.
 (pdftex.def)             Requested size: 339.29898pt x 212.05882pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [30]
+[30]
 <Images_DHO/inversepinn_overdamped/parameter_convergence.png, id=452, 722.7pt x 361.35pt>
 File: Images_DHO/inversepinn_overdamped/parameter_convergence.png Graphic file (type png)
 <use Images_DHO/inversepinn_overdamped/parameter_convergence.png>
-Package pdftex.def Info: Images_DHO/inversepinn_overdamped/parameter_convergence.png  used on input line 882.
+Package pdftex.def Info: Images_DHO/inversepinn_overdamped/parameter_convergence.png  used on input line 891.
 (pdftex.def)             Requested size: 339.29898pt x 169.64705pt.
 <Images_DHO/inversepinn_criticallydamped/predicted_solution.png, id=456, 578.16pt x 361.35pt>
 File: Images_DHO/inversepinn_criticallydamped/predicted_solution.png Graphic file (type png)
 <use Images_DHO/inversepinn_criticallydamped/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/inversepinn_criticallydamped/predicted_solution.png  used on input line 906.
+Package pdftex.def Info: Images_DHO/inversepinn_criticallydamped/predicted_solution.png  used on input line 915.
 (pdftex.def)             Requested size: 339.29898pt x 212.05882pt.
  [31 <./Images_DHO/inversepinn_overdamped/predicted_solution.png> <./Images_DHO/inversepinn_overdamped/parameter_convergence.png>]
 <Images_DHO/inversepinn_criticallydamped/parameter_convergence.png, id=464, 722.7pt x 361.35pt>
 File: Images_DHO/inversepinn_criticallydamped/parameter_convergence.png Graphic file (type png)
 <use Images_DHO/inversepinn_criticallydamped/parameter_convergence.png>
-Package pdftex.def Info: Images_DHO/inversepinn_criticallydamped/parameter_convergence.png  used on input line 913.
+Package pdftex.def Info: Images_DHO/inversepinn_criticallydamped/parameter_convergence.png  used on input line 922.
 (pdftex.def)             Requested size: 339.29898pt x 169.64705pt.
 <Images_DHO/inversepinn_underdamped/predicted_solution.png, id=467, 578.16pt x 361.35pt>
 File: Images_DHO/inversepinn_underdamped/predicted_solution.png Graphic file (type png)
 <use Images_DHO/inversepinn_underdamped/predicted_solution.png>
-Package pdftex.def Info: Images_DHO/inversepinn_underdamped/predicted_solution.png  used on input line 938.
+Package pdftex.def Info: Images_DHO/inversepinn_underdamped/predicted_solution.png  used on input line 947.
 (pdftex.def)             Requested size: 339.29898pt x 212.05882pt.
  [32 <./Images_DHO/inversepinn_criticallydamped/predicted_solution.png> <./Images_DHO/inversepinn_criticallydamped/parameter_convergence.png>]
 <Images_DHO/inversepinn_underdamped/parameter_convergence.png, id=477, 722.7pt x 361.35pt>
 File: Images_DHO/inversepinn_underdamped/parameter_convergence.png Graphic file (type png)
 <use Images_DHO/inversepinn_underdamped/parameter_convergence.png>
-Package pdftex.def Info: Images_DHO/inversepinn_underdamped/parameter_convergence.png  used on input line 945.
+Package pdftex.def Info: Images_DHO/inversepinn_underdamped/parameter_convergence.png  used on input line 954.
 (pdftex.def)             Requested size: 339.29898pt x 169.64705pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 952--953
+Underfull \hbox (badness 10000) in paragraph at lines 961--962
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 954--955
+Underfull \hbox (badness 10000) in paragraph at lines 963--964
 
  []
 
@@ -1479,21 +1475,21 @@ Underfull \hbox (badness 10000) in paragraph at lines 954--955
 <Images_DHO/parameter_estimation/scatter_zeta_full.png, id=489, 578.16pt x 578.16pt>
 File: Images_DHO/parameter_estimation/scatter_zeta_full.png Graphic file (type png)
 <use Images_DHO/parameter_estimation/scatter_zeta_full.png>
-Package pdftex.def Info: Images_DHO/parameter_estimation/scatter_zeta_full.png  used on input line 962.
+Package pdftex.def Info: Images_DHO/parameter_estimation/scatter_zeta_full.png  used on input line 971.
 (pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 963.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 972.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 963.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 972.
 <Images_DHO/parameter_estimation/scatter_omega_0_full.png, id=490, 578.16pt x 578.16pt>
 File: Images_DHO/parameter_estimation/scatter_omega_0_full.png Graphic file (type png)
 <use Images_DHO/parameter_estimation/scatter_omega_0_full.png>
-Package pdftex.def Info: Images_DHO/parameter_estimation/scatter_omega_0_full.png  used on input line 969.
+Package pdftex.def Info: Images_DHO/parameter_estimation/scatter_omega_0_full.png  used on input line 978.
 (pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
 <Images_DHO/parameter_estimation/parameter_space_rmse_full.png, id=492, 578.16pt x 505.89pt>
 File: Images_DHO/parameter_estimation/parameter_space_rmse_full.png Graphic file (type png)
 <use Images_DHO/parameter_estimation/parameter_space_rmse_full.png>
-Package pdftex.def Info: Images_DHO/parameter_estimation/parameter_space_rmse_full.png  used on input line 998.
+Package pdftex.def Info: Images_DHO/parameter_estimation/parameter_space_rmse_full.png  used on input line 1007.
 (pdftex.def)             Requested size: 294.05635pt x 257.29802pt.
 
 Underfull \vbox (badness 4608) has occurred while \output is active []
@@ -1502,42 +1498,42 @@ Underfull \vbox (badness 4608) has occurred while \output is active []
 <Images_DHO/analytic_solutions_zeta_underdamped.png, id=502, 722.7pt x 433.62pt>
 File: Images_DHO/analytic_solutions_zeta_underdamped.png Graphic file (type png)
 <use Images_DHO/analytic_solutions_zeta_underdamped.png>
-Package pdftex.def Info: Images_DHO/analytic_solutions_zeta_underdamped.png  used on input line 1009.
+Package pdftex.def Info: Images_DHO/analytic_solutions_zeta_underdamped.png  used on input line 1018.
 (pdftex.def)             Requested size: 217.14941pt x 130.28549pt.
 <Images_DHO/analytic_solutions_zeta_overdamped.png, id=503, 722.7pt x 433.62pt>
 File: Images_DHO/analytic_solutions_zeta_overdamped.png Graphic file (type png)
 <use Images_DHO/analytic_solutions_zeta_overdamped.png>
-Package pdftex.def Info: Images_DHO/analytic_solutions_zeta_overdamped.png  used on input line 1016.
+Package pdftex.def Info: Images_DHO/analytic_solutions_zeta_overdamped.png  used on input line 1025.
 (pdftex.def)             Requested size: 217.14941pt x 130.28549pt.
 <Images_DHO/analytic_solutions_omega_underdamped.png, id=504, 722.7pt x 433.62pt>
 File: Images_DHO/analytic_solutions_omega_underdamped.png Graphic file (type png)
 <use Images_DHO/analytic_solutions_omega_underdamped.png>
-Package pdftex.def Info: Images_DHO/analytic_solutions_omega_underdamped.png  used on input line 1025.
+Package pdftex.def Info: Images_DHO/analytic_solutions_omega_underdamped.png  used on input line 1034.
 (pdftex.def)             Requested size: 217.14941pt x 130.28549pt.
 <Images_DHO/analytic_solutions_omega_overdamped.png, id=505, 722.7pt x 433.62pt>
 File: Images_DHO/analytic_solutions_omega_overdamped.png Graphic file (type png)
 <use Images_DHO/analytic_solutions_omega_overdamped.png>
-Package pdftex.def Info: Images_DHO/analytic_solutions_omega_overdamped.png  used on input line 1032.
+Package pdftex.def Info: Images_DHO/analytic_solutions_omega_overdamped.png  used on input line 1041.
 (pdftex.def)             Requested size: 217.14941pt x 130.28549pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1041--1042
+Underfull \hbox (badness 10000) in paragraph at lines 1050--1051
 
  []
 
 [35 <./Images_DHO/parameter_estimation/parameter_space_rmse_full.png> <./Images_DHO/analytic_solutions_zeta_underdamped.png> <./Images_DHO/analytic_solutions_zeta_overdamped.png> <./Images_DHO/analytic_solutions_omega_underdamped.png> <./Images_DHO/analytic_solutions_omega_overdamped.png>] [36]
 chapter 3.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1053--1055
+Underfull \hbox (badness 10000) in paragraph at lines 1062--1064
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1056--1057
+Underfull \hbox (badness 10000) in paragraph at lines 1065--1066
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1058--1059
+Underfull \hbox (badness 10000) in paragraph at lines 1067--1068
 
  []
 
@@ -1548,97 +1544,97 @@ Underfull \hbox (badness 10000) in paragraph at lines 1058--1059
 <Images_DHO/gauss_characteristics.png, id=533, 722.7pt x 578.16pt>
 File: Images_DHO/gauss_characteristics.png Graphic file (type png)
 <use Images_DHO/gauss_characteristics.png>
-Package pdftex.def Info: Images_DHO/gauss_characteristics.png  used on input line 1089.
+Package pdftex.def Info: Images_DHO/gauss_characteristics.png  used on input line 1098.
 (pdftex.def)             Requested size: 407.15602pt x 325.72588pt.
 <Images_DHO/gauss_ic.png, id=534, 722.7pt x 433.62pt>
 File: Images_DHO/gauss_ic.png Graphic file (type png)
 <use Images_DHO/gauss_ic.png>
-Package pdftex.def Info: Images_DHO/gauss_ic.png  used on input line 1099.
+Package pdftex.def Info: Images_DHO/gauss_ic.png  used on input line 1108.
 (pdftex.def)             Requested size: 217.14941pt x 130.28549pt.
 <Images_DHO/gauss_t.png, id=535, 722.7pt x 433.62pt>
 File: Images_DHO/gauss_t.png Graphic file (type png)
 <use Images_DHO/gauss_t.png>
-Package pdftex.def Info: Images_DHO/gauss_t.png  used on input line 1106.
+Package pdftex.def Info: Images_DHO/gauss_t.png  used on input line 1115.
 (pdftex.def)             Requested size: 217.14941pt x 130.28549pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [38 <./Images_DHO/gauss_characteristics.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1144--1145
+Underfull \hbox (badness 10000) in paragraph at lines 1153--1154
 
  []
 
 [39 <./Images_DHO/gauss_ic.png> <./Images_DHO/gauss_t.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1167--1169
+Underfull \hbox (badness 10000) in paragraph at lines 1176--1178
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1170--1171
+Underfull \hbox (badness 10000) in paragraph at lines 1179--1180
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1175--1177
+Underfull \hbox (badness 10000) in paragraph at lines 1184--1186
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1180--1181
+Underfull \hbox (badness 10000) in paragraph at lines 1189--1190
 
  []
 
 [40]
-Underfull \hbox (badness 10000) in paragraph at lines 1182--1183
+Underfull \hbox (badness 10000) in paragraph at lines 1191--1192
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1184--1185
+Underfull \hbox (badness 10000) in paragraph at lines 1193--1194
 
  []
 
 
-Overfull \hbox (20.07759pt too wide) in paragraph at lines 1206--1207
+Overfull \hbox (20.07759pt too wide) in paragraph at lines 1215--1216
 []\OT1/ptm/m/n/10.95 The only no-table dif-fer-ence com-pared to the damped har-monic os-cil-la-tor is the in-clu-sion of the [][]\OT1/cmtt/m/n/10.95 analytic.py
  []
 
 [41] [42]
-<Images_BE/Gauss_nu_0.1/method_of_characteristics.png, id=586, 722.7pt x 578.16pt>
+<Images_BE/Gauss_nu_0.1/method_of_characteristics.png, id=588, 722.7pt x 578.16pt>
 File: Images_BE/Gauss_nu_0.1/method_of_characteristics.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.1/method_of_characteristics.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.1/method_of_characteristics.png  used on input line 1274.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.1/method_of_characteristics.png  used on input line 1283.
 (pdftex.def)             Requested size: 294.05635pt x 235.24744pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1278--1279
+Underfull \hbox (badness 10000) in paragraph at lines 1287--1288
 
  []
 
 [43 <./Images_BE/Gauss_nu_0.1/method_of_characteristics.png>]
-<Images_BE/Gauss_nu_0.05/gt_solution.png, id=596, 867.24pt x 578.16pt>
+<Images_BE/Gauss_nu_0.05/gt_solution.png, id=598, 867.24pt x 578.16pt>
 File: Images_BE/Gauss_nu_0.05/gt_solution.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/gt_solution.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/gt_solution.png  used on input line 1286.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/gt_solution.png  used on input line 1295.
 (pdftex.def)             Requested size: 262.39204pt x 174.93143pt.
-<Images_BE/Gauss_nu_0.05/gt_2D.png, id=597, 578.16pt x 578.16pt>
+<Images_BE/Gauss_nu_0.05/gt_2D.png, id=599, 578.16pt x 578.16pt>
 File: Images_BE/Gauss_nu_0.05/gt_2D.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/gt_2D.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/gt_2D.png  used on input line 1293.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/gt_2D.png  used on input line 1302.
 (pdftex.def)             Requested size: 180.9567pt x 180.95685pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1300--1301
+Underfull \hbox (badness 10000) in paragraph at lines 1309--1310
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1302--1303
+Underfull \hbox (badness 10000) in paragraph at lines 1311--1312
 
  []
 
-<Images_BE/Gauss_nu_0.05/3_times.png, id=601, 433.62pt x 722.7pt>
+<Images_BE/Gauss_nu_0.05/3_times.png, id=603, 433.62pt x 722.7pt>
 File: Images_BE/Gauss_nu_0.05/3_times.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/3_times.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/3_times.png  used on input line 1308.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/3_times.png  used on input line 1317.
 (pdftex.def)             Requested size: 361.92029pt x 603.22629pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1646,172 +1642,172 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [44 <./Images_BE/Gauss_nu_0.05/gt_solution.png> <./Images_BE/Gauss_nu_0.05/gt_2D.png>]
 File: Images_BE/Gauss_nu_0.05/gt_2D.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/gt_2D.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/gt_2D.png  used on input line 1317.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/gt_2D.png  used on input line 1326.
 (pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
-<Images_BE/Gauss_nu_0.05/pred_2D.png, id=612, 578.16pt x 578.16pt>
+<Images_BE/Gauss_nu_0.05/pred_2D.png, id=614, 578.16pt x 578.16pt>
 File: Images_BE/Gauss_nu_0.05/pred_2D.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/pred_2D.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/pred_2D.png  used on input line 1324.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/pred_2D.png  used on input line 1333.
 (pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [45 <./Images_BE/Gauss_nu_0.05/3_times.png>]
-<Images_BE/Gauss_nu_0.05/pred_solution.png, id=623, 867.24pt x 462.528pt>
+<Images_BE/Gauss_nu_0.05/pred_solution.png, id=625, 867.24pt x 462.528pt>
 File: Images_BE/Gauss_nu_0.05/pred_solution.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/pred_solution.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/pred_solution.png  used on input line 1336.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/pred_solution.png  used on input line 1345.
 (pdftex.def)             Requested size: 361.92029pt x 193.02534pt.
-<Images_BE/Gauss_nu_0.05/pred_grid.png, id=624, 1011.78pt x 925.056pt>
+<Images_BE/Gauss_nu_0.05/pred_grid.png, id=626, 1011.78pt x 925.056pt>
 File: Images_BE/Gauss_nu_0.05/pred_grid.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/pred_grid.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/pred_grid.png  used on input line 1343.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/pred_grid.png  used on input line 1352.
 (pdftex.def)             Requested size: 361.92029pt x 330.90262pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [46 <./Images_BE/Gauss_nu_0.05/pred_2D.png> <./Images_BE/Gauss_nu_0.05/pred_solution.png>]
-<Images_BE/Gauss_nu_0.05/losses.png, id=634, 722.7pt x 361.35pt>
+<Images_BE/Gauss_nu_0.05/losses.png, id=636, 722.7pt x 361.35pt>
 File: Images_BE/Gauss_nu_0.05/losses.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/losses.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/losses.png  used on input line 1352.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/losses.png  used on input line 1361.
 (pdftex.def)             Requested size: 294.05635pt x 147.02965pt.
  [47 <./Images_BE/Gauss_nu_0.05/pred_grid.png> <./Images_BE/Gauss_nu_0.05/losses.png>]
-<Images_BE/Gauss_nu_0.05/summary.png, id=643, 1300.86pt x 794.97pt>
+<Images_BE/Gauss_nu_0.05/summary.png, id=645, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.05/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05/summary.png  used on input line 1361.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05/summary.png  used on input line 1370.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1366--1367
+Underfull \hbox (badness 10000) in paragraph at lines 1375--1376
 
  []
 
 [48 <./Images_BE/Gauss_nu_0.05/summary.png>]
-<Images_BE/Gauss_nu_0.1/3_times.png, id=652, 433.62pt x 722.7pt>
+<Images_BE/Gauss_nu_0.1/3_times.png, id=654, 433.62pt x 722.7pt>
 File: Images_BE/Gauss_nu_0.1/3_times.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.1/3_times.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.1/3_times.png  used on input line 1375.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.1/3_times.png  used on input line 1384.
 (pdftex.def)             Requested size: 180.9567pt x 301.59108pt.
-<Images_BE/Gauss_nu_0.1/summary.png, id=653, 1300.86pt x 794.97pt>
+<Images_BE/Gauss_nu_0.1/summary.png, id=655, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.1/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.1/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.1/summary.png  used on input line 1382.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.1/summary.png  used on input line 1391.
 (pdftex.def)             Requested size: 271.44194pt x 165.88116pt.
-<Images_BE/Gauss_nu_0.01_bad/3_times.png, id=654, 433.62pt x 722.7pt>
+<Images_BE/Gauss_nu_0.01_bad/3_times.png, id=656, 433.62pt x 722.7pt>
 File: Images_BE/Gauss_nu_0.01_bad/3_times.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.01_bad/3_times.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.01_bad/3_times.png  used on input line 1391.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.01_bad/3_times.png  used on input line 1400.
 (pdftex.def)             Requested size: 203.578pt x 339.29411pt.
  [49
 
  <./Images_BE/Gauss_nu_0.1/3_times.png> <./Images_BE/Gauss_nu_0.1/summary.png>]
-<Images_BE/Gauss_nu_0.01/summary.png, id=664, 1300.86pt x 794.97pt>
+<Images_BE/Gauss_nu_0.01/summary.png, id=666, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.01/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.01/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.01/summary.png  used on input line 1398.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.01/summary.png  used on input line 1407.
 (pdftex.def)             Requested size: 316.67767pt x 193.526pt.
  [50 <./Images_BE/Gauss_nu_0.01_bad/3_times.png> <./Images_BE/Gauss_nu_0.01/summary.png>]
-<Images_BE/Gauss_nu_0.01/3_times.png, id=674, 433.62pt x 722.7pt>
+<Images_BE/Gauss_nu_0.01/3_times.png, id=676, 433.62pt x 722.7pt>
 File: Images_BE/Gauss_nu_0.01/3_times.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.01/3_times.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.01/3_times.png  used on input line 1407.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.01/3_times.png  used on input line 1416.
 (pdftex.def)             Requested size: 180.9567pt x 301.59108pt.
 File: Images_BE/Gauss_nu_0.01/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.01/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.01/summary.png  used on input line 1414.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.01/summary.png  used on input line 1423.
 (pdftex.def)             Requested size: 316.67767pt x 193.526pt.
  [51 <./Images_BE/Gauss_nu_0.01/3_times.png>]
 
-LaTeX Warning: Reference `fig:N_wave_nu_0.1_bad/method_of_characteristics' on page 52 undefined on input line 1429.
+LaTeX Warning: Reference `fig:N_wave_nu_0.05_bad/method_of_characteristics' on page 52 undefined on input line 1438.
 
-<Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png, id=684, 722.7pt x 578.16pt>
+<Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png, id=686, 722.7pt x 578.16pt>
 File: Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png  used on input line 1432.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png  used on input line 1441.
 (pdftex.def)             Requested size: 294.05635pt x 235.24744pt.
-<Images_BE/N_wave_nu_0.05_bad/3_times.png, id=685, 433.62pt x 722.7pt>
+<Images_BE/N_wave_nu_0.05_bad/3_times.png, id=687, 433.62pt x 722.7pt>
 File: Images_BE/N_wave_nu_0.05_bad/3_times.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.05_bad/3_times.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.05_bad/3_times.png  used on input line 1441.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.05_bad/3_times.png  used on input line 1450.
 (pdftex.def)             Requested size: 226.19933pt x 376.99713pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [52 <./Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png>]
-<Images_BE/N_wave_nu_0.05_bad/summary.png, id=695, 1300.86pt x 794.97pt>
+<Images_BE/N_wave_nu_0.05_bad/summary.png, id=697, 1300.86pt x 794.97pt>
 File: Images_BE/N_wave_nu_0.05_bad/summary.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.05_bad/summary.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.05_bad/summary.png  used on input line 1448.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.05_bad/summary.png  used on input line 1457.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
  [53 <./Images_BE/N_wave_nu_0.05_bad/3_times.png> <./Images_BE/N_wave_nu_0.05_bad/summary.png>]
-<Images_BE/N_wave_nu_0.05/3_times.png, id=704, 433.62pt x 722.7pt>
+<Images_BE/N_wave_nu_0.05/3_times.png, id=706, 433.62pt x 722.7pt>
 File: Images_BE/N_wave_nu_0.05/3_times.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.05/3_times.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.05/3_times.png  used on input line 1457.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.05/3_times.png  used on input line 1466.
 (pdftex.def)             Requested size: 180.9567pt x 301.59108pt.
-<Images_BE/N_wave_nu_0.05/summary.png, id=705, 1300.86pt x 794.97pt>
+<Images_BE/N_wave_nu_0.05/summary.png, id=707, 1300.86pt x 794.97pt>
 File: Images_BE/N_wave_nu_0.05/summary.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.05/summary.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.05/summary.png  used on input line 1464.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.05/summary.png  used on input line 1473.
 (pdftex.def)             Requested size: 316.67767pt x 193.526pt.
  [54 <./Images_BE/N_wave_nu_0.05/3_times.png> <./Images_BE/N_wave_nu_0.05/summary.png>]
-<Images_BE/N_wave_nu_0.1/3_times.png, id=714, 433.62pt x 722.7pt>
+<Images_BE/N_wave_nu_0.1/3_times.png, id=716, 433.62pt x 722.7pt>
 File: Images_BE/N_wave_nu_0.1/3_times.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.1/3_times.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.1/3_times.png  used on input line 1473.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.1/3_times.png  used on input line 1482.
 (pdftex.def)             Requested size: 203.578pt x 339.29411pt.
-<Images_BE/N_wave_nu_0.1/summary.png, id=715, 1300.86pt x 794.97pt>
+<Images_BE/N_wave_nu_0.1/summary.png, id=717, 1300.86pt x 794.97pt>
 File: Images_BE/N_wave_nu_0.1/summary.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.1/summary.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.1/summary.png  used on input line 1480.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.1/summary.png  used on input line 1489.
 (pdftex.def)             Requested size: 316.67767pt x 193.526pt.
  [55
 
  <./Images_BE/N_wave_nu_0.1/3_times.png> <./Images_BE/N_wave_nu_0.1/summary.png>]
-<Images_BE/N_wave_nu_0.01/3_times.png, id=725, 433.62pt x 722.7pt>
+<Images_BE/N_wave_nu_0.01/3_times.png, id=727, 433.62pt x 722.7pt>
 File: Images_BE/N_wave_nu_0.01/3_times.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.01/3_times.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.01/3_times.png  used on input line 1489.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.01/3_times.png  used on input line 1498.
 (pdftex.def)             Requested size: 180.9567pt x 301.59108pt.
-<Images_BE/N_wave_nu_0.01/summary.png, id=726, 1300.86pt x 794.97pt>
+<Images_BE/N_wave_nu_0.01/summary.png, id=728, 1300.86pt x 794.97pt>
 File: Images_BE/N_wave_nu_0.01/summary.png Graphic file (type png)
 <use Images_BE/N_wave_nu_0.01/summary.png>
-Package pdftex.def Info: Images_BE/N_wave_nu_0.01/summary.png  used on input line 1496.
+Package pdftex.def Info: Images_BE/N_wave_nu_0.01/summary.png  used on input line 1505.
 (pdftex.def)             Requested size: 316.67767pt x 193.526pt.
  [56
 
  <./Images_BE/N_wave_nu_0.01/3_times.png> <./Images_BE/N_wave_nu_0.01/summary.png>]
-<Images_BE/Step_up_nu_0.1/method_of_characteristics.png, id=737, 722.7pt x 578.16pt>
+<Images_BE/Step_up_nu_0.1/method_of_characteristics.png, id=739, 722.7pt x 578.16pt>
 File: Images_BE/Step_up_nu_0.1/method_of_characteristics.png Graphic file (type png)
 <use Images_BE/Step_up_nu_0.1/method_of_characteristics.png>
-Package pdftex.def Info: Images_BE/Step_up_nu_0.1/method_of_characteristics.png  used on input line 1515.
+Package pdftex.def Info: Images_BE/Step_up_nu_0.1/method_of_characteristics.png  used on input line 1524.
 (pdftex.def)             Requested size: 294.05635pt x 235.24744pt.
-<Images_BE/Step_up_nu_0.05/pred_solution.png, id=738, 867.24pt x 462.528pt>
+<Images_BE/Step_up_nu_0.05/pred_solution.png, id=740, 867.24pt x 462.528pt>
 File: Images_BE/Step_up_nu_0.05/pred_solution.png Graphic file (type png)
 <use Images_BE/Step_up_nu_0.05/pred_solution.png>
-Package pdftex.def Info: Images_BE/Step_up_nu_0.05/pred_solution.png  used on input line 1525.
+Package pdftex.def Info: Images_BE/Step_up_nu_0.05/pred_solution.png  used on input line 1534.
 (pdftex.def)             Requested size: 271.44194pt x 144.76547pt.
-<Images_BE/Step_up_nu_0.05/summary.png, id=739, 1300.86pt x 794.97pt>
+<Images_BE/Step_up_nu_0.05/summary.png, id=741, 1300.86pt x 794.97pt>
 File: Images_BE/Step_up_nu_0.05/summary.png Graphic file (type png)
 <use Images_BE/Step_up_nu_0.05/summary.png>
-Package pdftex.def Info: Images_BE/Step_up_nu_0.05/summary.png  used on input line 1532.
+Package pdftex.def Info: Images_BE/Step_up_nu_0.05/summary.png  used on input line 1541.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
  [57 <./Images_BE/Step_up_nu_0.1/method_of_characteristics.png> <./Images_BE/Step_up_nu_0.05/pred_solution.png>] [58 <./Images_BE/Step_up_nu_0.05/summary.png>]
-<Images_BE/Step_up_nu_0.1/pred_solution.png, id=757, 867.24pt x 462.528pt>
+<Images_BE/Step_up_nu_0.1/pred_solution.png, id=759, 867.24pt x 462.528pt>
 File: Images_BE/Step_up_nu_0.1/pred_solution.png Graphic file (type png)
 <use Images_BE/Step_up_nu_0.1/pred_solution.png>
-Package pdftex.def Info: Images_BE/Step_up_nu_0.1/pred_solution.png  used on input line 1542.
+Package pdftex.def Info: Images_BE/Step_up_nu_0.1/pred_solution.png  used on input line 1551.
 (pdftex.def)             Requested size: 316.67767pt x 168.89542pt.
-<Images_BE/Step_up_nu_0.1/summary.png, id=758, 1300.86pt x 794.97pt>
+<Images_BE/Step_up_nu_0.1/summary.png, id=760, 1300.86pt x 794.97pt>
 File: Images_BE/Step_up_nu_0.1/summary.png Graphic file (type png)
 <use Images_BE/Step_up_nu_0.1/summary.png>
-Package pdftex.def Info: Images_BE/Step_up_nu_0.1/summary.png  used on input line 1549.
+Package pdftex.def Info: Images_BE/Step_up_nu_0.1/summary.png  used on input line 1558.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
-<Images_BE/Step_up_nu_0.01/pred_solution.png, id=759, 867.24pt x 462.528pt>
+<Images_BE/Step_up_nu_0.01/pred_solution.png, id=761, 867.24pt x 462.528pt>
 File: Images_BE/Step_up_nu_0.01/pred_solution.png Graphic file (type png)
 <use Images_BE/Step_up_nu_0.01/pred_solution.png>
-Package pdftex.def Info: Images_BE/Step_up_nu_0.01/pred_solution.png  used on input line 1558.
+Package pdftex.def Info: Images_BE/Step_up_nu_0.01/pred_solution.png  used on input line 1567.
 (pdftex.def)             Requested size: 316.67767pt x 168.89542pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1819,21 +1815,21 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [59
 
  <./Images_BE/Step_up_nu_0.1/pred_solution.png> <./Images_BE/Step_up_nu_0.1/summary.png>]
-<Images_BE/Step_up_nu_0.01/summary.png, id=770, 1300.86pt x 794.97pt>
+<Images_BE/Step_up_nu_0.01/summary.png, id=772, 1300.86pt x 794.97pt>
 File: Images_BE/Step_up_nu_0.01/summary.png Graphic file (type png)
 <use Images_BE/Step_up_nu_0.01/summary.png>
-Package pdftex.def Info: Images_BE/Step_up_nu_0.01/summary.png  used on input line 1565.
+Package pdftex.def Info: Images_BE/Step_up_nu_0.01/summary.png  used on input line 1574.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
  [60 <./Images_BE/Step_up_nu_0.01/pred_solution.png> <./Images_BE/Step_up_nu_0.01/summary.png>]
-<Images_BE/Gauss_nu_0.05_data_included/summary.png, id=779, 1300.86pt x 794.97pt>
+<Images_BE/Gauss_nu_0.05_data_included/summary.png, id=781, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.05_data_included/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05_data_included/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05_data_included/summary.png  used on input line 1577.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05_data_included/summary.png  used on input line 1586.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
-<Images_BE/Gauss_nu_0.05_ML/summary.png, id=780, 1300.86pt x 794.97pt>
+<Images_BE/Gauss_nu_0.05_ML/summary.png, id=782, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.05_ML/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05_ML/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05_ML/summary.png  used on input line 1587.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05_ML/summary.png  used on input line 1596.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1841,35 +1837,32 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [61
 
  <./Images_BE/Gauss_nu_0.05_data_included/summary.png>]
-<Images_BE/Gauss_nu_0.05_extrapblind/summary.png, id=787, 1300.86pt x 794.97pt>
+<Images_BE/Gauss_nu_0.05_extrapblind/summary.png, id=789, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.05_extrapblind/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05_extrapblind/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05_extrapblind/summary.png  used on input line 1597.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05_extrapblind/summary.png  used on input line 1606.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
  [62 <./Images_BE/Gauss_nu_0.05_ML/summary.png> <./Images_BE/Gauss_nu_0.05_extrapblind/summary.png>]
-<Images_BE/Gauss_nu_0.05_low_complexity/summary.png, id=797, 1300.86pt x 794.97pt>
+<Images_BE/Gauss_nu_0.05_low_complexity/summary.png, id=799, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.05_low_complexity/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05_low_complexity/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05_low_complexity/summary.png  used on input line 1616.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05_low_complexity/summary.png  used on input line 1625.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
-<Images_BE/Gauss_nu_0.05_high_lr/summary.png, id=798, 1300.86pt x 794.97pt>
+<Images_BE/Gauss_nu_0.05_high_lr/summary.png, id=800, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.05_high_lr/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05_high_lr/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05_high_lr/summary.png  used on input line 1625.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05_high_lr/summary.png  used on input line 1634.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
-
-Underfull \vbox (badness 1715) has occurred while \output is active []
-
  [63 <./Images_BE/Gauss_nu_0.05_low_complexity/summary.png>]
-<Images_BE/Gauss_nu_0.05_low_lr/summary.png, id=807, 1300.86pt x 794.97pt>
+<Images_BE/Gauss_nu_0.05_low_lr/summary.png, id=809, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.05_low_lr/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05_low_lr/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05_low_lr/summary.png  used on input line 1632.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05_low_lr/summary.png  used on input line 1641.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
-<Images_BE/Gauss_nu_0.05_no_bc/summary.png, id=808, 1300.86pt x 794.97pt>
+<Images_BE/Gauss_nu_0.05_no_bc/summary.png, id=810, 1300.86pt x 794.97pt>
 File: Images_BE/Gauss_nu_0.05_no_bc/summary.png Graphic file (type png)
 <use Images_BE/Gauss_nu_0.05_no_bc/summary.png>
-Package pdftex.def Info: Images_BE/Gauss_nu_0.05_no_bc/summary.png  used on input line 1642.
+Package pdftex.def Info: Images_BE/Gauss_nu_0.05_no_bc/summary.png  used on input line 1651.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1878,7 +1871,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [65 <./Images_BE/Gauss_nu_0.05_no_bc/summary.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1697--1698
+Underfull \hbox (badness 10000) in paragraph at lines 1706--1707
 
  []
 
@@ -1886,77 +1879,77 @@ Underfull \hbox (badness 10000) in paragraph at lines 1697--1698
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [66]
-Underfull \hbox (badness 10000) in paragraph at lines 1718--1719
+Underfull \hbox (badness 10000) in paragraph at lines 1727--1728
 
  []
 
-<Images_BE/backward_demo_gauss_highnu/pred_solution.png, id=836, 867.24pt x 462.528pt>
-File: Images_BE/backward_demo_gauss_highnu/pred_solution.png Graphic file (type png)
-<use Images_BE/backward_demo_gauss_highnu/pred_solution.png>
-Package pdftex.def Info: Images_BE/backward_demo_gauss_highnu/pred_solution.png  used on input line 1741.
+<Images_BE/inversepinn_high/pred_solution.png, id=840, 867.24pt x 462.528pt>
+File: Images_BE/inversepinn_high/pred_solution.png Graphic file (type png)
+<use Images_BE/inversepinn_high/pred_solution.png>
+Package pdftex.def Info: Images_BE/inversepinn_high/pred_solution.png  used on input line 1750.
 (pdftex.def)             Requested size: 361.92029pt x 193.02534pt.
-<Images_BE/backward_demo_gauss_highnu/summary.png, id=837, 1300.86pt x 794.97pt>
-File: Images_BE/backward_demo_gauss_highnu/summary.png Graphic file (type png)
-<use Images_BE/backward_demo_gauss_highnu/summary.png>
-Package pdftex.def Info: Images_BE/backward_demo_gauss_highnu/summary.png  used on input line 1748.
+<Images_BE/inversepinn_high/summary.png, id=841, 1300.86pt x 794.97pt>
+File: Images_BE/inversepinn_high/summary.png Graphic file (type png)
+<use Images_BE/inversepinn_high/summary.png>
+Package pdftex.def Info: Images_BE/inversepinn_high/summary.png  used on input line 1757.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
-[67 <./Images_BE/backward_demo_gauss_highnu/pred_solution.png>]
-<Images_BE/backward_demo_gauss_highnu/parameter_convergence.png, id=847, 722.7pt x 361.35pt>
-File: Images_BE/backward_demo_gauss_highnu/parameter_convergence.png Graphic file (type png)
-<use Images_BE/backward_demo_gauss_highnu/parameter_convergence.png>
-Package pdftex.def Info: Images_BE/backward_demo_gauss_highnu/parameter_convergence.png  used on input line 1755.
+[67 <./Images_BE/inversepinn_high/pred_solution.png>]
+<Images_BE/inversepinn_high/parameter_convergence.png, id=851, 722.7pt x 361.35pt>
+File: Images_BE/inversepinn_high/parameter_convergence.png Graphic file (type png)
+<use Images_BE/inversepinn_high/parameter_convergence.png>
+Package pdftex.def Info: Images_BE/inversepinn_high/parameter_convergence.png  used on input line 1764.
 (pdftex.def)             Requested size: 316.67767pt x 158.33835pt.
-<Images_BE/backward_demo_gauss_lownu/pred_solution.png, id=849, 867.24pt x 462.528pt>
-File: Images_BE/backward_demo_gauss_lownu/pred_solution.png Graphic file (type png)
-<use Images_BE/backward_demo_gauss_lownu/pred_solution.png>
-Package pdftex.def Info: Images_BE/backward_demo_gauss_lownu/pred_solution.png  used on input line 1780.
+<Images_BE/inversepinn_low/pred_solution.png, id=853, 867.24pt x 462.528pt>
+File: Images_BE/inversepinn_low/pred_solution.png Graphic file (type png)
+<use Images_BE/inversepinn_low/pred_solution.png>
+Package pdftex.def Info: Images_BE/inversepinn_low/pred_solution.png  used on input line 1789.
 (pdftex.def)             Requested size: 361.92029pt x 193.02534pt.
- [68 <./Images_BE/backward_demo_gauss_highnu/summary.png> <./Images_BE/backward_demo_gauss_highnu/parameter_convergence.png>]
-<Images_BE/backward_demo_gauss_lownu/summary.png, id=860, 1300.86pt x 794.97pt>
-File: Images_BE/backward_demo_gauss_lownu/summary.png Graphic file (type png)
-<use Images_BE/backward_demo_gauss_lownu/summary.png>
-Package pdftex.def Info: Images_BE/backward_demo_gauss_lownu/summary.png  used on input line 1787.
+ [68 <./Images_BE/inversepinn_high/summary.png> <./Images_BE/inversepinn_high/parameter_convergence.png>]
+<Images_BE/inversepinn_low/summary.png, id=864, 1300.86pt x 794.97pt>
+File: Images_BE/inversepinn_low/summary.png Graphic file (type png)
+<use Images_BE/inversepinn_low/summary.png>
+Package pdftex.def Info: Images_BE/inversepinn_low/summary.png  used on input line 1796.
 (pdftex.def)             Requested size: 361.92029pt x 221.17084pt.
-<Images_BE/backward_demo_gauss_lownu/parameter_convergence.png, id=861, 722.7pt x 361.35pt>
-File: Images_BE/backward_demo_gauss_lownu/parameter_convergence.png Graphic file (type png)
-<use Images_BE/backward_demo_gauss_lownu/parameter_convergence.png>
-Package pdftex.def Info: Images_BE/backward_demo_gauss_lownu/parameter_convergence.png  used on input line 1794.
+<Images_BE/inversepinn_low/parameter_convergence.png, id=865, 722.7pt x 361.35pt>
+File: Images_BE/inversepinn_low/parameter_convergence.png Graphic file (type png)
+<use Images_BE/inversepinn_low/parameter_convergence.png>
+Package pdftex.def Info: Images_BE/inversepinn_low/parameter_convergence.png  used on input line 1803.
 (pdftex.def)             Requested size: 316.67767pt x 158.33835pt.
- [69 <./Images_BE/backward_demo_gauss_lownu/pred_solution.png> <./Images_BE/backward_demo_gauss_lownu/summary.png> <./Images_BE/backward_demo_gauss_lownu/parameter_convergence.png>]
-<Images_BE/nu_estimation_2/scatter_Gauss_None.png, id=875, 578.16pt x 578.16pt>
-File: Images_BE/nu_estimation_2/scatter_Gauss_None.png Graphic file (type png)
-<use Images_BE/nu_estimation_2/scatter_Gauss_None.png>
-Package pdftex.def Info: Images_BE/nu_estimation_2/scatter_Gauss_None.png  used on input line 1807.
+ [69 <./Images_BE/inversepinn_low/pred_solution.png> <./Images_BE/inversepinn_low/summary.png> <./Images_BE/inversepinn_low/parameter_convergence.png>]
+<Images_BE/nu_estimation/scatter_Gauss_None.png, id=879, 578.16pt x 578.16pt>
+File: Images_BE/nu_estimation/scatter_Gauss_None.png Graphic file (type png)
+<use Images_BE/nu_estimation/scatter_Gauss_None.png>
+Package pdftex.def Info: Images_BE/nu_estimation/scatter_Gauss_None.png  used on input line 1816.
 (pdftex.def)             Requested size: 361.92029pt x 361.91371pt.
-<Images_BE/nu_estimation_2/scatter_Gauss_high.png, id=878, 578.16pt x 578.16pt>
-File: Images_BE/nu_estimation_2/scatter_Gauss_high.png Graphic file (type png)
-<use Images_BE/nu_estimation_2/scatter_Gauss_high.png>
-Package pdftex.def Info: Images_BE/nu_estimation_2/scatter_Gauss_high.png  used on input line 1818.
+<Images_BE/nu_estimation/scatter_Gauss_high.png, id=882, 578.16pt x 578.16pt>
+File: Images_BE/nu_estimation/scatter_Gauss_high.png Graphic file (type png)
+<use Images_BE/nu_estimation/scatter_Gauss_high.png>
+Package pdftex.def Info: Images_BE/nu_estimation/scatter_Gauss_high.png  used on input line 1827.
 (pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
-<Images_BE/nu_estimation_2/scatter_Gauss_low.png, id=879, 578.16pt x 578.16pt>
-File: Images_BE/nu_estimation_2/scatter_Gauss_low.png Graphic file (type png)
-<use Images_BE/nu_estimation_2/scatter_Gauss_low.png>
-Package pdftex.def Info: Images_BE/nu_estimation_2/scatter_Gauss_low.png  used on input line 1825.
+<Images_BE/nu_estimation/scatter_Gauss_low.png, id=883, 578.16pt x 578.16pt>
+File: Images_BE/nu_estimation/scatter_Gauss_low.png Graphic file (type png)
+<use Images_BE/nu_estimation/scatter_Gauss_low.png>
+Package pdftex.def Info: Images_BE/nu_estimation/scatter_Gauss_low.png  used on input line 1834.
 (pdftex.def)             Requested size: 217.14941pt x 217.1447pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [70 <./Images_BE/nu_estimation_2/scatter_Gauss_None.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1849--1850
+ [70 <./Images_BE/nu_estimation/scatter_Gauss_None.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1858--1859
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1851--1852
+Underfull \hbox (badness 10000) in paragraph at lines 1860--1861
 
  []
 
-<Images_BE/backward_demo_gauss_veryhighnu/parameter_convergence.png, id=888, 722.7pt x 361.35pt>
-File: Images_BE/backward_demo_gauss_veryhighnu/parameter_convergence.png Graphic file (type png)
-<use Images_BE/backward_demo_gauss_veryhighnu/parameter_convergence.png>
-Package pdftex.def Info: Images_BE/backward_demo_gauss_veryhighnu/parameter_convergence.png  used on input line 1857.
+<Images_BE/inversepinn_veryhigh/parameter_convergence.png, id=892, 722.7pt x 361.35pt>
+File: Images_BE/inversepinn_veryhigh/parameter_convergence.png Graphic file (type png)
+<use Images_BE/inversepinn_veryhigh/parameter_convergence.png>
+Package pdftex.def Info: Images_BE/inversepinn_veryhigh/parameter_convergence.png  used on input line 1866.
 (pdftex.def)             Requested size: 316.67767pt x 158.33835pt.
-[71 <./Images_BE/nu_estimation_2/scatter_Gauss_high.png> <./Images_BE/nu_estimation_2/scatter_Gauss_low.png>] [72 <./Images_BE/backward_demo_gauss_veryhighnu/parameter_convergence.png>]
+[71 <./Images_BE/nu_estimation/scatter_Gauss_high.png> <./Images_BE/nu_estimation/scatter_Gauss_low.png>] [72 <./Images_BE/inversepinn_veryhigh/parameter_convergence.png>]
 chapter 4.
 (Exam_Programming.bbl (Exam_Programming.brf)
 \tf@brf=\write6
@@ -1980,20 +1973,20 @@ LaTeX Warning: There were undefined references.
 Package rerunfilecheck Info: File `Exam_Programming.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 Package rerunfilecheck Info: File `Exam_Programming.brf' has not changed.
-(rerunfilecheck)             Checksum: 6CF74EBECF7A24983C28FA1345FDAA6D;859.
+(rerunfilecheck)             Checksum: B7A92A619916DADE3C0DCB26C2186B42;859.
  ) 
 Here is how much of TeX's memory you used:
- 32663 strings out of 475247
- 667437 string characters out of 5757792
+ 32665 strings out of 475247
+ 666846 string characters out of 5757792
  1938785 words of memory out of 5000000
  53264 multiletter control sequences out of 15000+600000
  617957 words of font info for 155 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  122i,18n,131p,11016b,1433s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmss17.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/urw/symbol/usyr.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/urw/symbol/usyr.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/desde/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Exam_Programming.pdf (79 pages, 34595820 bytes).
+Output written on Exam_Programming.pdf (79 pages, 34602444 bytes).
 PDF statistics:
- 1194 PDF objects out of 1200 (max. 8388607)
- 339 named destinations out of 1000 (max. 500000)
+ 1198 PDF objects out of 1200 (max. 8388607)
+ 341 named destinations out of 1000 (max. 500000)
  793 words of extra memory for PDF output out of 10000 (max. 10000000)
 

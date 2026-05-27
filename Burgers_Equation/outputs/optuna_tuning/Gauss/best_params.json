@@ -1,15 +1,14 @@
 {
     "regime": "Gauss",
-    "best_val": 3.860009019263089e-05,
+    "best_val": 1.155527002083545e-06,
     "best_params": {
-        "hidden": 64,
-        "n_layers": 4,
-        "lambda_phys": 0.03258199398528746,
-        "lambda_ic": 19.31860668750447,
-        "lr": 0.0026427956257768443,
-        "scheduler_gamma": 0.5810321003090607,
-        "scheduler_step": 1000,
-        "adam_beta1": 0.965091721629647,
-        "adam_beta2": 0.9914282655830998
+        "hidden": 112,
+        "n_layers": 9,
+        "lambda_phys": 63.0515038231751,
+        "lambda_ic": 49.63564535328863,
+        "lambda_bc": 10.969503158731328,
+        "lr": 0.003147302148553494,
+        "scheduler_gamma": 0.6350966272728124,
+        "scheduler_step": 3000
     }
 }

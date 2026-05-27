@@ -74,6 +74,14 @@
 
 \chapter{Introduction}
 
+Physics-Informed Neural Networks (PINNs) are a class of machine learning models which augment standard neural network training with prior knowledge of the physical laws governing a system. Rather than learning purely from data, a PINN is simultaneously trained to minimise the residual of a governing differential equation at a set of collocation points, enforcing consistency with the underlying physics throughout the domain. This makes PINNs particularly appealing in settings where observational data is scarce, noisy, or incomplete; these conditions are common in scientific and engineering applications.
+
+This report investigates the application of PINNs to two problems in mathematical physics. The first is the damped harmonic oscillator, a second-order ODE that describes oscillatory motion with energy dissipation (friction). The second is the one-dimensional viscid Burger's equation, a nonlinear PDE which captures the competing effects of advection and diffusion, and which exhibits the physically interesting phenomenon of shock formation and rarefaction waves.
+
+For each problem, the report proceeds as follows. The governing equations and their analytic or numerical solutions are introduced to establish a ground truth. A PINN implementation is then developed and analysed in detail, covering the structure of the loss function, network architecture, training procedure, and hyperparameter sensitivity. Improvements over a baseline example are proposed and justified, including randomised training data, early stopping, and systematic hyperparameter optimisation using the Optuna library. Finally, the inverse problem is tackled for both systems: extracting unknown physical parameters (the damping ratio $\zeta$ and natural frequency $\omega_0$ for the oscillator, and the kinematic viscosity $\nu$ for Burger's equation) from noisy observational data.
+
+The code for all experiments is structured in a modular, reusable fashion across the \verb|Damped_Oscillator| and \verb|Burgers_Equation| directories, and is described alongside the corresponding results throughout this report.
+
 \chapter{Damped Harmonic Oscillator}
 In this chapter, we will apply PINNs to solve the damped harmonic oscillator, a secondary order ODE which describes oscillatory motion with friction. The code for this chapter can be found in the \verb|Damped_Oscillator| directory.
 \section{Analytic solution}
@@ -481,7 +489,8 @@ In order to train a model using these files, a separate script needs to be creat
     \item A \verb|FCNet| model, from the \verb|model.py| file, is created based on the parameters in the \verb|Config| object.
     \item The model is trained using the \verb|train| function from the \verb|trainer.py| file, which takes the model, data and \verb|Config| object as inputs.
 \end{enumerate}
-In the rest of this report, we will design multiple of scripts like this to do different experiments. The code for these scripts can be found along with the rest of the aforementioned files in the \verb|Damped_Oscillator| directory.
+In the rest of this report, we will design multiple of scripts like this to do different experiments. The code for these scripts can be found along with the rest of the aforementioned files in the \verb|Damped_Oscillator| directory. For every section, I will mention which script was used to carry out the experiment.
+
 \subsection{Randomising training data}
 In the provided example, the model is trained on a training set of 15 noisy observation points. The same training points are used at every single epoch, which could lead to the model overfitting or bias towards one region of the time domain as explained previously. To avoid this, I have chosen to randomise the observation points at every epoch. This gives the model more spread-out information about the entire time domain of the equation. Unless specified otherwise, all trained models (including the inverse problem models) in this chapter of the report were provided with 15 randomised noisy datapoints per epoch.\\
 
@@ -541,7 +550,7 @@ Alternatively, one can choose to save the outputs of the training loop to a fold
 Examples of all plotting methods are shown in section \ref{ch:underdamped}
 
 \section{Code demonstration}
-In this section I will demonstrate the code for the three different damping cases, and discuss the results and effects of different factors. In the first part of this section, we will use the following hyperparameters do predict the solution for the overdamped, critically damped and underdamped cases.:
+This section is made using the \verb|pinn_demo.py| script. In this section I will demonstrate the code for the three different damping cases, and discuss the results and effects of different factors. In the first part of this section, we will use the following hyperparameters do predict the solution for the overdamped, critically damped and underdamped cases:
 
 \begin{table}[H]
 \centering
@@ -683,7 +692,7 @@ Since the underdamped regime is the most interesting, I will show the rest of th
 These plots give us some useful insights. The epoch plot (Figure \ref{fig:pinn_underdamped/epoch_snapshots}) shows how the model learns the equation behavior, starting at low $t$ and working its way through the entire domain. The loss plot (Figure \ref{fig:pinn_underdamped/losses}) is also very interesting. We can see that the $\mathcal{L}_{i.c.}$ is minimised the fastest, as it is the largest contribution to the total loss function. At that point, the largest contribution to the total is form the data, and the $\mathcal{L}_{data}$ and $\mathcal{L}_{total}$ curves match each other quite well.  In this case $\mathcal{L}_{val}$ stays lower than $\mathcal{L}_{data}$, since the observation points have data applied to them but the validation points do not. Over time, the other loss terms also converge, and at some point the validation loss $\mathcal{L}_{val}$ stops decreasing; this is the point where the model starts overfitting. Since no more significant optimisations are made, the training is stopped.
 
 \subsection{Comparison between blind and physics informed extrapolation}\label{ch:extrap_DHO}
-Before tuning the hyperparameters or attempting to solve the inverse problem, I want to study the effect of some of the loss terms. Firstly, in all previous simulations, the collocation points were allowed to be chosen in the extrapolated domain. This makes the extrapolation not fully blind, but physics-informed. In this experiment, the collocation points will only be chosen in the training domain, and no other hyperparameters will be changed.. This results in an actually blind test, as shown in Fugure \ref{fig:pinn_blindextrap/summary}
+This section is made using the \verb|pinn_blind_extrap.py| script. Before tuning the hyperparameters or attempting to solve the inverse problem, I want to study the effect of some of the loss terms. Firstly, in all previous simulations, the collocation points were allowed to be chosen in the extrapolated domain. This makes the extrapolation not fully blind, but physics-informed. In this experiment, the collocation points will only be chosen in the training domain, and no other hyperparameters will be changed.. This results in an actually blind test, as shown in Fugure \ref{fig:pinn_blindextrap/summary}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{Images_DHO/pinn_blindextrap/summary.png}
@@ -693,7 +702,7 @@ Before tuning the hyperparameters or attempting to solve the inverse problem, I 
 In the training domain, the predicted solution is virtually the same as in the previous example (Figure \ref{fig:pinn_underdamped/summary}). In the extrapolated domain however, the results are different. the solution also plateaus, but now stays constant at around $y=0.4$ instead of $y=0$. This is unphysical, but since the physics loss is not calculated in the extrapolated domain, the model is not punished for this. The model has not generalised, and since there are no loss terms dependent on the predicted solution in the extrapolated area, the predicted solution simply remains constant.
 
 \subsection{Comparison with traditional ML model}
-Another interesting experiment is to compare the results to a non-physics informed neural network, as was done in the provided code. For this, the physics terms $\mathcal{L}_{phys}$ and $\mathcal{L}_{i.c.}$ are dropped from the loss function, and the model is retrained with the same hyperparameters. This gives the following results:
+This section is made using the \verb|pinn_nophys.py| script. Another interesting experiment is to compare the results to a non-physics informed neural network, as was done in the provided code. For this, the physics terms $\mathcal{L}_{phys}$ and $\mathcal{L}_{i.c.}$ are dropped from the loss function, and the model is retrained with the same hyperparameters. This gives the following results:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{Images_DHO/pinn_nophys/summary.png}
@@ -705,7 +714,7 @@ Visually, the solution does not look all to different from the PINN prediction. 
 In the extrapolated domain, the results are very similar to the blind test PINN extrapolation. This makes sense, both the standard neural network and the blind test PINN do not have any information about the extrapolated domain, and we have already established that the PINN cannot generalise if it does not informed about the physics in the extrapolated domain. This makes it so thet predict more or less the same behavior in the extrapolated domain.
 
 \subsection{Hyperparameter optimisation}\label{ch:hyperparameters_DHO}
-Instead of choosing the hyperparameters through trail-and-error, it is good practise to do a structured hyperparameter optimisation to understand the effect of the most important parameters and find the optimal configuration for eficcient model training. In this section, we will investigate the effect of some of the hyperparameters, and then use the \verb|optuna| library to employ a \textit{Tree-Structured Parzen Estimator}, which can tune the hyperparameters in an automised way. Bayesian optimisation is a widely used technique to efficiently find an optimised set of hyperparameters \cite{watanabe2025treestructuredparzenestimatorunderstanding}.\\
+This section is made using the \verb|pinn_hyperparameters.py| script. Instead of choosing the hyperparameters through trail-and-error, it is good practise to do a structured hyperparameter optimisation to understand the effect of the most important parameters and find the optimal configuration for eficcient model training. In this section, we will investigate the effect of some of the hyperparameters, and then use the \verb|optuna| library to employ a \textit{Tree-Structured Parzen Estimator}, which can tune the hyperparameters in an automised way. Bayesian optimisation is a widely used technique to efficiently find an optimised set of hyperparameters \cite{watanabe2025treestructuredparzenestimatorunderstanding}.\\
 
 I have chosen to focus on the underdamped case, as it has the most interesting dynamics of the three cases. The bayesian optimisation will howveer be performed on all three cases. As a reminder, Figure \ref{fig:pinn_underdamped/predicted_solution} shows the predicted solution using the hyperparameters shown in Table \ref{tab:standard_parameters_DHO}.
 
@@ -775,7 +784,7 @@ Finally, I want to see if the model can fit to the solution without any observat
 The model is in fact able to reconstruct the analytic solution without any data points being provided. This Is however not the best way to use the neural network. Since we have the option to input data, PINNs are more applicable to backwards problems, where we need to extract the (unknown) physical parameters from observational data. This means that we need to balance the loss terms so that both the observation points and the physics of the system are taken into account in the training loop. 
 
 \subsubsection{Optuna}\label{ch:optuna_DHO}
-In order to find an optimal model complexity and learning rate, as well as tune the balance of the loss function, I have chosen to use the implement a use the \verb|optuna| library to employ a \textit{Tree-Structured Parzen Estimator} with the \verb|optuna.samplers.TPESampler| class. This has a few advantages \cite{watanabe2025treestructuredparzenestimatorunderstanding}:
+This section is made using the \verb|optuna_tuning.py| and \verb|optuna_tuning_plots.py| scripts. In order to find an optimal model complexity and learning rate, as well as tune the balance of the loss function, I have chosen to use the implement a use the \verb|optuna| library to employ a \textit{Tree-Structured Parzen Estimator} with the \verb|optuna.samplers.TPESampler| class. This has a few advantages \cite{watanabe2025treestructuredparzenestimatorunderstanding}:
 \begin{itemize}
     \item The optuna library can \textit{prune} runs that do not look promising enough to provide an optimisation of the hyperparameters. This makes the optimisation more efficient since not every run needs to be fully completed.
     \item Bayesian optimisation is an efficient technique of finding the minimum of black box functions. In this case the black box function is the $MSE$ of the best trained model.
@@ -828,7 +837,7 @@ For each case, we will run $1000$ trials and finally save the configuration that
 \end{table}
 The optimal configurations are relatively similar. The optimal model complexity has $\sim10^4$ parameters, the physics loss weight is $\sim10^0$, the learning rate is $\sim10^{-3}$, the scheduler decay factor is $\sim0.5$ and the scheduler step size is $\sim3000$. We can see that the optimiser has not maximalised the physics loss weight, which indicated that the inclusion of noisy observation data in the training loop is still a good choice. Based on these results, we can make well-reasoned choices for the hyperparameters in the inverse problem.
 \section{Inverse problem}\label{ch:inverse_DHO}
-We will now attempt to solve the inverse problem, and try to extract the parameters $\zeta$ and $\omega_0$ from the equation by training the model on noisy observation data generated from an analytical solution with unknown, randomised parameters. This can be implemented easily by creating a new model achitecture class, \verb|InverseFCNet| with $\hat\zeta$ and $\hat\omega_0$ as model parameters and a new loss function \verb|loss_physics_inverse| which uses these parameters. $\hat\zeta$ and $\hat\omega_0$ are then treated like every other weight or bias parameter, and will be tweaked every epoch until the model training is complete.\\
+This section is made using the \verb|inversepinn_demo.py| script. We will now attempt to solve the inverse problem, and try to extract the parameters $\zeta$ and $\omega_0$ from the equation by training the model on noisy observation data generated from an analytical solution with unknown, randomised parameters. This can be implemented easily by creating a new model achitecture class, \verb|InverseFCNet| with $\hat\zeta$ and $\hat\omega_0$ as model parameters and a new loss function \verb|loss_physics_inverse| which uses these parameters. $\hat\zeta$ and $\hat\omega_0$ are then treated like every other weight or bias parameter, and will be tweaked every epoch until the model training is complete.\\
 
 Based on the previous optimised hyperparameters, I have chosen for the following hyperparameters for the inverse problem:
 \begin{table}[H]
@@ -949,7 +958,7 @@ Figures \ref{fig:inversepinn_underdamped/predicted_solution} and \ref{fig:invers
 We can see that the model is able to recover the equation parameters with great acuraccy for the underdamped case. The analytic solutions for this case are more dependent on the equation parameters than the previous two cases, so it is to be expected that the model can extract the parameters with the same or better acuraccy.
 
 \subsection{Statistical analysis}\label{ch:stat_DHO}
-The previous three demonstration examples are a good illustration of the capabilities of the inverse model, but are not enough to make well-reasoned and statistically backed conlcusions about the model acuraccy. For this, we need a more quantifiable way to gauge the accuracy of the model.\\
+This section is made using the \verb|inversepinn_data_generation.py| and \verb|inversepinn_plots.py| scripts. The previous three demonstration examples are a good illustration of the capabilities of the inverse model, but are not enough to make well-reasoned and statistically backed conlcusions about the model acuraccy. For this, we need a more quantifiable way to gauge the accuracy of the model.\\
 
 One of the sources of uncertainty when estimating the parameters is the noise applied to the training observation points. The training points are randomised every epoch and should, in principle, not have much influence on the exact prediction, but it makes the process non-deterministic nonetheless. Furthermore, up until now we have only tested the parameter extraction on 3 $(\zeta,\ \omega_0)$ pairs. This is not yet representative for the model performance over a wide range of valeus for these parameters.\\
 
@@ -1236,7 +1245,7 @@ I have implemented a wide range of plotting methods, which are described below. 
 \end{itemize}
 An example of every plot will be shown in section \ref{ch:gauss}.
 \section{Code demonstration}
-In this section, we will demonstrate PINNs for three different initial conditions (Gauss, N-wave and Step-up functions), and three different values for the viscosity ($\nu=0.1,\ 0.05,\ 0.01$). Unless specified otherwise, we will use the following hyperparameters:
+This section is made using the \verb|pinn_demo.py| script\footnote{And also the pinn\_cases.py script for automisation}. In this section, we will demonstrate PINNs for three different initial conditions (Gauss, N-wave and Step-up functions), and three different values for the viscosity ($\nu=0.1,\ 0.05,\ 0.01$). Unless specified otherwise, we will use the following hyperparameters:
 
 \begin{table}[H]
 \centering
@@ -1426,7 +1435,7 @@ The N-wave initial condition is given by:
         -Ax & \text{if} |x| \leq w
     \end{cases}
 \end{equation}
-Where $w$ is the width of the wave and $A$ is the height of the wave. In this case, we have chosen $L=15, \ w=3, \ A=\frac{1}{3}$. Just like with the gaussian initial conditions, we can predict the time when a shockwave will form by approximating the solution by the inviscid case. This yelds $t_{shock}=3.000$. The method of characteristics is shown on Figure \ref{fig:N_wave_nu_0.1_bad/method_of_characteristics}.
+Where $w$ is the width of the wave and $A$ is the height of the wave. In this case, we have chosen $L=15, \ w=3, \ A=\frac{1}{3}$. Just like with the gaussian initial conditions, we can predict the time when a shockwave will form by approximating the solution by the inviscid case. This yelds $t_{shock}=3.000$. The method of characteristics is shown on Figure \ref{fig:N_wave_nu_0.05_bad/method_of_characteristics}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.65\textwidth]{Images_BE/N_wave_nu_0.05_bad/method_of_characteristics.png}
@@ -1571,7 +1580,7 @@ Interestingly, the $RMSE$ does not seem to increase with decreasing viscosity li
 We will now discuss the effect of different parameters for the trained models. Since the gaussian initial conditions gave the most accurate results and profuce a shockwave, I will stick to this inital condition with $\nu=0.05$ for the rest of the report.
 
 \subsection{Inclusion of data}
-The code is implemented in such a way that we can include training data in the training loop by modifying the Config class. We want to compare the results with and without training data. The predicted solution where data is included in the training is shown below:
+This section is made using the \verb|pinn_data_included.py| script. The code is implemented in such a way that we can include training data in the training loop by modifying the Config class. We want to compare the results with and without training data. The predicted solution where data is included in the training is shown below:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Images_BE/Gauss_nu_0.05_data_included/summary.png}
@@ -1581,7 +1590,7 @@ The code is implemented in such a way that we can include training data in the t
 The training has been stopped after 4600 epochs with $RMSE=0.0042$. This is a little better than when data is omitted from the training ($RMSE=0.0052$). However, the prediction was already very good without data, so no major improvements were expected.
 
 \subsection{Comparison with traditional ML model}
-Let us now compare the results of a model which is \textit{only} trained on the data poins, like a traditional dense network. I have chosen to also define an extrapolation region where no training points are generated, so that we can test if the model is capable of generalising to unseen regions. This results in the following prediction: 
+This section is made using the \verb|pinn_nophys.py| script. Let us now compare the results of a model which is \textit{only} trained on the data poins, like a traditional dense network. I have chosen to also define an extrapolation region where no training points are generated, so that we can test if the model is capable of generalising to unseen regions. This results in the following prediction: 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Images_BE/Gauss_nu_0.05_ML/summary.png}
@@ -1591,7 +1600,7 @@ Let us now compare the results of a model which is \textit{only} trained on the 
 The final prediction yields $RMSE=0.0330$, which is a lot worse than the physics-informed networks. This means that fitting the ML to observed data is actually worse than solving the PDE using a PINN. Furthermore, we can clearly observe that the model performs a whole lot worse in the extrapolated region, as the residual grows fast towards the end of the time domain.
 
 \subsection{Extrapolating capabilities}
-As discussed earlier, one advantage of PINNs is that they perform better in extrapolated domains than traditional machine learning models. This can be tested by applying the same approach as for the traditional dense network, but using collocation points instead of observation points. First, we test a purely physics-based model. When no collocation points in the extrapolated region are provided, the model gives the following prediction:
+This section is made using the \verb|pinn_blind_extrap.py| script. As discussed earlier, one advantage of PINNs is that they perform better in extrapolated domains than traditional machine learning models. This can be tested by applying the same approach as for the traditional dense network, but using collocation points instead of observation points. First, we test a purely physics-based model. When no collocation points in the extrapolated region are provided, the model gives the following prediction:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Images_BE/Gauss_nu_0.05_extrapblind/summary.png}
@@ -1608,7 +1617,7 @@ When comparing the residuals in the extrapolated domain to those for the non-phy
 % \end{figure}
 
 \subsection{Hyperparameter optimisation}\label{ch:hyperparameters_BE}
-With the inverse problem in mind, it is wise to look at the effect of different hyperparameters on the model predictions to determine an optimal hyperparameter set. Like in the previous chapter about the damped harmonic oscillator, I will discuss some of the most important factors and then apply a Tree-Stuctured Parzen Estimator using \verb|optuna|.
+This section is made using the \verb|pinn_hyperparameters.py| script. With the inverse problem in mind, it is wise to look at the effect of different hyperparameters on the model predictions to determine an optimal hyperparameter set. Like in the previous chapter about the damped harmonic oscillator, I will discuss some of the most important factors and then apply a Tree-Stuctured Parzen Estimator using \verb|optuna|.
 \subsubsection{Model complexity}\label{ch:complexity_BE}
 The first test I want to perform is reducing the network to two layers of four nodes. This gives the following prediction:
 \begin{figure}[H]
@@ -1646,7 +1655,7 @@ I want to investigate the effect of the boundary term which I have added for thi
 This gives very similar results compared to the case where all loss terms are included (Figure \ref{fig:Gauss_nu_0.05/summary}). This makes sense for the gaussian initial conditions; the left boundary stays at zero since no waves can pass this point, and no waves will pass the right boundary since the viscosity term stops wave from travelling past the formed shockwave. We can thus conclude that the boundary term is not really necesarry in this case. It would be more important for different PDEs, like the heat equation, where the interaction between the system and the boundaries is more pronounced. However, I have chosen to still include this term in the rest of the experiments, as we explixitly know the boundary conditions and it is good practise to use all available information.
 
 \subsubsection{Optuna}
-Finally, an algorithmic search of the best hyperparameters can be useful to gain further insights to decide on an optimal parameter set for the inverse problem. For this, we have to generate noisy observation points and add the data loss term to the total loss function, so it becomes:
+This section is made using the \verb|optuna_tuning.py| and \verb|optuna_tuning_plots.py| script. Finally, an algorithmic search of the best hyperparameters can be useful to gain further insights to decide on an optimal parameter set for the inverse problem. For this, we have to generate noisy observation points and add the data loss term to the total loss function, so it becomes:
 \begin{equation}\label{eq:loss_BE}
     \mathcal{L}_{tot} = \mathcal{L}_{data}+\lambda_{i.c.}\mathcal{L}_{i.c.} + \lambda_{b.c.}\mathcal{L}_{b.c.} + \lambda_{phys}\mathcal{L}_{phys}
 \end{equation}
@@ -1694,7 +1703,7 @@ $RMSE$           & $1.16\times10^{-6}$\\
 We can see that the ideal configuration heavily prioritises the physics residual over the deviation from the noisy data (whose weight is equal to 1, see \ref{eq:loss_BE}). Furthermore, the model is relatively complex, which is also to be expected.
 
 \section{Inverse problem}
-We will now attempt to solve the inverse problem for gaussian initial conditions. The implementation is very similar to the inverse problem for the damped harmonic oscillator. We implement an \verb|InverseFCNet| with a $\hat\nu$ parameter, and \verb|loss_physics_inverse| function that will be used to calculate the loss in the training loop.\\
+This section is made using the \verb|inversepinn_demo.py| script\footnote{And the inversepinn\_cases.py script for automisation.}. We will now attempt to solve the inverse problem for gaussian initial conditions. The implementation is very similar to the inverse problem for the damped harmonic oscillator. We implement an \verb|InverseFCNet| with a $\hat\nu$ parameter, and \verb|loss_physics_inverse| function that will be used to calculate the loss in the training loop.\\
 
 I have chosen for the following hyperparameters:
 \begin{table}[H]
@@ -1738,23 +1747,23 @@ This model has stopped training after 3150 epochs, with $RMSE=0.0017$. The predi
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{Images_BE/backward_demo_gauss_highnu/pred_solution.png}
+    \includegraphics[width=0.8\textwidth]{Images_BE/inversepinn_high/pred_solution.png}
     \caption{Predicted solutions at four different times for the backward problem with $\nu=0.4028$ and $\hat\nu=0.3886$.}
-    \label{fig:backward_demo_gauss_highnu/pred_solution}
+    \label{fig:inversepinn_high/pred_solution}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{Images_BE/backward_demo_gauss_highnu/summary.png}
+    \includegraphics[width=0.8\textwidth]{Images_BE/inversepinn_high/summary.png}
     \caption{Summary plot for the backward problem with $\nu=0.4028$ and $\hat\nu=0.3886$.}
-    \label{fig:backward_demo_gauss_highnu/summary}
+    \label{fig:inversepinn_high/summary}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{Images_BE/backward_demo_gauss_highnu/parameter_convergence.png}
+    \includegraphics[width=0.7\textwidth]{Images_BE/inversepinn_high/parameter_convergence.png}
     \caption{Parameter convergence for the backward problem  with $\nu=0.4028$ and $\hat\nu=0.3886$.}
-    \label{fig:backward_demo_gauss_highnu/parameter_convergence}
+    \label{fig:inversepinn_high/parameter_convergence}
 \end{figure}
 
 We can see an accurate predicted solution, and a very good agreement between the predicted and true values for $\nu$. This is already a hopeful result which demonstrates that the model is capable of extracting the viscosity from a dataset if the viscosity is relatively high. The estimated viscosity looks to exponentially converge to the true values, but underestimates it slightly. Why this could be the case will be discussed in more detail in section \ref{ch:statistics_BE}
@@ -1777,57 +1786,57 @@ This model has stopped training after 10400 epochs, with $RMSE=0.0162$. The pred
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{Images_BE/backward_demo_gauss_lownu/pred_solution.png}
+    \includegraphics[width=0.8\textwidth]{Images_BE/inversepinn_low/pred_solution.png}
     \caption{Predicted solutions at four different times for the backward problem with $\nu=0.0068$ and $\hat\nu=0.0179$.}
-    \label{fig:backward_demo_gauss_lownu/pred_solution}
+    \label{fig:inversepinn_low/pred_solution}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{Images_BE/backward_demo_gauss_lownu/summary.png}
+    \includegraphics[width=0.8\textwidth]{Images_BE/inversepinn_low/summary.png}
     \caption{Summary plot for the backward problem with $\nu=0.0068$ and $\hat\nu=0.0179$}
-    \label{fig:backward_demo_gauss_lownu/summary}
+    \label{fig:inversepinn_low/summary}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{Images_BE/backward_demo_gauss_lownu/parameter_convergence.png}
+    \includegraphics[width=0.7\textwidth]{Images_BE/inversepinn_low/parameter_convergence.png}
     \caption{Parameter convergence for the backward problem with $\nu=0.0068$ and $\hat\nu=0.0179$}
-    \label{fig:backward_demo_gauss_lownu/parameter_convergence}
+    \label{fig:inversepinn_low/parameter_convergence}
 \end{figure}
 
 For a low viscosity the predicted value is off by almost a factor of $3$. However, this is still only an absolute error of $\sim0.01$, which is comparable to the case with high viscosity. In the parameter convergence plot we again see an exponential-like convergence, but now the convergence stops at a value that is too high. This effect will also be explained in more detail in section \ref{ch:statistics_BE}.
 
 
 \subsection{Statistical analysis}\label{ch:statistics_BE}
-In order to make a better-reasoned and statistically backed conlcusions, I want to perform a large amount of parameter estimations. In order to make this process more efficient, I have chosen to reduce the complexity of the model to 6 layers of 64 nodes, which goes at the cost of the estimation accuracy, However, in this way I have performed a total of $767$ model training where the viscosity is estimated, which allows for statistical treatment of the data. The viscosity is randomised for every run, with a $50\%$ chance of a low viscosity ($0.005-0.05$) and a $50\%$ chance of a high viscosity ($0.05-0.5$). Figure \ref{fig:nu_estimation_2/scatter_Gauss_None} shows the true-predicted $\nu$ pairs in a scatter plot.
+This section is made using the \verb|inversepinn_data_generation.py| and \verb|inversepinn_plots.py| scripts. In order to make a better-reasoned and statistically backed conlcusions, I want to perform a large amount of parameter estimations. In order to make this process more efficient, I have chosen to reduce the complexity of the model to 6 layers of 64 nodes, which goes at the cost of the estimation accuracy, However, in this way I have performed a total of $767$ model training where the viscosity is estimated, which allows for statistical treatment of the data. The viscosity is randomised for every run, with a $50\%$ chance of a low viscosity ($0.005-0.05$) and a $50\%$ chance of a high viscosity ($0.05-0.5$). Figure \ref{fig:nu_estimation/scatter_Gauss_None} shows the true-predicted $\nu$ pairs in a scatter plot.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{Images_BE/nu_estimation_2/scatter_Gauss_None.png}
+    \includegraphics[width=0.8\textwidth]{Images_BE/nu_estimation/scatter_Gauss_None.png}
     \caption{Scatter plot of 767 $(\nu,\ \hat\nu)$ pairs for gaussian initial conditions.}
-    \label{fig:nu_estimation_2/scatter_Gauss_None}
+    \label{fig:nu_estimation/scatter_Gauss_None}
 \end{figure}
 
-We can see that in general, we are able to extract the viscosity with relative good accuracy. It is also interesting to split the dataset up into high and low viscosity, as shown on Figures \ref{fig:nu_estimation_2/scatter_Gauss_high} and \ref{fig:nu_estimation_2/scatter_Gauss_low}. 
+We can see that in general, we are able to extract the viscosity with relative good accuracy. It is also interesting to split the dataset up into high and low viscosity, as shown on Figures \ref{fig:nu_estimation/scatter_Gauss_high} and \ref{fig:nu_estimation/scatter_Gauss_low}. 
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Images_BE/nu_estimation_2/scatter_Gauss_high.png}
+        \includegraphics[width=\textwidth]{Images_BE/nu_estimation/scatter_Gauss_high.png}
         \caption{High $\nu$.}
-        \label{fig:nu_estimation_2/scatter_Gauss_high}
+        \label{fig:nu_estimation/scatter_Gauss_high}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Images_BE/nu_estimation_2/scatter_Gauss_low.png}
+        \includegraphics[width=\textwidth]{Images_BE/nu_estimation/scatter_Gauss_low.png}
         \caption{Low $\nu$.}
-        \label{fig:nu_estimation_2/scatter_Gauss_low}
+        \label{fig:nu_estimation/scatter_Gauss_low}
     \end{subfigure}
     \caption{Scatter plots of $(\nu,\ \hat\nu)$ pairs for gaussian initial conditions.}
-    \label{fig:nu_estimation_2/scatter_Gauss}
+    \label{fig:nu_estimation/scatter_Gauss}
 \end{figure}
 
 The $RMSE$ for both cases and the full domain is shown in Table \ref{tab:RMSE_BE}.
@@ -1854,13 +1863,26 @@ For large true values of $\nu$, the model consistently underestimates the viscos
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{Images_BE/backward_demo_gauss_veryhighnu/parameter_convergence.png}
+    \includegraphics[width=0.7\textwidth]{Images_BE/inversepinn_veryhigh/parameter_convergence.png}
     \caption{Parameter convergence for a backward problem with $\nu=0.4500$ and $\hat\nu=0.3930$}
-    \label{fig:backward_demo_gauss_veryhighnu/parameter_convergence}
+    \label{fig:inversepinn_veryhigh/parameter_convergence}
 \end{figure}
 
 As we can see, the parameter converges to the true value from below. The initial strong decrease of the viscosity occurs because the when the predicted viscosity is large, the physics residual $|u_t + uu_x -\nu u_{xx}|$ is almost entirely determined by the viscous term. When calculating the gradient of this loss term, the viscosity will be decreased sharply. After this decrease, the parameter begins to converge to the true value again, but never reaches this value due to the small $u_{xx}$ it never actually reaches this value anymore. Through more hyperparameter tuning, more specifically of the inverse learning rate (which was not included in our \verb|optuna| tuning experiment), this behavior could be mitigated.
+
 \chapter{Conclusion}
+
+This report has demonstrated the application of Physics-Informed Neural Networks to two problems of increasing complexity: the damped harmonic oscillator and the viscid Burger's equation.
+
+For the damped harmonic oscillator, PINNs were shown to accurately reconstruct the analytic solution across all three damping regimes (overdamped, critically damped, and underdamped) using fifteen noisy observation points per epoch, supplemented by the physics residual and initial condition constraints. The improvements made to the baseline implementation, including randomised training data and collocation points, early stopping based on a validation loss derived from the analytic ground truth, and systematic hyperparameter optimisation via a Tree-Structured Parzen Estimator, resulted in a more robust and reproducible training process. The extrapolation experiments highlighted a key strength of PINNs: when the physics residual is enforced in the extrapolated domain, the model produces physically consistent predictions beyond the training window, outperforming a traditional neural network which lacks this constraint.
+
+The inverse problem for the damped harmonic oscillator demonstrated that the parameters $\zeta$ and $\omega_0$ can be reliably extracted from noisy data. A statistical analysis over 304 randomised parameter combinations revealed that estimation accuracy degrades in the overdamped regime, where solutions are less sensitive to variations in the parameters.
+
+For Burger's equation, a ground truth was generated using the Cole-Hopf transformation, which converts the viscid equation into the heat equation and allows for an accurate, mesh-free solution via numerical convolution. PINNs were then trained across three initial conditions (Gaussian, N-wave, and step-up) and three values of the kinematic viscosity. The results confirmed that solutions with steeper gradients, corresponding to lower viscosity and shock-forming initial conditions, are inherently more difficult to fit with smooth $\tanh$ activation functions. In such cases, increased model complexity and adjusted loss weights were necessary. The addition of a boundary condition loss term was found to have little practical impact for the Gaussian initial condition, but represents good practice when the boundaries interact more strongly with the interior dynamics.
+
+The inverse problem for Burger's equation showed that the viscosity $\nu$ can be estimated from noisy data with reasonable accuracy. A statistical analysis over 767 training runs revealed a systematic bias: the model overestimates $\nu$ for low-viscosity solutions, because the smooth network output underestimates sharp spatial gradients, effectively attributing the mismatch to a higher viscosity. Conversely, the model underestimates $\nu$ for high-viscosity solutions, where the viscous term contributes less to the total loss and the inverse parameter gradient becomes correspondingly small. These biases point to the importance of tuning the inverse learning rate separately from the network learning rate, a direction not fully explored in this work.
+
+Taken together, the results confirm that PINNs are a powerful and flexible tool for solving both forward and inverse problems governed by differential equations. Their ability to incorporate physical constraints directly into the training loop makes them particularly well-suited to data-scarce regimes, and their modular implementation makes them straightforward to adapt to new equations and problem settings.
 
 % \appendix
 

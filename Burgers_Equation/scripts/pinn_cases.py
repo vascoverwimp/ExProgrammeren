@@ -27,6 +27,7 @@ OUTPUT_PATH.mkdir(exist_ok=True)
 
 
 def train_model(cfg: Config, output_path: str) -> None:
+    """Train a model."""
     device = get_device()
     print(f"Device : {device}")
 

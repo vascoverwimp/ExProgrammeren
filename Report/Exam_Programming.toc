@@ -27,7 +27,7 @@
 \contentsline {subsubsection}{\numberline {2.4.6.2}Learning rate}{26}{subsubsection.2.4.6.2}%
 \contentsline {subsubsection}{\numberline {2.4.6.3}Loss function weights}{27}{subsubsection.2.4.6.3}%
 \contentsline {subsubsection}{\numberline {2.4.6.4}Optuna}{28}{subsubsection.2.4.6.4}%
-\contentsline {section}{\numberline {2.5}Inverse problem}{29}{section.2.5}%
+\contentsline {section}{\numberline {2.5}Inverse problem}{30}{section.2.5}%
 \contentsline {subsection}{\numberline {2.5.1}Overdamped case}{30}{subsection.2.5.1}%
 \contentsline {subsection}{\numberline {2.5.2}Critically damped case}{31}{subsection.2.5.2}%
 \contentsline {subsection}{\numberline {2.5.3}Underdamped case}{32}{subsection.2.5.3}%
