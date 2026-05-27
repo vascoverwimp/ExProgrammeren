@@ -38,7 +38,8 @@
 
 \bibitem{vanremortel_einsle_2026}
 N.~Van~Remortel and H.~Einsle.
-\newblock Exam june term 2026: Using a physics informed neural network to solve a pde.
+\newblock Exam june term 2026: Using a physics informed neural network to solve
+  a pde.
 \newblock Course exam assignment, Programmeren voor fysici, May 2026.
 \newblock Submission deadline: May 22, 2026.
 
@@ -50,11 +51,13 @@ G.~van Rossum, J.~Lehtosalo, and {\L}.~Langa.
 
 \bibitem{watanabe2025treestructuredparzenestimatorunderstanding}
 S.~Watanabe.
-\newblock Tree-structured parzen estimator: Understanding its algorithm components and their roles for better empirical performance, 2025.
+\newblock Tree-structured parzen estimator: Understanding its algorithm
+  components and their roles for better empirical performance, 2025.
 
 \bibitem{whitham2011linear}
 G.~B. Whitham.
 \newblock {\em Linear and Nonlinear Waves}.
-\newblock Pure and Applied Mathematics: A Wiley Series of Texts, Monographs and Tracts. John Wiley \& Sons, New York, 2011.
+\newblock Pure and Applied Mathematics: A Wiley Series of Texts, Monographs and
+  Tracts. John Wiley \& Sons, New York, 2011.
 
 \end{thebibliography}

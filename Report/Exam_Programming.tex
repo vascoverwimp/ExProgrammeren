@@ -74,11 +74,11 @@
 
 \chapter{Introduction}
 
-Physics-Informed Neural Networks (PINNs) are a class of machine learning models which augment standard neural network training with prior knowledge of the physical laws governing a system. Rather than learning purely from data, a PINN is simultaneously trained to minimise the residual of a governing differential equation at a set of collocation points, enforcing consistency with the underlying physics throughout the domain. This makes PINNs particularly appealing in settings where observational data is scarce, noisy, or incomplete; these conditions are common in scientific and engineering applications.
+Physics-Informed Neural Networks (PINNs), first introduced by M. raissi, P. Perdikaris abd G.E. Karniadakis in 2019 \cite{RAISSI2019686}, are a class of machine learning models which augment standard neural network training with prior knowledge of the physical laws governing a system. Rather than learning purely from data, a PINN is simultaneously trained to minimise the residual of a governing differential equation at a separate set of collocation points, enforcing consistency with the underlying physics throughout the domain. This makes PINNs particularly appealing in settings where observational data is scarce and/or noisy: these conditions are very common in scientific and engineering applications. There are many different examples in literature of different kinds of PINNs used to solve nonlineair ODEs and PDEs.\\
 
-This report investigates the application of PINNs to two problems in mathematical physics. The first is the damped harmonic oscillator, a second-order ODE that describes oscillatory motion with energy dissipation (friction). The second is the one-dimensional viscid Burger's equation, a nonlinear PDE which captures the competing effects of advection and diffusion, and which exhibits the physically interesting phenomenon of shock formation and rarefaction waves.
+This report investigates the application of PINNs to two problems in mathematical physics. The first is the damped harmonic oscillator, a second-order ODE that describes oscillatory motion with energy dissipation (friction). The second is the one-dimensional viscid Bateman-Burger's equation, a nonlinear PDE which captures the competing effects of advection and diffusion, and which exhibits the physically interesting phenomenon of shock formation and rarefaction waves. This equation is also cald the \textit{poor man's} Navier-Stokes equation, as it treats the same concepts but is lower-dimensional and only takes diffusion and convection terms into account, without pressure or external forces.\\
 
-For each problem, the report proceeds as follows. The governing equations and their analytic or numerical solutions are introduced to establish a ground truth. A PINN implementation is then developed and analysed in detail, covering the structure of the loss function, network architecture, training procedure, and hyperparameter sensitivity. Improvements over a baseline example are proposed and justified, including randomised training data, early stopping, and systematic hyperparameter optimisation using the Optuna library. Finally, the inverse problem is tackled for both systems: extracting unknown physical parameters (the damping ratio $\zeta$ and natural frequency $\omega_0$ for the oscillator, and the kinematic viscosity $\nu$ for Burger's equation) from noisy observational data.
+For each problem, the report proceeds as follows. The governing equations and their analytic or numerical solutions are introduced to establish a ground truth. A PINN implementation is then developed and analysed in detail, covering the structure of the loss function, network architecture, training procedure, memory usage and and hyperparameter sensitivity. Improvements over a provided baseline example are proposed and justified, including randomised training data, early stopping, and systematic hyperparameter optimisation using the Optuna library. Finally, the inverse problem is tackled for both systems: extracting unknown physical parameters (the damping ratio $\zeta$ and natural frequency $\omega_0$ for the oscillator, and the kinematic viscosity $\nu$ for Burger's equation) from noisy observational data.\\
 
 The code for all experiments is structured in a modular, reusable fashion across the \verb|Damped_Oscillator| and \verb|Burgers_Equation| directories, and is described alongside the corresponding results throughout this report.
 
@@ -756,6 +756,9 @@ The training finished after 4550 epochs, which results in a time per epoch of $3
     \caption{Memory profiling during model training.}
     \label{fig:pinn_profiling_train}
 \end{figure}
+We can see that the RAM usage is a stepwise function of time. This is likely a result of the epoch snapshots which will be used later for plotting. After a specific user-defined amount of epochs, the model weights will be saved to a dictionary \verb|snapshots|. Furthermore, the loss terms are saved after every 50 epochs, which will also contribute to the memory usage. Only at the end of the training loop will the saved variables be saved to a file in the output folder, and the RAM can be cleared again.\\
+
+On the VRAM plot, we see that the usage seems to fluctuates a lot between $0$~mB and $9$~mB. These fluctuations are likely sampling artefacts because the model can be doing different tasks: updating the weights, performing a forward pass, saving outputs to a dictionary, displaying text on the screen etc. During all of these tasks, the VRAM usage will be different. The peak value is around $9$~mB, which is very small compared to the total available VRAM. This model is still relatively small (16833 parameters), which takes up little VRAM space. For larger models, like for the Burger's equation, we would expect more VRAM usage since the models will have to be more complex, with more parameters.\\
 
 The RAM and VRAM usage for the plot generation is displayed below:
 \begin{figure}[H]
@@ -776,6 +779,8 @@ The RAM and VRAM usage for the plot generation is displayed below:
     \caption{Memory profiling during model training.}
     \label{fig:pinn_profiling_plot}
 \end{figure}
+
+We see that the VRAM usage is at zero, which makes sense as the predictions are made from the CPU, not the GPU. The RAM usage is another stepwise function, likely increasing every time a new plot is made. The RAM usage is quite high, with peak valuesa at $120$~mD. This learns us that it is wise to close the plots after saving with \verb|plt.close|, in order to not waste RAM on plots that have already been saved.
 
 \subsection{Comparison between blind and physics informed extrapolation}\label{ch:extrap_DHO}
 This section is made using the \verb|pinn_blind_extrap.py| script. Before tuning the hyperparameters or attempting to solve the inverse problem, I want to study the effect of some of the loss terms. Firstly, in all previous simulations, the collocation points were allowed to be chosen in the extrapolated domain. This makes the extrapolation not fully blind, but physics-informed. In this experiment, the collocation points will only be chosen in the training domain, and no other hyperparameters will be changed.. This results in an actually blind test, as shown in Figure \ref{fig:pinn_blindextrap/summary}
@@ -867,7 +872,7 @@ Finally, I want to see if the model can fit to the solution without any observat
     \caption{Predicted solution with $\lambda_{phys}=100$ and no noisy observation points for training.}
     \label{fig:pinn_hyperparameters/large_phys_no_data/predicted_solution}
 \end{figure}
-The model is in fact able to reconstruct the analytic solution without any data points being provided. This Is however not the best way to use the neural network. Since we have the option to input data, PINNs are more applicable to backwards problems, where we need to extract the (unknown) physical parameters from observational data. This means that we need to balance the loss terms so that both the observation points and the physics of the system are taken into account in the training loop. 
+The model is in fact able to reconstruct the analytic solution without any data points being provided. This is however not the way to use the neural network to its fullest potential. Since we have the option to input data, PINNs are more applicable to backwards problems, where we need to extract the (unknown) physical parameters from observational data. This means that we need to balance the loss terms so that both the observation points and the physics of the system are taken into account in the training loop. 
 
 \subsubsection{Optuna}\label{ch:optuna_DHO}
 This section is made using the \verb|optuna_tuning.py| and \verb|optuna_tuning_plots.py| scripts. In order to find an optimal model complexity and learning rate, as well as tune the balance of the loss function, I have chosen to use the implement a use the \verb|optuna| library to employ a \textit{Tree-Structured Parzen Estimator} with the \verb|optuna.samplers.TPESampler| class. This has a few advantages \cite{watanabe2025treestructuredparzenestimatorunderstanding}:
@@ -1048,21 +1053,21 @@ This section is made using the \verb|inversepinn_data_generation.py| and \verb|i
 
 One of the sources of uncertainty when estimating the parameters is the noise applied to the training observation points. The training points are randomised every epoch and should, in principle, not have much influence on the exact prediction, but it makes the process non-deterministic nonetheless. Furthermore, up until now we have only tested the parameter extraction on 3 $(\zeta,\ \omega_0)$ pairs. This is not yet representative for the model performance over a wide range of valeus for these parameters.\\
 
-In order to account for both of these effects, we can run a large amount of parameter estimations with randomised equation parameters for every different model. This will both give an idea of the variance of the estimations due to the noisy training data, and generalise the three demonstration examples to a larger domain of $(\zeta,\ \omega_0)$ values. I have chosen to first randomize the damped case, with a $45\%$ chance of under- or overdamped and a $10\%$ chance of critically damped. Then, $(\zeta,\ \omega_0)$ is randomised and the inverse model is trained to estimate the parameters. In the end, $304$ total estimations were performed. Figures \ref{fig:parameter_estimation/scatter_zeta_full} and \ref{fig:parameter_estimation/scatter_omega_0_full} show the true-predicted parameter values.
+In order to account for both of these effects, we can run a large amount of parameter estimations with randomised equation parameters for every different model. This will both give an idea of the variance of the estimations due to the noisy training data, and generalise the three demonstration examples to a larger domain of $(\zeta,\ \omega_0)$ values. I have chosen to first randomize the damped case, with a $45\%$ chance of under- or overdamped and a $10\%$ chance of critically damped. Then, $(\zeta,\ \omega_0)$ is randomised and the inverse model is trained to estimate the parameters. In the end, $845$ total estimations were performed. Figures \ref{fig:parameter_estimation/scatter_zeta_full} and \ref{fig:parameter_estimation/scatter_omega_0_full} show the true-predicted parameter values.
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Images_DHO/parameter_estimation/scatter_zeta_full.png}
-        \caption{Scatter plot of 304 true and predicted $\zeta$ pairs.}
+        \caption{Scatter plot of 845 true and predicted $\zeta$ pairs.}
         \label{fig:parameter_estimation/scatter_zeta_full}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Images_DHO/parameter_estimation/scatter_omega_0_full.png}
-        \caption{Scatter plot of 304 true and predicted $\omega_0$ pairs.}
+        \caption{Scatter plot of 845 true and predicted $\omega_0$ pairs.}
         \label{fig:parameter_estimation/scatter_omega_0_full}
     \end{subfigure}
     \caption{Scatter plots of true and predicted physical parameters for the damped harmonic oscillator.}
@@ -1091,7 +1096,7 @@ The $RSME$ indeed increases for the critically and overdamped cases. In order to
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.65\textwidth]{Images_DHO/parameter_estimation/parameter_space_rmse_full.png}
-    \caption{Parameter space of 304 true $(\zeta, \omega_0)$ pairs and the $RMSE$ compared to the predicted values.}
+    \caption{Parameter space of 845 true $(\zeta, \omega_0)$ pairs and the $RMSE$ compared to the predicted values.}
     \label{fig:parameter_estimation/parameter_space_rmse_full}
 \end{figure}
 
@@ -1661,15 +1666,16 @@ Let us now see what happens if the viscosity is decreased to $\nu=0.01$. The sol
     \caption{Summary plot for the predicted solution by a PINN for step-up initial conditions and $\nu=0.01$.}
     \label{fig:Step_up_nu_0.01/summary}
 \end{figure}
-Interestingly, the $RMSE$ does not seem to increase with decreasing viscosity like in the previous two examples. This is because with a step-up initial condition, a lower viscosity will not lead to a steeper gradient since no shockwave is formed. We only have a rarefaction, where a solution with a lower value for $\nu$ can be fitted with comparable accuracy to a solution with higher $\nu$.
-\clearpage
-We will now discuss the effect of different parameters for the trained models. Since the gaussian initial conditions gave the most accurate results and profuce a shockwave, I will stick to this inital condition with $\nu=0.05$ for the rest of the report.
+Interestingly, the $RMSE$ does not seem to increase with decreasing viscosity like in the previous two examples. This is because with a step-up initial condition, a lower viscosity will not lead to a steeper gradient since no shockwave is formed. We only have a rarefaction, where a solution with a lower value for $\nu$ can be fitted with comparable accuracy to a solution with higher $\nu$.\\
 
-This gives the following runtimes:
+We will now discuss the memory usage and the effect of different parameters for the trained models. Since the gaussian initial conditions gave the most accurate results and profuce a shockwave, I will stick to this inital condition with $\nu=0.05$ for the rest of the report.\\
+
+\subsection{Profiling}
+Just like for the damped harmonic oscillator, we will profile the runtime, RAM and VRAM usage for the data generation, model training, and plot generation. We would expect the runtimes to be longer and memory usage to be higher since the Burgers equation model is more complex than the damped harmonic oscillator model. Timing the different tasks gives the following runtimes:
 
 \begin{table}[H]
 \centering
-\caption{Wall times}\label{tab:wall_times_DHO}
+\caption{Wall times}\label{tab:wall_times_BE}
 \begin{tabular}{lc}
 \toprule
 \textbf{Process} & \textbf{Time ([s])}\\
@@ -1680,7 +1686,7 @@ Plot generation        & $24.5$                        \\
 \bottomrule
 \end{tabular}
 \end{table}
-The training finished after 7200 epochs, which results in a time per epoch of $12.33$~ms. The RAM and VRAM usage as a function of time for the data generation is displayed below:
+The training finished after 7200 epochs, which results in a time per epoch of $12.33$~ms. This is noticably longer than the damped harmonic oscillator epoch time, which is logical as there are many more parameters to tune. We can also see that the data generation is no longer instantaneous, as we are not implementing a closed form solution for the ground truth; we are numerically computing the Cole-Hopf transformation. Because of this, we can also look at the memory usae during data generation. The RAM and VRAM usage as a function of time is displayed below:
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
@@ -1699,6 +1705,7 @@ The training finished after 7200 epochs, which results in a time per epoch of $1
     \caption{Memory profiling during model training.}
     \label{fig:pinn_profiling_data_BE}
 \end{figure}
+Since the data generation occurs entirely on the CPU, the VRAM usage is zero everywhere. The RAM usage seems to be constant at around $10$~mB. This is due to the dense grid of ground truth Cole-Hopf grid points: at the beginning of the data generation, a dense $1000\times1000$ array is created which will be used to store the ground-truth Cole-Hopf calculated values. This array is a lot larger than all other generated variables; the second largest object is the $300\times300$ grid of validation points. Only the very first increase in memory usage due to the Cole-Hopf calculation is visible on the plot, every other generated object is negligent.\\
 
 The RAM and VRAM usage as a function of time for the model training is displayed below:
 \begin{figure}[H]
@@ -1719,6 +1726,7 @@ The RAM and VRAM usage as a function of time for the model training is displayed
     \caption{Memory profiling during model training.}
     \label{fig:pinn_profiling_train_BE}
 \end{figure}
+Yet again, we see a step-wise RAM usage as snapshots and losses are logged. The VRAM plot also looks similar to the previous plot for the damped harmonic oscillator. Here it is even more clear that different tasks during the training loop cause different VRAM usages. The peak VRAM is a lot higher here, since there are many more parameters (65473 to be exact) to be optimized. This causes the peak value to be $\sim70$~mB compared to the $\sim8$~mB for the previous task.
 
 The RAM and VRAM usage for the plot generation is displayed below:
 \begin{figure}[H]
@@ -1739,6 +1747,8 @@ The RAM and VRAM usage for the plot generation is displayed below:
     \caption{Memory profiling during model training.}
     \label{fig:pinn_profiling_plot_BE}
 \end{figure}
+
+The GPU isage is yet again at zero since the predictions are happening on the CPU. Just like for the damped harmonic oscillator, the RAM usage changes in steps as different plots are made. The usage stays at zero for a long time as the ground truth is being regenerated. The memory used for this task is likely not detected as the memory profiler only profiles the plot generation itself and the data generation falls outside of the profiling scope. On the plot, we can see that the memory usage is not strictly increasing like for the previous task. This can be because more plots are being made, and variables can be identically named across functions. This leads to some reference counters hitting zero, causing the garbage collector to free up this space in the memory while other plots are still being made. The large spike in the plot is likely caused by the summary figure, where 6 different panels need to be plotted, including 2D images of the predicted solution.
 
 \subsection{Inclusion of data}
 This section is made using the \verb|pinn_data_included.py| script. The code is implemented in such a way that we can include training data in the training loop by modifying the Config class. We want to compare the results with and without training data. The predicted solution where data is included in the training is shown below:
@@ -2033,17 +2043,17 @@ As we can see, the parameter converges to the true value from below. The initial
 
 \chapter{Conclusion}
 
-This report has demonstrated the application of Physics-Informed Neural Networks to two problems of increasing complexity: the damped harmonic oscillator and the viscid Burger's equation.
+This report has demonstrated the application of Physics-Informed Neural Networks to two problems of increasing complexity: the damped harmonic oscillator and the viscid Burger's equation.\\
 
-For the damped harmonic oscillator, PINNs were shown to accurately reconstruct the analytic solution across all three damping regimes (overdamped, critically damped, and underdamped) using fifteen noisy observation points per epoch, supplemented by the physics residual and initial condition constraints. The improvements made to the baseline implementation, including randomised training data and collocation points, early stopping based on a validation loss derived from the analytic ground truth, and systematic hyperparameter optimisation via a Tree-Structured Parzen Estimator, resulted in a more robust and reproducible training process. The extrapolation experiments highlighted a key strength of PINNs: when the physics residual is enforced in the extrapolated domain, the model produces physically consistent predictions beyond the training window, outperforming a traditional neural network which lacks this constraint.
+For the damped harmonic oscillator, PINNs were shown to accurately reconstruct the analytic solution across all three damping regimes (overdamped, critically damped, and underdamped) using fifteen noisy observation points per epoch, supplemented by the physics residual and initial condition constraints. We also showed that the PINN is capable of solving the ODE without the inclusion of any training points. The improvements made to the baseline implementation, including a more structured file system, randomised training data and collocation points, early stopping based on a validation loss derived from the analytic ground truth, and systematic hyperparameter optimisation via a Tree-Structured Parzen Estimator, resulted in a more robust, modular and reproducible training process. The extrapolation experiments highlighted a key strength of PINNs: when the physics residual is enforced in the extrapolated domain, the model produces physically consistent predictions beyond the training window, outperforming a traditional neural network which lacks this constraint.\\
 
-The inverse problem for the damped harmonic oscillator demonstrated that the parameters $\zeta$ and $\omega_0$ can be reliably extracted from noisy data. A statistical analysis over 304 randomised parameter combinations revealed that estimation accuracy degrades in the overdamped regime, where solutions are less sensitive to variations in the parameters.
+The inverse problem for the damped harmonic oscillator demonstrated that the parameters $\zeta$ and $\omega_0$ can be reliably extracted from noisy data. A statistical analysis over 845 randomised parameter combinations revealed that estimation accuracy degrades in the overdamped regime, where solutions are less sensitive to variations in the parameters.\\
 
-For Burger's equation, a ground truth was generated using the Cole-Hopf transformation, which converts the viscid equation into the heat equation and allows for an accurate, mesh-free solution via numerical convolution. PINNs were then trained across three initial conditions (Gaussian, N-wave, and step-up) and three values of the kinematic viscosity. The results confirmed that solutions with steeper gradients, corresponding to lower viscosity and shock-forming initial conditions, are inherently more difficult to fit with smooth $\tanh$ activation functions. In such cases, increased model complexity and adjusted loss weights were necessary. The addition of a boundary condition loss term was found to have little practical impact for the Gaussian initial condition, but represents good practice when the boundaries interact more strongly with the interior dynamics.
+For Burger's equation, a ground truth was generated using the Cole-Hopf transformation, which converts the viscid equation into the heat equation and allows for an solution via numerical convolution. PINNs were then trained across three initial conditions (Gaussian, N-wave, and step-up) and three values of the kinematic viscosity without the inclusion of training data. The results confirmed that solutions with steeper gradients, corresponding to lower viscosity and shock-forming initial conditions, are inherently more difficult to fit with smooth $\tanh$ activation functions. In such cases, increased model complexity and adjusted loss weights were necessary, and demonstrated substantial improvements. The addition of a boundary condition loss term was found to have little practical impact for the Gaussian initial condition, but represents good practice when the boundaries interact more strongly with the interior dynamics.\\
 
-The inverse problem for Burger's equation showed that the viscosity $\nu$ can be estimated from noisy data with reasonable accuracy. A statistical analysis over 767 training runs revealed a systematic bias: the model overestimates $\nu$ for low-viscosity solutions, because the smooth network output underestimates sharp spatial gradients, effectively attributing the mismatch to a higher viscosity. Conversely, the model underestimates $\nu$ for high-viscosity solutions, where the viscous term contributes less to the total loss and the inverse parameter gradient becomes correspondingly small. These biases point to the importance of tuning the inverse learning rate separately from the network learning rate, a direction not fully explored in this work.
+The inverse problem for Burger's equation showed that the viscosity $\nu$ can be estimated from noisy data with reasonable accuracy. A statistical analysis over 767 training runs revealed a systematic bias: the model overestimates $\nu$ for low-viscosity solutions, because the smooth network output underestimates sharp spatial gradients, effectively attributing the mismatch to a higher viscosity. Conversely, the model underestimates $\nu$ for high-viscosity solutions, where the viscous term contributes less to the total loss and the inverse parameter gradient becomes correspondingly small.\\
 
-Taken together, the results confirm that PINNs are a powerful and flexible tool for solving both forward and inverse problems governed by differential equations. Their ability to incorporate physical constraints directly into the training loop makes them particularly well-suited to data-scarce regimes, and their modular implementation makes them straightforward to adapt to new equations and problem settings.
+Taken together, the results confirm that PINNs are a powerful and flexible tool for solving both forward and inverse problems governed by differential equations. Their ability to incorporate physical constraints or information directly into the training loop makes them particularly well-suited to data-scarce regimes, and their modular implementation makes them straightforward to adapt to new equations and problem settings.
 
 % \appendix
 
